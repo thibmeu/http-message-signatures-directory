@@ -1152,56 +1152,64 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-motivation" class="internal xref">Motivation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-system" class="internal xref">System</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-generating-message-signatur" class="internal xref">Generating Message signature</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-requesting-a-message-signat" class="internal xref">Requesting a Message signature</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-validating-message-signatur" class="internal xref">Validating Message signature</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-anti-replay" class="internal xref">Anti-replay</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-discovery" class="internal xref">Discovery</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-generating-http-message-sig" class="internal xref">Generating HTTP Message Signature</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.1">
-                    <p id="section-toc.1-1.3.2.5.2.1.1"><a href="#section-3.5.1" class="auto internal xref">3.5.1</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-anti-replay" class="internal xref">Anti-replay</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.2">
-                    <p id="section-toc.1-1.3.2.5.2.2.1"><a href="#section-3.5.2" class="auto internal xref">3.5.2</a>.  <a href="#name-public-list" class="internal xref">Public list</a></p>
+                </ul>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.3">
-                    <p id="section-toc.1-1.3.2.5.2.3.1"><a href="#section-3.5.3" class="auto internal xref">3.5.3</a>.  <a href="#name-operating-agent-header" class="internal xref">Operating-Agent header</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-requesting-a-message-signat" class="internal xref">Requesting a Message signature</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-validating-message-signatur" class="internal xref">Validating Message signature</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-discovery" class="internal xref">Discovery</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.1">
+                    <p id="section-toc.1-1.4.2.4.2.1.1"><a href="#section-4.4.1" class="auto internal xref">4.4.1</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.2">
+                    <p id="section-toc.1-1.4.2.4.2.2.1"><a href="#section-4.4.2" class="auto internal xref">4.4.2</a>.  <a href="#name-public-list" class="internal xref">Public list</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.3">
+                    <p id="section-toc.1-1.4.2.4.2.3.1"><a href="#section-4.4.3" class="auto internal xref">4.4.3</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent header</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-implementations" class="internal xref">Implementations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-implementations" class="internal xref">Implementations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1226,24 +1234,74 @@ automated agents and HTTP servers, with improved security and
 manageability.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="conventions-and-definitions">
+<div id="motivation">
 <section id="section-2">
-      <h2 id="name-conventions-and-definitions">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      <h2 id="name-motivation">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-motivation" class="section-name selfRef">Motivation</a>
       </h2>
-<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
-"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
-described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">There is an increase in automated agents on the Internet. Some are honest, and want to identify themselves.
+Either because origins pressure them to do so, because regulations mandate transparency, or because they are
+facing an increased phishing threat. As of today these automated agents are left without any good solution to do so:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2-2">
+<li id="section-2-2.1">
+          <p id="section-2-2.1.1">They share their IP range. However that is not sustainable because the same IP might be used by different
+services, IP ranges may change, geolocation imposes to register IPs in multiple countries, and when they start
+allowing other companies to use their platform they loose control of their public facing reputation.<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-2-2.2">
+          <p id="section-2-2.2.1">They define a User Agent per <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>. Like curl uses <code>curl/version</code>, or Chrome uses
+<code>Mozilla/5.0 ... Chrome/113.0.0.0</code>. An issue is this header is spoofable, and realistically automated agents are
+likely to use Chrome's user agent because otherwise they are challenged<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-2-2.3">
+          <p id="section-2-2.3.1">They go to every website on the Internet and share a secret with them like a Bearer from  <span>[<a href="#RFC6750" class="cite xref">RFC6750</a>]</span>. This is
+impractical at scale.<a href="#section-2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+<p id="section-2-3">All this provides strong motivation to define a mechanism that empowers honest automated agents to share their identity.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="system">
+<div id="conventions-and-definitions">
 <section id="section-3">
-      <h2 id="name-system">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-system" class="section-name selfRef">System</a>
+      <h2 id="name-conventions-and-definitions">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
-<div id="section-3-1">
-        <div class="alignLeft art-svg artwork" id="section-3-1.1">
+<p id="section-3-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The following terms are used throughout this document:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-3-3">
+        <dt id="section-3-3.1"><strong>User</strong></dt>
+        <dd style="margin-left: 1.5em" id="section-3-3.2">
+          <p id="section-3-3.2.1">wants to perform some actions on the web.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-3.3"><strong>Automated Agent</strong></dt>
+        <dd style="margin-left: 1.5em" id="section-3-3.4">
+          <p id="section-3-3.4.1">orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with <span>[<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span> signature.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-3.5"><strong>Origin</strong></dt>
+        <dd style="margin-left: 1.5em" id="section-3-3.6">
+          <p id="section-3-3.6.1">server hosting a resource. The user wants to access it through the browser.<a href="#section-3-3.6.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="architecture">
+<section id="section-4">
+      <h2 id="name-architecture">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
+      </h2>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4-1.1">
+          <p id="section-4-1.1.1">TODO: Add directory<a href="#section-4-1.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="section-4-2">
+        <div class="alignLeft art-svg artwork" id="section-4-2.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="304" width="536" viewBox="0 0 536 304" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
             <path d="M 8,32 L 8,64" fill="none" stroke="black"></path>
             <path d="M 48,64 L 48,256" fill="none" stroke="black"></path>
@@ -1289,65 +1347,105 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <text x="120" y="228">are</text>
               <text x="176" y="228">proposals</text>
             </g>
-          </svg><a href="#section-3-1.1" class="pilcrow">¶</a>
+          </svg><a href="#section-4-2.1" class="pilcrow">¶</a>
 </div>
 </div>
-<p id="section-3-2">Our system has three actors:<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">User: wants to perform some actions on the web.
-Automated Agent: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with <span>[<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span> signature.
-Origin: server hosting a resource. The user wants to access it through the browser.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<div id="generating-message-signature">
-<section id="section-3.1">
-        <h3 id="name-generating-message-signatur">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-generating-message-signatur" class="section-name selfRef">Generating Message signature</a>
+<p id="section-4-3">A user is asking the automated agent to do something. The agent decides they
+need to retrieve content from an origin. They send an HTTP request with a Signature
+header as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span>.
+The origin validates the signature. If it validates, it sends the requested content.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<div id="generating-http-message-signature">
+<section id="section-4.1">
+        <h3 id="name-generating-http-message-sig">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-generating-http-message-sig" class="section-name selfRef">Generating HTTP Message Signature</a>
         </h3>
-<p id="section-3.1-1">RFC 9421 defines components to be signed.
-The following parameters will need to be signed:
-* @authority
-* @signature-params(created, expires, keyid)<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">The creation of the signature is defined in RFC 9421, Section 3.1.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span> defines components to be signed.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">Automated agents <span class="bcp14">SHOULD</span> include the following component:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4.1-3">
+          <dt id="section-4.1-3.1"><code>@authority</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-3.2">
+            <p id="section-4.1-3.2.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span><a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-4.1-4">Automated agents <span class="bcp14">SHOULD</span> include the following <code>@signature-params</code> as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.3" class="relref">Section 2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span><a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4.1-5">
+          <dt id="section-4.1-5.1"><code>created</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-5.2">
+            <p id="section-4.1-5.2.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.3" class="relref">Section 2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span><a href="#section-4.1-5.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-5.3"><code>expires</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-5.4">
+            <p id="section-4.1-5.4.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.3" class="relref">Section 2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span><a href="#section-4.1-5.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-5.5"><code>keyid</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-5.6">
+            <p id="section-4.1-5.6.1"><span class="bcp14">MUST</span> be <code>SHA256(key_bytes)</code><a href="#section-4.1-5.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-5.7"><code>tag</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-5.8">
+            <p id="section-4.1-5.8.1"><span class="bcp14">MUST</span> be <code>web-bot-auth</code><a href="#section-4.1-5.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-4.1-6">The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">The creation of the signature is defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span>.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<div id="anti-replay">
+<section id="section-4.1.1">
+          <h4 id="name-anti-replay">
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-anti-replay" class="section-name selfRef">Anti-replay</a>
+          </h4>
+<p id="section-4.1.1-1">Origins <span class="bcp14">MAY</span> want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a <code>nonce</code> to be added to the <code>@signature-params</code>.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-2"><code>@signature-parameters</code> are extended as follow<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4.1.1-3">
+            <dt id="section-4.1.1-3.1"><code>nonce</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.1-3.2">
+              <p id="section-4.1.1-3.2.1">Base10 encoded random uint32<a href="#section-4.1.1-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.1.1-4">This <code>nonce</code> <span class="bcp14">MUST</span> be unique for the validity window of the signature, as defined by created and expires attributes.
+Because the <code>nonce</code> is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="requesting-a-message-signature">
-<section id="section-3.2">
+<section id="section-4.2">
         <h3 id="name-requesting-a-message-signat">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-requesting-a-message-signat" class="section-name selfRef">Requesting a Message signature</a>
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-requesting-a-message-signat" class="section-name selfRef">Requesting a Message signature</a>
         </h3>
-<p id="section-3.2-1">RFC 9421 defines the Accept-Signature field which can be used to request a Message Signature from a client by a server. Servers <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially provide them. If requesting, servers are expected to request the same parameters as those defined by the Generating Message Signature section.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1"><span><a href="https://rfc-editor.org/rfc/rfc9421#section-5" class="relref">Section 5</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span> defines the <code>Accept-Signature</code> field which can be used to request a Message Signature from a client by an origin. Origin <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially provide them. If requesting, origins <span class="bcp14">MUST</span> to request the same parameters as those defined by the <a href="#generating-http-message-signature" class="auto internal xref">Section 4.1</a>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="validating-message-signature">
-<section id="section-3.3">
+<section id="section-4.3">
         <h3 id="name-validating-message-signatur">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-validating-message-signatur" class="section-name selfRef">Validating Message signature</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-validating-message-signatur" class="section-name selfRef">Validating Message signature</a>
         </h3>
-<p id="section-3.3-1">Upon receiving an HTTP request, the origin website has to verify the signature. The algorithm is provided in RFC 9421, Section 3.2.
-Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">If the key ID is not known, the origin <span class="bcp14">MAY</span> look at Operating-Agent header as described in ((MESSAGESIG-DIRECTOIRY-DRAFT))<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">If any of the steps from Section 3.2 fail, the signature validation fails.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="anti-replay">
-<section id="section-3.4">
-        <h3 id="name-anti-replay">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-anti-replay" class="section-name selfRef">Anti-replay</a>
-        </h3>
-<p id="section-3.4-1">Origins may want to to prevent signatures from being spoofed or used multiple times by bad actors and thus require a nonce to be added to the signature-params. This nonce would have to be unique for the validity window of the signature, as defined by created and expires attributes. Because the nonce is controlled by the client the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature. In addition, for platform providers offering different services, ai models, or others, the tag attribute of signature-params may be used.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.2" class="relref">Section 3.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURE" class="cite xref">HTTP-MESSAGE-SIGNATURE</a>]</span>.
+Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">Additional requirement are placed on this validation<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-3">During step 4, the Origin <span class="bcp14">MAY</span> discard signatures for which the <code>tag</code> is not set to <code>web-bot-auth</code>.
+During step 5, the Origin <span class="bcp14">MAY</span> discard signatures for which they do not know the <code>keyid</code>.
+During step 5, if the keyid is unknown to the origin, they <span class="bcp14">MAY</span> fetch the provider directory as indicated by Signature-Agent header defined in ((MESSAGESIG-DIRECTOIRY-DRAFT))<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="discovery">
-<section id="section-3.5">
+<section id="section-4.4">
         <h3 id="name-discovery">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-discovery" class="section-name selfRef">Discovery</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-discovery" class="section-name selfRef">Discovery</a>
         </h3>
-<p id="section-3.5-1">This section describes the discovery mechanism for the automated agent directory.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">The reference for discovery is a FQDN. It <span class="bcp14">SHOULD</span> provide a directory hosted on the well known registered in ((MESSAGESIG-DIRECTOIRY-DRAFT))<a href="#section-3.5-2" class="pilcrow">¶</a></p>
-<p id="section-3.5-3">We add one field to the directory defined in the other draft:
-"purpose": Ideally matches some IANA registry for preferences<a href="#section-3.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.5-4">TODO: replace the key with a JWK<a href="#section-3.5-4" class="pilcrow">¶</a></p>
-<p id="section-3.5-5">Example<a href="#section-3.5-5" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-3.5-6">
+<p id="section-4.4-1">This section describes the discovery mechanism for the automated agent directory.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">The reference for discovery is a FQDN. It <span class="bcp14">SHOULD</span> provide a directory hosted on the well known registered in ((MESSAGESIG-DIRECTOIRY-DRAFT))<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">We add one field to the directory defined in the other draft:
+"purpose": Ideally matches some IANA registry for preferences<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">TODO: replace the key with a JWK<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">Example<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-4.4-6">
 <pre>
 {
   keys: [{
@@ -1356,34 +1454,34 @@ Similar to regular User-Agent check, this happens at the HTTP layer, once header
     not-before: 1743578485, // optional
     not-after: 1745000000, // optional
   }],
-  operating_agent: "my.company.agent.test", // optional. SHOULD match the operating agent domain
+  signature_agent: "my.company.agent.test", // optional. SHOULD match the signature agent FQDN
   purpose: "search" // Ideally matches some IANA registry for preferences
 }
-</pre><a href="#section-3.5-6" class="pilcrow">¶</a>
+</pre><a href="#section-4.4-6" class="pilcrow">¶</a>
 </div>
 <div id="out-of-band-communication-between-client-and-origin">
-<section id="section-3.5.1">
+<section id="section-4.4.1">
           <h4 id="name-out-of-band-communication-b">
-<a href="#section-3.5.1" class="section-number selfRef">3.5.1. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
+<a href="#section-4.4.1" class="section-number selfRef">4.4.1. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
           </h4>
-<p id="section-3.5.1-1">A service submitting their key to an origin, or the origin manually adding a service to their trusted list<a href="#section-3.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.1-1">A service submitting their key to an origin, or the origin manually adding a service to their trusted list<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="public-list">
-<section id="section-3.5.2">
+<section id="section-4.4.2">
           <h4 id="name-public-list">
-<a href="#section-3.5.2" class="section-number selfRef">3.5.2. </a><a href="#name-public-list" class="section-name selfRef">Public list</a>
+<a href="#section-4.4.2" class="section-number selfRef">4.4.2. </a><a href="#name-public-list" class="section-name selfRef">Public list</a>
           </h4>
-<p id="section-3.5.2-1">Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.<a href="#section-3.5.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.2-1">Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="operating-agent-header">
-<section id="section-3.5.3">
-          <h4 id="name-operating-agent-header">
-<a href="#section-3.5.3" class="section-number selfRef">3.5.3. </a><a href="#name-operating-agent-header" class="section-name selfRef">Operating-Agent header</a>
+<div id="signature-agent-header">
+<section id="section-4.4.3">
+          <h4 id="name-signature-agent-header">
+<a href="#section-4.4.3" class="section-number selfRef">4.4.3. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
           </h4>
-<p id="section-3.5.3-1">This is defined in the sibling draft.
-This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.<a href="#section-3.5.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-1">This is defined in the sibling draft.
+This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1391,25 +1489,39 @@ This allows for backward compatibility with existing header agent filtering, and
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-4">
+<section id="section-5">
       <h2 id="name-security-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-4-1">TODO Security<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">Verification load
+Bigger request<a href="#section-5-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-5-2.1">
+          <p id="section-5-2.1.1">Hint at req mTLS<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="privacy-considerations">
+<section id="section-6">
+      <h2 id="name-privacy-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
+      </h2>
+<p id="section-6-1">Identity is public<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-5">
+<section id="section-7">
       <h2 id="name-iana-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1">This document has no IANA actions.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-6">
+<section id="section-8">
       <h2 id="name-normative-references">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="HTTP">[HTTP]</dt>
@@ -1427,6 +1539,10 @@ This allows for backward compatibility with existing header agent filtering, and
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6750">[RFC6750]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.</span> and <span class="refAuthor">D. Hardt</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: Bearer Token Usage"</span>, <span class="seriesInfo">RFC 6750</span>, <span class="seriesInfo">DOI 10.17487/RFC6750</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6750">https://www.rfc-editor.org/rfc/rfc6750</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
     <dd>
@@ -1449,14 +1565,26 @@ This allows for backward compatibility with existing header agent filtering, and
 <a href="#name-implementations" class="section-name selfRef">Implementations</a>
       </h2>
 <p id="appendix-B-1">This draft has a couple of implementations<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">Clients:
-* Chrome MV3
-* Cloudflare Workers<a href="#appendix-B-2" class="pilcrow">¶</a></p>
-<p id="appendix-B-3">Servers:
-* Caddy plugin
-* Cloudflare Workers<a href="#appendix-B-3" class="pilcrow">¶</a></p>
-<p id="appendix-B-4">A demontstration server has been deployed to https://http-message-signatures-example.research.cloudflare.com/
-It uses RFC9421 ed25519 test signing and verifying keys.<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">Clients:<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-3.1">
+          <p id="appendix-B-3.1.1">Chrome MV3<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.2">
+          <p id="appendix-B-3.2.1">Cloudflare Workers<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-4">Servers:<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-5.1">
+          <p id="appendix-B-5.1.1">Caddy plugin<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.2">
+          <p id="appendix-B-5.2.1">Cloudflare Workers<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-6">A demontstration server has been deployed to https://http-message-signatures-example.research.cloudflare.com/
+It uses RFC9421 ed25519 test signing and verifying keys.<a href="#appendix-B-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

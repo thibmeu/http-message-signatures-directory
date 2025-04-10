@@ -14,9 +14,11 @@ Expires: 12 October 2025
 Abstract
 
    This document describe a method for clients using using
-   [HTTP-MESSAGE-SIGNATURE] to advertise their signing keys.  It defines
-   a key directory format based on JWKS, as well as new HTTP Method
-   Context to allow for in-band key discovery.
+   [HTTP-MESSAGE-SIGNATURE] to advertise their signing keys.
+
+   It defines a key directory format based on JWKS as defined in
+   Section 5 of [JWK], as well as new HTTP Method Context to allow for
+   in-band key discovery.
 
 About This Document
 
@@ -71,10 +73,15 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  System
-   4.  Security Considerations
-   5.  IANA Considerations
-   6.  Normative References
+   3.  Configuration
+   4.  Discoverability
+   5.  Security Considerations
+   6.  IANA Considerations
+     6.1.  Well-Known 'http-message-signatures-directory' URI
+     6.2.  Media Types
+       6.2.1.  "application/http-message-signatures-directory" media
+               type
+   7.  Normative References
    Acknowledgments
    Author's Address
 
@@ -90,27 +97,93 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  System
+3.  Configuration
 
-   Define a well-known
+      TODO: should there be a header parameter to accept JSON or CBOR?
 
-   Use JWKS
+   Service that aim to sign their request using [HTTP-MESSAGE-SIGNATURE]
+   can share their public key as JWKS
 
-   Deterministic key ID
+      TODO: replace with actual JWKS
 
-   Cache
+   { keys: [{ alg:"ed25519", key: "-----BEGIN PUBLIC KEY-----...", not-
+   before: 1743578485, // optional not-after: 1745000000, // optional }]
+   }
 
-   Signature-Agent for discovery
+4.  Discoverability
 
-4.  Security Considerations
+   A service sending signed request as defined in
+   [HTTP-MESSAGE-SIGNATURE] MAY send the FQDN hosting its directory via
+   a new HTTP Method Context Signature-Agent.
+
+   This extends the set of headers defined in [RFC9110].
+
+   Signature-Agent
+
+   ``` Signature-Agent = fqdn
+
+   fqdn = <fqdn, see [RFC9110], Section XX> ```
+
+5.  Security Considerations
 
    TODO Security
 
-5.  IANA Considerations
+6.  IANA Considerations
 
-   This document has no IANA actions.
+   This section contains considerations for IANA.
 
-6.  Normative References
+6.1.  Well-Known 'http-message-signatures-directory' URI
+
+   This document updates the "Well-Known URIs" Registry [WellKnownURIs]
+   with the following values.
+
+   +===============+============+===========+===========+=============+
+   | URI Suffix    | Change     | Reference | Status    | Related     |
+   |               | Controller |           |           | information |
+   +===============+============+===========+===========+=============+
+   | http-message- | IETF       | [this     | permanent | None        |
+   | signatures-   |            | document] |           |             |
+   | directory     |            |           |           |             |
+   +---------------+------------+-----------+-----------+-------------+
+
+       Table 1: 'http-message-signatures-directory' Well-Known URI
+
+6.2.  Media Types
+
+   The following entries should be added to the IANA "media types"
+   registry:
+
+   *  "application/http-message-signatures-directory"
+
+   The templates for these entries are listed below and the reference
+   should be this RFC.
+
+6.2.1.  "application/http-message-signatures-directory" media type
+
+   Type name:  application
+   Subtype name:  http-message-signatures-directory
+   Required parameters:  N/A
+   Optional parameters:  N/A
+   Encoding considerations:  "binary"
+   Security considerations:  see Section 5
+   Interoperability considerations:  N/A
+   Published specification:  this specification
+   Applications that use this media type:  Services that implement the
+      signer role for HTTP Message Signatures and verifiers that
+      interact with the signer for the purpose of validating signatures.
+   Fragment identifier considerations:  N/A
+   Additional information:  Magic number(s):  N/A
+                            Deprecated alias names for this type:  N/A
+                            File extension(s):  N/A
+                            Macintosh file type code(s):  N/A
+   Person and email address to contact for further information:  see Aut
+      hors' Addresses section
+   Intended usage:  COMMON
+   Restrictions on usage:  N/A
+   Author:  see Authors' Addresses section
+   Change controller:  IETF
+
+7.  Normative References
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
@@ -122,6 +195,10 @@ Table of Contents
               Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
               February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
 
+   [JWK]      Jones, M., "JSON Web Key (JWK)", RFC 7517,
+              DOI 10.17487/RFC7517, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7517>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -130,6 +207,16 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+   [WellKnownURIs]
+              "Well-Known URIs", n.d.,
+              <https://www.iana.org/assignments/well-known-uris/well-
+              known-uris.xhtml>.
 
 Acknowledgments
 
