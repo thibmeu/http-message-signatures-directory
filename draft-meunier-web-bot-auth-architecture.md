@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: Web Bot Auth
+# area: AREA
+# workgroup: Web Bot Auth
 keyword:
  - next generation
  - unicorn
  - sparkling distributed ledger
 venue:
-  group: WG
-  type: Web Bot Auth
-  mail: "web-bot-auth@ietf.org"
-  arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
-  github: thibmeu/http-message-signatures-directory
-  latest: https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html
+#  group: WG
+#  type: Web Bot Auth
+#  mail: "web-bot-auth@ietf.org"
+#  arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
+  github: "thibmeu/http-message-signatures-directory"
+  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html"
 
 author:
  -

@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: ""
+workgroup: "HTTP"
 keyword:
  - next generation
  - unicorn
  - sparkling distributed ledger
 venue:
-  group: WG
-  type: HTTPBIS
-  mail: "httpbis@ietf.org"
-  arch: "https://mailarchive.ietf.org/arch/browse/httpbis/"
-  github: thibmeu/http-message-signatures-directory
-  latest: https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-httpbis-http-message-signatures-directory.html
+  group: "HTTP"
+  type: ""
+  mail: "ietf-http-wg@w3.org"
+  arch: "https://lists.w3.org/Archives/Public/ietf-http-wg/"
+  github: "thibmeu/http-message-signatures-directory"
+  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-httpbis-http-message-signatures-directory.html"
 
 author:
  -
