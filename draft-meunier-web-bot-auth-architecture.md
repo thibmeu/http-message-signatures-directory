@@ -96,7 +96,7 @@ Automated Agent: orchestrated user agent, such as Chromium. Can interact with th
 Origin: server hosting a resource. The user wants to access it through the browser.
 
 ## Generating Message signature
-RFC 9421 defines components to be signed. 
+RFC 9421 defines components to be signed.
 The following parameters will need to be signed:
 * @authority
 * @signature-params(created, expires, keyid)
