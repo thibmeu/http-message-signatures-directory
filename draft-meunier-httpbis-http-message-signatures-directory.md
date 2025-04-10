@@ -3,7 +3,7 @@ title: "HTTP Message Signatures Directory"
 abbrev: "HTTP Message Signatures Directory"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-meunier-httpbis-http-message-signatures-directory-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
