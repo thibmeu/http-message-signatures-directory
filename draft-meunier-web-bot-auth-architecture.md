@@ -72,7 +72,7 @@ facing an increased phishing threat. As of today these automated agents are left
 1. They share their IP range. However that is not sustainable because the same IP might be used by different
    services, IP ranges may change, geolocation imposes to register IPs in multiple countries, and when they start
    allowing other companies to use their platform they loose control of their public facing reputation.
-2. They define a User Agent per {{Section 10.1.5 of RFC9110}}. Like curl uses `curl/version`, or Chrome uses
+2. They define a User Agent per {{Section 10.1.5 of HTTP}}. Like curl uses `curl/version`, or Chrome uses
    `Mozilla/5.0 ... Chrome/113.0.0.0`. An issue is this header is spoofable, and realistically automated agents are
    likely to use Chrome's user agent because otherwise they are challenged
 3. They go to every website on the Internet and share a secret with them like a Bearer from  {{!RFC6750}}. This is
@@ -249,11 +249,15 @@ TODO acknowledge.
 This draft has a couple of implementations
 
 Clients:
+
 * Chrome MV3
+
 * Cloudflare Workers
 
 Servers:
+
 * Caddy plugin
+
 * Cloudflare Workers
 
 A demontstration server has been deployed to https://http-message-signatures-example.research.cloudflare.com/
