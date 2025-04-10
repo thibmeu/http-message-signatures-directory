@@ -221,7 +221,14 @@ This allows for backward compatibility with existing header agent filtering, and
 
 # Security Considerations
 
-TODO Security
+Verification load
+Bigger request
+
+> Hint at req mTLS
+
+# Privacy Considerations
+
+Identity is public
 
 
 # IANA Considerations
