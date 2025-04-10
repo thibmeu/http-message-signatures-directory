@@ -176,7 +176,7 @@ Additional requirement are placed on this validation
 
 During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by Operating-Agent header defined in ((MESSAGESIG-DIRECTOIRY-DRAFT))
+During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by Signature-Agent header defined in ((MESSAGESIG-DIRECTOIRY-DRAFT))
 
 
 ## Discovery
@@ -200,7 +200,7 @@ Example
     not-before: 1743578485, // optional
     not-after: 1745000000, // optional
   }],
-  operating_agent: "my.company.agent.test", // optional. SHOULD match the operating agent domain
+  signature_agent: "my.company.agent.test", // optional. SHOULD match the signature agent FQDN
   purpose: "search" // Ideally matches some IANA registry for preferences
 }
 ~~~
@@ -213,7 +213,7 @@ A service submitting their key to an origin, or the origin manually adding a ser
 
 Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.
 
-### Operating-Agent header
+### Signature-Agent header
 
 This is defined in the sibling draft.
 This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
