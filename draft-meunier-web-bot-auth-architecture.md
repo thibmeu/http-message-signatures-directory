@@ -63,12 +63,42 @@ with the platform provider. This enables trusted interactions between
 automated agents and HTTP servers, with improved security and
 manageability.
 
+# Motivation
+
+There is an increase in automated agents on the Internet. Some are honest, and want to identify themselves.
+Either because origins pressure them to do so, because regulations mandate transparency, or because they are
+facing an increased phishing threat. As of today these automated agents are left without any good solution to do so:
+
+1. They share their IP range. However that is not sustainable because the same IP might be used by different
+   services, IP ranges may change, geolocation imposes to register IPs in multiple countries, and when they start
+   allowing other companies to use their platform they loose control of their public facing reputation.
+2. They define a User Agent per {{Section 10.1.5 of RFC9110}}. Like curl uses `curl/version`, or Chrome uses
+   `Mozilla/5.0 ... Chrome/113.0.0.0`. An issue is this header is spoofable, and realistically automated agents are
+   likely to use Chrome's user agent because otherwise they are challenged
+3. They go to every website on the Internet and share a secret with them like a Bearer from  {{!RFC6750}}. This is
+   impractical at scale.
+
+All this provides strong motivation to define a mechanism that empowers honest automated agents to share their identity.
+
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-# System
+The following terms are used throughout this document:
+
+**User**
+: wants to perform some actions on the web.
+
+**Automated Agent**
+: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with {{HTTP-MESSAGE-SIGNATURE}} signature.
+
+**Origin**
+: server hosting a resource. The user wants to access it through the browser.
+
+# Architecture
+
+> TODO: Add directory
 
 ~~~aasvg
   +---------+             +-----------------+             +--------+
@@ -89,36 +119,65 @@ manageability.
 
 ~~~
 
-Our system has three actors:
+A user is asking the automated agent to do something. The agent decides they
+need to retrieve content from an origin. They send an HTTP request with a Signature
+header as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURE}}.
+The origin validates the signature. If it validates, it sends the requested content.
 
-User: wants to perform some actions on the web.
-Automated Agent: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with {{HTTP-MESSAGE-SIGNATURE}} signature.
-Origin: server hosting a resource. The user wants to access it through the browser.
+## Generating HTTP Message Signature {#generating-http-message-signature}
 
-## Generating Message signature
-RFC 9421 defines components to be signed.
-The following parameters will need to be signed:
-* @authority
-* @signature-params(created, expires, keyid)
+{{HTTP-MESSAGE-SIGNATURE}} defines components to be signed.
+
+Automated agents SHOULD include the following component:
+
+`@authority`
+: as defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURE}}
+
+Automated agents SHOULD include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+
+`created`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+
+`expires`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+
+`keyid`
+: MUST be `SHA256(key_bytes)`
+
+`tag`
+: MUST be `web-bot-auth`
 
 The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
 
-The creation of the signature is defined in RFC 9421, Section 3.1.
+The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURE}}.
+
+### Anti-replay
+
+Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
+
+`@signature-parameters` are extended as follow
+
+`nonce`
+: Base10 encoded random uint32
+
+This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
+Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
 
 ## Requesting a Message signature
-RFC 9421 defines the Accept-Signature field which can be used to request a Message Signature from a client by a server. Servers MAY choose to request signatures from clients that did not initially provide them. If requesting, servers are expected to request the same parameters as those defined by the Generating Message Signature section.
+
+{{Section 5 of HTTP-MESSAGE-SIGNATURE}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, origins MUST to request the same parameters as those defined by the {{generating-http-message-signature}}.
 
 ## Validating Message signature
-Upon receiving an HTTP request, the origin website has to verify the signature. The algorithm is provided in RFC 9421, Section 3.2.
+
+Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURE}}.
 Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.
 
-If the key ID is not known, the origin MAY look at Operating-Agent header as described in ((MESSAGESIG-DIRECTOIRY-DRAFT))
+Additional requirement are placed on this validation
 
-If any of the steps from Section 3.2 fail, the signature validation fails.
+During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
+During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
+During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by Operating-Agent header defined in ((MESSAGESIG-DIRECTOIRY-DRAFT))
 
-## Anti-replay
-
-Origins may want to to prevent signatures from being spoofed or used multiple times by bad actors and thus require a nonce to be added to the signature-params. This nonce would have to be unique for the validity window of the signature, as defined by created and expires attributes. Because the nonce is controlled by the client the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature. In addition, for platform providers offering different services, ai models, or others, the tag attribute of signature-params may be used.
 
 ## Discovery
 
