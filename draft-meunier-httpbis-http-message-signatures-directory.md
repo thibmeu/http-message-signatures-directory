@@ -80,7 +80,7 @@ key as JWKS
 
 # Discoverability
 
-A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURES}} MAY
+A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURE}} MAY
 send the FQDN hosting its directory via a new HTTP Method Context `Signature-Agent`.
 
 This extends the set of headers defined in {{!RFC9110}}.
