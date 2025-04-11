@@ -183,7 +183,7 @@ The private key is available to the agent at request time. Algorithms should be 
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
-We RECOMMEND the expiry to be no more than 24 hours.
+It is RECOMMEND the expiry to be no more than 24 hours.
 
 ### Anti-replay
 
