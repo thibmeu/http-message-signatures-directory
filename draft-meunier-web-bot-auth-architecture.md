@@ -51,7 +51,7 @@ requests, allowing HTTP servers to verify their identity with confidence.
 
 # Introduction
 
-Automated agents are increasingly used for legitimate purposes on the web, including AI assistants,
+Automated agents are increasingly used in business and user workflows, including AI assistants,
 search indexing, content aggregation, and automated testing. These agents need to reliably identify
 themselves to origins for several reasons:
 
@@ -62,26 +62,49 @@ themselves to origins for several reasons:
 
 Current identification methods such as IP allowlisting, User-Agent strings, or shared API keys have
 significant limitations in security, scalability, and manageability. This document defines an
-architecture enabling automated agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
+architecture enabling agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
 It proposes that every request from bots to be signed by a private key owned by its provider.
 This way, every origin can validate the service identity.
 
 # Motivation
 
-There is an increase in automated agents on the Internet. Some are honest, and want to identify themselves.
+There is an increase in agent traffic on the Internet. Many agents
 Either because origins pressure them to do so, because regulations mandate transparency, or because they are
-facing an increased phishing threat. As of today these automated agents are left without any good solution to do so:
+choose to identify their traffic today via IP Address lists and/or unique
+facing an increased phishing threat. As of today these agents are left without any good solution to do so:
+User-Agents. This is often done to demonstrate trust and safety claims, support
 
+allowlisting/denylisting the traffic in a granular manor, and enable sites to
 1. They share their IP range. However that is not sustainable because the same IP might be used by different
+monitor and rate limit per agent operator. However, these mechanisms have drawbacks:
    services, IP ranges may change, geolocation imposes to register IPs in multiple countries, and when they start
+ 1. User-Agent, when used alone, can be spoofed meaning anyone may attempt to
    allowing other companies to use their platform they loose control of their public facing reputation.
+    act as that agent. It is also overloaded - an agent may be using Chromium and
 2. They define a User Agent per {{Section 10.1.5 of HTTP}}. Like curl uses `curl/version`, or Chrome uses
-   `Mozilla/5.0 ... Chrome/113.0.0.0`. An issue is this header is spoofable, and realistically automated agents are
+    wish to present itself as such to ensure rendering works, yet it still wants to
+   `Mozilla/5.0 ... Chrome/113.0.0.0`. An issue is this header is spoofable, and realistically agents are
+    differentiate its traffic to the site.
    likely to use Chrome's user agent because otherwise they are challenged
+ 2. IP blocks alone can present a confusing story. IPs on cloud plaforms have
 3. They go to every website on the Internet and share a secret with them like a Bearer from  {{!RFC6750}}. This is
+    layers of ownership - the platform owns the IP and registers it in their
    impractical at scale.
+    published IP blocks, only to be re-published by the agent with little to bind
 
-All this provides strong motivation to define a mechanism that empowers honest automated agents to share their identity.
+    the publication to (TODO: better example of PAAS layering?). Purchasing
+All this provides strong motivation to define a mechanism that empowers honest agents to share their identity.
+    dedicated IP blocks is expensive, time consuming, and requires significant
+    specialist knowledge to set up. These IP blocks may have prior reputation
+    history that needs to be carefully inspected and managed before purchase and
+    use.
+ 3. An agent may go to every website on the Internet and share a secret with
+    them like a Bearer from  {{!RFC6750}}. This is impractical to scale for any
+    agent beyond select partnerships, and insecure, as key rotation is challenging
+    and becomes less secure as the consumers scale.
+
+Using well-established cryptography, we can instead define a simple and secure
+mechanism that empowers small and large agents to share their identity.
 
 ## HTTP layer choice
 
@@ -103,22 +126,22 @@ requests are forwarded or transformed within the HTTP layer.
 The following terms are used throughout this document:
 
 **User**
-: An entity initiating requests through an automated agent. May be a human operator or another system.
+: An entity initiating requests through an agent. May be a human operator or another system.
 
-**Automated Agent**
-: A software system making HTTP requests on behalf of users. It implements the HTTP protocol and constructs valid HTTP requests with {{HTTP-MESSAGE-SIGNATURES}} signatures.
+**Agent**
+: An orchestrated user agent (e.g. Chromium, CURL). It implements the HTTP protocol and constructs valid HTTP requests with {{HTTP-MESSAGE-SIGNATURES}} signatures.
 
 **Origin**
 : An HTTP server receiving signed requests that implements the HTTP protocol and verifies {{HTTP-MESSAGE-SIGNATURES}} signatures. It acts as a verifier of the signature as defined by {{HTTP-MESSAGE-SIGNATURES}}.
 
 # Architecture
 
-> TODO: System diagram + one more sequence diagram with key retrieval from the Automated Agent provider
+> TODO: System diagram + one more sequence diagram with key retrieval from the Agent provider
 
 ~~~aasvg
-  +---------+             +-----------------+             +--------+
-  |  User   |             | Automated Agent |             | Origin |
-  +----+----+             +--------+--------+             +---+----+
+  +--------+                 +---------+                 +--------+
+  |  User  |                 |  Agent  |                 | Origin |
+  +----+---+                 +----+----+                 +----+---+
        |                          |                           |
        |  Help me do this!        |                           |
        +------------------------->|                           |
@@ -134,8 +157,8 @@ The following terms are used throughout this document:
 
 ~~~
 
-A User initiates an action requiring the Autoimated Agent to perform an HTTP request.
-The Automated Agent constructs the request, generates a signature using its signing key,
+A User initiates an action requiring the Agent to perform an HTTP request.
+The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}
 along with `Signature-Agent` header for discovery for its
 verification key.
@@ -169,7 +192,7 @@ Automated agents SHOULD include the following `@signature-params` as defined in 
 `tag`
 : MUST be `web-bot-auth`
 
-The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
+The private key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
@@ -187,25 +210,25 @@ Origins MAY want to prevent signatures from being spoofed or used multiple times
 This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
 Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
 
-## Requesting a Message signature
+## Requesting a Message signature {#requesting-message-signature}
 
-{{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, origins MUST to request the same parameters as those defined by the {{generating-http-message-signature}}.
+{{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, Origins MUST use the same parameters as those defined by the {{generating-http-message-signature}}.
 
 ## Validating Message signature
 
 Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURES}}.
 Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.
 
-Additional requirement are placed on this validation
+Additional requirements are placed on this validation:
 
-During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
-During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
+- During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
+- During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
+- During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
 
 
 ## Discovery
 
-This section describes the discovery mechanism for the automated agent directory.
+This section describes the discovery mechanism for the agent directory.
 
 The reference for discovery is a FQDN. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
 
@@ -251,19 +274,11 @@ Origins must account for the overhead of signature verification in their operati
 
 ## Key Compromise Response
 
-An automated agent signing key might get compromised.
+An agent signing key might get compromised.
 
 If that happens, the agent SHOULD cease using the compromised key as soon as possible, notify affected origins if possible, and generate a new key pair.
 
 To minimise the impact of a key compromise, the origin should support rapid key rotation and monitor for suspicious signature patterns.
-
-## Batching Signatures
-
-To reduce signature frequency and improve efficiency, clients MAY batch
-multiple operations into a single signed request, where semantically
-appropriate. This technique can amortize the signing cost over multiple
-actions, but it MUST NOT obscure the intent or structure of the request in a
-way that undermines verifiability or introduces ambiguity.
 
 ## Shared Secrets Considered Harmful
 
@@ -273,6 +288,12 @@ difficult. Each automated client SHOULD use a unique asymmetric keypair to
 ensure attribution, support key rotation, and enable effective revocation if
 needed.
 
+## Key Reuse Considered Harmful
+
+Implementations MUST NOT reuse a signing key for different purposes. For
+example, if an agent implementor has two agents they want to differentiate,
+these should use distinct signing keys and signing key directories.
+
 # Privacy Considerations
 
 ## Public Identity
@@ -281,12 +302,13 @@ This architecture assumes that automated clients identify themselves
 explicitly using digital signatures. The identity associated with a signing
 key is expected to be publicly discoverable for verification purposes. This
 reduces anonymity and allows receivers to associate requests with specific
-automated agents.
+agents. If an agent wishes not to identify itself, this is not the right
+choice of protocol for it.
 
 ## No Human Correlation
 
 The key used for signing MUST NOT be tied to a specific human individual.
-Keys SHOULD represent a role or automation identity (e.g., "news-aggregator-
+Keys SHOULD represent a role, company, or automation identity (e.g., "news-aggregator-
 bot", "example-crawler-v1"). This avoids accidental exposure of personally
 identifiable information and prevents the misuse of keys for user tracking or
 profiling.
