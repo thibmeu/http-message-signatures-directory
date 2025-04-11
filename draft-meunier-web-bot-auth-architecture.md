@@ -100,7 +100,7 @@ The following terms are used throughout this document:
 
 # Architecture
 
-> TODO: Add directory
+> TODO: System diagram + one more sequence diagram with key retrieval from the Automated Agent provider
 
 ~~~aasvg
   +---------+             +-----------------+             +--------+
