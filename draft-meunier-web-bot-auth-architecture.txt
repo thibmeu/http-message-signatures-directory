@@ -128,23 +128,29 @@ Table of Contents
    unique User-Agents.  This is often done to demonstrate trust and
    safety claims, support allowlisting/denylisting the traffic in a
    granular manor, and enable sites to monitor and rate limit per agent
-   operator.  However, these mechanisms have drawbacks: 1.  User-Agent,
-   when used alone, can be spoofed meaning anyone may attempt to act as
-   that agent.  It is also overloaded - an agent may be using Chromium
-   and wish to present itself as such to ensure rendering works, yet it
-   still wants to differentiate its traffic to the site.  2.  IP blocks
-   alone can present a confusing story.  IPs on cloud plaforms have
-   layers of ownership - the platform owns the IP and registers it in
-   their published IP blocks, only to be re-published by the agent with
-   little to bind the publication to (TODO: better example of PAAS
-   layering?).  Purchasing dedicated IP blocks is expensive, time
-   consuming, and requires significant specialist knowledge to set up.
-   These IP blocks may have prior reputation history that needs to be
-   carefully inspected and managed before purchase and use.  3.  An
-   agent may go to every website on the Internet and share a secret with
-   them like a Bearer from [RFC6750].  This is impractical to scale for
-   any agent beyond select partnerships, and insecure, as key rotation
-   is challenging and becomes less secure as the consumers scale.
+   operator.  However, these mechanisms have drawbacks:
+
+   1.  User-Agent, when used alone, can be spoofed meaning anyone may
+       attempt to act as that agent.  It is also overloaded - an agent
+       may be using Chromium and wish to present itself as such to
+       ensure rendering works, yet it still wants to differentiate its
+       traffic to the site.
+
+   2.  IP blocks alone can present a confusing story.  IPs on cloud
+       plaforms have layers of ownership - the platform owns the IP and
+       registers it in their published IP blocks, only to be re-
+       published by the agent with little to bind the publication to
+       (TODO: better example of PAAS layering?).  Purchasing dedicated
+       IP blocks is expensive, time consuming, and requires significant
+       specialist knowledge to set up.  These IP blocks may have prior
+       reputation history that needs to be carefully inspected and
+       managed before purchase and use.
+
+   3.  An agent may go to every website on the Internet and share a
+       secret with them like a Bearer from [RFC6750].  This is
+       impractical to scale for any agent beyond select partnerships,
+       and insecure, as key rotation is challenging and becomes less
+       secure as the consumers scale.
 
    Using well-established cryptography, we can instead define a simple
    and secure mechanism that empowers small and large agents to share
