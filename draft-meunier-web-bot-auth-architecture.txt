@@ -86,8 +86,8 @@ Table of Contents
    5.  Security Considerations
      5.1.  Performance Impact
      5.2.  Key Compromise Response
-     5.3.  Batching Signatures
-     5.4.  Shared Secrets Considered Harmful
+     5.3.  Shared Secrets Considered Harmful
+     5.4.  Key Reuse Considered Harmful
    6.  Privacy Considerations
      6.1.  Public Identity
      6.2.  No Human Correlation
@@ -100,10 +100,10 @@ Table of Contents
 
 1.  Introduction
 
-   Automated agents are increasingly used for legitimate purposes on the
-   web, including AI assistants, search indexing, content aggregation,
-   and automated testing.  These agents need to reliably identify
-   themselves to origins for several reasons:
+   Automated agents are increasingly used in business and user
+   workflows, including AI assistants, search indexing, content
+   aggregation, and automated testing.  These agents need to reliably
+   identify themselves to origins for several reasons:
 
    1.  Regulatory compliance requiring transparency of automated systems
 
@@ -116,37 +116,56 @@ Table of Contents
    Current identification methods such as IP allowlisting, User-Agent
    strings, or shared API keys have significant limitations in security,
    scalability, and manageability.  This document defines an
-   architecture enabling automated agents to cryptographically identify
-   themselves using [HTTP-MESSAGE-SIGNATURES].  It proposes that every
-   request from bots to be signed by a private key owned by its
-   provider.  This way, every origin can validate the service identity.
+   architecture enabling agents to cryptographically identify themselves
+   using [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from
+   bots to be signed by a private key owned by its provider.  This way,
+   every origin can validate the service identity.
 
 2.  Motivation
 
-   There is an increase in automated agents on the Internet.  Some are
-   honest, and want to identify themselves.  Either because origins
-   pressure them to do so, because regulations mandate transparency, or
-   because they are facing an increased phishing threat.  As of today
-   these automated agents are left without any good solution to do so:
+   There is an increase in agent traffic on the Internet.  Many agents
+   Either because origins pressure them to do so, because regulations
+   mandate transparency, or because they are choose to identify their
+   traffic today via IP Address lists and/or unique facing an increased
+   phishing threat.  As of today these agents are left without any good
+   solution to do so: User-Agents.  This is often done to demonstrate
+   trust and safety claims, support
 
-   1.  They share their IP range.  However that is not sustainable
-       because the same IP might be used by different services, IP
-       ranges may change, geolocation imposes to register IPs in
-       multiple countries, and when they start allowing other companies
-       to use their platform they loose control of their public facing
-       reputation.
+   allowlisting/denylisting the traffic in a granular manor, and enable
+   sites to 1.  They share their IP range.  However that is not
+   sustainable because the same IP might be used by different monitor
+   and rate limit per agent operator.  However, these mechanisms have
+   drawbacks: services, IP ranges may change, geolocation imposes to
+   register IPs in multiple countries, and when they start 1.  User-
+   Agent, when used alone, can be spoofed meaning anyone may attempt to
+   allowing other companies to use their platform they loose control of
+   their public facing reputation.  act as that agent.  It is also
+   overloaded - an agent may be using Chromium and 2.  They define a
+   User Agent per Section 10.1.5 of [HTTP].  Like curl uses curl/
+   version, or Chrome uses wish to present itself as such to ensure
+   rendering works, yet it still wants to Mozilla/5.0 ...
+   Chrome/113.0.0.0.  An issue is this header is spoofable, and
+   realistically agents are differentiate its traffic to the site.
+   likely to use Chrome's user agent because otherwise they are
+   challenged 2.  IP blocks alone can present a confusing story.  IPs on
+   cloud plaforms have 3.  They go to every website on the Internet and
+   share a secret with them like a Bearer from [RFC6750].  This is
+   layers of ownership - the platform owns the IP and registers it in
+   their impractical at scale.  published IP blocks, only to be re-
+   published by the agent with little to bind
 
-   2.  They define a User Agent per Section 10.1.5 of [HTTP].  Like curl
-       uses curl/version, or Chrome uses Mozilla/5.0 ...
-       Chrome/113.0.0.0.  An issue is this header is spoofable, and
-       realistically automated agents are likely to use Chrome's user
-       agent because otherwise they are challenged
+the publication to (TODO: better example of PAAS layering?). Purchasing All this provides strong motivation to define a mechanism that empowers honest agents to share their identity.
+dedicated IP blocks is expensive, time consuming, and requires significant
+specialist knowledge to set up. These IP blocks may have prior reputation
+history that needs to be carefully inspected and managed before purchase and
+use.  3. An agent may go to every website on the Internet and share a secret with
+them like a Bearer from  {{RFC6750}}. This is impractical to scale for any
+agent beyond select partnerships, and insecure, as key rotation is challenging
+and becomes less secure as the consumers scale.
 
-   3.  They go to every website on the Internet and share a secret with
-       them like a Bearer from [RFC6750].  This is impractical at scale.
-
-   All this provides strong motivation to define a mechanism that
-   empowers honest automated agents to share their identity.
+   Using well-established cryptography, we can instead define a simple
+   and secure mechanism that empowers small and large agents to share
+   their identity.
 
 2.1.  HTTP layer choice
 
@@ -172,12 +191,12 @@ Table of Contents
 
    The following terms are used throughout this document:
 
-   *User*  An entity initiating requests through an automated agent.
-      May be a human operator or another system.
+   *User*  An entity initiating requests through an agent.  May be a
+      human operator or another system.
 
-   *Automated Agent*  A software system making HTTP requests on behalf
-      of users.  It implements the HTTP protocol and constructs valid
-      HTTP requests with [HTTP-MESSAGE-SIGNATURES] signatures.
+   *Agent*  An orchestrated user agent (e.g. Chromium, CURL).  It
+      implements the HTTP protocol and constructs valid HTTP requests
+      with [HTTP-MESSAGE-SIGNATURES] signatures.
 
    *Origin*  An HTTP server receiving signed requests that implements
       the HTTP protocol and verifies [HTTP-MESSAGE-SIGNATURES]
@@ -187,11 +206,11 @@ Table of Contents
 4.  Architecture
 
       TODO: System diagram + one more sequence diagram with key
-      retrieval from the Automated Agent provider
+      retrieval from the Agent provider
 
-     +---------+             +-----------------+             +--------+
-     |  User   |             | Automated Agent |             | Origin |
-     +----+----+             +--------+--------+             +---+----+
+     +--------+                 +---------+                 +--------+
+     |  User  |                 |  Agent  |                 | Origin |
+     +----+---+                 +----+----+                 +----+---+
           |                          |                           |
           |  Help me do this!        |                           |
           +------------------------->|                           |
@@ -205,14 +224,14 @@ Table of Contents
           +<-------------------------+                           |
           |                          |                           |
 
-   A User initiates an action requiring the Autoimated Agent to perform
-   an HTTP request.  The Automated Agent constructs the request,
-   generates a signature using its signing key, and includes it in the
-   request as defined in Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along
-   with Signature-Agent header for discovery for its verification key.
-   Upon receiving the request, the Origin ensures it has the
-   verification key for the Agent, validates the signature, and
-   processes the request if the signature is valid.
+   A User initiates an action requiring the Agent to perform an HTTP
+   request.  The Agent constructs the request, generates a signature
+   using its signing key, and includes it in the request as defined in
+   Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along with Signature-Agent
+   header for discovery for its verification key.  Upon receiving the
+   request, the Origin ensures it has the verification key for the
+   Agent, validates the signature, and processes the request if the
+   signature is valid.
 
 4.1.  Deployment Models
 
@@ -241,7 +260,7 @@ Table of Contents
 
    tag  MUST be web-bot-auth
 
-   The private key is available to the automated agent at request time.
+   The private key is available to the agent at request time.
    Algorithms should be registered with IANA as part of HTTP Message
    Signatures Algorithm registry.
 
@@ -271,8 +290,8 @@ Table of Contents
    Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
    by an origin.  Origin MAY choose to request signatures from clients
-   that did not initially provide them.  If requesting, origins MUST to
-   request the same parameters as those defined by the Section 4.2.
+   that did not initially provide them.  If requesting, Origins MUST use
+   the same parameters as those defined by the Section 4.2.
 
 4.4.  Validating Message signature
 
@@ -281,19 +300,22 @@ Table of Contents
    [HTTP-MESSAGE-SIGNATURES].  Similar to regular User-Agent check, this
    happens at the HTTP layer, once headers are received.
 
-   Additional requirement are placed on this validation
+   Additional requirements are placed on this validation:
 
-   During step 4, the Origin MAY discard signatures for which the tag is
-   not set to web-bot-auth.  During step 5, the Origin MAY discard
-   signatures for which they do not know the keyid.  During step 5, if
-   the keyid is unknown to the origin, they MAY fetch the provider
-   directory as indicated by Signature-Agent header defined in Section 4
-   of [DIRECTORY].
+   *  During step 4, the Origin MAY discard signatures for which the tag
+      is not set to web-bot-auth.
+
+   *  During step 5, the Origin MAY discard signatures for which they do
+      not know the keyid.
+
+   *  During step 5, if the keyid is unknown to the origin, they MAY
+      fetch the provider directory as indicated by Signature-Agent
+      header defined in Section 4 of [DIRECTORY].
 
 4.5.  Discovery
 
-   This section describes the discovery mechanism for the automated
-   agent directory.
+   This section describes the discovery mechanism for the agent
+   directory.
 
    The reference for discovery is a FQDN.  It SHOULD provide a directory
    hosted on the well known registered in Section 4 of [DIRECTORY].
@@ -346,7 +368,7 @@ Table of Contents
 
 5.2.  Key Compromise Response
 
-   An automated agent signing key might get compromised.
+   An agent signing key might get compromised.
 
    If that happens, the agent SHOULD cease using the compromised key as
    soon as possible, notify affected origins if possible, and generate a
@@ -355,22 +377,20 @@ Table of Contents
    To minimise the impact of a key compromise, the origin should support
    rapid key rotation and monitor for suspicious signature patterns.
 
-5.3.  Batching Signatures
-
-   To reduce signature frequency and improve efficiency, clients MAY
-   batch multiple operations into a single signed request, where
-   semantically appropriate.  This technique can amortize the signing
-   cost over multiple actions, but it MUST NOT obscure the intent or
-   structure of the request in a way that undermines verifiability or
-   introduces ambiguity.
-
-5.4.  Shared Secrets Considered Harmful
+5.3.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
    make auditing difficult.  Each automated client SHOULD use a unique
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective revocation if needed.
+
+5.4.  Key Reuse Considered Harmful
+
+   Implementations MUST NOT reuse a signing key for different purposes.
+   For example, if an agent implementor has two agents they want to
+   differentiate, these should use distinct signing keys and signing key
+   directories.
 
 6.  Privacy Considerations
 
@@ -380,14 +400,15 @@ Table of Contents
    explicitly using digital signatures.  The identity associated with a
    signing key is expected to be publicly discoverable for verification
    purposes.  This reduces anonymity and allows receivers to associate
-   requests with specific automated agents.
+   requests with specific agents.  If an agent wishes not to identify
+   itself, this is not the right choice of protocol for it.
 
 6.2.  No Human Correlation
 
    The key used for signing MUST NOT be tied to a specific human
-   individual.  Keys SHOULD represent a role or automation identity
-   (e.g., "news-aggregator- bot", "example-crawler-v1").  This avoids
-   accidental exposure of personally identifiable information and
+   individual.  Keys SHOULD represent a role, company, or automation
+   identity (e.g., "news-aggregator- bot", "example-crawler-v1").  This
+   avoids accidental exposure of personally identifiable information and
    prevents the misuse of keys for user tracking or profiling.
 
 6.3.  Minimizing Tracking Risks
