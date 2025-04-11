@@ -227,13 +227,20 @@ This allows for backward compatibility with existing header agent filtering, and
 # Security Considerations
 
 Verification load
+
 Bigger request
+
+Consider batching signatures
+
+Shared HMAC SHOULD NOT be used
 
 > Hint at req mTLS
 
 # Privacy Considerations
 
 Identity is public
+
+The key MUST NOT identify a specific human.
 
 
 # IANA Considerations
