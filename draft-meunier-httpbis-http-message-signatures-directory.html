@@ -1239,11 +1239,15 @@ as well as new HTTP Method Context to allow for in-band key discovery.<a href="#
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> allow a signer to generate a signature over an HTTP message, and a verifier to verify it.
-It assumes that the verifier knows the signer key material. Mechanism to share, and distribute it are at the discretion
-of implementers.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This prevents discovery of signer key at request time.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">This document describes a method for signers to advertise their signing keys to verifier.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> allow a signer to generate a signature over an HTTP message, and a verifier to validate it.
+The specification assumes verifiers have prior knowledge of
+signers' key material, requiring out-of-band key distribution mechanisms. This creates deployment
+friction and limits the ability to dynamically verify signatures from previously unknown signers.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document defines:
+1. A standardized key directory format based on JWKS for publishing HTTP Message Signatures keys
+2. A well-known URI location for discovering these key directories
+3. A new HTTP header field enabling in-band key directory location discovery<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Together, these mechanisms enable key distribution and discovery for HTTP Message Signatures cryptographic material.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
