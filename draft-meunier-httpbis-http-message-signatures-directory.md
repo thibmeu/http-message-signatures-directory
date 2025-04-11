@@ -12,9 +12,7 @@ v: 3
 area: "Web and Internet Transport"
 workgroup: "HTTP"
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - not-yet
 venue:
   group: "HTTP"
   type: ""
