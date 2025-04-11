@@ -79,7 +79,7 @@ Table of Contents
        4.2.1.  Anti-replay
      4.3.  Requesting a Message signature
      4.4.  Validating Message signature
-     4.5.  Discovery
+     4.5.  Key Distribution and Discovery
        4.5.1.  Out-of-band communication between client and origin
        4.5.2.  Public list
        4.5.3.  Signature-Agent header
@@ -301,7 +301,7 @@ Table of Contents
       fetch the provider directory as indicated by Signature-Agent
       header defined in Section 4 of [DIRECTORY].
 
-4.5.  Discovery
+4.5.  Key Distribution and Discovery
 
    This section describes the discovery mechanism for the agent
    directory.
