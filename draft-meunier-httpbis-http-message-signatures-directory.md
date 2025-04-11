@@ -28,17 +28,20 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
-  HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
-  JWK: RFC7517
-  WellKnownURIs:
-    title: Well-Known URIs
-    target: https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
+  HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP-MESSAGE-SIGNATURES-IANA:
     title: HTTP Message Signatures
     target: https://www.iana.org/assignments/http-message-signature/http-message-signature.xhtml
+  JWK: RFC7517
+  STRUCTURED-HEADERS: RFC8941
+  URI: RFC8820
+  WellKnownURIs:
+    title: Well-Known URIs
+    target: https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
 
 informative:
+  BASE64: RFC2397
 
 
 --- abstract
@@ -79,27 +82,33 @@ Client application SHOULD validate the directory format and reject malformed ent
 
 # HTTP Method Context `Signature-Agent`
 
-A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURES}} MAY
-provide HTTP Method Context `Signature-Agent`.
-This header is defined as a URI to a directory.
+A service sending signed requests as defined in {{HTTP-MESSAGE-SIGNATURES}} MAY include a
+`Signature-Agent` header field to communicate its signing key directory. This header
+field contains a URI allowing retrieval of an HTTP Message Signatures Directory as
+defined in {{configuration}}.
 
-The URI scheme SHOULD be one of:
+## Header Field Definition
 
-1. http
-2. https
-3. data
+The `Signature-Agent` header field is an Item Structured Header {{STRUCTURED-HEADERS}}. Its value MUST be a
+String containing a {{URI}}. The ABNF is:
 
-http/https point to the origin component serving an HTTP Message Signatures as defined in {{configuration}}.
-data MUST have media type `application/http-message-signatures-directory`, and MAY be base64 encoded. (
-CBOR would be very useful here)
+~~~
+Signature-Agent = sf-string   ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
+~~~
 
-This extends the set of headers defined in {{!RFC9110}}.
+The URI scheme MUST be one of:
+- **https (RECOMMENDED)**: Points to an HTTPS resource serving the key directory
+- **http**: Points to an HTTP resource serving the key directory
+- **data**: Contains an inline key directory
 
-Signature-Agent
+When using the "data" URI scheme, the media type MUST be
+`application/http-message-signatures-directory`. The content MAY be base64 encoded
+as per {{BASE64}}.
 
-```
-Signature-Agent    = [[ URI ]]
-```
+Multiple `Signature-Agent` header fields MAY be present in a request. Processors SHOULD
+use the first valid URI that provides a valid key directory.
+
+TODO: for inlining, CBOR Keys could be useful
 
 # Security Considerations {#security}
 
@@ -115,6 +124,20 @@ with different validity period. When rotating keys, clients SHOULD:
 3. Remove expired keys from the directory
 
 Servers SHOULD cache the directory contents and refresh upon expiration.
+
+# Privacy Considerations
+
+Key directories enable discovery of signing keys which may reveal information about the
+signing entity. Implementers should consider:
+
+## Directory Content
+Key directories should only contain keys actively used for signing. Including additional
+keys or metadata may expose unnecessary information about the signing service.
+
+## Access Patterns
+Verifiers accessing key directories may reveal information about signature verification
+patterns. Directory servers should avoid logging personally identifiable information
+from directory requests.
 
 
 # IANA Considerations
