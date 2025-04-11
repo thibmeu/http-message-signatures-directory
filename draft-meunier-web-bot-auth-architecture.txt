@@ -292,13 +292,21 @@ Table of Contents
 
 5.  Security Considerations
 
-   Verification load Bigger request
+   Verification load
+
+   Bigger request
+
+   Consider batching signatures
+
+   Shared HMAC SHOULD NOT be used
 
       Hint at req mTLS
 
 6.  Privacy Considerations
 
    Identity is public
+
+   The key MUST NOT identify a specific human.
 
 7.  IANA Considerations
 
