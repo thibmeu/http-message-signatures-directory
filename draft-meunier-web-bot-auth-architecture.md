@@ -82,6 +82,18 @@ facing an increased phishing threat. As of today these automated agents are left
 
 All this provides strong motivation to define a mechanism that empowers honest automated agents to share their identity.
 
+## HTTP layer choice
+
+This architectures operates solely at the HTTP layer.
+It allows signatures to be generated and
+verified without modifying the transport layer or TLS stack. It enables
+flexible deployment across proxies, gateways, and origin servers, and aligns
+with existing tooling and infrastructure that already inspect and manipulate
+HTTP headers.
+
+Because the signature is embedded in the request itself, it travels with the
+message through intermediaries, preserving end-to-end verifiability even when
+requests are forwarded or transformed within the HTTP layer.
 
 # Conventions and Definitions
 
@@ -190,8 +202,6 @@ The reference for discovery is a FQDN. It SHOULD provide a directory hosted on t
 We add one field to the directory defined in the other draft:
 "purpose": Ideally matches some IANA registry for preferences
 
-TODO: replace the key with a JWK
-
 Example
 
 ~~~json
@@ -226,21 +236,62 @@ This allows for backward compatibility with existing header agent filtering, and
 
 # Security Considerations
 
-Verification load
+## Verification Load
 
-Bigger request
+Verifiers SHOULD be prepared
+to handle increased computational cost. Signature verification, particularly
+with asymmetric keys, adds cryptographic overhead that may impact latency or
+throughput. Implementers SHOULD provision resources accordingly and consider
+other mechanisms to mitigate abuse.
 
-Consider batching signatures
+## Request Size Overhead
 
-Shared HMAC SHOULD NOT be used
+{{HTTP-MESSAGE-SIGNATURES}} include additional HTTP headers, such as the `Signature` and
+`Signature-Input` headers, which increases overall request size on the wire. This may
+affect intermediaries. HTTP clients and servers SHOULD monitor the impact
+of larger request headers on routing and performance.
 
-> Hint at req mTLS
+## Batching Signatures
+
+To reduce signature frequency and improve efficiency, clients MAY batch
+multiple operations into a single signed request, where semantically
+appropriate. This technique can amortize the signing cost over multiple
+actions, but it MUST NOT obscure the intent or structure of the request in a
+way that undermines verifiability or introduces ambiguity.
+
+## Shared Secrets Considered Harmful
+
+Implementations MUST NOT use shared HMAC defined in {{Section 3.3.3 of HTTP-MESSAGE-SIGNATURES}}.
+Shared secrets break non-repudiation and make auditing
+difficult. Each automated client SHOULD use a unique asymmetric keypair to
+ensure attribution, support key rotation, and enable effective revocation if
+needed.
 
 # Privacy Considerations
 
-Identity is public
+## Public Identity
 
-The key MUST NOT identify a specific human.
+This architecture assumes that automated clients identify themselves
+explicitly using digital signatures. The identity associated with a signing
+key is expected to be publicly discoverable for verification purposes. This
+reduces anonymity and allows receivers to associate requests with specific
+automated agents.
+
+## No Human Correlation
+
+The key used for signing MUST NOT be tied to a specific human individual.
+Keys SHOULD represent a role or automation identity (e.g., "news-aggregator-
+bot", "example-crawler-v1"). This avoids accidental exposure of personally
+identifiable information and prevents the misuse of keys for user tracking or
+profiling.
+
+## Minimizing Tracking Risks
+
+To limit tracking risks, implementations SHOULD avoid long-lived, globally
+unique key identifiers unless strictly necessary. Key rotation SHOULD be
+supported, and clients SHOULD take care to avoid signing information that
+could be used to correlate activity across contexts, especially where
+sensitive user data is involved.
 
 
 # IANA Considerations
