@@ -1156,9 +1156,14 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-motivation" class="internal xref">Motivation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-http-layer-choice" class="internal xref">HTTP layer choice</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
@@ -1195,9 +1200,34 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-verification-load" class="internal xref">Verification Load</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-request-size-overhead" class="internal xref">Request Size Overhead</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-batching-signatures" class="internal xref">Batching Signatures</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-shared-secrets-considered-h" class="internal xref">Shared Secrets Considered Harmful</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-public-identity" class="internal xref">Public Identity</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-no-human-correlation" class="internal xref">No Human Correlation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-minimizing-tracking-risks" class="internal xref">Minimizing Tracking Risks</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -1262,6 +1292,22 @@ impractical at scale.<a href="#section-2-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-2-3">All this provides strong motivation to define a mechanism that empowers honest automated agents to share their identity.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<div id="http-layer-choice">
+<section id="section-2.1">
+        <h3 id="name-http-layer-choice">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-http-layer-choice" class="section-name selfRef">HTTP layer choice</a>
+        </h3>
+<p id="section-2.1-1">This architectures operates solely at the HTTP layer.
+It allows signatures to be generated and
+verified without modifying the transport layer or TLS stack. It enables
+flexible deployment across proxies, gateways, and origin servers, and aligns
+with existing tooling and infrastructure that already inspect and manipulate
+HTTP headers.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">Because the signature is embedded in the request itself, it travels with the
+message through intermediaries, preserving end-to-end verifiability even when
+requests are forwarded or transformed within the HTTP layer.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1446,9 +1492,8 @@ During step 5, if the keyid is unknown to the origin, they <span class="bcp14">M
 <p id="section-4.4-2">The reference for discovery is a FQDN. It <span class="bcp14">SHOULD</span> provide a directory hosted on the well known registered in Section 4 of <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">We add one field to the directory defined in the other draft:
 "purpose": Ideally matches some IANA registry for preferences<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">TODO: replace the key with a JWK<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.4-5">Example<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.4-6">
+<p id="section-4.4-4">Example<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-4.4-5">
 <pre>
 {
   "keys": {
@@ -1463,7 +1508,7 @@ During step 5, if the keyid is unknown to the origin, they <span class="bcp14">M
   "signature_agent": "https://directory.test",
   "purpose": "rag"
 }
-</pre><a href="#section-4.4-6" class="pilcrow">¶</a>
+</pre><a href="#section-4.4-5" class="pilcrow">¶</a>
 </div>
 <div id="out-of-band-communication-between-client-and-origin">
 <section id="section-4.4.1">
@@ -1499,15 +1544,53 @@ This allows for backward compatibility with existing header agent filtering, and
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-5-1">Verification load<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Bigger request<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">Consider batching signatures<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">Shared HMAC <span class="bcp14">SHOULD NOT</span> be used<a href="#section-5-4" class="pilcrow">¶</a></p>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-5-5.1">
-          <p id="section-5-5.1.1">Hint at req mTLS<a href="#section-5-5.1.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
+<div id="verification-load">
+<section id="section-5.1">
+        <h3 id="name-verification-load">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-verification-load" class="section-name selfRef">Verification Load</a>
+        </h3>
+<p id="section-5.1-1">Verifiers <span class="bcp14">SHOULD</span> be prepared
+to handle increased computational cost. Signature verification, particularly
+with asymmetric keys, adds cryptographic overhead that may impact latency or
+throughput. Implementers <span class="bcp14">SHOULD</span> provision resources accordingly and consider
+other mechanisms to mitigate abuse.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="request-size-overhead">
+<section id="section-5.2">
+        <h3 id="name-request-size-overhead">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-request-size-overhead" class="section-name selfRef">Request Size Overhead</a>
+        </h3>
+<p id="section-5.2-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> include additional HTTP headers, such as the <code>Signature</code> and
+<code>Signature-Input</code> headers, which increases overall request size on the wire. This may
+affect intermediaries. HTTP clients and servers <span class="bcp14">SHOULD</span> monitor the impact
+of larger request headers on routing and performance.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="batching-signatures">
+<section id="section-5.3">
+        <h3 id="name-batching-signatures">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-batching-signatures" class="section-name selfRef">Batching Signatures</a>
+        </h3>
+<p id="section-5.3-1">To reduce signature frequency and improve efficiency, clients <span class="bcp14">MAY</span> batch
+multiple operations into a single signed request, where semantically
+appropriate. This technique can amortize the signing cost over multiple
+actions, but it <span class="bcp14">MUST NOT</span> obscure the intent or structure of the request in a
+way that undermines verifiability or introduces ambiguity.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="shared-secrets-considered-harmful">
+<section id="section-5.4">
+        <h3 id="name-shared-secrets-considered-h">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-shared-secrets-considered-h" class="section-name selfRef">Shared Secrets Considered Harmful</a>
+        </h3>
+<p id="section-5.4-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+Shared secrets break non-repudiation and make auditing
+difficult. Each automated client <span class="bcp14">SHOULD</span> use a unique asymmetric keypair to
+ensure attribution, support key rotation, and enable effective revocation if
+needed.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="privacy-considerations">
@@ -1515,8 +1598,42 @@ This allows for backward compatibility with existing header agent filtering, and
       <h2 id="name-privacy-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
-<p id="section-6-1">Identity is public<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">The key <span class="bcp14">MUST NOT</span> identify a specific human.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<div id="public-identity">
+<section id="section-6.1">
+        <h3 id="name-public-identity">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-public-identity" class="section-name selfRef">Public Identity</a>
+        </h3>
+<p id="section-6.1-1">This architecture assumes that automated clients identify themselves
+explicitly using digital signatures. The identity associated with a signing
+key is expected to be publicly discoverable for verification purposes. This
+reduces anonymity and allows receivers to associate requests with specific
+automated agents.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="no-human-correlation">
+<section id="section-6.2">
+        <h3 id="name-no-human-correlation">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-no-human-correlation" class="section-name selfRef">No Human Correlation</a>
+        </h3>
+<p id="section-6.2-1">The key used for signing <span class="bcp14">MUST NOT</span> be tied to a specific human individual.
+Keys <span class="bcp14">SHOULD</span> represent a role or automation identity (e.g., "news-aggregator-
+bot", "example-crawler-v1"). This avoids accidental exposure of personally
+identifiable information and prevents the misuse of keys for user tracking or
+profiling.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="minimizing-tracking-risks">
+<section id="section-6.3">
+        <h3 id="name-minimizing-tracking-risks">
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-minimizing-tracking-risks" class="section-name selfRef">Minimizing Tracking Risks</a>
+        </h3>
+<p id="section-6.3-1">To limit tracking risks, implementations <span class="bcp14">SHOULD</span> avoid long-lived, globally
+unique key identifiers unless strictly necessary. Key rotation <span class="bcp14">SHOULD</span> be
+supported, and clients <span class="bcp14">SHOULD</span> take care to avoid signing information that
+could be used to correlate activity across contexts, especially where
+sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="iana-considerations">
