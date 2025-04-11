@@ -73,6 +73,7 @@ choose to identify their traffic today via IP Address lists and/or unique
 User-Agents. This is often done to demonstrate trust and safety claims, support
 allowlisting/denylisting the traffic in a granular manor, and enable sites to
 monitor and rate limit per agent operator. However, these mechanisms have drawbacks:
+
  1. User-Agent, when used alone, can be spoofed meaning anyone may attempt to
     act as that agent. It is also overloaded - an agent may be using Chromium and
     wish to present itself as such to ensure rendering works, yet it still wants to
