@@ -51,19 +51,20 @@ requests, allowing HTTP servers to verify their identity with confidence.
 
 # Introduction
 
-Automated agents are increasingly used for legitimate
-purposes, including AI assistants, indexing, testing, and automated
-support tools. These agents often use general-purpose browsers,
-making it difficult for websites to authenticate or identify them.
-Existing methods, such as IP range allowlisting or User-Agent
-strings, offer no integrity guarantees and are hard to maintain.
+Automated agents are increasingly used for legitimate purposes on the web, including AI assistants,
+search indexing, content aggregation, and automated testing. These agents need to reliably identify
+themselves to origins for several reasons:
 
-This document proposes a mechanism in which outbound HTTP requests
-are signed using {{HTTP-MESSAGE-SIGNATURES}}. These signatures
-can be verified by receiving servers using a public key associated
-with the platform provider. This enables trusted interactions between
-automated agents and HTTP servers, with improved security and
-manageability.
+1. Regulatory compliance requiring transparency of automated systems
+2. Origin resource management and access control
+3. Protection against impersonation and reputation management
+4. Service level differentiation between human and automated traffic
+
+Current identification methods such as IP allowlisting, User-Agent strings, or shared API keys have
+significant limitations in security, scalability, and manageability. This document defines an
+architecture enabling automated agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
+It proposes that every request from bots to be signed by a private key owned by its provider.
+This way, every origin can validate the service identity.
 
 # Motivation
 
@@ -102,13 +103,13 @@ requests are forwarded or transformed within the HTTP layer.
 The following terms are used throughout this document:
 
 **User**
-: wants to perform some actions on the web.
+: An entity initiating requests through an automated agent. May be a human operator or another system.
 
 **Automated Agent**
-: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with {{HTTP-MESSAGE-SIGNATURES}} signature.
+: A software system making HTTP requests on behalf of users. It implements the HTTP protocol and constructs valid HTTP requests with {{HTTP-MESSAGE-SIGNATURES}} signatures.
 
 **Origin**
-: server hosting a resource. The user wants to access it through the browser.
+: An HTTP server receiving signed requests that implements the HTTP protocol and verifies {{HTTP-MESSAGE-SIGNATURES}} signatures. It acts as a verifier of the signature as defined by {{HTTP-MESSAGE-SIGNATURES}}.
 
 # Architecture
 
@@ -133,10 +134,17 @@ The following terms are used throughout this document:
 
 ~~~
 
-A user is asking the automated agent to do something. The agent decides they
-need to retrieve content from an origin. They send an HTTP request with a Signature
-header as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
-The origin validates the signature. If it validates, it sends the requested content.
+A User initiates an action requiring the Autoimated Agent to perform an HTTP request.
+The Automated Agent constructs the request, generates a signature using its signing key,
+and includes it in the request as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}
+along with `Signature-Agent` header for discovery for its
+verification key.
+Upon receiving the request, the Origin ensures it has the verification key for the Agent,
+validates the signature, and processes the request if the signature is valid.
+
+## Deployment Models
+
+Signature verification can be performed either directly by origins or delegated to a fronting proxy. Direct verification by origins provides simplicity and control. Proxy verification offloads processing and enables shared caching across multiple origins. The choice depends on traffic volume and operational requirements.
 
 ## Generating HTTP Message Signature {#generating-http-message-signature}
 
@@ -164,6 +172,8 @@ Automated agents SHOULD include the following `@signature-params` as defined in 
 The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
+
+We RECOMMEND the expiry to be no more than 24 hours.
 
 ### Anti-replay
 
@@ -233,23 +243,19 @@ Could be a GitHub repository like the public suffix list. The issue is the gatin
 This is defined in the sibling draft.
 This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
 
-
 # Security Considerations
 
-## Verification Load
+## Performance Impact
 
-Verifiers SHOULD be prepared
-to handle increased computational cost. Signature verification, particularly
-with asymmetric keys, adds cryptographic overhead that may impact latency or
-throughput. Implementers SHOULD provision resources accordingly and consider
-other mechanisms to mitigate abuse.
+Origins must account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
 
-## Request Size Overhead
+## Key Compromise Response
 
-{{HTTP-MESSAGE-SIGNATURES}} include additional HTTP headers, such as the `Signature` and
-`Signature-Input` headers, which increases overall request size on the wire. This may
-affect intermediaries. HTTP clients and servers SHOULD monitor the impact
-of larger request headers on routing and performance.
+An automated agent signing key might get compromised.
+
+If that happens, the agent SHOULD cease using the compromised key as soon as possible, notify affected origins if possible, and generate a new key pair.
+
+To minimise the impact of a key compromise, the origin should support rapid key rotation and monitor for suspicious signature patterns.
 
 ## Batching Signatures
 
