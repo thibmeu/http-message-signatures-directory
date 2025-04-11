@@ -250,13 +250,9 @@ This document has no IANA actions.
 
 --- back
 
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
-
 # Implementations
-{:numbered="false"}
+
+> Thibault: add github link once open
 
 This draft has a couple of implementations
 
@@ -274,3 +270,8 @@ Servers:
 
 A demontstration server has been deployed to https://http-message-signatures-example.research.cloudflare.com/
 It uses RFC9421 ed25519 test signing and verifying keys.
+
+# Acknowledgments
+{:numbered="false"}
+
+TODO acknowledge.
