@@ -195,14 +195,17 @@ Example
 
 ~~~json
 {
-  keys: [{
-    alg:"ed25519",
-    key: "-----BEGIN PUBLIC KEY-----...",
-    not-before: 1743578485, // optional
-    not-after: 1745000000, // optional
-  }],
-  signature_agent: "my.company.agent.test", // optional. SHOULD match the signature agent FQDN
-  purpose: "search" // Ideally matches some IANA registry for preferences
+  "keys": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600
+  },
+  "signature_agent": "https://directory.test",
+  "purpose": "rag"
 }
 ~~~
 
