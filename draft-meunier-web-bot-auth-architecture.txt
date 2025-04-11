@@ -85,8 +85,8 @@ Table of Contents
    6.  Privacy Considerations
    7.  IANA Considerations
    8.  Normative References
+   Appendix A.  Implementations
    Acknowledgments
-   Implementations
    Author's Address
 
 1.  Introduction
@@ -350,11 +350,9 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-Acknowledgments
+Appendix A.  Implementations
 
-   TODO acknowledge.
-
-Implementations
+      Thibault: add github link once open
 
    This draft has a couple of implementations
 
@@ -373,6 +371,10 @@ Implementations
    A demontstration server has been deployed to https://http-message-
    signatures-example.research.cloudflare.com/ It uses RFC9421 ed25519
    test signing and verifying keys.
+
+Acknowledgments
+
+   TODO acknowledge.
 
 Author's Address
 
