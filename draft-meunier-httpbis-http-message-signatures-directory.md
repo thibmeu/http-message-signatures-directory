@@ -28,7 +28,7 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
-  HTTP-MESSAGE-SIGNATURE: RFC9421
+  HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   JWK: RFC7517
   WellKnownURIs:
@@ -43,7 +43,7 @@ informative:
 
 --- abstract
 
-This document describe a method for clients using using {{HTTP-MESSAGE-SIGNATURE}}
+This document describe a method for clients using using {{HTTP-MESSAGE-SIGNATURES}}
 to advertise their signing keys.
 
 It defines a key directory format based on JWKS as defined in {{Section 5 of JWK}},
@@ -73,7 +73,7 @@ Client application SHOULD validate the directory format and reject malformed ent
 
 # HTTP Method Context `Signature-Agent`
 
-A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURE}} MAY
+A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURES}} MAY
 provide HTTP Method Context `Signature-Agent`.
 This header is defined as a URI to a directory.
 
@@ -240,7 +240,7 @@ Cache-Control: max-age=86400
 
 ## Request with HTTP Signature-Agent
 
-This extend the examples from {{Appendix B of HTTP-MESSAGE-SIGNATURE}}.
+This extend the examples from {{Appendix B of HTTP-MESSAGE-SIGNATURES}}.
 
 ~~~
 POST /foo?param=Value&Pet=dog HTTP/1.1

@@ -28,7 +28,7 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
-  HTTP-MESSAGE-SIGNATURE: RFC9421
+  HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
   DIRECTORY:
@@ -42,7 +42,7 @@ informative:
 --- abstract
 
 This document describes an architecture for identifying automated
-traffic using {{HTTP-MESSAGE-SIGNATURE}}. The goal
+traffic using {{HTTP-MESSAGE-SIGNATURES}}. The goal
 is to allow automated HTTP clients to cryptographically sign outbound
 requests, allowing HTTP servers to verify their identity with confidence.
 
@@ -59,7 +59,7 @@ Existing methods, such as IP range allowlisting or User-Agent
 strings, offer no integrity guarantees and are hard to maintain.
 
 This document proposes a mechanism in which outbound HTTP requests
-are signed using {{HTTP-MESSAGE-SIGNATURE}}. These signatures
+are signed using {{HTTP-MESSAGE-SIGNATURES}}. These signatures
 can be verified by receiving servers using a public key associated
 with the platform provider. This enables trusted interactions between
 automated agents and HTTP servers, with improved security and
@@ -93,7 +93,7 @@ The following terms are used throughout this document:
 : wants to perform some actions on the web.
 
 **Automated Agent**
-: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with {{HTTP-MESSAGE-SIGNATURE}} signature.
+: orchestrated user agent, such as Chromium. Can interact with the web, implements web standards. For every request, it constructs a valid HTTP request with {{HTTP-MESSAGE-SIGNATURES}} signature.
 
 **Origin**
 : server hosting a resource. The user wants to access it through the browser.
@@ -123,25 +123,25 @@ The following terms are used throughout this document:
 
 A user is asking the automated agent to do something. The agent decides they
 need to retrieve content from an origin. They send an HTTP request with a Signature
-header as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURE}}.
+header as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 The origin validates the signature. If it validates, it sends the requested content.
 
 ## Generating HTTP Message Signature {#generating-http-message-signature}
 
-{{HTTP-MESSAGE-SIGNATURE}} defines components to be signed.
+{{HTTP-MESSAGE-SIGNATURES}} defines components to be signed.
 
 Automated agents SHOULD include the following component:
 
 `@authority`
-: as defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURE}}
+: as defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURES}}
 
-Automated agents SHOULD include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+Automated agents SHOULD include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `created`
-: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `expires`
-: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURE}}
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `keyid`
 : MUST be `SHA256(key_bytes)`
@@ -151,7 +151,7 @@ Automated agents SHOULD include the following `@signature-params` as defined in 
 
 The private key is available to the automated agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
 
-The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURE}}.
+The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
 ### Anti-replay
 
@@ -167,11 +167,11 @@ Because the `nonce` is controlled by the client, the origin needs to maintain a 
 
 ## Requesting a Message signature
 
-{{Section 5 of HTTP-MESSAGE-SIGNATURE}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, origins MUST to request the same parameters as those defined by the {{generating-http-message-signature}}.
+{{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, origins MUST to request the same parameters as those defined by the {{generating-http-message-signature}}.
 
 ## Validating Message signature
 
-Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURE}}.
+Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURES}}.
 Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.
 
 Additional requirement are placed on this validation
