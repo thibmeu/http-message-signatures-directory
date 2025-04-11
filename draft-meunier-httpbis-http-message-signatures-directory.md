@@ -73,7 +73,7 @@ The directory MUST be served with media type `application/http-message-signature
 
 Client application SHOULD validate the directory format and reject malformed entries.
 
-# Discoverability
+# HTTP Method Context `Signature-Agent`
 
 A service sending signed request as defined in {{HTTP-MESSAGE-SIGNATURE}} MAY
 provide HTTP Method Context `Signature-Agent`.

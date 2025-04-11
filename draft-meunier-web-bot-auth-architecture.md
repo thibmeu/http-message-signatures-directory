@@ -33,6 +33,7 @@ normative:
   HTTP-MESSAGE-SIGNATURE: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
+  DIRECTORY: I-D.draft-meunier-httpbis-http-message-signatures-directory
 
 informative:
 
@@ -176,14 +177,14 @@ Additional requirement are placed on this validation
 
 During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by Signature-Agent header defined in ((MESSAGESIG-DIRECTOIRY-DRAFT))
+During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in {{Section 4 of DIRECTORY}}.
 
 
 ## Discovery
 
 This section describes the discovery mechanism for the automated agent directory.
 
-The reference for discovery is a FQDN. It SHOULD provide a directory hosted on the well known registered in ((MESSAGESIG-DIRECTOIRY-DRAFT))
+The reference for discovery is a FQDN. It SHOULD provide a directory hosted on the well known registered in {{Section 4 of DIRECTORY}}.
 
 We add one field to the directory defined in the other draft:
 "purpose": Ideally matches some IANA registry for preferences
