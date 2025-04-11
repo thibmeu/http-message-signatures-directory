@@ -14,7 +14,7 @@ Expires: 13 October 2025
 Abstract
 
    This document describe a method for clients using using
-   [HTTP-MESSAGE-SIGNATURE] to advertise their signing keys.
+   [HTTP-MESSAGE-SIGNATURES] to advertise their signing keys.
 
    It defines a key directory format based on JWKS as defined in
    Section 5 of [JWK], as well as new HTTP Method Context to allow for
@@ -117,7 +117,7 @@ Table of Contents
 4.  HTTP Method Context Signature-Agent
 
    A service sending signed request as defined in
-   [HTTP-MESSAGE-SIGNATURE] MAY provide HTTP Method Context Signature-
+   [HTTP-MESSAGE-SIGNATURES] MAY provide HTTP Method Context Signature-
    Agent.  This header is defined as a URI to a directory.
 
    The URI scheme SHOULD be one of:
@@ -220,7 +220,7 @@ Table of Contents
               DOI 10.17487/RFC9110, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9110>.
 
-   [HTTP-MESSAGE-SIGNATURE]
+   [HTTP-MESSAGE-SIGNATURES]
               Backman, A., Ed., Richer, J., Ed., and M. Sporny, "HTTP
               Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
               February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
@@ -278,7 +278,8 @@ A.1.  Key Directory on example.com
 
 A.2.  Request with HTTP Signature-Agent
 
-   This extend the examples from Appendix B of [HTTP-MESSAGE-SIGNATURE].
+   This extend the examples from Appendix B of
+   [HTTP-MESSAGE-SIGNATURES].
 
    POST /foo?param=Value&Pet=dog HTTP/1.1
    Host: example.com

@@ -14,7 +14,7 @@ Expires: 13 October 2025
 Abstract
 
    This document describes an architecture for identifying automated
-   traffic using [HTTP-MESSAGE-SIGNATURE].  The goal is to allow
+   traffic using [HTTP-MESSAGE-SIGNATURES].  The goal is to allow
    automated HTTP clients to cryptographically sign outbound requests,
    allowing HTTP servers to verify their identity with confidence.
 
@@ -99,7 +99,7 @@ Table of Contents
    no integrity guarantees and are hard to maintain.
 
    This document proposes a mechanism in which outbound HTTP requests
-   are signed using [HTTP-MESSAGE-SIGNATURE].  These signatures can be
+   are signed using [HTTP-MESSAGE-SIGNATURES].  These signatures can be
    verified by receiving servers using a public key associated with the
    platform provider.  This enables trusted interactions between
    automated agents and HTTP servers, with improved security and
@@ -147,7 +147,7 @@ Table of Contents
    *Automated Agent*  orchestrated user agent, such as Chromium.  Can
       interact with the web, implements web standards.  For every
       request, it constructs a valid HTTP request with
-      [HTTP-MESSAGE-SIGNATURE] signature.
+      [HTTP-MESSAGE-SIGNATURES] signature.
 
    *Origin*  server hosting a resource.  The user wants to access it
       through the browser.
@@ -175,23 +175,23 @@ Table of Contents
    A user is asking the automated agent to do something.  The agent
    decides they need to retrieve content from an origin.  They send an
    HTTP request with a Signature header as defined in Section 3.1 of
-   [HTTP-MESSAGE-SIGNATURE].  The origin validates the signature.  If it
-   validates, it sends the requested content.
+   [HTTP-MESSAGE-SIGNATURES].  The origin validates the signature.  If
+   it validates, it sends the requested content.
 
 4.1.  Generating HTTP Message Signature
 
-   [HTTP-MESSAGE-SIGNATURE] defines components to be signed.
+   [HTTP-MESSAGE-SIGNATURES] defines components to be signed.
 
    Automated agents SHOULD include the following component:
 
-   @authority  as defined in Section 2.2.1 of [HTTP-MESSAGE-SIGNATURE]
+   @authority  as defined in Section 2.2.1 of [HTTP-MESSAGE-SIGNATURES]
 
    Automated agents SHOULD include the following @signature-params as
-   defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURE]
+   defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
-   created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURE]
+   created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
-   expires  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURE]
+   expires  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
    keyid  MUST be SHA256(key_bytes)
 
@@ -202,7 +202,7 @@ Table of Contents
    Signatures Algorithm registry.
 
    The creation of the signature is defined in Section 3.1 of
-   [HTTP-MESSAGE-SIGNATURE].
+   [HTTP-MESSAGE-SIGNATURES].
 
 4.1.1.  Anti-replay
 
@@ -222,7 +222,7 @@ Table of Contents
 
 4.2.  Requesting a Message signature
 
-   Section 5 of [HTTP-MESSAGE-SIGNATURE] defines the Accept-Signature
+   Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
    by an origin.  Origin MAY choose to request signatures from clients
    that did not initially provide them.  If requesting, origins MUST to
@@ -232,7 +232,7 @@ Table of Contents
 
    Upon receiving an HTTP request, the origin has to verify the
    signature.  The algorithm is provided in Section 3.2 of
-   [HTTP-MESSAGE-SIGNATURE].  Similar to regular User-Agent check, this
+   [HTTP-MESSAGE-SIGNATURES].  Similar to regular User-Agent check, this
    happens at the HTTP layer, once headers are received.
 
    Additional requirement are placed on this validation
@@ -322,7 +322,7 @@ Table of Contents
               DOI 10.17487/RFC9111, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9111>.
 
-   [HTTP-MESSAGE-SIGNATURE]
+   [HTTP-MESSAGE-SIGNATURES]
               Backman, A., Ed., Richer, J., Ed., and M. Sporny, "HTTP
               Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
               February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
