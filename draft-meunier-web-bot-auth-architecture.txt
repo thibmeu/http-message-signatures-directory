@@ -2,10 +2,10 @@
 
 
 
-Network Working Group                                         T. Meunier
+Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                             10 April 2025
-Expires: 12 October 2025
+Intended status: Informational                             11 April 2025
+Expires: 13 October 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -28,6 +28,11 @@ About This Document
    document may be found at https://datatracker.ietf.org/doc/draft-
    meunier-web-bot-auth-architecture/.
 
+   Discussion of this document takes place on the WG Web Bot Auth
+   mailing list (mailto:web-bot-auth@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/web-bot-auth/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/web-bot-auth/.
+
    Source for this draft and an issue tracker can be found at
    https://github.com/thibmeu/http-message-signatures-directory.
 
@@ -46,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 October 2025.
+   This Internet-Draft will expire on 13 October 2025.
 
 Copyright Notice
 
@@ -236,8 +241,8 @@ Table of Contents
    not set to web-bot-auth.  During step 5, the Origin MAY discard
    signatures for which they do not know the keyid.  During step 5, if
    the keyid is unknown to the origin, they MAY fetch the provider
-   directory as indicated by Signature-Agent header defined in
-   ((MESSAGESIG-DIRECTOIRY-DRAFT))
+   directory as indicated by Signature-Agent header defined in Section 4
+   of [DIRECTORY].
 
 4.4.  Discovery
 
@@ -245,8 +250,7 @@ Table of Contents
    agent directory.
 
    The reference for discovery is a FQDN.  It SHOULD provide a directory
-   hosted on the well known registered in ((MESSAGESIG-DIRECTOIRY-
-   DRAFT))
+   hosted on the well known registered in Section 4 of [DIRECTORY].
 
    We add one field to the directory defined in the other draft:
    "purpose": Ideally matches some IANA registry for preferences
@@ -256,14 +260,17 @@ Table of Contents
    Example
 
    {
-     keys: [{
-       alg:"ed25519",
-       key: "-----BEGIN PUBLIC KEY-----...",
-       not-before: 1743578485, // optional
-       not-after: 1745000000, // optional
-     }],
-     signature_agent: "my.company.agent.test", // optional. SHOULD match the signature agent FQDN
-     purpose: "search" // Ideally matches some IANA registry for preferences
+     "keys": {
+       "kty": "OKP",
+       "crv": "Ed25519",
+       "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+       "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+       "use": "sig",
+       "nbf": 1712793600,
+       "exp": 1715385600
+     },
+     "signature_agent": "https://directory.test",
+     "purpose": "rag"
    }
 
 4.4.1.  Out-of-band communication between client and origin
@@ -297,6 +304,12 @@ Table of Contents
    This document has no IANA actions.
 
 8.  Normative References
+
+   [DIRECTORY]
+              "HTTP Message Signatures Directory", n.d.,
+              <https://thibmeu.github.io/http-message-signatures-
+              directory/draft-meunier-httpbis-http-message-signatures-
+              directory.html>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
