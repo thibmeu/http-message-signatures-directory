@@ -66,7 +66,7 @@ TODO Introduction
 # Configuration {#configuration}
 
 The key directory is served as a JSON Web Key Set (JWKS) as defined in {{Section 5 of JWK}}.
-The "alg" parameter are restricted to algorithm registered against {{HTTP Signature Algorithms Section of HTTP-MESSAGE-SIGNATURES-IANA}}
+The "alg" parameter are restricted to algorithm registered against HTTP Signature Algorithms Section of {{HTTP-MESSAGE-SIGNATURES-IANA}}
 
 The directory SHOULD be server over HTTPS.
 The directory MUST be served with media type `application/http-message-signatures-directory`.
