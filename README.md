@@ -1,6 +1,6 @@
-<!-- regenerate: on (set to off if you edit this file) -->
+<!-- regenerate: off (set to off if you edit this file) -->
 
-# HTTPBIS Drafts
+# HTTP Message Signatures for Bots Drafts
 
 This is the working area for individual Internet-Drafts.
 
