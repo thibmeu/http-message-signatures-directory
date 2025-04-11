@@ -154,7 +154,8 @@ Table of Contents
 
 4.  Architecture
 
-      TODO: Add directory
+      TODO: System diagram + one more sequence diagram with key
+      retrieval from the Automated Agent provider
 
      +---------+             +-----------------+             +--------+
      |  User   |             | Automated Agent |             | Origin |
