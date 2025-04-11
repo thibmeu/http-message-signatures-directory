@@ -69,31 +69,18 @@ This way, every origin can validate the service identity.
 # Motivation
 
 There is an increase in agent traffic on the Internet. Many agents
-Either because origins pressure them to do so, because regulations mandate transparency, or because they are
 choose to identify their traffic today via IP Address lists and/or unique
-facing an increased phishing threat. As of today these agents are left without any good solution to do so:
 User-Agents. This is often done to demonstrate trust and safety claims, support
-
 allowlisting/denylisting the traffic in a granular manor, and enable sites to
-1. They share their IP range. However that is not sustainable because the same IP might be used by different
 monitor and rate limit per agent operator. However, these mechanisms have drawbacks:
-   services, IP ranges may change, geolocation imposes to register IPs in multiple countries, and when they start
  1. User-Agent, when used alone, can be spoofed meaning anyone may attempt to
-   allowing other companies to use their platform they loose control of their public facing reputation.
     act as that agent. It is also overloaded - an agent may be using Chromium and
-2. They define a User Agent per {{Section 10.1.5 of HTTP}}. Like curl uses `curl/version`, or Chrome uses
     wish to present itself as such to ensure rendering works, yet it still wants to
-   `Mozilla/5.0 ... Chrome/113.0.0.0`. An issue is this header is spoofable, and realistically agents are
     differentiate its traffic to the site.
-   likely to use Chrome's user agent because otherwise they are challenged
  2. IP blocks alone can present a confusing story. IPs on cloud plaforms have
-3. They go to every website on the Internet and share a secret with them like a Bearer from  {{!RFC6750}}. This is
     layers of ownership - the platform owns the IP and registers it in their
-   impractical at scale.
     published IP blocks, only to be re-published by the agent with little to bind
-
     the publication to (TODO: better example of PAAS layering?). Purchasing
-All this provides strong motivation to define a mechanism that empowers honest agents to share their identity.
     dedicated IP blocks is expensive, time consuming, and requires significant
     specialist knowledge to set up. These IP blocks may have prior reputation
     history that needs to be carefully inspected and managed before purchase and
