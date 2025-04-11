@@ -43,7 +43,7 @@ informative:
 
 --- abstract
 
-This document describe a method for clients using using {{HTTP-MESSAGE-SIGNATURES}}
+This document describes a method for clients using {{HTTP-MESSAGE-SIGNATURES}}
 to advertise their signing keys.
 
 It defines a key directory format based on JWKS as defined in {{Section 5 of JWK}},
@@ -54,7 +54,13 @@ as well as new HTTP Method Context to allow for in-band key discovery.
 
 # Introduction
 
-TODO Introduction
+{{HTTP-MESSAGE-SIGNATURES}} allow a signer to generate a signature over an HTTP message, and a verifier to verify it.
+It assumes that the verifier knows the signer key material. Mechanism to share, and distribute it are at the discretion
+of implementers.
+
+This prevents discovery of signer key at request time.
+
+This document describes a method for signers to advertise their signing keys to verifier.
 
 
 # Conventions and Definitions
