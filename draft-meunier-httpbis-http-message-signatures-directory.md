@@ -57,13 +57,17 @@ as well as new HTTP Method Context to allow for in-band key discovery.
 
 # Introduction
 
-{{HTTP-MESSAGE-SIGNATURES}} allow a signer to generate a signature over an HTTP message, and a verifier to verify it.
-It assumes that the verifier knows the signer key material. Mechanism to share, and distribute it are at the discretion
-of implementers.
+{{HTTP-MESSAGE-SIGNATURES}} allow a signer to generate a signature over an HTTP message, and a verifier to validate it.
+The specification assumes verifiers have prior knowledge of
+signers' key material, requiring out-of-band key distribution mechanisms. This creates deployment
+friction and limits the ability to dynamically verify signatures from previously unknown signers.
 
-This prevents discovery of signer key at request time.
+This document defines:
+1. A standardized key directory format based on JWKS for publishing HTTP Message Signatures keys
+2. A well-known URI location for discovering these key directories
+3. A new HTTP header field enabling in-band key directory location discovery
 
-This document describes a method for signers to advertise their signing keys to verifier.
+Together, these mechanisms enable key distribution and discovery for HTTP Message Signatures cryptographic material.
 
 
 # Conventions and Definitions
