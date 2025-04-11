@@ -75,14 +75,20 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Configuration
    4.  HTTP Method Context Signature-Agent
+     4.1.  Header Field Definition
    5.  Security Considerations
      5.1.  Key rotation
-   6.  IANA Considerations
-     6.1.  Well-Known 'http-message-signatures-directory' URI
-     6.2.  Media Types
-       6.2.1.  "application/http-message-signatures-directory" media
+   6.  Privacy Considerations
+     6.1.  Directory Content
+     6.2.  Access Patterns
+   7.  IANA Considerations
+     7.1.  Well-Known 'http-message-signatures-directory' URI
+     7.2.  Media Types
+       7.2.1.  "application/http-message-signatures-directory" media
                type
-   7.  Normative References
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Examples
      A.1.  Key Directory on example.com
      A.2.  Request with HTTP Signature-Agent
@@ -124,28 +130,34 @@ Table of Contents
 
 4.  HTTP Method Context Signature-Agent
 
-   A service sending signed request as defined in
-   [HTTP-MESSAGE-SIGNATURES] MAY provide HTTP Method Context Signature-
-   Agent.  This header is defined as a URI to a directory.
+   A service sending signed requests as defined in
+   [HTTP-MESSAGE-SIGNATURES] MAY include a Signature-Agent header field
+   to communicate its signing key directory.  This header field contains
+   a URI allowing retrieval of an HTTP Message Signatures Directory as
+   defined in Section 3.
 
-   The URI scheme SHOULD be one of:
+4.1.  Header Field Definition
 
-   1.  http
+   The Signature-Agent header field is an Item Structured Header
+   [STRUCTURED-HEADERS].  Its value MUST be a String containing a [URI].
+   The ABNF is:
 
-   2.  https
+ Signature-Agent = sf-string   ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
 
-   3.  data
+   The URI scheme MUST be one of: - *https (RECOMMENDED)*: Points to an
+   HTTPS resource serving the key directory - *http*: Points to an HTTP
+   resource serving the key directory - *data*: Contains an inline key
+   directory
 
-   http/https point to the origin component serving an HTTP Message
-   Signatures as defined in Section 3. data MUST have media type
-   application/http-message-signatures-directory, and MAY be base64
-   encoded. ( CBOR would be very useful here)
+   When using the "data" URI scheme, the media type MUST be application/
+   http-message-signatures-directory.  The content MAY be base64 encoded
+   as per [BASE64].
 
-   This extends the set of headers defined in [RFC9110].
+   Multiple Signature-Agent header fields MAY be present in a request.
+   Processors SHOULD use the first valid URI that provides a valid key
+   directory.
 
-   Signature-Agent
-
-   Signature-Agent = [[ URI ]]
+   TODO: for inlining, CBOR Keys could be useful
 
 5.  Security Considerations
 
@@ -166,11 +178,28 @@ Table of Contents
    Servers SHOULD cache the directory contents and refresh upon
    expiration.
 
-6.  IANA Considerations
+6.  Privacy Considerations
+
+   Key directories enable discovery of signing keys which may reveal
+   information about the signing entity.  Implementers should consider:
+
+6.1.  Directory Content
+
+   Key directories should only contain keys actively used for signing.
+   Including additional keys or metadata may expose unnecessary
+   information about the signing service.
+
+6.2.  Access Patterns
+
+   Verifiers accessing key directories may reveal information about
+   signature verification patterns.  Directory servers should avoid
+   logging personally identifiable information from directory requests.
+
+7.  IANA Considerations
 
    This section contains considerations for IANA.
 
-6.1.  Well-Known 'http-message-signatures-directory' URI
+7.1.  Well-Known 'http-message-signatures-directory' URI
 
    This document updates the "Well-Known URIs" Registry [WellKnownURIs]
    with the following values.
@@ -186,7 +215,7 @@ Table of Contents
 
        Table 1: 'http-message-signatures-directory' Well-Known URI
 
-6.2.  Media Types
+7.2.  Media Types
 
    The following entries should be added to the IANA "media types"
    registry:
@@ -196,7 +225,7 @@ Table of Contents
    The templates for these entries are listed below and the reference
    should be this RFC.
 
-6.2.1.  "application/http-message-signatures-directory" media type
+7.2.1.  "application/http-message-signatures-directory" media type
 
    Type name:  application
    Subtype name:  http-message-signatures-directory
@@ -221,7 +250,9 @@ Table of Contents
    Author:  see Authors' Addresses section
    Change controller:  IETF
 
-7.  Normative References
+8.  References
+
+8.1.  Normative References
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
@@ -251,15 +282,25 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
-              Ed., "HTTP Semantics", STD 97, RFC 9110,
-              DOI 10.17487/RFC9110, June 2022,
-              <https://www.rfc-editor.org/rfc/rfc9110>.
+   [STRUCTURED-HEADERS]
+              Nottingham, M. and P. Kamp, "Structured Field Values for
+              HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
+              <https://www.rfc-editor.org/rfc/rfc8941>.
+
+   [URI]      Nottingham, M., "URI Design and Ownership", BCP 190,
+              RFC 8820, DOI 10.17487/RFC8820, June 2020,
+              <https://www.rfc-editor.org/rfc/rfc8820>.
 
    [WellKnownURIs]
               "Well-Known URIs", n.d.,
               <https://www.iana.org/assignments/well-known-uris/well-
               known-uris.xhtml>.
+
+8.2.  Informative References
+
+   [BASE64]   Masinter, L., "The "data" URL scheme", RFC 2397,
+              DOI 10.17487/RFC2397, August 1998,
+              <https://www.rfc-editor.org/rfc/rfc2397>.
 
 Appendix A.  Examples
 
