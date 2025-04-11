@@ -214,7 +214,7 @@ Additional requirements are placed on this validation:
 - During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
 
 
-## Discovery
+## Key Distribution and Discovery
 
 This section describes the discovery mechanism for the agent directory.
 
