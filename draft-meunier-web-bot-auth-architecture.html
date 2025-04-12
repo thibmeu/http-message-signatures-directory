@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 13 October 2025</td>
+<td class="center">Expires 14 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-11" class="published">11 April 2025</time>
+<time datetime="2025-04-12" class="published">12 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-13">13 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-14">14 October 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1464,7 +1464,7 @@ validates the signature, and processes the request if the signature is valid.<a 
           <dd class="break"></dd>
 <dt id="section-4.2-5.5"><code>keyid</code></dt>
           <dd style="margin-left: 1.5em" id="section-4.2-5.6">
-            <p id="section-4.2-5.6.1"><span class="bcp14">MUST</span> be <code>SHA256(key_bytes)</code><a href="#section-4.2-5.6.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-5.6.1"><span class="bcp14">MUST</span> be a base64url JWK SHA-256 Thumbprint as defined in <span><a href="https://rfc-editor.org/rfc/rfc7638#section-3.2" class="relref">Section 3.2</a> of [<a href="#JWK-THUMBPRINT" class="cite xref">JWK-THUMBPRINT</a>]</span> for RSA and EC, and in <span><a href="https://rfc-editor.org/rfc/rfc8037#appendix-A.3" class="relref">Appendix A.3</a> of [<a href="#JWK-OKP" class="cite xref">JWK-OKP</a>]</span> foe ed25519.<a href="#section-4.2-5.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-4.2-5.7"><code>tag</code></dt>
@@ -1473,7 +1473,7 @@ validates the signature, and processes the request if the signature is valid.<a 
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-4.2-6">The private key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">The signing key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 <p id="section-4.2-7">The creation of the signature is defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 <p id="section-4.2-8">It is RECOMMEND the expiry to be no more than 24 hours.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
 <div id="anti-replay">
@@ -1701,6 +1701,14 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
 <dt id="HTTP-MESSAGE-SIGNATURES">[HTTP-MESSAGE-SIGNATURES]</dt>
       <dd>
 <span class="refAuthor">Backman, A., Ed.</span>, <span class="refAuthor">Richer, J., Ed.</span>, and <span class="refAuthor">M. Sporny</span>, <span class="refTitle">"HTTP Message Signatures"</span>, <span class="seriesInfo">RFC 9421</span>, <span class="seriesInfo">DOI 10.17487/RFC9421</span>, <time datetime="2024-02" class="refDate">February 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9421">https://www.rfc-editor.org/rfc/rfc9421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JWK-OKP">[JWK-OKP]</dt>
+      <dd>
+<span class="refAuthor">Liusvaara, I.</span>, <span class="refTitle">"CFRG Elliptic Curve Diffie-Hellman (ECDH) and Signatures in JSON Object Signing and Encryption (JOSE)"</span>, <span class="seriesInfo">RFC 8037</span>, <span class="seriesInfo">DOI 10.17487/RFC8037</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8037">https://www.rfc-editor.org/rfc/rfc8037</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JWK-THUMBPRINT">[JWK-THUMBPRINT]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.</span> and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Key (JWK) Thumbprint"</span>, <span class="seriesInfo">RFC 7638</span>, <span class="seriesInfo">DOI 10.17487/RFC7638</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7638">https://www.rfc-editor.org/rfc/rfc7638</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
