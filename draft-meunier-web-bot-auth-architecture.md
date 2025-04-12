@@ -54,7 +54,7 @@ requests, allowing HTTP servers to verify their identity with confidence.
 
 # Introduction
 
-Automated agents are increasingly used in business and user workflows, including AI assistants,
+Agents are increasingly used in business and user workflows, including AI assistants,
 search indexing, content aggregation, and automated testing. These agents need to reliably identify
 themselves to origins for several reasons:
 
@@ -164,12 +164,12 @@ Signature verification can be performed either directly by origins or delegated 
 
 {{HTTP-MESSAGE-SIGNATURES}} defines components to be signed.
 
-Automated agents SHOULD include the following component:
+Agents MUST include the following component:
 
 `@authority`
 : as defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURES}}
 
-Automated agents SHOULD include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+Agents MUST include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `created`
 : as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
@@ -193,7 +193,7 @@ It is RECOMMEND the expiry to be no more than 24 hours.
 
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
 
-`@signature-parameters` are extended as follow
+Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follow
 
 `nonce`
 : Base10 encoded random uint32
