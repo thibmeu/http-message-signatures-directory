@@ -40,7 +40,7 @@ normative:
 
 
 informative:
-
+  OAUTH-BEARER: RFC6750
 
 --- abstract
 
@@ -90,7 +90,7 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
     history that needs to be carefully inspected and managed before purchase and
     use.
  3. An agent may go to every website on the Internet and share a secret with
-    them like a Bearer from  {{!RFC6750}}. This is impractical to scale for any
+    them like a Bearer from  {{OAUTH-BEARER}}. This is impractical to scale for any
     agent beyond select partnerships, and insecure, as key rotation is challenging
     and becomes less secure as the consumers scale.
 
