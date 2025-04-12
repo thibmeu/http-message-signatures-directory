@@ -28,13 +28,16 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
-  HTTP-MESSAGE-SIGNATURES: RFC9421
-  HTTP: RFC9110
-  HTTP-CACHE: RFC9111
   DIRECTORY:
     anchor: I-D.draft-meunier-httpbis-http-message-signatures-directory
     title: HTTP Message Signatures Directory
     target: https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-httpbis-http-message-signatures-directory.html
+  HTTP-MESSAGE-SIGNATURES: RFC9421
+  HTTP: RFC9110
+  HTTP-CACHE: RFC9111
+  JWK-OKP: RFC8037
+  JWK-THUMBPRINT: RFC7638
+
 
 informative:
 
@@ -175,12 +178,12 @@ Automated agents SHOULD include the following `@signature-params` as defined in 
 : as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `keyid`
-: MUST be `SHA256(key_bytes)`
+: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} foe ed25519.
 
 `tag`
 : MUST be `web-bot-auth`
 
-The private key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
+The signing key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
