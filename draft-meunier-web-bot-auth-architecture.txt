@@ -93,7 +93,9 @@ Table of Contents
      6.2.  No Human Correlation
      6.3.  Minimizing Tracking Risks
    7.  IANA Considerations
-   8.  Normative References
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Implementations
    Acknowledgments
    Author's Address
@@ -147,7 +149,7 @@ Table of Contents
        managed before purchase and use.
 
    3.  An agent may go to every website on the Internet and share a
-       secret with them like a Bearer from [RFC6750].  This is
+       secret with them like a Bearer from [OAUTH-BEARER].  This is
        impractical to scale for any agent beyond select partnerships,
        and insecure, as key rotation is challenging and becomes less
        secure as the consumers scale.
@@ -415,7 +417,9 @@ Table of Contents
 
    This document has no IANA actions.
 
-8.  Normative References
+8.  References
+
+8.1.  Normative References
 
    [DIRECTORY]
               "HTTP Message Signatures Directory", n.d.,
@@ -454,14 +458,17 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-   [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
-              Framework: Bearer Token Usage", RFC 6750,
-              DOI 10.17487/RFC6750, October 2012,
-              <https://www.rfc-editor.org/rfc/rfc6750>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+8.2.  Informative References
+
+   [OAUTH-BEARER]
+              Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
+              Framework: Bearer Token Usage", RFC 6750,
+              DOI 10.17487/RFC6750, October 2012,
+              <https://www.rfc-editor.org/rfc/rfc6750>.
 
 Appendix A.  Implementations
 
