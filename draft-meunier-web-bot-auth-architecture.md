@@ -338,8 +338,9 @@ Servers:
 
 * Cloudflare Workers
 
-A demontstration server has been deployed to https://http-message-signatures-example.research.cloudflare.com/
-It uses RFC9421 ed25519 test signing and verifying keys.
+A demontstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
+
+It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 
 # Acknowledgments
 {:numbered="false"}
