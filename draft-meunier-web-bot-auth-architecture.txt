@@ -100,10 +100,10 @@ Table of Contents
 
 1.  Introduction
 
-   Automated agents are increasingly used in business and user
-   workflows, including AI assistants, search indexing, content
-   aggregation, and automated testing.  These agents need to reliably
-   identify themselves to origins for several reasons:
+   Agents are increasingly used in business and user workflows,
+   including AI assistants, search indexing, content aggregation, and
+   automated testing.  These agents need to reliably identify themselves
+   to origins for several reasons:
 
    1.  Regulatory compliance requiring transparency of automated systems
 
@@ -234,12 +234,12 @@ Table of Contents
 
    [HTTP-MESSAGE-SIGNATURES] defines components to be signed.
 
-   Automated agents SHOULD include the following component:
+   Agents MUST include the following component:
 
    @authority  as defined in Section 2.2.1 of [HTTP-MESSAGE-SIGNATURES]
 
-   Automated agents SHOULD include the following @signature-params as
-   defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
+   Agents MUST include the following @signature-params as defined in
+   Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
    created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
@@ -266,7 +266,8 @@ Table of Contents
    multiple times by bad actors and thus require a nonce to be added to
    the @signature-params.
 
-   @signature-parameters are extended as follow
+   Agents SHOULD extend @signature-parameters defined in Section 4.2 as
+   follow
 
    nonce  Base10 encoded random uint32
 
