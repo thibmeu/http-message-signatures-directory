@@ -1,0 +1,89 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-04-13T03:18:42.596175+00:00",
+  "repo": "thibmeu/http-message-signatures-directory",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOOXJyWM6SQlLt",
+      "title": "First pass - mostly motivation adjustments",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/1",
+      "state": "OPEN",
+      "author": "smhendrickson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-04-11T13:17:32Z",
+      "updatedAt": "2025-04-11T13:19:09Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "a8b8c9472eb61de4e31a40f67ec2700edcfda480",
+      "headRepository": "smhendrickson/http-message-signatures-directory",
+      "headRefName": "firstpass",
+      "headRefOid": "45f502bf4e3f3f669e718c2a275c84e1f3fbe4f2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "NONE",
+          "body": "Note I renamed this from Automated Agent to agent. I think the `Automation` term blurs intent, and is orthogonal to the purpose of this mechanism.",
+          "createdAt": "2025-04-11T13:19:08Z",
+          "updatedAt": "2025-04-11T13:19:08Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}
