@@ -6,10 +6,10 @@ This is the working area for individual Internet-Drafts.
 
 ## HTTP Message Signatures Directory
 
-* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-httpbis-http-message-signatures-directory.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-httpbis-http-message-signatures-directory)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-httpbis-http-message-signatures-directory)
-* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-httpbis-http-message-signatures-directory.diff)
+* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-http-message-signatures-directory.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-http-message-signatures-directory)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory)
+* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-http-message-signatures-directory.diff)
 
 ## HTTP Message Signatures for automated traffic Architecture
 

@@ -3,7 +3,7 @@ title: "HTTP Message Signatures Directory"
 abbrev: "HTTP Message Signatures Directory"
 category: std
 
-docname: draft-meunier-httpbis-http-message-signatures-directory-latest
+docname: draft-meunier-http-message-signatures-directory-latest
 submissiontype: IETF
 number:
 date:
@@ -19,7 +19,7 @@ venue:
   mail: "ietf-http-wg@w3.org"
   arch: "https://lists.w3.org/Archives/Public/ietf-http-wg/"
   github: "thibmeu/http-message-signatures-directory"
-  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-httpbis-http-message-signatures-directory.html"
+  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html"
 
 author:
  -

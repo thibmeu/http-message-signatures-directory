@@ -17,7 +17,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-meunier-httpbis-http-message-signatures-directory.xml
+draft-meunier-http-message-signatures-directory.xml
 draft-meunier-web-bot-auth-architecture.xml
 package-lock.json
 report.xml
