@@ -204,7 +204,7 @@ Table of Contents
 |  User  |               |  Agent  |                           |  Origin  |
 |        |<-- Response --+         |                           |          |
 |        |               |         +--- Request + Signature -->|          |
-|        |               |         |<-- Response + Signature --+          |
+|        |               |         |<-------- Response --------+          |
 |        |               |         |                           |          |
 +--------+               +---------+                           +----------+
 
