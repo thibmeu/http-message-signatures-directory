@@ -443,7 +443,7 @@ Table of Contents
    [DIRECTORY]
               "HTTP Message Signatures Directory", n.d.,
               <https://thibmeu.github.io/http-message-signatures-
-              directory/draft-meunier-httpbis-http-message-signatures-
+              directory/draft-meunier-http-message-signatures-
               directory.html>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
