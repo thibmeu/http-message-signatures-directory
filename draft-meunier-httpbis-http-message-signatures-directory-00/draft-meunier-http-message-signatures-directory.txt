@@ -9,7 +9,7 @@ Expires: 17 October 2025
 
 
                    HTTP Message Signatures Directory
-     draft-meunier-httpbis-http-message-signatures-directory-latest
+         draft-meunier-http-message-signatures-directory-latest
 
 Abstract
 
@@ -26,10 +26,9 @@ About This Document
 
    The latest revision of this draft can be found at
    https://thibmeu.github.io/http-message-signatures-directory/draft-
-   meunier-httpbis-http-message-signatures-directory.html.  Status
-   information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-meunier-httpbis-http-message-
-   signatures-directory/.
+   meunier-http-message-signatures-directory.html.  Status information
+   for this document may be found at https://datatracker.ietf.org/doc/
+   draft-meunier-http-message-signatures-directory/.
 
    Discussion of this document takes place on the HTTP mailing list
    (mailto:ietf-http-wg@w3.org), which is archived at
