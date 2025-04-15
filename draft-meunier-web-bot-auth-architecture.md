@@ -315,9 +315,7 @@ This document has no IANA actions.
 
 # Implementations
 
-> Thibault: add github link once open
-
-This draft has a couple of implementations
+This draft has a couple of [implementations](https://github.com/cloudflareresearch/web-bot-auth)
 
 Clients:
 

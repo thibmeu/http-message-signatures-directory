@@ -118,8 +118,6 @@ TODO: for inlining, CBOR Keys could be useful
 
 ## Key rotation
 
-> TODO: reference key directory over http draft
-
 Clients SHOULD implement key rotation by including multiple keys in the directory
 with different validity period. When rotating keys, clients SHOULD:
 
