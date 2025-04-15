@@ -29,7 +29,7 @@ author:
 
 normative:
   DIRECTORY:
-    anchor: I-D.draft-meunier-httpbis-http-message-signatures-directory
+    anchor: I-D.draft-meunier-http-message-signatures-directory
     title: HTTP Message Signatures Directory
     target: https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-httpbis-http-message-signatures-directory.html
   HTTP-MESSAGE-SIGNATURES: RFC9421
