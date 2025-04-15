@@ -84,7 +84,7 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
  2. IP blocks alone can present a confusing story. IPs on cloud plaforms have
     layers of ownership - the platform owns the IP and registers it in their
     published IP blocks, only to be re-published by the agent with little to bind
-    the publication to (TODO: better example of PAAS layering?). Purchasing
+    the publication to the actual service provider that may be renting infra. Purchasing
     dedicated IP blocks is expensive, time consuming, and requires significant
     specialist knowledge to set up. These IP blocks may have prior reputation
     history that needs to be carefully inspected and managed before purchase and
@@ -127,25 +127,18 @@ The following terms are used throughout this document:
 
 # Architecture
 
-> TODO: System diagram + one more sequence diagram with key retrieval from the Agent provider
-
 ~~~aasvg
-  +--------+                 +---------+                 +--------+
-  |  User  |                 |  Agent  |                 | Origin |
-  +----+---+                 +----+----+                 +----+---+
-       |                          |                           |
-       |  Help me do this!        |                           |
-       +------------------------->|                           |
-       |                          |  GET /path/to/resource    |
-       |                          |  Signature: abc===        |
-       |                          +-------------------------->|
-       |                          |                           |
-       |                          |     <h1>Response</h1>     |
-       |                          |<--------------------------+
-       |  Here are proposals      |                           |
-       +<-------------------------+                           |
-       |                          |                           |
-
++--------+                 +---------+                                                                     +----------+                           
+|        |                 |         |                              Exchange                               |          |                           
+|        |                 |         |<=========================  Cryptographic  =========================>|          |                           
+|        +----Request----->|         |                              material                               |          |                           
+|  User  |                 |  Agent  |                                                                     |  Origin  |                           
+|        |<---Response-----+         |     +------------------------------------------------------+        |          |                           
+|        |                 |         +-----| GET /path/to/resource                                |------->|          |                           
+|        |                 |         |     | Signature: abc==                                     |        |          |                           
++--------+                 +---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+                           
+                                           | Signature-Agent: signer.example.com                  |                                               
+                                           +------------------------------------------------------+
 ~~~
 
 A User initiates an action requiring the Agent to perform an HTTP request.
