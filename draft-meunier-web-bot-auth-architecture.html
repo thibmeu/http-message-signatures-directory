@@ -1177,6 +1177,9 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
                     <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-anti-replay" class="internal xref">Anti-replay</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-sending-a-request" class="internal xref">Sending a request</a></p>
+</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
@@ -1378,55 +1381,52 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
       </h2>
 <div id="section-4-1">
         <div class="alignLeft art-svg artwork" id="section-4-1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="208" width="960" viewBox="0 0 960 208" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-            <path d="M 8,32 L 8,160" fill="none" stroke="black"></path>
-            <path d="M 80,32 L 80,160" fill="none" stroke="black"></path>
-            <path d="M 224,32 L 224,160" fill="none" stroke="black"></path>
-            <path d="M 304,32 L 304,160" fill="none" stroke="black"></path>
-            <path d="M 352,112 L 352,192" fill="none" stroke="black"></path>
-            <path d="M 792,112 L 792,192" fill="none" stroke="black"></path>
-            <path d="M 864,32 L 864,160" fill="none" stroke="black"></path>
-            <path d="M 952,32 L 952,160" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="608" viewBox="0 0 608 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,32 L 8,176" fill="none" stroke="black"></path>
+            <path d="M 80,32 L 80,176" fill="none" stroke="black"></path>
+            <path d="M 208,32 L 208,176" fill="none" stroke="black"></path>
+            <path d="M 288,32 L 288,176" fill="none" stroke="black"></path>
+            <path d="M 512,32 L 512,176" fill="none" stroke="black"></path>
+            <path d="M 600,32 L 600,176" fill="none" stroke="black"></path>
             <path d="M 8,32 L 80,32" fill="none" stroke="black"></path>
-            <path d="M 224,32 L 304,32" fill="none" stroke="black"></path>
-            <path d="M 864,32 L 952,32" fill="none" stroke="black"></path>
-            <path d="M 312,62 L 512,62" fill="none" stroke="black"></path>
-            <path d="M 312,66 L 512,66" fill="none" stroke="black"></path>
-            <path d="M 656,62 L 856,62" fill="none" stroke="black"></path>
-            <path d="M 656,66 L 856,66" fill="none" stroke="black"></path>
-            <path d="M 80,80 L 112,80" fill="none" stroke="black"></path>
-            <path d="M 176,80 L 216,80" fill="none" stroke="black"></path>
-            <path d="M 88,112 L 112,112" fill="none" stroke="black"></path>
-            <path d="M 184,112 L 224,112" fill="none" stroke="black"></path>
-            <path d="M 352,112 L 792,112" fill="none" stroke="black"></path>
-            <path d="M 304,128 L 344,128" fill="none" stroke="black"></path>
-            <path d="M 800,128 L 856,128" fill="none" stroke="black"></path>
-            <path d="M 8,160 L 80,160" fill="none" stroke="black"></path>
-            <path d="M 224,160 L 304,160" fill="none" stroke="black"></path>
-            <path d="M 864,160 L 952,160" fill="none" stroke="black"></path>
-            <path d="M 352,192 L 792,192" fill="none" stroke="black"></path>
-            <polygon class="arrowhead" points="864,128 852,122.4 852,133.6" fill="black" transform="rotate(0,856,128)"></polygon>
-            <polygon class="arrowhead" points="864,64 852,58.4 852,69.6" fill="black" transform="rotate(0,856,64)"></polygon>
-            <polygon class="arrowhead" points="320,64 308,58.4 308,69.6" fill="black" transform="rotate(180,312,64)"></polygon>
-            <polygon class="arrowhead" points="224,80 212,74.4 212,85.6" fill="black" transform="rotate(0,216,80)"></polygon>
+            <path d="M 208,32 L 288,32" fill="none" stroke="black"></path>
+            <path d="M 512,32 L 600,32" fill="none" stroke="black"></path>
+            <path d="M 296,62 L 336,62" fill="none" stroke="black"></path>
+            <path d="M 296,66 L 336,66" fill="none" stroke="black"></path>
+            <path d="M 464,62 L 504,62" fill="none" stroke="black"></path>
+            <path d="M 464,66 L 504,66" fill="none" stroke="black"></path>
+            <path d="M 80,80 L 104,80" fill="none" stroke="black"></path>
+            <path d="M 184,80 L 200,80" fill="none" stroke="black"></path>
+            <path d="M 88,112 L 104,112" fill="none" stroke="black"></path>
+            <path d="M 192,112 L 208,112" fill="none" stroke="black"></path>
+            <path d="M 288,128 L 312,128" fill="none" stroke="black"></path>
+            <path d="M 488,128 L 504,128" fill="none" stroke="black"></path>
+            <path d="M 296,144 L 312,144" fill="none" stroke="black"></path>
+            <path d="M 496,144 L 512,144" fill="none" stroke="black"></path>
+            <path d="M 8,176 L 80,176" fill="none" stroke="black"></path>
+            <path d="M 208,176 L 288,176" fill="none" stroke="black"></path>
+            <path d="M 512,176 L 600,176" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="512,128 500,122.4 500,133.6" fill="black" transform="rotate(0,504,128)"></polygon>
+            <polygon class="arrowhead" points="512,64 500,58.4 500,69.6" fill="black" transform="rotate(0,504,64)"></polygon>
+            <polygon class="arrowhead" points="304,144 292,138.4 292,149.6" fill="black" transform="rotate(180,296,144)"></polygon>
+            <polygon class="arrowhead" points="304,64 292,58.4 292,69.6" fill="black" transform="rotate(180,296,64)"></polygon>
+            <polygon class="arrowhead" points="208,80 196,74.4 196,85.6" fill="black" transform="rotate(0,200,80)"></polygon>
             <polygon class="arrowhead" points="96,112 84,106.4 84,117.6" fill="black" transform="rotate(180,88,112)"></polygon>
             <g class="text">
-              <text x="580" y="52">Exchange</text>
-              <text x="584" y="68">Cryptographic</text>
+              <text x="396" y="52">Exchange</text>
+              <text x="400" y="68">Cryptographic</text>
               <text x="144" y="84">Request</text>
-              <text x="580" y="84">material</text>
+              <text x="396" y="84">material</text>
               <text x="44" y="100">User</text>
-              <text x="264" y="100">Agent</text>
-              <text x="908" y="100">Origin</text>
+              <text x="248" y="100">Agent</text>
+              <text x="556" y="100">Origin</text>
               <text x="148" y="116">Response</text>
-              <text x="376" y="132">GET</text>
-              <text x="464" y="132">/path/to/resource</text>
-              <text x="404" y="148">Signature:</text>
-              <text x="472" y="148">abc==</text>
-              <text x="428" y="164">Signature-Input:</text>
-              <text x="640" y="164">sig=(@authority);tag="web-bot-auth"</text>
-              <text x="428" y="180">Signature-Agent:</text>
-              <text x="572" y="180">signer.example.com</text>
+              <text x="352" y="132">Request</text>
+              <text x="392" y="132">+</text>
+              <text x="440" y="132">Signature</text>
+              <text x="356" y="148">Response</text>
+              <text x="400" y="148">+</text>
+              <text x="448" y="148">Signature</text>
             </g>
           </svg><a href="#section-4-1.1" class="pilcrow">¶</a>
 </div>
@@ -1504,6 +1504,67 @@ validates the signature, and processes the request if the signature is valid.<a 
 Because the <code>nonce</code> is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="sending-a-request">
+<section id="section-4.2.2">
+          <h4 id="name-sending-a-request">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-sending-a-request" class="section-name selfRef">Sending a request</a>
+          </h4>
+<p id="section-4.2.2-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<div id="section-4.2.2-2">
+            <div class="alignLeft art-svg artwork" id="section-4.2.2-2.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="208" width="744" viewBox="0 0 744 208" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,32 L 8,160" fill="none" stroke="black"></path>
+                <path d="M 88,32 L 88,160" fill="none" stroke="black"></path>
+                <path d="M 136,112 L 136,192" fill="none" stroke="black"></path>
+                <path d="M 576,112 L 576,192" fill="none" stroke="black"></path>
+                <path d="M 648,32 L 648,160" fill="none" stroke="black"></path>
+                <path d="M 736,32 L 736,160" fill="none" stroke="black"></path>
+                <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
+                <path d="M 648,32 L 736,32" fill="none" stroke="black"></path>
+                <path d="M 96,62 L 296,62" fill="none" stroke="black"></path>
+                <path d="M 96,66 L 296,66" fill="none" stroke="black"></path>
+                <path d="M 440,62 L 640,62" fill="none" stroke="black"></path>
+                <path d="M 440,66 L 640,66" fill="none" stroke="black"></path>
+                <path d="M 136,112 L 576,112" fill="none" stroke="black"></path>
+                <path d="M 88,128 L 128,128" fill="none" stroke="black"></path>
+                <path d="M 584,128 L 640,128" fill="none" stroke="black"></path>
+                <path d="M 8,160 L 88,160" fill="none" stroke="black"></path>
+                <path d="M 648,160 L 736,160" fill="none" stroke="black"></path>
+                <path d="M 136,192 L 576,192" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="648,128 636,122.4 636,133.6" fill="black" transform="rotate(0,640,128)"></polygon>
+                <polygon class="arrowhead" points="648,64 636,58.4 636,69.6" fill="black" transform="rotate(0,640,64)"></polygon>
+                <polygon class="arrowhead" points="104,64 92,58.4 92,69.6" fill="black" transform="rotate(180,96,64)"></polygon>
+                <g class="text">
+                  <text x="364" y="52">Exchange</text>
+                  <text x="368" y="68">Cryptographic</text>
+                  <text x="364" y="84">material</text>
+                  <text x="48" y="100">Agent</text>
+                  <text x="692" y="100">Origin</text>
+                  <text x="160" y="132">GET</text>
+                  <text x="248" y="132">/path/to/resource</text>
+                  <text x="188" y="148">Signature:</text>
+                  <text x="256" y="148">abc==</text>
+                  <text x="212" y="164">Signature-Input:</text>
+                  <text x="424" y="164">sig=(@authority);tag="web-bot-auth"</text>
+                  <text x="212" y="180">Signature-Agent:</text>
+                  <text x="356" y="180">signer.example.com</text>
+                </g>
+              </svg><a href="#section-4.2.2-2.1" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-4.2.2-3">The Agent <span class="bcp14">SHOULD</span> send requests with two headers<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.2.2-4">
+<li id="section-4.2.2-4.1">
+              <p id="section-4.2.2-4.1.1"><code>Signature</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a><a href="#section-4.2.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-4.2.2-4.2">
+              <p id="section-4.2.2-4.2.1"><code>Signature-Input</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a><a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+<p id="section-4.2.2-5">Mentioned in a section below, the Agent <span class="bcp14">MAY</span> send request with an additional header
+3. <code>Signature-Agent</code> defined in <a href="#signature-agent" class="auto internal xref">Section 4.5.3</a><a href="#section-4.2.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="requesting-message-signature">
@@ -1578,7 +1639,7 @@ Similar to regular User-Agent check, this happens at the HTTP layer, once header
 <p id="section-4.5.2-1">Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.<a href="#section-4.5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="signature-agent-header">
+<div id="signature-agent">
 <section id="section-4.5.3">
           <h4 id="name-signature-agent-header">
 <a href="#section-4.5.3" class="section-number selfRef">4.5.3. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
