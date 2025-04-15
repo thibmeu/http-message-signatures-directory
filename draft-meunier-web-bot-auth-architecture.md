@@ -128,16 +128,16 @@ The following terms are used throughout this document:
 # Architecture
 
 ~~~aasvg
-+--------+                 +---------+                                                                     +----------+                           
-|        |                 |         |                              Exchange                               |          |                           
-|        |                 |         |<=========================  Cryptographic  =========================>|          |                           
-|        +----Request----->|         |                              material                               |          |                           
-|  User  |                 |  Agent  |                                                                     |  Origin  |                           
-|        |<---Response-----+         |     +------------------------------------------------------+        |          |                           
-|        |                 |         +-----| GET /path/to/resource                                |------->|          |                           
-|        |                 |         |     | Signature: abc==                                     |        |          |                           
-+--------+                 +---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+                           
-                                           | Signature-Agent: signer.example.com                  |                                               
++--------+                 +---------+                                                                     +----------+
+|        |                 |         |                              Exchange                               |          |
+|        |                 |         |<=========================  Cryptographic  =========================>|          |
+|        +----Request----->|         |                              material                               |          |
+|  User  |                 |  Agent  |                                                                     |  Origin  |
+|        |<---Response-----+         |     +------------------------------------------------------+        |          |
+|        |                 |         +-----| GET /path/to/resource                                |------->|          |
+|        |                 |         |     | Signature: abc==                                     |        |          |
++--------+                 +---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+
+                                           | Signature-Agent: signer.example.com                  |
                                            +------------------------------------------------------+
 ~~~
 
