@@ -28,10 +28,7 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
-  DIRECTORY:
-    anchor: I-D.draft-meunier-http-message-signatures-directory
-    title: HTTP Message Signatures Directory
-    target: https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html
+  DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
