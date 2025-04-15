@@ -131,11 +131,11 @@ The following terms are used throughout this document:
 +--------+               +---------+                           +----------+
 |        |               |         |         Exchange          |          |
 |        |               |         |<===== Cryptographic =====>|          |
-|        +--- Request -->|         |         material          |          |
-|  User  |               |  Agent  |                           |  Origin  |
-|        |<-- Response --+         |                           |          |
+|        |               |         |         material          |          |
+|  User  +--- Request -->|  Agent  |                           |  Origin  |
 |        |               |         +--- Request + Signature -->|          |
 |        |               |         |<-------- Response --------+          |
+|        |<-- Response --+         |                           |          |
 |        |               |         |                           |          |
 +--------+               +---------+                           +----------+
 ~~~
