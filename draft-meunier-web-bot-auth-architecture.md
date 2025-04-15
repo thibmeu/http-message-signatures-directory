@@ -133,12 +133,12 @@ The following terms are used throughout this document:
 |        |                 |         |<=========================  Cryptographic  =========================>|          |
 |        +----Request----->|         |                              material                               |          |
 |  User  |                 |  Agent  |                                                                     |  Origin  |
-|        |<---Response-----+         |     +------------------------------------------------------+        |          |
+|        |<---Response-----+         |     .------------------------------------------------------.        |          |
 |        |                 |         +-----| GET /path/to/resource                                |------->|          |
 |        |                 |         |     | Signature: abc==                                     |        |          |
 +--------+                 +---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+
                                            | Signature-Agent: signer.example.com                  |
-                                           +------------------------------------------------------+
+                                           '------------------------------------------------------'
 ~~~
 
 A User initiates an action requiring the Agent to perform an HTTP request.
