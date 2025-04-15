@@ -26,6 +26,10 @@ author:
     fullname: Thibault Meunier
     organization: Cloudflare
     email: ot-ietf@thibault.uk
+ -
+    fullname: Scott Hendrickson
+    organization: Google
+    email: scott@shendrickson.com
 
 normative:
   HTTP: RFC9110
