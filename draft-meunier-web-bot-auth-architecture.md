@@ -128,17 +128,16 @@ The following terms are used throughout this document:
 # Architecture
 
 ~~~aasvg
-+--------+                 +---------+                                                                     +----------+
-|        |                 |         |                              Exchange                               |          |
-|        |                 |         |<=========================  Cryptographic  =========================>|          |
-|        +----Request----->|         |                              material                               |          |
-|  User  |                 |  Agent  |                                                                     |  Origin  |
-|        |<---Response-----+         |     .------------------------------------------------------.        |          |
-|        |                 |         +-----| GET /path/to/resource                                |------->|          |
-|        |                 |         |     | Signature: abc==                                     |        |          |
-+--------+                 +---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+
-                                           | Signature-Agent: signer.example.com                  |
-                                           '------------------------------------------------------'
++--------+               +---------+                           +----------+
+|        |               |         |         Exchange          |          |
+|        |               |         |<===== Cryptographic =====>|          |
+|        +--- Request -->|         |         material          |          |
+|  User  |               |  Agent  |                           |  Origin  |
+|        |<-- Response --+         |                           |          |
+|        |               |         +--- Request + Signature -->|          |
+|        |               |         |<-- Response + Signature --+          |
+|        |               |         |                           |          |
++--------+               +---------+                           +----------+
 ~~~
 
 A User initiates an action requiring the Agent to perform an HTTP request.
@@ -194,6 +193,32 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
 Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
 
+### Sending a request
+
+An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.
+
+~~~aasvg
++---------+                                                                     +----------+
+|         |                              Exchange                               |          |
+|         |<=========================  Cryptographic  =========================>|          |
+|         |                              material                               |          |
+|  Agent  |                                                                     |  Origin  |
+|         |     .------------------------------------------------------.        |          |
+|         +-----| GET /path/to/resource                                |------->|          |
+|         |     | Signature: abc==                                     |        |          |
++---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+
+                | Signature-Agent: signer.example.com                  |
+                '------------------------------------------------------'
+~~~
+
+The Agent SHOULD send requests with two headers
+
+1. `Signature` defined in {{generating-http-message-signature}}
+2. `Signature-Input` defined in {{generating-http-message-signature}}
+
+Mentioned in a section below, the Agent MAY send request with an additional header
+3. `Signature-Agent` defined in {{signature-agent}}
+
 ## Requesting a Message signature {#requesting-message-signature}
 
 {{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, Origins MUST use the same parameters as those defined by the {{generating-http-message-signature}}.
@@ -245,7 +270,7 @@ A service submitting their key to an origin, or the origin manually adding a ser
 
 Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.
 
-### Signature-Agent header
+### Signature-Agent header {#signature-agent}
 
 This is defined in the sibling draft.
 This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
