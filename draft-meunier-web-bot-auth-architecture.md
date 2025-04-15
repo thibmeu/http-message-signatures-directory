@@ -135,7 +135,7 @@ The following terms are used throughout this document:
 |  User  |               |  Agent  |                           |  Origin  |
 |        |<-- Response --+         |                           |          |
 |        |               |         +--- Request + Signature -->|          |
-|        |               |         |<-- Response + Signature --+          |
+|        |               |         |<-------- Response --------+          |
 |        |               |         |                           |          |
 +--------+               +---------+                           +----------+
 ~~~
