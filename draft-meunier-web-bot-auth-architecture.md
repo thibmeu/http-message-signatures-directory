@@ -185,7 +185,7 @@ Origins MAY want to prevent signatures from being spoofed or used multiple times
 Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follow
 
 `nonce`
-: base64url encoded random string
+: base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
 
 This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
 Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
