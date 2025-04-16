@@ -1571,6 +1571,7 @@ Because the <code>nonce</code> is controlled by the client, the origin needs to 
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-requesting-a-message-signat" class="section-name selfRef">Requesting a Message signature</a>
         </h3>
 <p id="section-4.3-1"><span><a href="https://rfc-editor.org/rfc/rfc9421#section-5" class="relref">Section 5</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> defines the <code>Accept-Signature</code> field which can be used to request a Message Signature from a client by an origin. Origin <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially provide them. If requesting, Origins <span class="bcp14">MUST</span> use the same parameters as those defined by the <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">Origin <span class="bcp14">MAY</span> request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="validating-message-signature">

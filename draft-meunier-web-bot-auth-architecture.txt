@@ -307,6 +307,11 @@ Table of Contents
    that did not initially provide them.  If requesting, Origins MUST use
    the same parameters as those defined by the Section 4.2.
 
+   Origin MAY request a new signature with tag "web-bot-auth" even if a
+   nonce is provided, for example if it believes the nonce is a replay,
+   or if it doesn't store nonces and thus requests new signatures every
+   time.
+
 4.4.  Validating Message signature
 
    Upon receiving an HTTP request, the origin has to verify the
