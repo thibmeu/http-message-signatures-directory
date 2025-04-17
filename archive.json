@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-15T01:55:34.869023+00:00",
+  "timestamp": "2025-04-17T01:53:40.141348+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -49,28 +49,95 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 4,
+      "id": "I_kwDOOXJyWM6ywrL-",
+      "title": "Discuss tradeoff between replay resistance and efficiency",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/4",
+      "state": "OPEN",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
+      "createdAt": "2025-04-16T09:52:49Z",
+      "updatedAt": "2025-04-16T09:52:49Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOOXJyWM6yw1fO",
+      "title": "Threat model: Multi-CDN",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/5",
+      "state": "OPEN",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In a multi-CDN use-case all the CDNs need to trust each other, because one CDN can use signed requests that it receives to impersonate an agent to the others. This attack exists even if the CDN uses `Accept-Signature` to provide a fresh nonce, because the malicious CDN can simply forward the `Accept-Signature` message to the agent.  We should add a sentence to the threat model covering this possibility.\n\nI'm not sure how this can be avoided without cooperation from the client, because even if the CDN creates a structured / authenticated nonce, if the client doesn't understand the structure it will sign it even if it comes from the \"wrong\" CDN. Even with cooperation from the client, I'm not sure how the client could easily / reliably distinguish between CDNs.",
+      "createdAt": "2025-04-16T10:09:26Z",
+      "updatedAt": "2025-04-16T10:09:26Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOOXJyWM6yxH2d",
+      "title": "Performance of a global nonce store",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/7",
+      "state": "OPEN",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "To enforce nonces strictly the origin needs to keep a list of all nonces that it has seen whose signatures are still valid. For a multi-server architecture this could amount to a sync on a global database, which could have a significant performance cost, especially as most requests will both read and write. In practice it might make more sense to enforce weaker guarantees in the name of performance.",
+      "createdAt": "2025-04-16T10:36:31Z",
+      "updatedAt": "2025-04-16T10:36:31Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOOXJyWM6yyKMU",
+      "title": "Add acknowledgements",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/8",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [],
+      "body": "Acknowledgements need to be in at some point. Ideally before the spec is adopted by a WG.\n\nI have a list with at least 10 people I'd like to add. Let's reach out and make sure they are OK with being mentioned in a public document, and if they have specificities.",
+      "createdAt": "2025-04-16T12:27:50Z",
+      "updatedAt": "2025-04-16T12:27:50Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
       "id": "PR_kwDOOXJyWM6SQlLt",
       "title": "First pass - mostly motivation adjustments",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "smhendrickson",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-04-11T13:17:32Z",
-      "updatedAt": "2025-04-11T13:19:09Z",
+      "updatedAt": "2025-04-15T15:53:31Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
-      "baseRefOid": "a8b8c9472eb61de4e31a40f67ec2700edcfda480",
+      "baseRefOid": "32d3cf4056ff5df2347be885a671c47e8608f300",
       "headRepository": "smhendrickson/http-message-signatures-directory",
       "headRefName": "firstpass",
       "headRefOid": "45f502bf4e3f3f669e718c2a275c84e1f3fbe4f2",
-      "closedAt": null,
+      "closedAt": "2025-04-15T15:53:30Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -81,9 +148,181 @@
           "body": "Note I renamed this from Automated Agent to agent. I think the `Automation` term blurs intent, and is orthogonal to the purpose of this mechanism.",
           "createdAt": "2025-04-11T13:19:08Z",
           "updatedAt": "2025-04-11T13:19:08Z"
+        },
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "NONE",
+          "body": "Closing given additions in https://github.com/thibmeu/http-message-signatures-directory/commit/7291dbaa11116b4885574d5c60324d7d7f35278e",
+          "createdAt": "2025-04-15T15:53:30Z",
+          "updatedAt": "2025-04-15T15:53:30Z"
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOOXJyWM6Sse_X",
+      "title": "Add Scott as Author",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/2",
+      "state": "CLOSED",
+      "author": "smhendrickson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Given the changes added in \nhttps://github.com/thibmeu/http-message-signatures-directory/commit/7291dbaa11116b4885574d5c60324d7d7f35278e",
+      "createdAt": "2025-04-15T15:56:09Z",
+      "updatedAt": "2025-04-15T18:45:18Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "d5d43299bd09efa98995bba50f6fccecca19a343",
+      "headRepository": "smhendrickson/http-message-signatures-directory",
+      "headRefName": "author",
+      "headRefOid": "777209bf40a2c79e52c793d321333d33ebb54638",
+      "closedAt": "2025-04-15T18:45:17Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "NONE",
+          "body": "After discussion we are going to use the acknowledgements section until more significant contrib is made. The changes in https://github.com/thibmeu/http-message-signatures-directory/commit/7291dbaa11116b4885574d5c60324d7d7f35278e were mostly editorial, with the exception of Accept-Signatures",
+          "createdAt": "2025-04-15T18:45:17Z",
+          "updatedAt": "2025-04-15T18:45:17Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOOXJyWM6StJqU",
+      "title": "Changes nonce from 32-bit number to string of base64 bytes",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/3",
+      "state": "MERGED",
+      "author": "EthanHeilman",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR changes the nonce from a 32-bit number to a string containing base64 encoded bytes.\r\n\r\nMy rationale is:\r\n\r\n1. Not fixing the size of the nonce enables signers to avoid nonce collisions by selecting the nonce from a larger space.\r\n2. [RFC 9421 HTTP Message Signatures Section-5.1](https://www.rfc-editor.org/rfc/rfc9421#section-5.1) allows the verifier to specify in the Accept-Signature header the nonce a signer must use in the signature they generate. Existing code may not assume this nonce is limited to 32-bits.\r\n3. RFC 9421 uses strings of base64 encoded bytes in the examples for nonces so this limitation would be unexpected.\r\n4. It allows for the use of signed or otherwise authenticated nonces such as those generated by a random beacon.\r\n\r\nPerhaps we shouldn't limit this to strings of base64 encoded bytes. RFC 9421 defines the nonce as just a string defining it as:\r\n\r\n> nonce:  A random unique value generated for this signature as a String value.\r\n\r\nWhat do you think @thibmeu?\r\n\r\n\r\n",
+      "createdAt": "2025-04-15T17:17:15Z",
+      "updatedAt": "2025-04-16T12:26:17Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "d5d43299bd09efa98995bba50f6fccecca19a343",
+      "headRepository": "EthanHeilman/http-message-signatures-directory",
+      "headRefName": "patch-1",
+      "headRefOid": "fe72a1442f6a23525049f9ea1f71e3ae1555a099",
+      "closedAt": "2025-04-16T12:26:16Z",
+      "mergedAt": "2025-04-16T12:26:16Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "9a4c04a35401c2017d1b0bc463029b832f6b1f9d"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6lM847",
+          "commit": {
+            "abbreviatedOid": "4a7c51b"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "This is a good point! uint32 might be restrictive, and is not needed for the security of the protocol.\r\n\r\nAdded a suggestion about using byte-array instead of string, and a specific recommended size",
+          "createdAt": "2025-04-16T08:27:17Z",
+          "updatedAt": "2025-04-16T08:30:02Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n: base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.\r\n```\r\n\r\nI prefer byte array because there is no consideration about the string encoding (ASCII, UTF-8, others). It's likely more generic.\r\n\r\nI think providing a concrete suggestion for the nonce size should help for implementation. `64-byte` sounds good enough, but open for suggestions.",
+              "createdAt": "2025-04-16T08:27:18Z",
+              "updatedAt": "2025-04-16T08:30:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6lPkAT",
+          "commit": {
+            "abbreviatedOid": "4a7c51b"
+          },
+          "author": "EthanHeilman",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-16T12:23:40Z",
+          "updatedAt": "2025-04-16T12:23:40Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "That makes sense to me",
+              "createdAt": "2025-04-16T12:23:40Z",
+              "updatedAt": "2025-04-16T12:23:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6lPlen",
+          "commit": {
+            "abbreviatedOid": "fe72a14"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "This is much better. Thanks for the prompt and fix!",
+          "createdAt": "2025-04-16T12:25:52Z",
+          "updatedAt": "2025-04-16T12:25:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOOXJyWM6S0Oua",
+      "title": "Add text on other reasons a server might request a signature.",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/6",
+      "state": "MERGED",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft mentions that a server might request a signature if a nonce isn't present in the original request. This adds text mentioning other potential cases that may come up.",
+      "createdAt": "2025-04-16T10:24:14Z",
+      "updatedAt": "2025-04-16T15:31:24Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "9a4c04a35401c2017d1b0bc463029b832f6b1f9d",
+      "headRepository": "jhoyla/http-message-signatures-directory",
+      "headRefName": "jhoyla/update-sig-acc-reasons",
+      "headRefOid": "8aac1314d93cc206a7c69fd9ff6ddd49fb035676",
+      "closedAt": "2025-04-16T15:31:24Z",
+      "mergedAt": "2025-04-16T15:31:24Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "5a253b6550023975456e0cd6be41fc7c16d20d0d"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6lPou9",
+          "commit": {
+            "abbreviatedOid": "fd3c3c3"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-16T12:30:07Z",
+          "updatedAt": "2025-04-16T12:30:08Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\r\nOrigin MAY request a new signature with tag \"web-bot-auth\" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.\r\n```",
+              "createdAt": "2025-04-16T12:30:07Z",
+              "updatedAt": "2025-04-16T12:30:08Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
