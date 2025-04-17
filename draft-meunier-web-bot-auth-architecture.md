@@ -156,7 +156,7 @@ Signature verification can be performed either directly by origins or delegated 
 Agents MUST include the following component:
 
 `@authority`
-: as defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURES}}
+: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 Agents MUST include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
