@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                             16 April 2025
-Expires: 18 October 2025
+Intended status: Informational                             17 April 2025
+Expires: 19 October 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 October 2025.
+   This Internet-Draft will expire on 19 October 2025.
 
 Copyright Notice
 
@@ -231,7 +231,7 @@ Table of Contents
 
    Agents MUST include the following component:
 
-   @authority  as defined in Section 2.2.1 of [HTTP-MESSAGE-SIGNATURES]
+   @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES]
 
    Agents MUST include the following @signature-params as defined in
    Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
