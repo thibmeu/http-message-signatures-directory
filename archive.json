@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-17T01:53:40.141348+00:00",
+  "timestamp": "2025-04-20T02:00:19.725303+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -78,9 +78,17 @@
       "labels": [],
       "body": "In a multi-CDN use-case all the CDNs need to trust each other, because one CDN can use signed requests that it receives to impersonate an agent to the others. This attack exists even if the CDN uses `Accept-Signature` to provide a fresh nonce, because the malicious CDN can simply forward the `Accept-Signature` message to the agent.  We should add a sentence to the threat model covering this possibility.\n\nI'm not sure how this can be avoided without cooperation from the client, because even if the CDN creates a structured / authenticated nonce, if the client doesn't understand the structure it will sign it even if it comes from the \"wrong\" CDN. Even with cooperation from the client, I'm not sure how the client could easily / reliably distinguish between CDNs.",
       "createdAt": "2025-04-16T10:09:26Z",
-      "updatedAt": "2025-04-16T10:09:26Z",
+      "updatedAt": "2025-04-18T12:26:54Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Possibly along this line, enhancing the security considerations to mention HTTP Message Signatures would be one identification method, and is going to be used in conjunction with others (old like IP ranges, new like req mTLS).\n\nIf the IP range of the origin was allowlisted, that would already reduce potential abuse, even if this is out of scope for this draft.",
+          "createdAt": "2025-04-18T12:26:53Z",
+          "updatedAt": "2025-04-18T12:26:53Z"
+        }
+      ]
     },
     {
       "number": 7,
@@ -321,6 +329,48 @@
               "updatedAt": "2025-04-16T12:30:08Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOOXJyWM6TA6B5",
+      "title": "Correct reference for @authority",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/9",
+      "state": "MERGED",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reference points to Section 2.2.1 ([Method](https://www.rfc-editor.org/rfc/rfc9421#section-2.2.1)), but authority is defined in 2.2.3 ([Authority](https://www.rfc-editor.org/rfc/rfc9421#section-2.2.3)).",
+      "createdAt": "2025-04-17T16:20:06Z",
+      "updatedAt": "2025-04-17T17:44:13Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "5a253b6550023975456e0cd6be41fc7c16d20d0d",
+      "headRepository": "jhoyla/http-message-signatures-directory",
+      "headRefName": "jhoyla/fix-auth-ref",
+      "headRefOid": "115eaaf5bdc416f26803e47f53634fceb57bd266",
+      "closedAt": "2025-04-17T17:44:13Z",
+      "mergedAt": "2025-04-17T17:44:13Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "3cf7309bb499f26df35e7de1ad2710796cac6df2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6lfk7p",
+          "commit": {
+            "abbreviatedOid": "115eaaf"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Good catch",
+          "createdAt": "2025-04-17T17:44:06Z",
+          "updatedAt": "2025-04-17T17:44:06Z",
+          "comments": []
         }
       ]
     }
