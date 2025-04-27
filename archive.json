@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-24T01:55:22.700151+00:00",
+  "timestamp": "2025-04-27T02:00:50.804923+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -139,6 +139,24 @@
       "body": "There are multiple places where CBOR and CBOR Web keys could be introduced.\n\n1. HTTP Message Signature directory format. I'd be in favor of add `+json` at the end of the directory Media type, so that we can declare `+cbor` when relevant\n2. JSON Web Thumbprint is used as a key id. This is great because it provides a unique key id that is derived from the key material. I'd be in favor of sticking to ONE key id derivation method, even though [RFC 9679](https://www.rfc-editor.org/rfc/rfc9679.html) defines a Thumbprint for COSE Keys.",
       "createdAt": "2025-04-23T15:12:02Z",
       "updatedAt": "2025-04-23T15:12:02Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOOXJyWM6z9hV0",
+      "title": "Positive and negative test vectors",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/11",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "This relates to https://github.com/cloudflareresearch/web-bot-auth/issues/4\n\nIt should be fine to limit these vectors to Ed25519 initially.",
+      "createdAt": "2025-04-25T07:36:43Z",
+      "updatedAt": "2025-04-25T07:36:43Z",
       "closedAt": null,
       "comments": []
     }
