@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-27T02:00:50.804923+00:00",
+  "timestamp": "2025-04-29T01:56:24.058479+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -157,6 +157,60 @@
       "body": "This relates to https://github.com/cloudflareresearch/web-bot-auth/issues/4\n\nIt should be fine to limit these vectors to Ed25519 initially.",
       "createdAt": "2025-04-25T07:36:43Z",
       "updatedAt": "2025-04-25T07:36:43Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOOXJyWM60Pl9N",
+      "title": "Consideration around signing Signature-Agent header",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/12",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "Vercel [shared](https://mailarchive.ietf.org/arch/msg/web-bot-auth/-ON1BdJMNWZmTgZGshBOHxnTSiQ/) they have been working on a similar proposal on their side.\n\nOne difference is they include the bot origin as part of the signature. In the current draft, this would be signing `Signature-Agent` header.\n\nWith [RFC 9421 Section 2.1](https://datatracker.ietf.org/doc/html/rfc9421#name-http-fields), this can be done by adding `\"signature-agent\"` to the component part of `Signature-Input`.",
+      "createdAt": "2025-04-28T07:31:30Z",
+      "updatedAt": "2025-04-28T07:49:06Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOOXJyWM60P0gW",
+      "title": "Relation to OAuth 2",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/13",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "There has been a couple of feedback about why not use OAuth 2, DPoP, maybe OIDC in general. We should consider having a section in the appendix to address that.\n\nFrom the top of my head:\n* This is similar indeed: one standard which we scope specifically for bots, with a tag/purpose, key ID definition\n* HTTP Message Signatures provides @authority derived component\n* The use of JWK Thumbprint as kid is sufficient. No need for DPoP\n* DPoP is specifically addressing replay and access refresh\n* The Authorization server is the client, which seems to be closer to HTTP Message Signatures design\n* Extensibility to allow request integrity and non-repudiability with HTTP Message Signatures, possibly with mulitple ones\n",
+      "createdAt": "2025-04-28T07:55:30Z",
+      "updatedAt": "2025-04-28T07:55:30Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOOXJyWM60P13-",
+      "title": "Consider `Signature-Agent` header to be more than HTTP Message Signatures directory",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/14",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "At the moment, this is defined as providing an HTTP Message Signatures Directory.\n\nIf OAuth 2 is used as well (should it #13 ?), it could be interesting to have something broader.",
+      "createdAt": "2025-04-28T07:57:17Z",
+      "updatedAt": "2025-04-28T07:57:17Z",
       "closedAt": null,
       "comments": []
     }
