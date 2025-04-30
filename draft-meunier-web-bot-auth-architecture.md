@@ -360,4 +360,10 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document:
+Marwan Fayed,
+Scott Hendrickson,
+Jonathan Hoyland,
+Mark Nottingham,
+Eugenio Panero,
+Tanya Verma.
