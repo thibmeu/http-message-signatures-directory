@@ -180,7 +180,7 @@ It is RECOMMEND the expiry to be no more than 24 hours.
 
 ### Signature-Agent {#signature-agent}
 
-`Signature-Agent` is an HTTP Method context header defined in {{Section 4.1 of DIRECTORY}}.
+`Signature-Agent` is an HTTP Method context header defined in Section 4.1 of {{DIRECTORY}}.
 It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
 If the header is to be sent, it MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
 
@@ -202,7 +202,7 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
 Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
 
-### Sending a request (#sending-request)
+### Sending a request {#sending-request}
 
 An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.
 
@@ -375,7 +375,7 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 # Acknowledgments
 {:numbered="false"}
 
-The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document:
+The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document -
 Marwan Fayed,
 Maxime Guerreiro,
 Scott Hendrickson,
