@@ -216,7 +216,10 @@ An Agent SHOULD send a request with the signature generated above. Updating the 
 |         +-----| GET /path/to/resource                               |------->|          |
 |         |     | Signature: abc==                                    |        |          |
 +---------+     | Signature-Input: sig=(@authority signature-agent);\ |        +----------+
-                |                                  tag="web-bot-auth" |
+                |                  created=1700000000;\               |
+                |                  expires=1700011111;\               |
+                |                  keyid="ba3e64==";\                 |
+                |                  tag="web-bot-auth"                 |
                 | Signature-Agent: signer.example.com                 |
                 '-----------------------------------------------------'
 ~~~
