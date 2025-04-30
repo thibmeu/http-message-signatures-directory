@@ -178,6 +178,18 @@ The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNAT
 
 It is RECOMMEND the expiry to be no more than 24 hours.
 
+### Signature-Agent {#signature-agent}
+
+`Signature-Agent` is an HTTP Method context header defined in {{Section 4.1 of DIRECTORY}}.
+It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
+If the header is to be sent, it MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
+
+This results in the following components to be signed
+
+~~~
+("@authority" "signature-agent")
+~~~
+
 ### Anti-replay
 
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
@@ -190,22 +202,23 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
 Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
 
-### Sending a request
+### Sending a request (#sending-request)
 
 An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.
 
 ~~~aasvg
-+---------+                                                                     +----------+
-|         |                              Exchange                               |          |
-|         |<=========================  Cryptographic  =========================>|          |
-|         |                              material                               |          |
-|  Agent  |                                                                     |  Origin  |
-|         |     .------------------------------------------------------.        |          |
-|         +-----| GET /path/to/resource                                |------->|          |
-|         |     | Signature: abc==                                     |        |          |
-+---------+     | Signature-Input: sig=(@authority);tag="web-bot-auth" |        +----------+
-                | Signature-Agent: signer.example.com                  |
-                '------------------------------------------------------'
++---------+                                                                    +----------+
+|         |                              Exchange                              |          |
+|         |<=========================  Cryptographic  ========================>|          |
+|         |                              material                              |          |
+|  Agent  |                                                                    |  Origin  |
+|         |     .-----------------------------------------------------.        |          |
+|         +-----| GET /path/to/resource                               |------->|          |
+|         |     | Signature: abc==                                    |        |          |
++---------+     | Signature-Input: sig=(@authority signature-agent);\ |        +----------+
+                |                                  tag="web-bot-auth" |
+                | Signature-Agent: signer.example.com                 |
+                '-----------------------------------------------------'
 ~~~
 
 The Agent SHOULD send requests with two headers
@@ -213,8 +226,7 @@ The Agent SHOULD send requests with two headers
 1. `Signature` defined in {{generating-http-message-signature}}
 2. `Signature-Input` defined in {{generating-http-message-signature}}
 
-Mentioned in a section below, the Agent MAY send request with an additional header
-3. `Signature-Agent` defined in {{signature-agent}}
+Mentioned in a section {{signature-agent}}, the Agent MAY send request with `Signature-Agent` header.
 
 ## Requesting a Message signature {#requesting-message-signature}
 
@@ -269,10 +281,10 @@ A service submitting their key to an origin, or the origin manually adding a ser
 
 Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.
 
-### Signature-Agent header {#signature-agent}
+### Signature-Agent header {#signature-agent-header}
 
-This is defined in the sibling draft.
 This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
+See section {{signature-agent}} for more details.
 
 # Security Considerations
 
