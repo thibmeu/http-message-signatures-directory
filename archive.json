@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-29T01:56:24.058479+00:00",
+  "timestamp": "2025-05-01T02:05:17.641370+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -111,7 +111,7 @@
       "id": "I_kwDOOXJyWM6yyKMU",
       "title": "Add acknowledgements",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -120,9 +120,17 @@
       "labels": [],
       "body": "Acknowledgements need to be in at some point. Ideally before the spec is adopted by a WG.\n\nI have a list with at least 10 people I'd like to add. Let's reach out and make sure they are OK with being mentioned in a public document, and if they have specificities.",
       "createdAt": "2025-04-16T12:27:50Z",
-      "updatedAt": "2025-04-16T12:27:50Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-04-30T08:28:22Z",
+      "closedAt": "2025-04-30T08:28:22Z",
+      "comments": [
+        {
+          "author": "epanero-openai",
+          "authorAssociation": "NONE",
+          "body": "@thibmeu happy to be acknowledged. you can use `Eugenio Panero (epanero@openai.com)` as my name. Thanks!",
+          "createdAt": "2025-04-29T18:59:50Z",
+          "updatedAt": "2025-04-29T19:00:13Z"
+        }
+      ]
     },
     {
       "number": 10,
@@ -165,7 +173,7 @@
       "id": "I_kwDOOXJyWM60Pl9N",
       "title": "Consideration around signing Signature-Agent header",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/12",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -174,9 +182,24 @@
       ],
       "body": "Vercel [shared](https://mailarchive.ietf.org/arch/msg/web-bot-auth/-ON1BdJMNWZmTgZGshBOHxnTSiQ/) they have been working on a similar proposal on their side.\n\nOne difference is they include the bot origin as part of the signature. In the current draft, this would be signing `Signature-Agent` header.\n\nWith [RFC 9421 Section 2.1](https://datatracker.ietf.org/doc/html/rfc9421#name-http-fields), this can be done by adding `\"signature-agent\"` to the component part of `Signature-Input`.",
       "createdAt": "2025-04-28T07:31:30Z",
-      "updatedAt": "2025-04-28T07:49:06Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-04-30T15:22:23Z",
+      "closedAt": "2025-04-30T15:22:23Z",
+      "comments": [
+        {
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "body": "I strongly want (-> MUST) `Signature-Agent` to be included in the `Signature-Input` to be considered valid by origins.\n\nAlso, +1 on having this be a signature **component** rather than a brand new header.",
+          "createdAt": "2025-04-29T13:53:55Z",
+          "updatedAt": "2025-04-29T13:53:55Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I'll see how to word the fact that \"if there is a Signature-Agent\" header, it MUST be signed. If there is no such header, it's not signed.\n\nAlso forgot to mention this comes from @cramforce, in case they want to weight in.",
+          "createdAt": "2025-04-29T14:02:29Z",
+          "updatedAt": "2025-04-29T14:02:29Z"
+        }
+      ]
     },
     {
       "number": 13,
@@ -210,9 +233,17 @@
       ],
       "body": "At the moment, this is defined as providing an HTTP Message Signatures Directory.\n\nIf OAuth 2 is used as well (should it #13 ?), it could be interesting to have something broader.",
       "createdAt": "2025-04-28T07:57:17Z",
-      "updatedAt": "2025-04-28T07:57:17Z",
+      "updatedAt": "2025-04-30T08:03:43Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Discussed with @EthanHeilman as it relates to https://github.com/dickhardt/openid-key-binding/ as well.\nOne main difference is that our current draft mandates the kid to be the JWK thumbprint for global uniqueness constraint. This is a similar approach.",
+          "createdAt": "2025-04-30T08:03:42Z",
+          "updatedAt": "2025-04-30T08:03:42Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -461,6 +492,100 @@
           "createdAt": "2025-04-17T17:44:06Z",
           "updatedAt": "2025-04-17T17:44:06Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOOXJyWM6Udviw",
+      "title": "Recommend the inclusion of Signature-Agent within Signature-Input",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/15",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Signs Signature-Agent header as part of the request. This is only a recommendation, as some agents may not have a directory exposed via HTTP for instance.\r\n\r\nCloses #12\r\n\r\ncc @punkeel @cramforce",
+      "createdAt": "2025-04-30T08:28:48Z",
+      "updatedAt": "2025-04-30T15:23:43Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "ab0d135fbe8ec694562f4f81540e769fbe003837",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-12",
+      "headRefOid": "89512ac393193557a149aa21f3b4c463c946a456",
+      "closedAt": "2025-04-30T15:22:22Z",
+      "mergedAt": "2025-04-30T15:22:22Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "e2663b57cf233d3ada5040739957f59dfe30770f"
+      },
+      "comments": [
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think this is a really good change, it makes it much harder for someone to claim someone else's public key. ",
+          "createdAt": "2025-04-30T15:23:42Z",
+          "updatedAt": "2025-04-30T15:23:42Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6nVoqW",
+          "commit": {
+            "abbreviatedOid": "89512ac"
+          },
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-30T15:20:41Z",
+          "updatedAt": "2025-04-30T15:20:41Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "(this is also missing `keyid`)",
+              "createdAt": "2025-04-30T15:20:41Z",
+              "updatedAt": "2025-04-30T15:20:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6nVpA1",
+          "commit": {
+            "abbreviatedOid": "89512ac"
+          },
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-04-30T15:20:59Z",
+          "updatedAt": "2025-04-30T15:20:59Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6nVqX3",
+          "commit": {
+            "abbreviatedOid": "89512ac"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-30T15:22:16Z",
+          "updatedAt": "2025-04-30T15:22:16Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "and expires, and created. I wanted this to be illustrative, but agree that fixing would be great. doing that in the next commit",
+              "createdAt": "2025-04-30T15:22:16Z",
+              "updatedAt": "2025-04-30T15:22:17Z"
+            }
+          ]
         }
       ]
     }
