@@ -352,6 +352,85 @@ This document has no IANA actions.
 
 --- back
 
+# Test Vectors
+
+## Ed25519
+
+The test vectors in this section use the Ed25519 key defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
+This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
+
+### Signature-Agent absent from the request
+
+This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig1`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
+~~~
+
+### Signature-Agent included present on the request
+
+This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ01v/hlsbnLvLDrrA5fBeb1CA==:
+~~~
+
 # Implementations
 
 This draft has a couple of [implementations](https://github.com/cloudflareresearch/web-bot-auth)
@@ -368,7 +447,11 @@ Servers:
 
 * Cloudflare Workers
 
-A demontstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
+Test vectors:
+
+* In JSON format
+
+A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
 
 It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 
