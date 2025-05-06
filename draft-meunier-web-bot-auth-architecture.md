@@ -467,3 +467,23 @@ Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,
 Tanya Verma.
+
+# Changelog
+{:numbered="false"}
+
+v01
+
+- Mandatory signing of Signature-Agent if present
+- Test vectors for request with and without Signature-Agent
+- Update example diagram to be correct
+- Add precision about why origin may request a new signature
+- Acknowledgements
+
+v00
+
+- Initial draft
+- How to leverage HTTP Message Signature to sign request
+- How to verify these Signature
+- Define web-bot-auth tag to scope this signature
+- Derive keyid using JWK Thumbprint
+- High level Security and Privacy considerations
