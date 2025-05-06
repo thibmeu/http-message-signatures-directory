@@ -614,7 +614,7 @@ Appendix B.  Implementations
 
    *  In JSON format
 
-   A demontstration server has been deployed to https://http-message-
+   A demonstration server has been deployed to https://http-message-
    signatures-example.research.cloudflare.com/ (https://http-message-
    signatures-example.research.cloudflare.com/).
 
