@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 2 November 2025</td>
+<td class="center">Expires 7 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-01" class="published">1 May 2025</time>
+<time datetime="2025-05-06" class="published">6 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-02">2 November 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-07">7 November 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1253,13 +1253,29 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-implementations" class="internal xref">Implementations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-ed25519" class="internal xref">Ed25519</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.1">
+                    <p id="section-toc.1-1.9.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-signature-agent-absent-from" class="internal xref">Signature-Agent absent from the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.2">
+                    <p id="section-toc.1-1.9.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-implementations" class="internal xref">Implementations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1834,40 +1850,142 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
 </div>
 </section>
 </div>
-<div id="implementations">
+<div id="test-vectors">
 <section id="appendix-A">
-      <h2 id="name-implementations">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-implementations" class="section-name selfRef">Implementations</a>
+      <h2 id="name-test-vectors">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<p id="appendix-A-1">This draft has a couple of <a href="https://github.com/cloudflareresearch/web-bot-auth">implementations</a><a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">Clients:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<div id="ed25519">
+<section id="appendix-A.1">
+        <h3 id="name-ed25519">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-ed25519" class="section-name selfRef">Ed25519</a>
+        </h3>
+<p id="appendix-A.1-1">The test vectors in this section use the Ed25519 key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+This section include non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<div id="signature-agent-absent-from-the-request">
+<section id="appendix-A.1.1">
+          <h4 id="name-signature-agent-absent-from">
+<a href="#appendix-A.1.1" class="section-number selfRef">A.1.1. </a><a href="#name-signature-agent-absent-from" class="section-name selfRef">Signature-Agent absent from the request</a>
+          </h4>
+<p id="appendix-A.1.1-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
+a <code>Signature-Agent</code> header.<a href="#appendix-A.1.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.1-2">The corresponding signature base is:<a href="#appendix-A.1.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.1-3">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.1-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-A.1.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.1-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
+</pre><a href="#appendix-A.1.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="signature-agent-included-present-on-the-request">
+<section id="appendix-A.1.2">
+          <h4 id="name-signature-agent-included-pr">
+<a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent included present on the request</a>
+          </h4>
+<p id="appendix-A.1.2-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.2-2">The corresponding signature base is:<a href="#appendix-A.1.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.2-3">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.2-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.2-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ01v/hlsbnLvLDrrA5fBeb1CA==:
+</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="implementations">
+<section id="appendix-B">
+      <h2 id="name-implementations">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-implementations" class="section-name selfRef">Implementations</a>
+      </h2>
+<p id="appendix-B-1">This draft has a couple of <a href="https://github.com/cloudflareresearch/web-bot-auth">implementations</a><a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">Clients:<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A-3.1">
-          <p id="appendix-A-3.1.1">Chrome MV3<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B-3.1">
+          <p id="appendix-B-3.1.1">Chrome MV3<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-A-3.2">
-          <p id="appendix-A-3.2.1">Cloudflare Workers<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-3.2">
+          <p id="appendix-B-3.2.1">Cloudflare Workers<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-4">Servers:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<p id="appendix-B-4">Servers:<a href="#appendix-B-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A-5.1">
-          <p id="appendix-A-5.1.1">Caddy plugin<a href="#appendix-A-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B-5.1">
+          <p id="appendix-B-5.1.1">Caddy plugin<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-A-5.2">
-          <p id="appendix-A-5.2.1">Cloudflare Workers<a href="#appendix-A-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.2">
+          <p id="appendix-B-5.2.1">Cloudflare Workers<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-6">A demontstration server has been deployed to <a href="https://http-message-signatures-example.research.cloudflare.com/">https://http-message-signatures-example.research.cloudflare.com/</a>.<a href="#appendix-A-6" class="pilcrow">¶</a></p>
-<p id="appendix-A-7">It uses ed25519 example signing and verifying keys defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#appendix-A-7" class="pilcrow">¶</a></p>
+<p id="appendix-B-6">Test vectors:<a href="#appendix-B-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-7.1">
+          <p id="appendix-B-7.1.1">In JSON format<a href="#appendix-B-7.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-8">A demonstration server has been deployed to <a href="https://http-message-signatures-example.research.cloudflare.com/">https://http-message-signatures-example.research.cloudflare.com/</a>.<a href="#appendix-B-8" class="pilcrow">¶</a></p>
+<p id="appendix-B-9">It uses ed25519 example signing and verifying keys defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#appendix-B-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acknowledgments">
-<section id="appendix-B">
+<section id="appendix-C">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document -
+<p id="appendix-C-1">The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document -
 Marwan Fayed,
 Maxime Guerreiro,
 Scott Hendrickson,
@@ -1875,11 +1993,11 @@ Jonathan Hoyland,
 Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,
-Tanya Verma.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+Tanya Verma.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-C">
+<section id="appendix-D">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>

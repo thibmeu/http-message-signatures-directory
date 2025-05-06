@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                1 May 2025
-Expires: 2 November 2025
+Intended status: Informational                                6 May 2025
+Expires: 7 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 November 2025.
+   This Internet-Draft will expire on 7 November 2025.
 
 Copyright Notice
 
@@ -98,7 +98,11 @@ Table of Contents
    8.  References
      8.1.  Normative References
      8.2.  Informative References
-   Appendix A.  Implementations
+   Appendix A.  Test Vectors
+     A.1.  Ed25519
+       A.1.1.  Signature-Agent absent from the request
+       A.1.2.  Signature-Agent included present on the request
+   Appendix B.  Implementations
    Acknowledgments
    Author's Address
 
@@ -513,7 +517,83 @@ Table of Contents
               DOI 10.17487/RFC6750, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6750>.
 
-Appendix A.  Implementations
+Appendix A.  Test Vectors
+
+A.1.  Ed25519
+
+   The test vectors in this section use the Ed25519 key defined in
+   Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].  This section include
+   non-normative test vectors that may be used as test cases to validate
+   implementation correctness.
+
+A.1.1.  Signature-Agent absent from the request
+
+   This example presents a minimal signature using the ed25519 algorithm
+   over test-request.  The request does not contain a Signature-Agent
+   header.
+
+   The corresponding signature base is:
+
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+
+   This results in the following Signature-Input and Signature header
+   fields being added to the message under the label sig1:
+
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
+
+A.1.2.  Signature-Agent included present on the request
+
+   This example presents a minimal signature using the ed25519 algorithm
+   over test-request.  The request contains a Signature-Agent header.
+
+   The corresponding signature base is:
+
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+
+   This results in the following Signature-Input and Signature header
+   fields being added to the message under the label sig2:
+
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ01v/hlsbnLvLDrrA5fBeb1CA==:
+
+Appendix B.  Implementations
 
    This draft has a couple of implementations
    (https://github.com/cloudflareresearch/web-bot-auth)
@@ -530,7 +610,11 @@ Appendix A.  Implementations
 
    *  Cloudflare Workers
 
-   A demontstration server has been deployed to https://http-message-
+   Test vectors:
+
+   *  In JSON format
+
+   A demonstration server has been deployed to https://http-message-
    signatures-example.research.cloudflare.com/ (https://http-message-
    signatures-example.research.cloudflare.com/).
 
