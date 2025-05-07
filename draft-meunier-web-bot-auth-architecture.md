@@ -488,10 +488,12 @@ Tanya Verma.
 
 v01
 
-- Mandatory signing of Signature-Agent if present
-- Test vectors for request with and without Signature-Agent
+- Add mandatory signing of Signature-Agent by clients if present
+- Add test vectors for request with and without Signature-Agent
 - Update example diagram to be correct
-- Add precision about why origin may request a new signature
+- Add security consideration about reverse proxy
+- Update why origin may request a new signature
+- Update nonce validation wording and global uniqueness
 - Acknowledgements
 
 v00
