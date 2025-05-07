@@ -190,7 +190,7 @@ This results in the following components to be signed
 ("@authority" "signature-agent")
 ~~~
 
-### Anti-replay
+### Anti-replay {#anti-replay}
 
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
 
@@ -199,8 +199,7 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 `nonce`
 : base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
 
-This `nonce` MUST be unique for the validity window of the signature, as defined by created and expires attributes.
-Because the `nonce` is controlled by the client, the origin needs to maintain a list of all nonces that it has seen that are still in the validity window of the signature.
+Client MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
 
 ### Sending a request {#sending-request}
 
@@ -248,6 +247,8 @@ Additional requirements are placed on this validation:
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
 - During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
 
+Origin MAY require the `nonce` to satisfy certain constraint: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or not constraint at all.
+
 
 ## Key Distribution and Discovery
 
@@ -293,7 +294,13 @@ See section {{signature-agent}} for more details.
 
 ## Performance Impact
 
-Origins must account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
+Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
+
+## Nonce validation
+
+Clients are the one controlling the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin responsibility to enforce it.
+
+Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.
 
 ## Key Compromise Response
 
