@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                6 May 2025
-Expires: 7 November 2025
+Intended status: Informational                                7 May 2025
+Expires: 8 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2025.
+   This Internet-Draft will expire on 8 November 2025.
 
 Copyright Notice
 
@@ -403,7 +403,7 @@ Table of Contents
 
 5.1.  Performance Impact
 
-   Origins shoulw account for the overhead of signature verification in
+   Origins should account for the overhead of signature verification in
    their operations.  A local cache of public keys reduces network
    requests and verification latency.  The choice of signing algorithm
    impacts CPU requirements.  Origins should monitor verification
@@ -412,14 +412,14 @@ Table of Contents
 
 5.2.  Nonce validation
 
-   Client are the one controlling the nonce.  While the specification
-   mandates that client MUST provide a globally unique nonce, the origin
-   has to validate it.
+   Clients are the one controlling the nonce.  While Section 4.2.2
+   mandates that clients MUST provide a globally unique nonce, it is the
+   origin responsibility to enforce it.
 
-   Different validation policy require different performance and
-   challenges.  Global uniqueness requires a global nonce store.  Some
-   origin may find that their use case can tolerate sharding on
-   location, timing, or other properties.
+   Different validation policies have different performance and
+   operational considerations.  Global uniqueness requires a global
+   nonce store.  Some origins may find that their use case can tolerate
+   sharding on location, timing, or other properties.
 
 5.3.  Key Compromise Response
 
