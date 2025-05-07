@@ -1225,6 +1225,9 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-key-reuse-considered-harmfu" class="internal xref">Key Reuse Considered Harmful</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse proxy consideration</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
@@ -1748,6 +1751,16 @@ needed.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-1">Implementations <span class="bcp14">MUST NOT</span> reuse a signing key for different purposes. For
 example, if an agent implementor has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="reverse-proxy-consideration">
+<section id="section-5.6">
+        <h3 id="name-reverse-proxy-consideration">
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-reverse-proxy-consideration" class="section-name selfRef">Reverse proxy consideration</a>
+        </h3>
+<p id="section-5.6-1">An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-2">It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
+<p id="section-5.6-3">Origins may require a specific nonce policy to prevent such malicious behaviour and decide to validate the signature themselves.<a href="#section-5.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
