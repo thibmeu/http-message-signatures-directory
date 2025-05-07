@@ -324,6 +324,14 @@ Implementations MUST NOT reuse a signing key for different purposes. For
 example, if an agent implementor has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.
 
+## Reverse proxy consideration
+
+An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.
+
+It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.
+
+Origins may require a specific nonce policy to prevent such malicious behaviour and decide to validate the signature themselves.
+
 # Privacy Considerations
 
 ## Public Identity
