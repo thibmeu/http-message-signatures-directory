@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                6 May 2025
-Expires: 7 November 2025
+Intended status: Informational                                7 May 2025
+Expires: 8 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2025.
+   This Internet-Draft will expire on 8 November 2025.
 
 Copyright Notice
 
@@ -87,9 +87,10 @@ Table of Contents
        4.5.3.  Signature-Agent header
    5.  Security Considerations
      5.1.  Performance Impact
-     5.2.  Key Compromise Response
-     5.3.  Shared Secrets Considered Harmful
-     5.4.  Key Reuse Considered Harmful
+     5.2.  Nonce validation
+     5.3.  Key Compromise Response
+     5.4.  Shared Secrets Considered Harmful
+     5.5.  Key Reuse Considered Harmful
    6.  Privacy Considerations
      6.1.  Public Identity
      6.2.  No Human Correlation
@@ -285,11 +286,8 @@ Table of Contents
    nonce  base64url encoded random byte array.  It is RECOMMENDED to use
       a 64-byte array.
 
-   This nonce MUST be unique for the validity window of the signature,
-   as defined by created and expires attributes.  Because the nonce is
-   controlled by the client, the origin needs to maintain a list of all
-   nonces that it has seen that are still in the validity window of the
-   signature.
+   Client MUST ensure that this nonce is unique for the validity window
+   of the signature, as defined by created and expires attributes.
 
 4.2.3.  Sending a request
 
@@ -353,6 +351,11 @@ Table of Contents
       fetch the provider directory as indicated by Signature-Agent
       header defined in Section 4 of [DIRECTORY].
 
+   Origin MAY require the nonce to satisfy certain constraint: be
+   globally unique using a global nonce store, be unique to a specific
+   location or time window using a local cache, or not constraint at
+   all.
+
 4.5.  Key Distribution and Discovery
 
    This section describes the discovery mechanism for the agent
@@ -400,14 +403,25 @@ Table of Contents
 
 5.1.  Performance Impact
 
-   Origins must account for the overhead of signature verification in
+   Origins should account for the overhead of signature verification in
    their operations.  A local cache of public keys reduces network
    requests and verification latency.  The choice of signing algorithm
    impacts CPU requirements.  Origins should monitor verification
    latency and set appropriate timeouts to maintain service levels under
    load.
 
-5.2.  Key Compromise Response
+5.2.  Nonce validation
+
+   Clients are the one controlling the nonce.  While Section 4.2.2
+   mandates that clients MUST provide a globally unique nonce, it is the
+   origin responsibility to enforce it.
+
+   Different validation policies have different performance and
+   operational considerations.  Global uniqueness requires a global
+   nonce store.  Some origins may find that their use case can tolerate
+   sharding on location, timing, or other properties.
+
+5.3.  Key Compromise Response
 
    An agent signing key might get compromised.
 
@@ -418,7 +432,7 @@ Table of Contents
    To minimise the impact of a key compromise, the origin should support
    rapid key rotation and monitor for suspicious signature patterns.
 
-5.3.  Shared Secrets Considered Harmful
+5.4.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
@@ -426,7 +440,7 @@ Table of Contents
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective revocation if needed.
 
-5.4.  Key Reuse Considered Harmful
+5.5.  Key Reuse Considered Harmful
 
    Implementations MUST NOT reuse a signing key for different purposes.
    For example, if an agent implementor has two agents they want to
