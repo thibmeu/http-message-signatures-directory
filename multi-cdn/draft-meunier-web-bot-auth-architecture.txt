@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                6 May 2025
-Expires: 7 November 2025
+Intended status: Informational                                7 May 2025
+Expires: 8 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2025.
+   This Internet-Draft will expire on 8 November 2025.
 
 Copyright Notice
 
@@ -439,12 +439,12 @@ Table of Contents
    An origin may be placed behind a reverse proxy.  This means that the
    proxy is seeing the signature before the origin.
 
-   It means that the proxy sees the Signature before the origin does,
+   It implies that the proxy sees the Signature before the origin does,
    may strip it, or even attempt to replay it against other reverse
    proxies used by the origin.
 
-   Origins may require a specific nonce policy to prevent that and
-   validate the signature themselves.
+   Origins may require a specific nonce policy to prevent such malicious
+   behaviour and decide to validate the signature themselves.
 
 6.  Privacy Considerations
 
