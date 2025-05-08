@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-01T02:05:17.641370+00:00",
+  "timestamp": "2025-05-08T01:59:09.886106+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -62,24 +62,32 @@
       "labels": [],
       "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
       "createdAt": "2025-04-16T09:52:49Z",
-      "updatedAt": "2025-04-16T09:52:49Z",
+      "updatedAt": "2025-05-06T17:29:58Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This seems to be a lot of implementation details, and I'm not sure what would exactly be useful here or how to present it.\n\nWould you have suggestions?",
+          "createdAt": "2025-05-06T17:29:57Z",
+          "updatedAt": "2025-05-06T17:29:57Z"
+        }
+      ]
     },
     {
       "number": 5,
       "id": "I_kwDOOXJyWM6yw1fO",
       "title": "Threat model: Multi-CDN",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jhoyla",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "In a multi-CDN use-case all the CDNs need to trust each other, because one CDN can use signed requests that it receives to impersonate an agent to the others. This attack exists even if the CDN uses `Accept-Signature` to provide a fresh nonce, because the malicious CDN can simply forward the `Accept-Signature` message to the agent.  We should add a sentence to the threat model covering this possibility.\n\nI'm not sure how this can be avoided without cooperation from the client, because even if the CDN creates a structured / authenticated nonce, if the client doesn't understand the structure it will sign it even if it comes from the \"wrong\" CDN. Even with cooperation from the client, I'm not sure how the client could easily / reliably distinguish between CDNs.",
       "createdAt": "2025-04-16T10:09:26Z",
-      "updatedAt": "2025-04-18T12:26:54Z",
-      "closedAt": null,
+      "updatedAt": "2025-05-07T08:34:51Z",
+      "closedAt": "2025-05-07T08:34:51Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -95,16 +103,24 @@
       "id": "I_kwDOOXJyWM6yxH2d",
       "title": "Performance of a global nonce store",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jhoyla",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "To enforce nonces strictly the origin needs to keep a list of all nonces that it has seen whose signatures are still valid. For a multi-server architecture this could amount to a sync on a global database, which could have a significant performance cost, especially as most requests will both read and write. In practice it might make more sense to enforce weaker guarantees in the name of performance.",
       "createdAt": "2025-04-16T10:36:31Z",
-      "updatedAt": "2025-04-16T10:36:31Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-05-07T08:32:58Z",
+      "closedAt": "2025-05-07T08:32:58Z",
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Agree. I think it should suffice for the draft to remove the MUST on verify nonce uniqueness to MAY to solve the issue.\n\nA specific addition in the security consideration can be added as well",
+          "createdAt": "2025-05-06T17:15:26Z",
+          "updatedAt": "2025-05-06T17:15:26Z"
+        }
+      ]
     },
     {
       "number": 8,
@@ -153,7 +169,7 @@
     {
       "number": 11,
       "id": "I_kwDOOXJyWM6z9hV0",
-      "title": "Positive and negative test vectors",
+      "title": "Consider negative test vectors",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/11",
       "state": "OPEN",
       "author": "thibmeu",
@@ -164,7 +180,7 @@
       ],
       "body": "This relates to https://github.com/cloudflareresearch/web-bot-auth/issues/4\n\nIt should be fine to limit these vectors to Ed25519 initially.",
       "createdAt": "2025-04-25T07:36:43Z",
-      "updatedAt": "2025-04-25T07:36:43Z",
+      "updatedAt": "2025-05-06T17:12:22Z",
       "closedAt": null,
       "comments": []
     },
@@ -213,9 +229,9 @@
       "labels": [
         "enhancement"
       ],
-      "body": "There has been a couple of feedback about why not use OAuth 2, DPoP, maybe OIDC in general. We should consider having a section in the appendix to address that.\n\nFrom the top of my head:\n* This is similar indeed: one standard which we scope specifically for bots, with a tag/purpose, key ID definition\n* HTTP Message Signatures provides @authority derived component\n* The use of JWK Thumbprint as kid is sufficient. No need for DPoP\n* DPoP is specifically addressing replay and access refresh\n* The Authorization server is the client, which seems to be closer to HTTP Message Signatures design\n* Extensibility to allow request integrity and non-repudiability with HTTP Message Signatures, possibly with mulitple ones\n",
+      "body": "There has been a couple of feedback about why not use OAuth 2, DPoP, maybe OIDC in general. We should consider having a section in the appendix to address that.\n\nFrom the top of my head:\n* This is similar indeed: one standard which we scope specifically for bots, with a tag/purpose, key ID definition\n* HTTP Message Signatures provides @authority derived component\n* The use of JWK Thumbprint as keyid is sufficient. No need for DPoP\n* DPoP is specifically addressing replay and access refresh\n* The Authorization server is the client, which seems to be closer to HTTP Message Signatures design\n* Extensibility to allow request integrity and non-repudiability with HTTP Message Signatures, possibly with mulitple ones\n",
       "createdAt": "2025-04-28T07:55:30Z",
-      "updatedAt": "2025-04-28T07:55:30Z",
+      "updatedAt": "2025-05-07T06:42:15Z",
       "closedAt": null,
       "comments": []
     },
@@ -588,6 +604,108 @@
           ]
         }
       ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOOXJyWM6VGrZt",
+      "title": "Add test vectors",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/16",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [],
+      "body": "Two test vectors have been added:\r\n1. ed25519 without Signature-Agent\r\n2. ed25519 with Signature-Agent\r\n\r\nTheir format is similar to RFC 9421.\r\nThey have been generated with the TypeScript implementation https://github.com/cloudflareresearch/web-bot-auth/issues/4",
+      "createdAt": "2025-05-06T13:00:34Z",
+      "updatedAt": "2025-05-06T15:46:59Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "49b518a6ae42c92e97e2bf409c814ac7da0e0931",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "test-vectors",
+      "headRefOid": "77fa7242acd98974f23b617623074757243e07b6",
+      "closedAt": "2025-05-06T15:46:55Z",
+      "mergedAt": "2025-05-06T15:46:55Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "0d5e567ad961754f0d2e75c4406329064c00161c"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Relates to #11 ",
+          "createdAt": "2025-05-06T15:46:51Z",
+          "updatedAt": "2025-05-06T15:46:51Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOOXJyWM6VJRTR",
+      "title": "Add considerations about global nonce",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/17",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "cc @jhoyla \r\n\r\nClose #7",
+      "createdAt": "2025-05-06T17:24:11Z",
+      "updatedAt": "2025-05-07T08:33:00Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "c4279afa757e29dcb9c71b7d3841833b0a5fe9d0",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "nonce-store",
+      "headRefOid": "458c7a26407412bcfecd14d1bf522b1c24b313cb",
+      "closedAt": "2025-05-07T08:32:57Z",
+      "mergedAt": "2025-05-07T08:32:57Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "9ca1b81683bc472dd5ef15079be3cf601dae6873"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOOXJyWM6VJTii",
+      "title": "Multi CDN considerations",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/18",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "cc @jhoyla \r\n\r\nCloses #5",
+      "createdAt": "2025-05-06T17:28:55Z",
+      "updatedAt": "2025-05-07T08:34:54Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "9ca1b81683bc472dd5ef15079be3cf601dae6873",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "multi-cdn",
+      "headRefOid": "11192919e10fc795f900e9417036bca3992bfda3",
+      "closedAt": "2025-05-07T08:34:51Z",
+      "mergedAt": "2025-05-07T08:34:50Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "5d213c19c25ad582349e962d09c53f1d5d69b64b"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
