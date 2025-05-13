@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-08T01:59:09.886106+00:00",
+  "timestamp": "2025-05-13T01:59:32.964491+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -260,6 +260,22 @@
           "updatedAt": "2025-04-30T08:03:42Z"
         }
       ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOOXJyWM62OuIF",
+      "title": "Consider integration of `Signature-Agent` with robots.txt",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/19",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "In addition to using User-Agent directive as per [RFC 9309](https://datatracker.ietf.org/doc/html/rfc9309), it would be interesting for robots.txt to support Signature-Agent header.",
+      "createdAt": "2025-05-12T15:11:01Z",
+      "updatedAt": "2025-05-12T15:11:01Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
