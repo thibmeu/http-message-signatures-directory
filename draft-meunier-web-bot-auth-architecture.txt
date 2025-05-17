@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                7 May 2025
-Expires: 8 November 2025
+Intended status: Informational                               17 May 2025
+Expires: 18 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 November 2025.
+   This Internet-Draft will expire on 18 November 2025.
 
 Copyright Notice
 
@@ -293,7 +293,7 @@ Table of Contents
 4.2.3.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
-   Updating the architecture diagram, the flow look as follow.
+   Updating the architecture diagram, the flow looks as follow.
 
 +---------+                                                                    +----------+
 |         |                              Exchange                              |          |
@@ -317,7 +317,7 @@ Table of Contents
 
    2.  Signature-Input defined in Section 4.2
 
-   Mentioned in a section Section 4.2.1, the Agent MAY send request with
+   Mentioned in Section 4.2.1, the Agent MAY send requests with
    Signature-Agent header.
 
 4.3.  Requesting a Message signature
@@ -337,8 +337,8 @@ Table of Contents
 
    Upon receiving an HTTP request, the origin has to verify the
    signature.  The algorithm is provided in Section 3.2 of
-   [HTTP-MESSAGE-SIGNATURES].  Similar to regular User-Agent check, this
-   happens at the HTTP layer, once headers are received.
+   [HTTP-MESSAGE-SIGNATURES].  Similar to a regular User-Agent check,
+   this happens at the HTTP layer, once headers are received.
 
    Additional requirements are placed on this validation:
 
@@ -387,7 +387,7 @@ Table of Contents
 4.5.1.  Out-of-band communication between client and origin
 
    A service submitting their key to an origin, or the origin manually
-   adding a service to their trusted list
+   adding a service to their trusted list.
 
 4.5.2.  Public list
 
@@ -398,7 +398,7 @@ Table of Contents
 
    This allows for backward compatibility with existing header agent
    filtering, and an upgrade to cryptographically secured protocol.  See
-   section Section 4.2.1 for more details.
+   Section 4.2.1 for more details.
 
 5.  Security Considerations
 
@@ -415,7 +415,7 @@ Table of Contents
 
    Clients are the one controlling the nonce.  While Section 4.2.2
    mandates that clients MUST provide a globally unique nonce, it is the
-   origin responsibility to enforce it.
+   origin's responsibility to enforce it.
 
    Different validation policies have different performance and
    operational considerations.  Global uniqueness requires a global

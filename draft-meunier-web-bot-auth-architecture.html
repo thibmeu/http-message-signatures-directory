@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 8 November 2025</td>
+<td class="center">Expires 18 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-07" class="published">7 May 2025</time>
+<time datetime="2025-05-17" class="published">17 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-08">8 November 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-18">18 November 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1550,7 +1550,7 @@ If the header is to be sent, it <span class="bcp14">MUST</span> be signed as a c
           <h4 id="name-sending-a-request">
 <a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-sending-a-request" class="section-name selfRef">Sending a request</a>
           </h4>
-<p id="section-4.2.3-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
 <div id="section-4.2.3-2">
             <div class="alignLeft art-svg artwork" id="section-4.2.3-2.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="736" viewBox="0 0 736 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -1607,7 +1607,7 @@ If the header is to be sent, it <span class="bcp14">MUST</span> be signed as a c
               <p id="section-4.2.3-4.2.1"><code>Signature-Input</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a><a href="#section-4.2.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
-<p id="section-4.2.3-5">Mentioned in a section <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a>, the Agent <span class="bcp14">MAY</span> send request with <code>Signature-Agent</code> header.<a href="#section-4.2.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-5">Mentioned in <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a>, the Agent <span class="bcp14">MAY</span> send requests with <code>Signature-Agent</code> header.<a href="#section-4.2.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1627,7 +1627,7 @@ If the header is to be sent, it <span class="bcp14">MUST</span> be signed as a c
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-validating-message-signatur" class="section-name selfRef">Validating Message signature</a>
         </h3>
 <p id="section-4.4-1">Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.2" class="relref">Section 3.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+Similar to a regular User-Agent check, this happens at the HTTP layer, once headers are received.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">Additional requirements are placed on this validation:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-3.1">
@@ -1675,7 +1675,7 @@ Similar to regular User-Agent check, this happens at the HTTP layer, once header
           <h4 id="name-out-of-band-communication-b">
 <a href="#section-4.5.1" class="section-number selfRef">4.5.1. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
           </h4>
-<p id="section-4.5.1-1">A service submitting their key to an origin, or the origin manually adding a service to their trusted list<a href="#section-4.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.5.1-1">A service submitting their key to an origin, or the origin manually adding a service to their trusted list.<a href="#section-4.5.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="public-list">
@@ -1692,7 +1692,7 @@ Similar to regular User-Agent check, this happens at the HTTP layer, once header
 <a href="#section-4.5.3" class="section-number selfRef">4.5.3. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
           </h4>
 <p id="section-4.5.3-1">This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
-See section <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a> for more details.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
+See <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a> for more details.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1717,7 +1717,7 @@ See section <a href="#signature-agent" class="auto internal xref">Section 4.2.1<
         <h3 id="name-nonce-validation">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-nonce-validation" class="section-name selfRef">Nonce validation</a>
         </h3>
-<p id="section-5.2-1">Clients are the one controlling the nonce. While <a href="#anti-replay" class="auto internal xref">Section 4.2.2</a> mandates that clients <span class="bcp14">MUST</span> provide a globally unique nonce, it is the origin responsibility to enforce it.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">Clients are the one controlling the nonce. While <a href="#anti-replay" class="auto internal xref">Section 4.2.2</a> mandates that clients <span class="bcp14">MUST</span> provide a globally unique nonce, it is the origin's responsibility to enforce it.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
