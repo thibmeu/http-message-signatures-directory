@@ -228,7 +228,7 @@ The Agent SHOULD send requests with two headers
 1. `Signature` defined in {{generating-http-message-signature}}
 2. `Signature-Input` defined in {{generating-http-message-signature}}
 
-Mentioned in a {{signature-agent}}, the Agent MAY send requests with `Signature-Agent` header.
+Mentioned in {{signature-agent}}, the Agent MAY send requests with `Signature-Agent` header.
 
 ## Requesting a Message signature {#requesting-message-signature}
 
