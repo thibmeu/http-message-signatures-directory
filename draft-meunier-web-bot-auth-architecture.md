@@ -203,7 +203,7 @@ Client MUST ensure that this `nonce` is unique for the validity window of the si
 
 ### Sending a request {#sending-request}
 
-An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow look as follow.
+An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.
 
 ~~~aasvg
 +---------+                                                                    +----------+
@@ -228,7 +228,7 @@ The Agent SHOULD send requests with two headers
 1. `Signature` defined in {{generating-http-message-signature}}
 2. `Signature-Input` defined in {{generating-http-message-signature}}
 
-Mentioned in a section {{signature-agent}}, the Agent MAY send request with `Signature-Agent` header.
+Mentioned in a {{signature-agent}}, the Agent MAY send requests with `Signature-Agent` header.
 
 ## Requesting a Message signature {#requesting-message-signature}
 
@@ -239,7 +239,7 @@ Origin MAY request a new signature with tag "web-bot-auth" even if a nonce is pr
 ## Validating Message signature
 
 Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURES}}.
-Similar to regular User-Agent check, this happens at the HTTP layer, once headers are received.
+Similar to a regular User-Agent check, this happens at the HTTP layer, once headers are received.
 
 Additional requirements are placed on this validation:
 
@@ -279,7 +279,7 @@ Example
 
 
 ### Out-of-band communication between client and origin
-A service submitting their key to an origin, or the origin manually adding a service to their trusted list
+A service submitting their key to an origin, or the origin manually adding a service to their trusted list.
 
 ### Public list
 
@@ -288,7 +288,7 @@ Could be a GitHub repository like the public suffix list. The issue is the gatin
 ### Signature-Agent header {#signature-agent-header}
 
 This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
-See section {{signature-agent}} for more details.
+See {{signature-agent}} for more details.
 
 # Security Considerations
 
@@ -298,7 +298,7 @@ Origins should account for the overhead of signature verification in their opera
 
 ## Nonce validation
 
-Clients are the one controlling the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin responsibility to enforce it.
+Clients are the one controlling the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
 
 Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.
 
