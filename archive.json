@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-13T01:59:32.964491+00:00",
+  "timestamp": "2025-05-18T02:05:44.667115+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
       "createdAt": "2025-04-16T09:52:49Z",
-      "updatedAt": "2025-05-06T17:29:58Z",
+      "updatedAt": "2025-05-16T11:22:58Z",
       "closedAt": null,
       "comments": [
         {
@@ -71,6 +71,20 @@
           "body": "This seems to be a lot of implementation details, and I'm not sure what would exactly be useful here or how to present it.\n\nWould you have suggestions?",
           "createdAt": "2025-05-06T17:29:57Z",
           "updatedAt": "2025-05-06T17:29:57Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Some of these concerns seems to be shared with https://github.com/w3ctag/design-reviews/pull/1094\n\nSpecifically, how to avoid sending headers multiple time for a \"session\", concept that's out of this standard scope for now.",
+          "createdAt": "2025-05-16T08:06:21Z",
+          "updatedAt": "2025-05-16T08:06:21Z"
+        },
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So HTTP Message Sigs is similar to DBSC in some ways, but I think the trade-offs are very different. First, DBSC is aimed at human users, so things like adding a roundtrip have a much higher weight than they do for bots. Second, HMS cares much less about sessions. Whereas a user might want to stay logged in for days or weeks, a bot is more likely to have a short lived interaction with a zone. It also may be using the same signing key whilst acting on behalf of multiple different users, so I think the session paradigm doesn't really apply neatly. Third, we don't really care about the bots activities being linkable to each other, except in so far as they link together the activities of a single user.\n\nThe core concerns raised by MT seem to be about efficiency vs security, which also apply here, but I think the answers are very different. We rely on the security of the signature generator more, because we're talking corporate IT, rather than end-user devices. \n\nWith respect to your first comment, I am worried that most people will in practice implement option 0, allow unbounded numbers of replays, and only request new signatures on suspicion of abuse. In the unbounded replay scenario the scheme is relatively efficient for both parties, at the expense of security. Adding text describing the trade-off between efficiency and security and different patterns one might employ will hopefully steer people away from option 0.",
+          "createdAt": "2025-05-16T11:22:56Z",
+          "updatedAt": "2025-05-16T11:22:56Z"
         }
       ]
     },
@@ -276,6 +290,51 @@
       "updatedAt": "2025-05-12T15:11:01Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOOXJyWM626Ux_",
+      "title": "Add wording that `Signature` header  MUST be sent over a secure connection",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/20",
+      "state": "OPEN",
+      "author": "jhoyla",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Because the `Signature` header is effectively a bearer token, and can be proxied, and in some cases replayed, there needs to be a `MUST` requiring that the `Signature` header is always sent (and proxied) over secure (esp. confidential) channels.",
+      "createdAt": "2025-05-16T11:28:46Z",
+      "updatedAt": "2025-05-16T11:44:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "A possible text from [RFC 6750 Section 5.3](https://www.rfc-editor.org/rfc/rfc6750#section-5.3)\n\n> Always use TLS (https):  Clients MUST always use TLS [[RFC5246](https://www.rfc-editor.org/rfc/rfc5246)]\n> (https) or equivalent transport security when making requests with\n> bearer tokens.  Failing to do so exposes the token to numerous\n> attacks that could give attackers unintended access.",
+          "createdAt": "2025-05-16T11:32:24Z",
+          "updatedAt": "2025-05-16T11:32:24Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "If mandating TLS, we should also refer to [RFC 9421 Section 7.1.2](https://datatracker.ietf.org/doc/html/rfc9421#name-use-of-tls) regarding the use of TLS.",
+          "createdAt": "2025-05-16T11:34:20Z",
+          "updatedAt": "2025-05-16T11:34:20Z"
+        },
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We also need text on the use of proxies. Something along the lines of:\n> If forwarding a request containing a `Signature` header to a different party, a proxy MUST either use TLS or equivalent protection to talk to both the sender and receiver, or strip the `Signature` header. Parties that receive a `Signature` header over an unsecured channel MUST drop the header without further processing.\n",
+          "createdAt": "2025-05-16T11:40:25Z",
+          "updatedAt": "2025-05-16T11:40:25Z"
+        },
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That language doesn't provide total coverage of course, because a proxy that doesn't understand this protocol will still blindly forward it, so a chain of two non-supporting proxies could expose the token if they don't use TLS, but I think it's the best we can do without explicitly binding to the TLS connection.",
+          "createdAt": "2025-05-16T11:44:16Z",
+          "updatedAt": "2025-05-16T11:44:16Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -722,6 +781,63 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDOOXJyWM6WjQLI",
+      "title": "Minor Typo Fixes",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/21",
+      "state": "MERGED",
+      "author": "hawkinsw",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-17T06:51:54Z",
+      "updatedAt": "2025-05-17T18:20:32Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "f5ba8c434b869c33215dd5ce161c011e7f0443ec",
+      "headRepository": "hawkinsw/http-message-signatures-directory",
+      "headRefName": "patch-1",
+      "headRefOid": "446d3b41f5d579e867904e1b0c644ae80bf51ff4",
+      "closedAt": "2025-05-17T18:20:32Z",
+      "mergedAt": "2025-05-17T18:20:32Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "a8ab1dcf1fa34814cf6656b09ad1207cfcaa9585"
+      },
+      "comments": [
+        {
+          "author": "hawkinsw",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I really enjoyed reading the draft and look forward to working with your implementations. I hope that these minor changes are helpful!",
+          "createdAt": "2025-05-17T06:52:26Z",
+          "updatedAt": "2025-05-17T06:52:26Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6pxpea",
+          "commit": {
+            "abbreviatedOid": "2a7c4a5"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Looks great. One minor additional correction.\r\n\r\nThank you!",
+          "createdAt": "2025-05-17T17:59:47Z",
+          "updatedAt": "2025-05-17T18:00:50Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "correcting another typo here\r\n```suggestion\r\nMentioned in {{signature-agent}}, the Agent MAY send requests with `Signature-Agent` header.\r\n```",
+              "createdAt": "2025-05-17T17:59:47Z",
+              "updatedAt": "2025-05-17T18:00:50Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
