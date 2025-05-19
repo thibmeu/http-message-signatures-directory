@@ -202,6 +202,16 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 
 Client MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
 
+### Additional headers
+
+Agents MAY include additional components, such as specific HTTP headers, in the signature.
+This can be prompted by the origin requesting additional headers, as described in {{requesting-message-signature}},
+or initiated by the agent to provide more information within the signature scope.
+For example, an agent might include an HTTP header expressing its intent and sign it.
+
+Origins MAY ignore certain headers at their own discretion,
+and request a new signature, as described in {{requesting-message-signature}}.
+
 ### Sending a request {#sending-request}
 
 An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.
