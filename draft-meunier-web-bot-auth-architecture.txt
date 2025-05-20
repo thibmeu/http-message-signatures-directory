@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                               17 May 2025
-Expires: 18 November 2025
+Intended status: Informational                               20 May 2025
+Expires: 21 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 November 2025.
+   This Internet-Draft will expire on 21 November 2025.
 
 Copyright Notice
 
@@ -279,7 +279,8 @@ Table of Contents
 
    Origins MAY want to prevent signatures from being spoofed or used
    multiple times by bad actors and thus require a nonce to be added to
-   the @signature-params.
+   the @signature-params.  This is described in Section 7.2.2 of
+   [HTTP-MESSAGE-SIGNATURES].
 
    Agents SHOULD extend @signature-parameters defined in Section 4.2 as
    follow
