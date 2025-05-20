@@ -689,7 +689,7 @@ Acknowledgments
    in alphabetical order) for feedback, insight, and implementation of
    this document - Marwan Fayed, Maxime Guerreiro, Scott Hendrickson,
    Jonathan Hoyland, Mark Nottingham, Eugenio Panero, Lucas Pardue,
-   Tanya Verma.
+   Malte Ubl, Tanya Verma.
 
 Changelog
 
