@@ -193,6 +193,7 @@ This results in the following components to be signed
 ### Anti-replay {#anti-replay}
 
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
+This is described in {{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}.
 
 Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follow
 
