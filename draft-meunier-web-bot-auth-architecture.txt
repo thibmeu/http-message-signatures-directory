@@ -87,12 +87,13 @@ Table of Contents
        4.5.2.  Public list
        4.5.3.  Signature-Agent header
    5.  Security Considerations
-     5.1.  Performance Impact
-     5.2.  Nonce validation
-     5.3.  Key Compromise Response
-     5.4.  Shared Secrets Considered Harmful
-     5.5.  Key Reuse Considered Harmful
-     5.6.  Reverse proxy consideration
+     5.1.  Use of TLS
+     5.2.  Performance Impact
+     5.3.  Nonce validation
+     5.4.  Key Compromise Response
+     5.5.  Shared Secrets Considered Harmful
+     5.6.  Key Reuse Considered Harmful
+     5.7.  Reverse proxy consideration
    6.  Privacy Considerations
      6.1.  Public Identity
      6.2.  No Human Correlation
@@ -416,7 +417,21 @@ Table of Contents
 
 5.  Security Considerations
 
-5.1.  Performance Impact
+5.1.  Use of TLS
+
+   We reassess Section 7.1.2 of [HTTP-MESSAGE-SIGNATURES].  Clients
+   SHOULD use TLS [RFC5246] (https) or equivalent transport security
+   when making requests with Message signatures.  Failing to do so
+   exposes the Message signature to numerous attacks that could give
+   attackers unintended access.
+
+   This include reverse proxy and their consideration presented in
+   Section 5.7.
+
+   An origin SHOULD refuse Signature headers when communicated over an
+   unsecured channel.
+
+5.2.  Performance Impact
 
    Origins should account for the overhead of signature verification in
    their operations.  A local cache of public keys reduces network
@@ -425,7 +440,7 @@ Table of Contents
    latency and set appropriate timeouts to maintain service levels under
    load.
 
-5.2.  Nonce validation
+5.3.  Nonce validation
 
    Clients are the one controlling the nonce.  While Section 4.2.2
    mandates that clients MUST provide a globally unique nonce, it is the
@@ -436,7 +451,7 @@ Table of Contents
    nonce store.  Some origins may find that their use case can tolerate
    sharding on location, timing, or other properties.
 
-5.3.  Key Compromise Response
+5.4.  Key Compromise Response
 
    An agent signing key might get compromised.
 
@@ -447,7 +462,7 @@ Table of Contents
    To minimise the impact of a key compromise, the origin should support
    rapid key rotation and monitor for suspicious signature patterns.
 
-5.4.  Shared Secrets Considered Harmful
+5.5.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
@@ -455,14 +470,14 @@ Table of Contents
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective revocation if needed.
 
-5.5.  Key Reuse Considered Harmful
+5.6.  Key Reuse Considered Harmful
 
    Implementations MUST NOT reuse a signing key for different purposes.
    For example, if an agent implementor has two agents they want to
    differentiate, these should use distinct signing keys and signing key
    directories.
 
-5.6.  Reverse proxy consideration
+5.7.  Reverse proxy consideration
 
    An origin may be placed behind a reverse proxy.  This means that the
    proxy is seeing the signature before the origin.
@@ -558,6 +573,11 @@ Table of Contents
               Framework: Bearer Token Usage", RFC 6750,
               DOI 10.17487/RFC6750, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6750>.
+
+   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.2", RFC 5246,
+              DOI 10.17487/RFC5246, August 2008,
+              <https://www.rfc-editor.org/rfc/rfc5246>.
 
 Appendix A.  Test Vectors
 

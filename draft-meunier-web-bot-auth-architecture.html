@@ -1214,22 +1214,25 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-performance-impact" class="internal xref">Performance Impact</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-use-of-tls" class="internal xref">Use of TLS</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-nonce-validation" class="internal xref">Nonce validation</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-performance-impact" class="internal xref">Performance Impact</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-key-compromise-response" class="internal xref">Key Compromise Response</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-nonce-validation" class="internal xref">Nonce validation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-shared-secrets-considered-h" class="internal xref">Shared Secrets Considered Harmful</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-key-compromise-response" class="internal xref">Key Compromise Response</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-key-reuse-considered-harmfu" class="internal xref">Key Reuse Considered Harmful</a></p>
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-shared-secrets-considered-h" class="internal xref">Shared Secrets Considered Harmful</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse proxy consideration</a></p>
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-key-reuse-considered-harmfu" class="internal xref">Key Reuse Considered Harmful</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
+                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse proxy consideration</a></p>
 </li>
             </ul>
 </li>
@@ -1721,63 +1724,77 @@ See <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a> for 
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<div id="performance-impact">
+<div id="use-of-tls">
 <section id="section-5.1">
-        <h3 id="name-performance-impact">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-performance-impact" class="section-name selfRef">Performance Impact</a>
+        <h3 id="name-use-of-tls">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-use-of-tls" class="section-name selfRef">Use of TLS</a>
         </h3>
-<p id="section-5.1-1">Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">We reassess <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.1.2" class="relref">Section 7.1.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+Clients <span class="bcp14">SHOULD</span> use TLS <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>
+(https) or equivalent transport security when making requests with
+Message signatures. Failing to do so exposes the Message signature to numerous
+attacks that could give attackers unintended access.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">This include reverse proxy and their consideration presented in <a href="#reverse-proxy" class="auto internal xref">Section 5.7</a>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">An origin <span class="bcp14">SHOULD</span> refuse Signature headers when communicated over an unsecured channel.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="performance-impact">
+<section id="section-5.2">
+        <h3 id="name-performance-impact">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-performance-impact" class="section-name selfRef">Performance Impact</a>
+        </h3>
+<p id="section-5.2-1">Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="nonce-validation">
-<section id="section-5.2">
+<section id="section-5.3">
         <h3 id="name-nonce-validation">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-nonce-validation" class="section-name selfRef">Nonce validation</a>
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-nonce-validation" class="section-name selfRef">Nonce validation</a>
         </h3>
-<p id="section-5.2-1">Clients are the one controlling the nonce. While <a href="#anti-replay" class="auto internal xref">Section 4.2.2</a> mandates that clients <span class="bcp14">MUST</span> provide a globally unique nonce, it is the origin's responsibility to enforce it.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">Clients are the one controlling the nonce. While <a href="#anti-replay" class="auto internal xref">Section 4.2.2</a> mandates that clients <span class="bcp14">MUST</span> provide a globally unique nonce, it is the origin's responsibility to enforce it.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-compromise-response">
-<section id="section-5.3">
+<section id="section-5.4">
         <h3 id="name-key-compromise-response">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-key-compromise-response" class="section-name selfRef">Key Compromise Response</a>
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-key-compromise-response" class="section-name selfRef">Key Compromise Response</a>
         </h3>
-<p id="section-5.3-1">An agent signing key might get compromised.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">If that happens, the agent <span class="bcp14">SHOULD</span> cease using the compromised key as soon as possible, notify affected origins if possible, and generate a new key pair.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3-3">To minimise the impact of a key compromise, the origin should support rapid key rotation and monitor for suspicious signature patterns.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.4-1">An agent signing key might get compromised.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">If that happens, the agent <span class="bcp14">SHOULD</span> cease using the compromised key as soon as possible, notify affected origins if possible, and generate a new key pair.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4-3">To minimise the impact of a key compromise, the origin should support rapid key rotation and monitor for suspicious signature patterns.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="shared-secrets-considered-harmful">
-<section id="section-5.4">
+<section id="section-5.5">
         <h3 id="name-shared-secrets-considered-h">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-shared-secrets-considered-h" class="section-name selfRef">Shared Secrets Considered Harmful</a>
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-shared-secrets-considered-h" class="section-name selfRef">Shared Secrets Considered Harmful</a>
         </h3>
-<p id="section-5.4-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<p id="section-5.5-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 Shared secrets break non-repudiation and make auditing
 difficult. Each automated client <span class="bcp14">SHOULD</span> use a unique asymmetric keypair to
 ensure attribution, support key rotation, and enable effective revocation if
-needed.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+needed.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-reuse-considered-harmful">
-<section id="section-5.5">
+<section id="section-5.6">
         <h3 id="name-key-reuse-considered-harmfu">
-<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-key-reuse-considered-harmfu" class="section-name selfRef">Key Reuse Considered Harmful</a>
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-key-reuse-considered-harmfu" class="section-name selfRef">Key Reuse Considered Harmful</a>
         </h3>
-<p id="section-5.5-1">Implementations <span class="bcp14">MUST NOT</span> reuse a signing key for different purposes. For
+<p id="section-5.6-1">Implementations <span class="bcp14">MUST NOT</span> reuse a signing key for different purposes. For
 example, if an agent implementor has two agents they want to differentiate,
-these should use distinct signing keys and signing key directories.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+these should use distinct signing keys and signing key directories.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="reverse-proxy-consideration">
-<section id="section-5.6">
+<div id="reverse-proxy">
+<section id="section-5.7">
         <h3 id="name-reverse-proxy-consideration">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-reverse-proxy-consideration" class="section-name selfRef">Reverse proxy consideration</a>
+<a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-reverse-proxy-consideration" class="section-name selfRef">Reverse proxy consideration</a>
         </h3>
-<p id="section-5.6-1">An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
-<p id="section-5.6-2">It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
-<p id="section-5.6-3">Origins may require a specific nonce policy to prevent such malicious behaviour and decide to validate the signature themselves.<a href="#section-5.6-3" class="pilcrow">¶</a></p>
+<p id="section-5.7-1">An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
+<p id="section-5.7-2">It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.<a href="#section-5.7-2" class="pilcrow">¶</a></p>
+<p id="section-5.7-3">Origins may require a specific nonce policy to prevent such malicious behaviour and decide to validate the signature themselves.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1887,8 +1904,12 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
         </h3>
 <dl class="references">
 <dt id="OAUTH-BEARER">[OAUTH-BEARER]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Jones, M.</span> and <span class="refAuthor">D. Hardt</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: Bearer Token Usage"</span>, <span class="seriesInfo">RFC 6750</span>, <span class="seriesInfo">DOI 10.17487/RFC6750</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6750">https://www.rfc-editor.org/rfc/rfc6750</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5246">[RFC5246]</dt>
+      <dd>
+<span class="refAuthor">Dierks, T.</span> and <span class="refAuthor">E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08" class="refDate">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5246">https://www.rfc-editor.org/rfc/rfc5246</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
