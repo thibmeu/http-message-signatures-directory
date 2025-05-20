@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-18T02:05:44.667115+00:00",
+  "timestamp": "2025-05-20T02:00:30.346345+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
       "createdAt": "2025-04-16T09:52:49Z",
-      "updatedAt": "2025-05-16T11:22:58Z",
+      "updatedAt": "2025-05-19T20:01:36Z",
       "closedAt": null,
       "comments": [
         {
@@ -85,6 +85,13 @@
           "body": "So HTTP Message Sigs is similar to DBSC in some ways, but I think the trade-offs are very different. First, DBSC is aimed at human users, so things like adding a roundtrip have a much higher weight than they do for bots. Second, HMS cares much less about sessions. Whereas a user might want to stay logged in for days or weeks, a bot is more likely to have a short lived interaction with a zone. It also may be using the same signing key whilst acting on behalf of multiple different users, so I think the session paradigm doesn't really apply neatly. Third, we don't really care about the bots activities being linkable to each other, except in so far as they link together the activities of a single user.\n\nThe core concerns raised by MT seem to be about efficiency vs security, which also apply here, but I think the answers are very different. We rely on the security of the signature generator more, because we're talking corporate IT, rather than end-user devices. \n\nWith respect to your first comment, I am worried that most people will in practice implement option 0, allow unbounded numbers of replays, and only request new signatures on suspicion of abuse. In the unbounded replay scenario the scheme is relatively efficient for both parties, at the expense of security. Adding text describing the trade-off between efficiency and security and different patterns one might employ will hopefully steer people away from option 0.",
           "createdAt": "2025-05-16T11:22:56Z",
           "updatedAt": "2025-05-16T11:22:56Z"
+        },
+        {
+          "author": "leelynne",
+          "authorAssociation": "NONE",
+          "body": "It seems like either you use a nonce for one-time usage or you need to rely on time based windows for efficiency. This can rely on `created` and `expired` signature parameters plus whatever setting the server wants to use.  Would the guidance from HTTP signature 7.2.2 would apply? https://www.rfc-editor.org/rfc/rfc9421.html#name-signature-replay",
+          "createdAt": "2025-05-19T20:01:11Z",
+          "updatedAt": "2025-05-19T20:01:35Z"
         }
       ]
     },
@@ -263,7 +270,7 @@
       ],
       "body": "At the moment, this is defined as providing an HTTP Message Signatures Directory.\n\nIf OAuth 2 is used as well (should it #13 ?), it could be interesting to have something broader.",
       "createdAt": "2025-04-28T07:57:17Z",
-      "updatedAt": "2025-04-30T08:03:43Z",
+      "updatedAt": "2025-05-19T19:32:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -272,6 +279,13 @@
           "body": "Discussed with @EthanHeilman as it relates to https://github.com/dickhardt/openid-key-binding/ as well.\nOne main difference is that our current draft mandates the kid to be the JWK thumbprint for global uniqueness constraint. This is a similar approach.",
           "createdAt": "2025-04-30T08:03:42Z",
           "updatedAt": "2025-04-30T08:03:42Z"
+        },
+        {
+          "author": "leelynne",
+          "authorAssociation": "NONE",
+          "body": "Optionally being able to include some proof of public key -> identity or pub in this header generally would be great.\n\nOpenPubKey comes to mind as well - https://github.com/openpubkey/openpubkey\n\nEven as a first party having the option for the client to carry this pubkey -> identity mapping (signed by an authority) is useful.  AWS STS tokens are an example of this - https://medium.com/@TalBeerySec/revealing-the-inner-structure-of-aws-session-tokens-a6c76469cba7\n\n",
+          "createdAt": "2025-05-19T19:32:02Z",
+          "updatedAt": "2025-05-19T19:32:02Z"
         }
       ]
     },
@@ -335,6 +349,58 @@
           "updatedAt": "2025-05-16T11:44:16Z"
         }
       ]
+    },
+    {
+      "number": 22,
+      "id": "I_kwDOOXJyWM63JxAu",
+      "title": "Include a subsection about the agent signing additional headers",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/22",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "The existing draft does not preclude signing any additional headers.\n\nIt would be useful to clearly mention it for extensibility purposes.\nThis might have impact on origin verification time, and that has to be considered.\n",
+      "createdAt": "2025-05-19T07:18:43Z",
+      "updatedAt": "2025-05-19T07:18:43Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 23,
+      "id": "I_kwDOOXJyWM63J7x-",
+      "title": "Clarify the motivation for a company/agent to identify themselves",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/23",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "An assumption in the motivation is that a server WANTS to have a stable identity, given they do already with IP/User-Agents. Cutting out a specific section in the introduction could be relevant around having a stable identity. Note that the mention of rotation does not preclude this, given the identity is the `Signature-Agent`, not the `keyid` derived for the signature.\n\nComment from @martinthomson\n\n> The reason that the server might want to have a stable identity for the agent is another important question to address.  What possible purpose would be served by that?   You need to address that question more directly.\n>\n> One potential answer here is that continuity of identity for the same server allows that server to build up a history of good (or bad) behaviour on behalf of a given agent.  One that acts in a manner that respects server resources and does not attempt attacks might be given more favourable treatment as it builds up that history with the server.\n>\n> Another is that continuity of identity across servers allows agents to build up a reputation across servers.  If the agent is known to one server as being well-behaved, that server can tell other servers and they can collectively treat it better.\n>\n> Both require that the agent identity not be closely correlated with the identity of a person, or we enable tracking.",
+      "createdAt": "2025-05-19T07:34:19Z",
+      "updatedAt": "2025-05-19T07:34:19Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOOXJyWM63Qttv",
+      "title": "Use signature label to identity signature instead of tab",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/24",
+      "state": "OPEN",
+      "author": "leelynne",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I wanted to suggest using the signature label to identity the signature for validation instead of using the tag. This is also feedback I will give to the http signature spec itself.\n\nThe main reason is because it is valid to have multiple signatures with the same tag but not with the same label. Multiple tags introduces variance between implementations when doing single signature validation and the latter does not.\n\nThe observation is that while there can be multiple signatures present on a request each signature is typically intended for one purpose. In my companies case that purpose is for workload authentication - there should be only one of these for the direct caller.  Similarly Amazon Seller central expects one signature for a request for third-party payment providers [1].\n\nAs an implementer of HTTP signatures [2] we have had to create an interface to allow library users to select the one signature they want to validate and ignore the others.  If you allow them to specify a tag as the selector then the HTTP signatures implementation has to make a choice of how to handle requests with multiple signatures with the same tag.  Take the first one as returned by the parser?  Take the first one ordered by key id? Return an error? Validate them all?\n\nIn contrast each signature must have a unique label (or else it is not valid structured field dictionary [3] and should fail to parse).\n\nIt is still true that signature validators should not assign special meaning to the signature label however as a selector it does exactly what it should do without ambiguity.\n\n\n[1] - https://developer-docs.amazon.com/sp-api/docs/tpp-registration-signature-guidance\n[2] - https://github.com/remitly-oss/httpsig-go\n[3] - https://www.rfc-editor.org/rfc/rfc8941#name-dictionaries\n",
+      "createdAt": "2025-05-19T17:55:18Z",
+      "updatedAt": "2025-05-19T17:56:04Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
