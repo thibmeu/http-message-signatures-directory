@@ -505,6 +505,7 @@ Jonathan Hoyland,
 Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,
+Malte Ubl,
 Tanya Verma.
 
 # Changelog
