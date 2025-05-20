@@ -38,6 +38,7 @@ normative:
 
 informative:
   OAUTH-BEARER: RFC6750
+  RFC5246:
 
 --- abstract
 
@@ -303,6 +304,18 @@ See {{signature-agent}} for more details.
 
 # Security Considerations
 
+## Use of TLS
+
+We reassess {{Section 7.1.2 of HTTP-MESSAGE-SIGNATURES}}.
+Clients SHOULD use TLS {{RFC5246}}
+(https) or equivalent transport security when making requests with
+Message signatures. Failing to do so exposes the Message signature to numerous
+attacks that could give attackers unintended access.
+
+This include reverse proxy and their consideration presented in {{reverse-proxy}}.
+
+An origin SHOULD refuse Signature headers when communicated over an unsecured channel.
+
 ## Performance Impact
 
 Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
@@ -335,7 +348,7 @@ Implementations MUST NOT reuse a signing key for different purposes. For
 example, if an agent implementor has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.
 
-## Reverse proxy consideration
+## Reverse proxy consideration {#reverse-proxy}
 
 An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.
 
