@@ -78,7 +78,8 @@ Table of Contents
      4.2.  Generating HTTP Message Signature
        4.2.1.  Signature-Agent
        4.2.2.  Anti-replay
-       4.2.3.  Sending a request
+       4.2.3.  Additional headers
+       4.2.4.  Sending a request
      4.3.  Requesting a Message signature
      4.4.  Validating Message signature
      4.5.  Key Distribution and Discovery
@@ -267,7 +268,7 @@ Table of Contents
 
    Signature-Agent is an HTTP Method context header defined in
    Section 4.1 of [DIRECTORY].  It is RECOMMENDED that the Agent sends
-   requests with Signature-Agent header, as described in Section 4.2.3.
+   requests with Signature-Agent header, as described in Section 4.2.4.
    If the header is to be sent, it MUST be signed as a component as
    defined in Section 2.1 of [HTTP-MESSAGE-SIGNATURES].
 
@@ -291,7 +292,19 @@ Table of Contents
    Client MUST ensure that this nonce is unique for the validity window
    of the signature, as defined by created and expires attributes.
 
-4.2.3.  Sending a request
+4.2.3.  Additional headers
+
+   Agents MAY include additional components, such as specific HTTP
+   headers, in the signature.  This can be prompted by the origin
+   requesting additional headers, as described in Section 4.3, or
+   initiated by the agent to provide more information within the
+   signature scope.  For example, an agent might include an HTTP header
+   expressing its intent and sign it.
+
+   Origins MAY ignore certain headers at their own discretion, and
+   request a new signature, as described in Section 4.3.
+
+4.2.4.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
    Updating the architecture diagram, the flow looks as follow.
