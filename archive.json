@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-20T02:00:30.346345+00:00",
+  "timestamp": "2025-05-22T01:59:22.833144+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
       "createdAt": "2025-04-16T09:52:49Z",
-      "updatedAt": "2025-05-19T20:01:36Z",
+      "updatedAt": "2025-05-20T12:18:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -92,6 +92,13 @@
           "body": "It seems like either you use a nonce for one-time usage or you need to rely on time based windows for efficiency. This can rely on `created` and `expired` signature parameters plus whatever setting the server wants to use.  Would the guidance from HTTP signature 7.2.2 would apply? https://www.rfc-editor.org/rfc/rfc9421.html#name-signature-replay",
           "createdAt": "2025-05-19T20:01:11Z",
           "updatedAt": "2025-05-19T20:01:35Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "@leelynne these are the existing recommendations that have been provided in the draft, in section [Anti-replay](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#name-anti-replay).",
+          "createdAt": "2025-05-20T12:18:02Z",
+          "updatedAt": "2025-05-20T12:18:02Z"
         }
       ]
     },
@@ -310,15 +317,15 @@
       "id": "I_kwDOOXJyWM626Ux_",
       "title": "Add wording that `Signature` header  MUST be sent over a secure connection",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jhoyla",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Because the `Signature` header is effectively a bearer token, and can be proxied, and in some cases replayed, there needs to be a `MUST` requiring that the `Signature` header is always sent (and proxied) over secure (esp. confidential) channels.",
       "createdAt": "2025-05-16T11:28:46Z",
-      "updatedAt": "2025-05-16T11:44:17Z",
-      "closedAt": null,
+      "updatedAt": "2025-05-20T13:38:17Z",
+      "closedAt": "2025-05-20T13:38:17Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -355,7 +362,7 @@
       "id": "I_kwDOOXJyWM63JxAu",
       "title": "Include a subsection about the agent signing additional headers",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/22",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -366,8 +373,8 @@
       ],
       "body": "The existing draft does not preclude signing any additional headers.\n\nIt would be useful to clearly mention it for extensibility purposes.\nThis might have impact on origin verification time, and that has to be considered.\n",
       "createdAt": "2025-05-19T07:18:43Z",
-      "updatedAt": "2025-05-19T07:18:43Z",
-      "closedAt": null,
+      "updatedAt": "2025-05-20T12:18:22Z",
+      "closedAt": "2025-05-20T12:18:22Z",
       "comments": []
     },
     {
@@ -398,7 +405,35 @@
       "labels": [],
       "body": "I wanted to suggest using the signature label to identity the signature for validation instead of using the tag. This is also feedback I will give to the http signature spec itself.\n\nThe main reason is because it is valid to have multiple signatures with the same tag but not with the same label. Multiple tags introduces variance between implementations when doing single signature validation and the latter does not.\n\nThe observation is that while there can be multiple signatures present on a request each signature is typically intended for one purpose. In my companies case that purpose is for workload authentication - there should be only one of these for the direct caller.  Similarly Amazon Seller central expects one signature for a request for third-party payment providers [1].\n\nAs an implementer of HTTP signatures [2] we have had to create an interface to allow library users to select the one signature they want to validate and ignore the others.  If you allow them to specify a tag as the selector then the HTTP signatures implementation has to make a choice of how to handle requests with multiple signatures with the same tag.  Take the first one as returned by the parser?  Take the first one ordered by key id? Return an error? Validate them all?\n\nIn contrast each signature must have a unique label (or else it is not valid structured field dictionary [3] and should fail to parse).\n\nIt is still true that signature validators should not assign special meaning to the signature label however as a selector it does exactly what it should do without ambiguity.\n\n\n[1] - https://developer-docs.amazon.com/sp-api/docs/tpp-registration-signature-guidance\n[2] - https://github.com/remitly-oss/httpsig-go\n[3] - https://www.rfc-editor.org/rfc/rfc8941#name-dictionaries\n",
       "createdAt": "2025-05-19T17:55:18Z",
-      "updatedAt": "2025-05-19T17:56:04Z",
+      "updatedAt": "2025-05-20T12:08:23Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Is the idea that labels are simpler to filter on?\n\nI have the impression that we could ask for a label to be put, but I'm not sure the function is the same as a tag. A tag can be used as a filter, even if there are multiple signatures. This is a desirable subset of HTTP Message Signatures.\n\nI agree that it defers the decision to select signatures to implementers. In some cases, being able to select multiple signatures is actually desirable.\n\nEach company can decide to put a unique identifying label. This is what [AWS seems to do](https://developer-docs.amazon.com/sp-api/docs/tpp-registration-signature-guidance) with label `x-amzn-psd2`.\n\nAlso, as @jricher mentioned on [web-bot-auth](https://mailarchive.ietf.org/arch/msg/web-bot-auth/lFJ5GKrFAKHL9qF6oAtTPv8TLMQ/) mailinglist, labels are not included in the signing material. This is a property we would like to have proper bindings.",
+          "createdAt": "2025-05-20T12:08:21Z",
+          "updatedAt": "2025-05-20T12:08:21Z"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "I_kwDOOXJyWM63l2ay",
+      "title": "Consider describing chaining",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/27",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Chaining should be possible with the draft as it stand.\n\n1. Off path, use x5c field of the JWK\n2. On path, pass the directory base64 encoded within Signature-Agent header with a JWK containing x5c.\n\nThe use case seems to be required by a message on [web-bot-auth](https://mailarchive.ietf.org/arch/msg/web-bot-auth/azPrcKBzKpdnAKJG8-ZpPN1WD04/) list. If there is interest, we should consider fleshing it out as its own section.",
+      "createdAt": "2025-05-21T12:57:07Z",
+      "updatedAt": "2025-05-21T12:57:07Z",
       "closedAt": null,
       "comments": []
     }
@@ -904,6 +939,70 @@
           ]
         }
       ]
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDOOXJyWM6W24XZ",
+      "title": "Subsection about signing additional headers",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/25",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Close #22",
+      "createdAt": "2025-05-20T09:36:05Z",
+      "updatedAt": "2025-05-20T12:18:21Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "a8ab1dcf1fa34814cf6656b09ad1207cfcaa9585",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "additional-headers",
+      "headRefOid": "af7ec02d11144bdc01bab9fefe7b4ae125171601",
+      "closedAt": "2025-05-20T12:18:21Z",
+      "mergedAt": "2025-05-20T12:18:21Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "c593cb13697dd3897e279fbeb5d451edf8985ea3"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDOOXJyWM6W4ju8",
+      "title": "Use of TLS",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/26",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Closes #20\r\n\r\ncc @jhoyla ",
+      "createdAt": "2025-05-20T12:33:26Z",
+      "updatedAt": "2025-05-20T13:38:27Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "c593cb13697dd3897e279fbeb5d451edf8985ea3",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "tls",
+      "headRefOid": "36ae070bddb59a755193cb92f95b89ad35b280ac",
+      "closedAt": "2025-05-20T13:38:16Z",
+      "mergedAt": "2025-05-20T13:38:16Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "dd5b682cc9b61d893a9152e2c5b04bbe4a31c2f1"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
