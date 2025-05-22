@@ -393,7 +393,84 @@ This document has no IANA actions.
 
 # Test Vectors
 
-## Ed25519
+## RSASSA-PSS Using SHA-512
+
+The test vectors in this section use the RSA-PSS key defined in {{Appendix B.1.2 of HTTP-MESSAGE-SIGNATURES}}.
+This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
+
+### Signature-Agent absent from the request
+
+This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request does not contain
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig1`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:j7b33aGZs9JjA7OSLeM4PazwTJU8xG0N6NP4S1EsZiGi2YrvB0KOHCZbriq76NLXDfge8liqVLRdr5H0QQwgFfKoq/rNjImQMIE2ZhxDPJc4GMrqApsqoLg4i7A1yu9a5+ODrGzxH0OhniloJ7i3sl8wkD1TgtsR0fEg7M0zdUPVmcVB2AkTMWrqhDKg9puKjRiT9Z6pdr/3LJFcjbOqnyymimjK0YFVpr8RH3gv4NNtCdQEmBWhdgrZRr9xb0WlMHLGu+CT5vmCck4m8v7V9CuNR9ezp875QOLslOcUpiuhIKf/eW/BL1QlPDc9KoMYKdt/D0mGKb8fWafXbf4BDQ==:
+~~~
+
+### Signature-Agent included present on the request
+
+This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:Fe+JhZi3Xh4wWeOvNQjTWC/D8piUAUqg2e2gtjaM4gN2pj4utROGgJ57DFq9nr7x83KlxzjXvjL8YAPsYI9ugpBMDu2xTvprYQLeL9Y83ucMGXdv7YxzmbgTRoUPjSpaU18AHiiaRjnd3DPLh5j3O4wE1q81dyDXJkktnf+IUG04chur+ylzohfmb9t+xY0BBOnwgC1dKRa7B3knwCUCTqrGVQOCvN13NYFdCCiRLEshG4BA/7O6PQOBmgiHyY43NEMf9hYwUW/tLgmc+6wukpU7kHJjPUFGVjj0P6o3Cgo78BP3M/eDEIvTdGKaHDnuoZ+CS+hBmQnYP5MPHeaLwA==:
+~~~
+
+## EdDSA Using Curve edwards25519
 
 The test vectors in this section use the Ed25519 key defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
