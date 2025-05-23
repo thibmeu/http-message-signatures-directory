@@ -307,7 +307,7 @@ See {{signature-agent}} for more details.
 ## Use of TLS
 
 We reassess {{Section 7.1.2 of HTTP-MESSAGE-SIGNATURES}}.
-Clients SHOULD use TLS {{RFC5246}}
+Clients SHOULD use TLS {{RFC8446}}
 (https) or equivalent transport security when making requests with
 Message signatures. Failing to do so exposes the Message signature to numerous
 attacks that could give attackers unintended access.
