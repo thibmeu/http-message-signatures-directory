@@ -506,6 +506,7 @@ Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,
 Malte Ubl,
+Loganaden Velvindron,
 Tanya Verma.
 
 # Changelog
