@@ -420,7 +420,7 @@ Table of Contents
 5.1.  Use of TLS
 
    We reassess Section 7.1.2 of [HTTP-MESSAGE-SIGNATURES].  Clients
-   SHOULD use TLS [RFC5246] (https) or equivalent transport security
+   SHOULD use TLS [RFC8446] (https) or equivalent transport security
    when making requests with Message signatures.  Failing to do so
    exposes the Message signature to numerous attacks that could give
    attackers unintended access.
@@ -574,10 +574,9 @@ Table of Contents
               DOI 10.17487/RFC6750, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6750>.
 
-   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
-              (TLS) Protocol Version 1.2", RFC 5246,
-              DOI 10.17487/RFC5246, August 2008,
-              <https://www.rfc-editor.org/rfc/rfc5246>.
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
 
 Appendix A.  Test Vectors
 
@@ -689,7 +688,7 @@ Acknowledgments
    in alphabetical order) for feedback, insight, and implementation of
    this document - Marwan Fayed, Maxime Guerreiro, Scott Hendrickson,
    Jonathan Hoyland, Mark Nottingham, Eugenio Panero, Lucas Pardue,
-   Malte Ubl, Tanya Verma.
+   Malte Ubl, Loganaden Velvindron, Tanya Verma.
 
 Changelog
 
