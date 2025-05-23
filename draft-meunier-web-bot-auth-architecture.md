@@ -38,7 +38,7 @@ normative:
 
 informative:
   OAUTH-BEARER: RFC6750
-  RFC5246:
+  RFC8446:
 
 --- abstract
 
