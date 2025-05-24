@@ -4,8 +4,8 @@
 
 HTTP                                                          T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                             23 May 2025
-Expires: 24 November 2025
+Intended status: Standards Track                             24 May 2025
+Expires: 25 November 2025
 
 
               Signature-Agent for Robot Exclusion Protocol
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 November 2025.
+   This Internet-Draft will expire on 25 November 2025.
 
 Copyright Notice
 

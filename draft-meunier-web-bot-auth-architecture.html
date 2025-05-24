@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 24 November 2025</td>
+<td class="center">Expires 25 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-23" class="published">23 May 2025</time>
+<time datetime="2025-05-24" class="published">24 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-24">24 November 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-25">25 November 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1268,13 +1268,24 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
             <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-ed25519" class="internal xref">Ed25519</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-rsassa-pss-using-sha-512" class="internal xref">RSASSA-PSS Using SHA-512</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.1">
                     <p id="section-toc.1-1.9.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-signature-agent-absent-from" class="internal xref">Signature-Agent absent from the request</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.2">
                     <p id="section-toc.1-1.9.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-eddsa-using-curve-edwards25" class="internal xref">EdDSA Using Curve edwards25519</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.1">
+                    <p id="section-toc.1-1.9.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-signature-agent-absent-from-" class="internal xref">Signature-Agent absent from the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.2">
+                    <p id="section-toc.1-1.9.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent included present on the request</a></p>
 </li>
                 </ul>
 </li>
@@ -1921,22 +1932,111 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
       <h2 id="name-test-vectors">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<div id="ed25519">
+<div id="rsassa-pss-using-sha-512">
 <section id="appendix-A.1">
-        <h3 id="name-ed25519">
-<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-ed25519" class="section-name selfRef">Ed25519</a>
+        <h3 id="name-rsassa-pss-using-sha-512">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-rsassa-pss-using-sha-512" class="section-name selfRef">RSASSA-PSS Using SHA-512</a>
         </h3>
-<p id="appendix-A.1-1">The test vectors in this section use the Ed25519 key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<p id="appendix-A.1-1">The test vectors in this section use the RSA-PSS key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.2" class="relref">Appendix B.1.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 This section include non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div id="signature-agent-absent-from-the-request">
 <section id="appendix-A.1.1">
           <h4 id="name-signature-agent-absent-from">
 <a href="#appendix-A.1.1" class="section-number selfRef">A.1.1. </a><a href="#name-signature-agent-absent-from" class="section-name selfRef">Signature-Agent absent from the request</a>
           </h4>
-<p id="appendix-A.1.1-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
+<p id="appendix-A.1.1-1">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request does not contain
 a <code>Signature-Agent</code> header.<a href="#appendix-A.1.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1.1-2">The corresponding signature base is:<a href="#appendix-A.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.1.1-3">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.1-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-A.1.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.1-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:j7b33aGZs9JjA7OSLeM4PazwTJU8xG0N6NP4S1EsZiGi2YrvB0KOHCZbriq76NLXDfge8liqVLRdr5H0QQwgFfKoq/rNjImQMIE2ZhxDPJc4GMrqApsqoLg4i7A1yu9a5+ODrGzxH0OhniloJ7i3sl8wkD1TgtsR0fEg7M0zdUPVmcVB2AkTMWrqhDKg9puKjRiT9Z6pdr/3LJFcjbOqnyymimjK0YFVpr8RH3gv4NNtCdQEmBWhdgrZRr9xb0WlMHLGu+CT5vmCck4m8v7V9CuNR9ezp875QOLslOcUpiuhIKf/eW/BL1QlPDc9KoMYKdt/D0mGKb8fWafXbf4BDQ==:
+</pre><a href="#appendix-A.1.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="signature-agent-included-present-on-the-request">
+<section id="appendix-A.1.2">
+          <h4 id="name-signature-agent-included-pr">
+<a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent included present on the request</a>
+          </h4>
+<p id="appendix-A.1.2-1">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.2-2">The corresponding signature base is:<a href="#appendix-A.1.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.2-3">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.2-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.2-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:Fe+JhZi3Xh4wWeOvNQjTWC/D8piUAUqg2e2gtjaM4gN2pj4utROGgJ57DFq9nr7x83KlxzjXvjL8YAPsYI9ugpBMDu2xTvprYQLeL9Y83ucMGXdv7YxzmbgTRoUPjSpaU18AHiiaRjnd3DPLh5j3O4wE1q81dyDXJkktnf+IUG04chur+ylzohfmb9t+xY0BBOnwgC1dKRa7B3knwCUCTqrGVQOCvN13NYFdCCiRLEshG4BA/7O6PQOBmgiHyY43NEMf9hYwUW/tLgmc+6wukpU7kHJjPUFGVjj0P6o3Cgo78BP3M/eDEIvTdGKaHDnuoZ+CS+hBmQnYP5MPHeaLwA==:
+</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="eddsa-using-curve-edwards25519">
+<section id="appendix-A.2">
+        <h3 id="name-eddsa-using-curve-edwards25">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-eddsa-using-curve-edwards25" class="section-name selfRef">EdDSA Using Curve edwards25519</a>
+        </h3>
+<p id="appendix-A.2-1">The test vectors in this section use the Ed25519 key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+This section include non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<div id="signature-agent-absent-from-the-request-1">
+<section id="appendix-A.2.1">
+          <h4 id="name-signature-agent-absent-from-">
+<a href="#appendix-A.2.1" class="section-number selfRef">A.2.1. </a><a href="#name-signature-agent-absent-from-" class="section-name selfRef">Signature-Agent absent from the request</a>
+          </h4>
+<p id="appendix-A.2.1-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
+a <code>Signature-Agent</code> header.<a href="#appendix-A.2.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.1-2">The corresponding signature base is:<a href="#appendix-A.2.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.1-3">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -1948,10 +2048,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=1735693200\
  ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-A.1.1-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.1-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-A.1.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1.1-5">
+<p id="appendix-A.2.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-A.2.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.1-5">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -1963,19 +2063,19 @@ Signature-Input: sig1=("@authority")\
  ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
  ;tag="web-bot-auth"
 Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
-</pre><a href="#appendix-A.1.1-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="signature-agent-included-present-on-the-request">
-<section id="appendix-A.1.2">
-          <h4 id="name-signature-agent-included-pr">
-<a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent included present on the request</a>
+<div id="signature-agent-included-present-on-the-request-1">
+<section id="appendix-A.2.2">
+          <h4 id="name-signature-agent-included-pre">
+<a href="#appendix-A.2.2" class="section-number selfRef">A.2.2. </a><a href="#name-signature-agent-included-pre" class="section-name selfRef">Signature-Agent included present on the request</a>
           </h4>
-<p id="appendix-A.1.2-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
-a <code>Signature-Agent</code> header.<a href="#appendix-A.1.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.2-2">The corresponding signature base is:<a href="#appendix-A.1.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1.2-3">
+<p id="appendix-A.2.2-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.2.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.2-2">The corresponding signature base is:<a href="#appendix-A.2.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.2-3">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -1988,10 +2088,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=1735693200\
  ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-A.1.2-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.2-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1.2-5">
+<p id="appendix-A.2.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.2.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.2-5">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -2004,7 +2104,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
  ;tag="web-bot-auth"
 Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ01v/hlsbnLvLDrrA5fBeb1CA==:
-</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.2-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
