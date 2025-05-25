@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-22T01:59:22.833144+00:00",
+  "timestamp": "2025-05-25T02:08:24.870502+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -434,6 +434,59 @@
       "body": "Chaining should be possible with the draft as it stand.\n\n1. Off path, use x5c field of the JWK\n2. On path, pass the directory base64 encoded within Signature-Agent header with a JWK containing x5c.\n\nThe use case seems to be required by a message on [web-bot-auth](https://mailarchive.ietf.org/arch/msg/web-bot-auth/azPrcKBzKpdnAKJG8-ZpPN1WD04/) list. If there is interest, we should consider fleshing it out as its own section.",
       "createdAt": "2025-05-21T12:57:07Z",
       "updatedAt": "2025-05-21T12:57:07Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 30,
+      "id": "I_kwDOOXJyWM6370Zd",
+      "title": "TLS 1.2 reference",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/30",
+      "state": "CLOSED",
+      "author": "loganaden",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "The I-D references TLS 1.2 as the recommended transport:\n\n\"We reassess {{Section 7.1.2 of HTTP-MESSAGE-SIGNATURES}}. Clients SHOULD use TLS {{RFC5246}} (https) or equivalent transport security when making requests with Message signatures.\"\n\nIs there anything preventing TLS 1.3 from being recommended instead ?\n\n",
+      "createdAt": "2025-05-23T10:19:26Z",
+      "updatedAt": "2025-05-24T05:33:13Z",
+      "closedAt": "2025-05-24T05:33:13Z",
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Nothing blocking TLS 1.3. That's a good catch, we should recommend it.",
+          "createdAt": "2025-05-23T11:12:27Z",
+          "updatedAt": "2025-05-23T11:12:27Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Closed in #31 ",
+          "createdAt": "2025-05-24T05:33:13Z",
+          "updatedAt": "2025-05-24T05:33:13Z"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOOXJyWM638OCA",
+      "title": "Multiple FQDN in `Signature-Agent` header",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/32",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "Relates to #27 \n\nWhen a request is signed by multiple parties, it would be good for the request to contain all the keys. This can be done via delegation, or this could be done by providing multiple signature and signature-agent.\n\nUser-Agent have multiple product component. Here, we would have multiple directory component.\n\nFor example\n\n```\nSignature-Agent: forward-proxy.example.com myservice.example.com\n```",
+      "createdAt": "2025-05-23T11:04:14Z",
+      "updatedAt": "2025-05-23T11:05:05Z",
       "closedAt": null,
       "comments": []
     }
@@ -1003,6 +1056,179 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOOXJyWM6XOXaX",
+      "title": "Add RSASSA-PSS using SHA-512 test vectors",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/28",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Two more test vectors\r\n\r\nThis hopefully prevents ossification on ed25519\r\n\r\nTests have been generated using cloudflareresearch/web-bot-auth#10",
+      "createdAt": "2025-05-22T12:55:55Z",
+      "updatedAt": "2025-05-24T05:33:36Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "026a58ff9a72d16770a958b2d2b47d2e955f6d74",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-rsa-pss-sha512",
+      "headRefOid": "e3d8f5f2626e97a80acfc1f70d6cacd007a4a784",
+      "closedAt": "2025-05-24T05:33:31Z",
+      "mergedAt": "2025-05-24T05:33:31Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "ab8dcfd5a5403fc155363d5c23fb81e6d6cf1fb4"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOOXJyWM6XXF_U",
+      "title": "First draft for robots.txt extension with signature-agent line",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/29",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-23T10:03:34Z",
+      "updatedAt": "2025-05-23T10:03:48Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "026a58ff9a72d16770a958b2d2b47d2e955f6d74",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "robotstxt-signatureagent",
+      "headRefOid": "7c3e6fb52b9a605b4e5be4f1170ad999258605f3",
+      "closedAt": "2025-05-23T10:03:45Z",
+      "mergedAt": "2025-05-23T10:03:45Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "a9616db98eec17534615c97a401ead338df9d2c0"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDOOXJyWM6XXRaL",
+      "title": "Recommend use of TLS 1.3",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/31",
+      "state": "MERGED",
+      "author": "loganaden",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-23T10:23:40Z",
+      "updatedAt": "2025-05-23T13:07:07Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "a9616db98eec17534615c97a401ead338df9d2c0",
+      "headRepository": "cyberstormdotmu/http-message-signatures-directory",
+      "headRefName": "loganaden-patch-tls_13",
+      "headRefOid": "2c1c91d951fe004818fa04cf72ea6a71b465f838",
+      "closedAt": "2025-05-23T13:06:53Z",
+      "mergedAt": "2025-05-23T13:06:53Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "4d5e29349d123821f3a2f4e955e62eb24d0ff937"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Thanks. You should add yourself in the acknowledgement at the end as well, if you are fine with it.\r\n\r\nIt's sorted by last names",
+          "createdAt": "2025-05-23T11:20:43Z",
+          "updatedAt": "2025-05-23T11:20:43Z"
+        },
+        {
+          "author": "loganaden",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@thibmeu will do.",
+          "createdAt": "2025-05-23T11:39:35Z",
+          "updatedAt": "2025-05-23T11:39:35Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Merged. Thanks again!",
+          "createdAt": "2025-05-23T13:07:06Z",
+          "updatedAt": "2025-05-23T13:07:06Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6qtjXZ",
+          "commit": {
+            "abbreviatedOid": "b9e1fea"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-23T11:14:50Z",
+          "updatedAt": "2025-05-23T11:14:51Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "That's the right change. The `informative` section at the top should also be update to remove `RFC5246` and use `RFC8446` instead.\r\n\r\nI'm not able to update your fork. Would be awesome if you do it.",
+              "createdAt": "2025-05-23T11:14:51Z",
+              "updatedAt": "2025-05-23T11:14:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6qtyAf",
+          "commit": {
+            "abbreviatedOid": "b9e1fea"
+          },
+          "author": "loganaden",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-23T11:39:19Z",
+          "updatedAt": "2025-05-23T11:39:20Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I will update it. ",
+              "createdAt": "2025-05-23T11:39:19Z",
+              "updatedAt": "2025-05-23T11:39:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6qt2fp",
+          "commit": {
+            "abbreviatedOid": "b9e1fea"
+          },
+          "author": "loganaden",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-23T11:47:32Z",
+          "updatedAt": "2025-05-23T11:47:32Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Done.",
+              "createdAt": "2025-05-23T11:47:32Z",
+              "updatedAt": "2025-05-23T11:47:33Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
