@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                               24 May 2025
-Expires: 25 November 2025
+Intended status: Informational                               25 May 2025
+Expires: 26 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 November 2025.
+   This Internet-Draft will expire on 26 November 2025.
 
 Copyright Notice
 
@@ -255,7 +255,7 @@ Table of Contents
 
    keyid  MUST be a base64url JWK SHA-256 Thumbprint as defined in
       Section 3.2 of [JWK-THUMBPRINT] for RSA and EC, and in
-      Appendix A.3 of [JWK-OKP] foe ed25519.
+      Appendix A.3 of [JWK-OKP] for ed25519.
 
    tag  MUST be web-bot-auth
 
