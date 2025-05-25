@@ -168,7 +168,7 @@ Agents MUST include the following `@signature-params` as defined in {{Section 2.
 : as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
 `keyid`
-: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} foe ed25519.
+: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
 
 `tag`
 : MUST be `web-bot-auth`
