@@ -1,6 +1,6 @@
 ---
-title: "Signature-Agent for Robot Exclusion Protocol"
-abbrev: "Signature-Agent for Robot Exclusion Protocol"
+title: "Extensions to Robots Exclusion Protocol for Signature-Based Agent Control"
+abbrev: "Extensions to Robots Exclusion Protocol for Signature-Based Agent Control"
 category: std
 
 docname: draft-meunier-signature-agent-rep-latest
@@ -38,7 +38,7 @@ informative:
 
 --- abstract
 
-This document describes a new directive to allow Signature-Agent ({{Section 4 of SIGNATURE-DIRECTORY}}) directive in the Robot Exclusion Protocol ({{RFC9309}}).
+This document defines new extensions to the Robot Exclusion Protocol ({{RFC9309}}) including Signature-Agent ({{Section 4 of SIGNATURE-DIRECTORY}}) and Max-Crawl-Rate.
 
 
 --- middle
@@ -48,7 +48,7 @@ This document describes a new directive to allow Signature-Agent ({{Section 4 of
 Bots are increasigly using Signature-Agent as a way to convey identity.
 As such, there is interest from Origins to define robot policy based on this header.
 
-This documents extends Robot Exclusion Protocol to support these, by defining a new group starting with signature-agent.
+This documents extends Robot Exclusion Protocol to support these, by defining a new group starting with signature-agent and max-crawl-rate.
 
 
 # Conventions and Definitions
@@ -60,7 +60,7 @@ This documents extends Robot Exclusion Protocol to support these, by defining a 
 ## Protocol Definition
 
 Group
-: One or more signature-agent lines that are followed by one or more rules. The group is terminated by a signature-agent line or end of file. See {{signature-agent-line}}. The last group may have no rules, which means it implicitly allows everything.
+: One or more signature-agent lines that are followed by one or more rules. The group is terminated by a signature-agent line or end of file. See {{signature-agent-line}}. The last group may have no rules, which means it implicitly allows everything. This draft introduces the max-crawl-rate directive, which may appear within a signature-agent group. It allows origin servers to specify the maximum number of requests per second permitted for that signature agent.
 
 ## Formal Syntax
 
@@ -71,7 +71,7 @@ startgroupline = user-agent-line / signature-agent-line ; a group can either be 
 
 user-agent-line = *WS "user-agent" *WS ":" *WS product-token EOL
 signature-agent-line = *WS "signature-agent" *WS ":" *WS directory-token EOL
-
+max-crawl-rate-line  = 1*DIGIT
 directory-token = fqdn
 
 fqdn = ... ; domain as defined by signature-agent
@@ -94,6 +94,10 @@ Here's an example of a Signature-Agent HTTP request header with a link pointing 
 | Signature-Agent: crawler.example.com     | signature-agent: example.com |
 +------------------------------------------+------------------------------+
 ~~~
+
+### Max-Crawl-Rate line
+The max-crawl-rate directive specifies the maximum number of requests per second that a signature agent SHOULD make to the origin server. Well-behaved agents are expected to comply by limiting their request rate accordingly to reduce server load. However, this directive does not enforce technical access restrictions, and adherence is voluntary.
+Servers or CDNs MAY monitor agent behavior and take other measures if necessary to protect resources.
 
 # Security Considerations {#security}
 
