@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-25T02:08:24.870502+00:00",
+  "timestamp": "2025-05-27T01:58:22.535517+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1227,6 +1227,48 @@
               "updatedAt": "2025-05-23T11:47:33Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOOXJyWM6XiGUi",
+      "title": "typo fix",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/33",
+      "state": "MERGED",
+      "author": "loganaden",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-25T08:33:35Z",
+      "updatedAt": "2025-05-25T08:37:23Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "ab8dcfd5a5403fc155363d5c23fb81e6d6cf1fb4",
+      "headRepository": "cyberstormdotmu/http-message-signatures-directory",
+      "headRefName": "loganaden-patch-typo_fix",
+      "headRefOid": "e68647caf39b82214c1abb1e3f9bf2d73c7e2a21",
+      "closedAt": "2025-05-25T08:37:23Z",
+      "mergedAt": "2025-05-25T08:37:23Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "77eeb6f0964e1dccd5c790e57101c795dbda4cf2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6q32dU",
+          "commit": {
+            "abbreviatedOid": "e68647c"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thanks for the nit fix",
+          "createdAt": "2025-05-25T08:37:16Z",
+          "updatedAt": "2025-05-25T08:37:16Z",
+          "comments": []
         }
       ]
     }
