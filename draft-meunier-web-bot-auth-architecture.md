@@ -549,27 +549,34 @@ Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ0
 
 # Implementations
 
-This draft has a couple of [implementations](https://github.com/cloudflareresearch/web-bot-auth)
-
-Clients:
-
-* Chrome MV3
-
-* Cloudflare Workers
-
-Servers:
-
-* Caddy plugin
-
-* Cloudflare Workers
-
-Test vectors:
-
-* In JSON format
-
-A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
+This draft has a couple of implementations. A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
 
 It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
+
+## Clients
+
+* [Chrome MV3](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+* [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+* [Guzzle middleware](https://github.com/olipayne/guzzle-web-bot-auth-middleware) (PHP)
+
+* [Python script](https://zenn.dev/oymk/articles/944069e5eddc27)
+
+* [Linzer](https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research.rb) (Ruby)
+
+* [Rust binaries](https://github.com/cloudflare/web-bot-auth) (Rust)
+
+## Servers
+
+* [Caddy plugin](https://github.com/cloudflare/web-bot-auth) (Go)
+
+* [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+## Test vectors
+
+* In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v1.json)
+
 
 # Acknowledgments
 {:numbered="false"}
