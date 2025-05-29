@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-27T01:58:22.535517+00:00",
+  "timestamp": "2025-05-29T02:00:05.624049+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -308,9 +308,17 @@
       "labels": [],
       "body": "In addition to using User-Agent directive as per [RFC 9309](https://datatracker.ietf.org/doc/html/rfc9309), it would be interesting for robots.txt to support Signature-Agent header.",
       "createdAt": "2025-05-12T15:11:01Z",
-      "updatedAt": "2025-05-12T15:11:01Z",
+      "updatedAt": "2025-05-28T09:43:16Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Discussing with @garyillyes and @gauribaraskar, it seems a good path forward may rather be defining a new IANA registry for Robots.txt directives.\n\nThis way, we can add directives that exist but are not part of RFC 9309, such as\n\n1. [Sitemaps](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt#sitemap)\n2. [Crawl-delay](https://en.wikipedia.org/wiki/Robots.txt#Crawl-delay_directive)\n\nAnd new directives like\n\n1. Signature-Agent (this issue)\n2. [Max-crawl-rate](https://github.com/thibmeu/http-message-signatures-directory/pull/34)\n3. [User-agent-purpose](https://github.com/garyillyes/ietf-rep-purpose/tree/main)\n\nThis probably should be part of its own repository, given the scope is quite different from solely HTTP Message Signatures.",
+          "createdAt": "2025-05-28T09:43:15Z",
+          "updatedAt": "2025-05-28T09:43:15Z"
+        }
+      ]
     },
     {
       "number": 20,
@@ -1271,6 +1279,40 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOOXJyWM6X1iSA",
+      "title": "Update REP draft with max-crawl-rate directive",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/34",
+      "state": "OPEN",
+      "author": "gauribaraskar",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Update the REP extension to include multiple directives.",
+      "createdAt": "2025-05-27T19:16:23Z",
+      "updatedAt": "2025-05-28T09:18:22Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "77eeb6f0964e1dccd5c790e57101c795dbda4cf2",
+      "headRepository": "gauribaraskar/http-message-signatures-directory",
+      "headRefName": "update-to-rep-directives",
+      "headRefOid": "6af3f92359f91165a9b7ab726e17ec2968672041",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Thanks @gauribaraskar for the PR. I think at this point a discussion in #19 would be more useful and avoid multiplication of work.\r\n\r\nSpecifically, if introducing `Signature-Agent`, `Max-crawl-rate`, we could also take the opportunity to define `Crawl-delay` and `Sitemap` within an IANA directory.",
+          "createdAt": "2025-05-28T09:18:21Z",
+          "updatedAt": "2025-05-28T09:18:21Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
