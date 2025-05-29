@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                               25 May 2025
-Expires: 26 November 2025
+Intended status: Informational                               29 May 2025
+Expires: 30 November 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 November 2025.
+   This Internet-Draft will expire on 30 November 2025.
 
 Copyright Notice
 
@@ -110,6 +110,9 @@ Table of Contents
        A.2.1.  Signature-Agent absent from the request
        A.2.2.  Signature-Agent included present on the request
    Appendix B.  Implementations
+     B.1.  Clients
+     B.2.  Servers
+     B.3.  Test vectors
    Acknowledgments
    Changelog
    Author's Address
@@ -734,31 +737,45 @@ Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ0
 
 Appendix B.  Implementations
 
-   This draft has a couple of implementations
-   (https://github.com/cloudflareresearch/web-bot-auth)
-
-   Clients:
-
-   *  Chrome MV3
-
-   *  Cloudflare Workers
-
-   Servers:
-
-   *  Caddy plugin
-
-   *  Cloudflare Workers
-
-   Test vectors:
-
-   *  In JSON format
-
-   A demonstration server has been deployed to https://http-message-
-   signatures-example.research.cloudflare.com/ (https://http-message-
-   signatures-example.research.cloudflare.com/).
+   This draft has a couple of implementations.  A demonstration server
+   has been deployed to https://http-message-signatures-
+   example.research.cloudflare.com/ (https://http-message-signatures-
+   example.research.cloudflare.com/).
 
    It uses ed25519 example signing and verifying keys defined in
    Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].
+
+B.1.  Clients
+
+   *  Chrome MV3 (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+   *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+   *  Guzzle middleware (https://github.com/olipayne/guzzle-web-bot-
+      auth-middleware) (PHP)
+
+   *  Python script (https://zenn.dev/oymk/articles/944069e5eddc27)
+
+   *  Linzer
+      (https://github.com/nomadium/linzer/blob/master/spec/integration/
+      cloudflare_example_research.rb) (Ruby)
+
+   *  Rust binaries (https://github.com/cloudflare/web-bot-auth) (Rust)
+
+B.2.  Servers
+
+   *  Caddy plugin (https://github.com/cloudflare/web-bot-auth) (Go)
+
+   *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+B.3.  Test vectors
+
+   *  In JSON format (https://github.com/cloudflare/web-bot-
+      auth/blob/main/packages/web-bot-auth/test/test_data/
+      web_bot_auth_architecture_v1.json)
 
 Acknowledgments
 
