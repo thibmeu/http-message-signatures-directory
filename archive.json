@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-29T02:00:05.624049+00:00",
+  "timestamp": "2025-06-01T02:24:46.531316+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -308,7 +308,7 @@
       "labels": [],
       "body": "In addition to using User-Agent directive as per [RFC 9309](https://datatracker.ietf.org/doc/html/rfc9309), it would be interesting for robots.txt to support Signature-Agent header.",
       "createdAt": "2025-05-12T15:11:01Z",
-      "updatedAt": "2025-05-28T09:43:16Z",
+      "updatedAt": "2025-05-29T18:10:26Z",
       "closedAt": null,
       "comments": [
         {
@@ -317,6 +317,27 @@
           "body": "Discussing with @garyillyes and @gauribaraskar, it seems a good path forward may rather be defining a new IANA registry for Robots.txt directives.\n\nThis way, we can add directives that exist but are not part of RFC 9309, such as\n\n1. [Sitemaps](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt#sitemap)\n2. [Crawl-delay](https://en.wikipedia.org/wiki/Robots.txt#Crawl-delay_directive)\n\nAnd new directives like\n\n1. Signature-Agent (this issue)\n2. [Max-crawl-rate](https://github.com/thibmeu/http-message-signatures-directory/pull/34)\n3. [User-agent-purpose](https://github.com/garyillyes/ietf-rep-purpose/tree/main)\n\nThis probably should be part of its own repository, given the scope is quite different from solely HTTP Message Signatures.",
           "createdAt": "2025-05-28T09:43:15Z",
           "updatedAt": "2025-05-28T09:43:15Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "One more\n1. [Content-Usage](https://datatracker.ietf.org/doc/html/draft-it-aipref-attachment-00#name-robots-exclusion-protocol-c)",
+          "createdAt": "2025-05-29T15:39:08Z",
+          "updatedAt": "2025-05-29T15:39:08Z"
+        },
+        {
+          "author": "gauribaraskar",
+          "authorAssociation": "NONE",
+          "body": "We could also tweak [user-agent-purpose](https://www.ietf.org/archive/id/draft-illyes-rep-purpose-00.html) to signature-agent-purpose. ",
+          "createdAt": "2025-05-29T16:56:35Z",
+          "updatedAt": "2025-05-29T16:56:35Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "> We could also tweak [user-agent-purpose](https://www.ietf.org/archive/id/draft-illyes-rep-purpose-00.html) to signature-agent-purpose.\n\nThis seems to be going beyond solely having a registry. If there is a clear purpose, it could be added as its own draft, similar to user-agent-purpose. At the moment, it seems Signature-Agent would be sufficient.",
+          "createdAt": "2025-05-29T18:10:25Z",
+          "updatedAt": "2025-05-29T18:10:25Z"
         }
       ]
     },
