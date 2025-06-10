@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-01T02:24:46.531316+00:00",
+  "timestamp": "2025-06-10T02:04:06.134499+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -516,6 +516,22 @@
       "body": "Relates to #27 \n\nWhen a request is signed by multiple parties, it would be good for the request to contain all the keys. This can be done via delegation, or this could be done by providing multiple signature and signature-agent.\n\nUser-Agent have multiple product component. Here, we would have multiple directory component.\n\nFor example\n\n```\nSignature-Agent: forward-proxy.example.com myservice.example.com\n```",
       "createdAt": "2025-05-23T11:04:14Z",
       "updatedAt": "2025-05-23T11:05:05Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 35,
+      "id": "I_kwDOOXJyWM66leH8",
+      "title": "Add HTTP Status Code Specifications for Signature Verification Errors",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/35",
+      "state": "OPEN",
+      "author": "gauribaraskar",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Since web bot auth architecture is an application of HTTP Message Signatures, as defined in [RFC 9421 section 1.4](https://www.rfc-editor.org/rfc/rfc9421#section-1.4), the draft should specify appropriate HTTP status codes for signature verification failures. Currently, section 4.4 references the verification algorithm but doesn't specify what status codes origins should return for different failure scenarios. \n\nWe could add a new section specifying appropriate HTTP status codes for different failure scenarios:\n1. 401 Unauthorized: Missing/invalid/expired signatures, unknown keyid\n2. 403 Forbidden: Valid signature but access denied by policy\n3. 400 Bad Request: Malformed headers, missing required components, invalid tag, reusing nonce\n",
+      "createdAt": "2025-06-09T13:53:04Z",
+      "updatedAt": "2025-06-09T13:53:04Z",
       "closedAt": null,
       "comments": []
     }
