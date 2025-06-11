@@ -32,6 +32,7 @@ normative:
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
+  HTTP-MORE-STATUS-CODE: RFC6585
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
 
@@ -244,9 +245,12 @@ Mentioned in {{signature-agent}}, the Agent MAY send requests with `Signature-Ag
 
 ## Requesting a Message signature {#requesting-message-signature}
 
-{{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin. Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, Origins MUST use the same parameters as those defined by the {{generating-http-message-signature}}.
+{{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin.
+An Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, Origins MUST use the same parameters as those defined by the {{generating-http-message-signature}}.
+The status code SHOULD be 403 Forbidden as defined in {{Section 15.5.4 of HTTP}}.
 
 Origin MAY request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.
+The status code SHOULD be 429 Forbidden as defined in {{Section 15.5.4 of HTTP-MORE-STATUS-CODE}}.
 
 ## Validating Message signature
 
@@ -255,6 +259,7 @@ Similar to a regular User-Agent check, this happens at the HTTP layer, once head
 
 Additional requirements are placed on this validation:
 
+- During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
 - During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
