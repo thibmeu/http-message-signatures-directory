@@ -231,7 +231,7 @@ An Agent SHOULD send a request with the signature generated above. Updating the 
                 |                  expires=1700011111;\               |
                 |                  keyid="ba3e64==";\                 |
                 |                  tag="web-bot-auth"                 |
-                | Signature-Agent: signer.example.com                 |
+                | Signature-Agent: "signer.example.com"               |
                 '-----------------------------------------------------'
 ~~~
 
@@ -414,7 +414,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=1735693200\
- ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;nonce="kUgU5/WD/XQW+kDflQzZRy1o5B6pst6LMPdk7/TuZD/+1XOmW6w6ZtEEUKy9QMdJPoe4FPYHNIVGFvIltPvDlg=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -428,9 +428,9 @@ Signature-Input: sig1=("@authority")\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=1735693200\
- ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;nonce="kUgU5/WD/XQW+kDflQzZRy1o5B6pst6LMPdk7/TuZD/+1XOmW6w6ZtEEUKy9QMdJPoe4FPYHNIVGFvIltPvDlg=="\
  ;tag="web-bot-auth"
-Signature: sig1=:j7b33aGZs9JjA7OSLeM4PazwTJU8xG0N6NP4S1EsZiGi2YrvB0KOHCZbriq76NLXDfge8liqVLRdr5H0QQwgFfKoq/rNjImQMIE2ZhxDPJc4GMrqApsqoLg4i7A1yu9a5+ODrGzxH0OhniloJ7i3sl8wkD1TgtsR0fEg7M0zdUPVmcVB2AkTMWrqhDKg9puKjRiT9Z6pdr/3LJFcjbOqnyymimjK0YFVpr8RH3gv4NNtCdQEmBWhdgrZRr9xb0WlMHLGu+CT5vmCck4m8v7V9CuNR9ezp875QOLslOcUpiuhIKf/eW/BL1QlPDc9KoMYKdt/D0mGKb8fWafXbf4BDQ==:
+Signature: sig1=:j/jyMKI1rzsdPgEUNUCywHqAhrOv+9YBlP7IYwL2zGaUNIbgSz6oIxNwlmX67zzk2MGSY16DMxgxzRIRpjK/cQvBziki75jTgRDJnuTXi+MqJq6aaLmKMkG6jP+bNPjZHm+y3pu2UzQTN+HeFu3VytJWNbpR/L1zgd9L6ajGBTcsbsKeFZRVsgiDuXmxiIV0EJ3KlNEo2HndXQBGif8bP2kzvr+ow5UnAZp50YoU2t6WwnoUR4TJo5QeR1m/PFrTBP0m35V9uFMofbdRYD52cZ4Vk7UpJCGsVqKdRKhHpr+BCcpRPfLjh6KfsKjWw7TtUNN150WfI9sl62YzAQrxsg==:
 ~~~
 
 ### Signature-Agent included present on the request
@@ -444,13 +444,13 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": signature-agent.test
+"signature-agent": "signature-agent.test"
 "@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=1735693200\
- ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;nonce="zQqG4Jz7el1osEPrTQ4apGeQsgiRVJqKVFqoZGZKpwJl072new5V89KWz/HOk9xaZXhFoUn7SVFKRQfH4FtouQ=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -459,15 +459,15 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: signature-agent.test
+Signature-Agent: "signature-agent.test"
 Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=1735693200\
- ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;nonce="zQqG4Jz7el1osEPrTQ4apGeQsgiRVJqKVFqoZGZKpwJl072new5V89KWz/HOk9xaZXhFoUn7SVFKRQfH4FtouQ=="\
  ;tag="web-bot-auth"
-Signature: sig2=:Fe+JhZi3Xh4wWeOvNQjTWC/D8piUAUqg2e2gtjaM4gN2pj4utROGgJ57DFq9nr7x83KlxzjXvjL8YAPsYI9ugpBMDu2xTvprYQLeL9Y83ucMGXdv7YxzmbgTRoUPjSpaU18AHiiaRjnd3DPLh5j3O4wE1q81dyDXJkktnf+IUG04chur+ylzohfmb9t+xY0BBOnwgC1dKRa7B3knwCUCTqrGVQOCvN13NYFdCCiRLEshG4BA/7O6PQOBmgiHyY43NEMf9hYwUW/tLgmc+6wukpU7kHJjPUFGVjj0P6o3Cgo78BP3M/eDEIvTdGKaHDnuoZ+CS+hBmQnYP5MPHeaLwA==:
+Signature: sig2=:lZgN6S86Cq2695kl65sbrX49Wo31d9wgwjQ5hkEnDx0qmN8Lv1gC+RPNDEajaTWp3JFnvm6fsDjmRHaoe+rJiS0h/XPkohkCQQzjtse18K6ZY9gDjYyr4EvV4sC1FekTDvmVOxrR94RwbAWSzN0dqWkGihUVhSANjsZz9+BTa9LS31d29A86bwuZoLt5rWDVr6AjmRUm5zRdbfAFjApESlN0nBqoE7OcFzTIwU1HSJIooGpK/dXXbLEkImmjovrUUjPhtlOdumHte9tGuxw3bQhAj5UHEZhFyKIROR3DIl/xG5NCXXrf0YlGBhZiX6X1r3DmKZFptC5eMQov533RUQ==:
 ~~~
 
 ## EdDSA Using Curve edwards25519
@@ -491,7 +491,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=1735693200\
- ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;nonce="8h/a5vrCvY7xG5yLCI9RIAHyamcuP03yUX/Btdh8AiUuJwr9Kh+97TF9s9Pa1hp1fwiHcAxiO4lvEBVwtREItw=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -505,9 +505,9 @@ Signature-Input: sig1=("@authority")\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=1735693200\
- ;nonce="gubxywVx7hzbYKatLgzuKDllDAIXAkz41PydU7aOY7vT+Mb3GJNxW0qD4zJ+IOQ1NVtg+BNbTCRUMt1Ojr5BgA=="\
+ ;nonce="8h/a5vrCvY7xG5yLCI9RIAHyamcuP03yUX/Btdh8AiUuJwr9Kh+97TF9s9Pa1hp1fwiHcAxiO4lvEBVwtREItw=="\
  ;tag="web-bot-auth"
-Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
+Signature: sig1=:SirIfpOW8LJLz93n9y1FGdUvF0nE0MAQYPh/IRnKo+4fGBHtGlkmj5geLCe+M1YMTPahckF42gjTq05/s77NAA==:
 ~~~
 
 ### Signature-Agent included present on the request
@@ -521,13 +521,13 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": signature-agent.test
+"signature-agent": "signature-agent.test"
 "@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=1735693200\
- ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;nonce="NRQCVgw8RXX4syek+k8DCq041zKwsWYOjKt76gnZZFMsYO4b5FcUo46uzl9jf+TiSrNadBXpUT1htY37crtIyg=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -536,15 +536,15 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: signature-agent.test
+Signature-Agent: "signature-agent.test"
 Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=1735693200\
- ;nonce="ZO3/XMEZjrvSnLtAP9M7jK0WGQf3J+pbmQRUpKDhF9/jsNCWqUh2sq+TH4WTX3/GpNoSZUa8eNWMKqxWp2/c2g=="\
+ ;nonce="NRQCVgw8RXX4syek+k8DCq041zKwsWYOjKt76gnZZFMsYO4b5FcUo46uzl9jf+TiSrNadBXpUT1htY37crtIyg=="\
  ;tag="web-bot-auth"
-Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ01v/hlsbnLvLDrrA5fBeb1CA==:
+Signature: sig2=:K0Icq30AYj8fOMyjc2nbQxhL2NV14YmSxGaoo0GuSdG6gsiJfHhSMgE86fPMDtL3DwQaIF8eB33dB3oedPzyBw==:
 ~~~
 
 # Implementations
