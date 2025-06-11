@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                                6 May 2025
-Expires: 7 November 2025
+Intended status: Informational                              11 June 2025
+Expires: 13 December 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2025.
+   This Internet-Draft will expire on 13 December 2025.
 
 Copyright Notice
 
@@ -78,7 +78,8 @@ Table of Contents
      4.2.  Generating HTTP Message Signature
        4.2.1.  Signature-Agent
        4.2.2.  Anti-replay
-       4.2.3.  Sending a request
+       4.2.3.  Additional headers
+       4.2.4.  Sending a request
      4.3.  Requesting a Message signature
      4.4.  Validating Message signature
      4.5.  Key Distribution and Discovery
@@ -86,10 +87,13 @@ Table of Contents
        4.5.2.  Public list
        4.5.3.  Signature-Agent header
    5.  Security Considerations
-     5.1.  Performance Impact
-     5.2.  Key Compromise Response
-     5.3.  Shared Secrets Considered Harmful
-     5.4.  Key Reuse Considered Harmful
+     5.1.  Use of TLS
+     5.2.  Performance Impact
+     5.3.  Nonce validation
+     5.4.  Key Compromise Response
+     5.5.  Shared Secrets Considered Harmful
+     5.6.  Key Reuse Considered Harmful
+     5.7.  Reverse proxy consideration
    6.  Privacy Considerations
      6.1.  Public Identity
      6.2.  No Human Correlation
@@ -99,11 +103,18 @@ Table of Contents
      8.1.  Normative References
      8.2.  Informative References
    Appendix A.  Test Vectors
-     A.1.  Ed25519
+     A.1.  RSASSA-PSS Using SHA-512
        A.1.1.  Signature-Agent absent from the request
        A.1.2.  Signature-Agent included present on the request
+     A.2.  EdDSA Using Curve edwards25519
+       A.2.1.  Signature-Agent absent from the request
+       A.2.2.  Signature-Agent included present on the request
    Appendix B.  Implementations
+     B.1.  Clients
+     B.2.  Servers
+     B.3.  Test vectors
    Acknowledgments
+   Changelog
    Author's Address
 
 1.  Introduction
@@ -247,7 +258,7 @@ Table of Contents
 
    keyid  MUST be a base64url JWK SHA-256 Thumbprint as defined in
       Section 3.2 of [JWK-THUMBPRINT] for RSA and EC, and in
-      Appendix A.3 of [JWK-OKP] foe ed25519.
+      Appendix A.3 of [JWK-OKP] for ed25519.
 
    tag  MUST be web-bot-auth
 
@@ -264,7 +275,7 @@ Table of Contents
 
    Signature-Agent is an HTTP Method context header defined in
    Section 4.1 of [DIRECTORY].  It is RECOMMENDED that the Agent sends
-   requests with Signature-Agent header, as described in Section 4.2.3.
+   requests with Signature-Agent header, as described in Section 4.2.4.
    If the header is to be sent, it MUST be signed as a component as
    defined in Section 2.1 of [HTTP-MESSAGE-SIGNATURES].
 
@@ -276,7 +287,8 @@ Table of Contents
 
    Origins MAY want to prevent signatures from being spoofed or used
    multiple times by bad actors and thus require a nonce to be added to
-   the @signature-params.
+   the @signature-params.  This is described in Section 7.2.2 of
+   [HTTP-MESSAGE-SIGNATURES].
 
    Agents SHOULD extend @signature-parameters defined in Section 4.2 as
    follow
@@ -284,16 +296,25 @@ Table of Contents
    nonce  base64url encoded random byte array.  It is RECOMMENDED to use
       a 64-byte array.
 
-   This nonce MUST be unique for the validity window of the signature,
-   as defined by created and expires attributes.  Because the nonce is
-   controlled by the client, the origin needs to maintain a list of all
-   nonces that it has seen that are still in the validity window of the
-   signature.
+   Client MUST ensure that this nonce is unique for the validity window
+   of the signature, as defined by created and expires attributes.
 
-4.2.3.  Sending a request
+4.2.3.  Additional headers
+
+   Agents MAY include additional components, such as specific HTTP
+   headers, in the signature.  This can be prompted by the origin
+   requesting additional headers, as described in Section 4.3, or
+   initiated by the agent to provide more information within the
+   signature scope.  For example, an agent might include an HTTP header
+   expressing its intent and sign it.
+
+   Origins MAY ignore certain headers at their own discretion, and
+   request a new signature, as described in Section 4.3.
+
+4.2.4.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
-   Updating the architecture diagram, the flow look as follow.
+   Updating the architecture diagram, the flow looks as follow.
 
 +---------+                                                                    +----------+
 |         |                              Exchange                              |          |
@@ -317,30 +338,38 @@ Table of Contents
 
    2.  Signature-Input defined in Section 4.2
 
-   Mentioned in a section Section 4.2.1, the Agent MAY send request with
+   Mentioned in Section 4.2.1, the Agent MAY send requests with
    Signature-Agent header.
 
 4.3.  Requesting a Message signature
 
    Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
-   by an origin.  Origin MAY choose to request signatures from clients
-   that did not initially provide them.  If requesting, Origins MUST use
-   the same parameters as those defined by the Section 4.2.
+   by an origin.  An Origin MAY choose to request signatures from
+   clients that did not initially provide them.  If requesting, Origins
+   MUST use the same parameters as those defined by the Section 4.2.
+   The status code SHOULD be 403 Forbidden as defined in Section 15.5.4
+   of [HTTP].
 
    Origin MAY request a new signature with tag "web-bot-auth" even if a
    nonce is provided, for example if it believes the nonce is a replay,
    or if it doesn't store nonces and thus requests new signatures every
-   time.
+   time.  The status code SHOULD be 429 Forbidden as defined in
+   Section 15.5.4 of [HTTP-MORE-STATUS-CODE].
 
 4.4.  Validating Message signature
 
    Upon receiving an HTTP request, the origin has to verify the
    signature.  The algorithm is provided in Section 3.2 of
-   [HTTP-MESSAGE-SIGNATURES].  Similar to regular User-Agent check, this
-   happens at the HTTP layer, once headers are received.
+   [HTTP-MESSAGE-SIGNATURES].  Similar to a regular User-Agent check,
+   this happens at the HTTP layer, once headers are received.
 
    Additional requirements are placed on this validation:
+
+   *  During step 1 to 3 included, if the Origin fails to parse the
+      provided Signature, Signature-Input, or Signature-Agent headers,
+      it MAY respond with status code 400 Bad Request as defined in
+      Section 15.5.1 of [HTTP].
 
    *  During step 4, the Origin MAY discard signatures for which the tag
       is not set to web-bot-auth.
@@ -351,6 +380,11 @@ Table of Contents
    *  During step 5, if the keyid is unknown to the origin, they MAY
       fetch the provider directory as indicated by Signature-Agent
       header defined in Section 4 of [DIRECTORY].
+
+   Origin MAY require the nonce to satisfy certain constraint: be
+   globally unique using a global nonce store, be unique to a specific
+   location or time window using a local cache, or not constraint at
+   all.
 
 4.5.  Key Distribution and Discovery
 
@@ -382,7 +416,7 @@ Table of Contents
 4.5.1.  Out-of-band communication between client and origin
 
    A service submitting their key to an origin, or the origin manually
-   adding a service to their trusted list
+   adding a service to their trusted list.
 
 4.5.2.  Public list
 
@@ -393,20 +427,45 @@ Table of Contents
 
    This allows for backward compatibility with existing header agent
    filtering, and an upgrade to cryptographically secured protocol.  See
-   section Section 4.2.1 for more details.
+   Section 4.2.1 for more details.
 
 5.  Security Considerations
 
-5.1.  Performance Impact
+5.1.  Use of TLS
 
-   Origins must account for the overhead of signature verification in
+   We reassess Section 7.1.2 of [HTTP-MESSAGE-SIGNATURES].  Clients
+   SHOULD use TLS [RFC8446] (https) or equivalent transport security
+   when making requests with Message signatures.  Failing to do so
+   exposes the Message signature to numerous attacks that could give
+   attackers unintended access.
+
+   This include reverse proxy and their consideration presented in
+   Section 5.7.
+
+   An origin SHOULD refuse Signature headers when communicated over an
+   unsecured channel.
+
+5.2.  Performance Impact
+
+   Origins should account for the overhead of signature verification in
    their operations.  A local cache of public keys reduces network
    requests and verification latency.  The choice of signing algorithm
    impacts CPU requirements.  Origins should monitor verification
    latency and set appropriate timeouts to maintain service levels under
    load.
 
-5.2.  Key Compromise Response
+5.3.  Nonce validation
+
+   Clients are the one controlling the nonce.  While Section 4.2.2
+   mandates that clients MUST provide a globally unique nonce, it is the
+   origin's responsibility to enforce it.
+
+   Different validation policies have different performance and
+   operational considerations.  Global uniqueness requires a global
+   nonce store.  Some origins may find that their use case can tolerate
+   sharding on location, timing, or other properties.
+
+5.4.  Key Compromise Response
 
    An agent signing key might get compromised.
 
@@ -417,7 +476,7 @@ Table of Contents
    To minimise the impact of a key compromise, the origin should support
    rapid key rotation and monitor for suspicious signature patterns.
 
-5.3.  Shared Secrets Considered Harmful
+5.5.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
@@ -425,12 +484,24 @@ Table of Contents
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective revocation if needed.
 
-5.4.  Key Reuse Considered Harmful
+5.6.  Key Reuse Considered Harmful
 
    Implementations MUST NOT reuse a signing key for different purposes.
    For example, if an agent implementor has two agents they want to
    differentiate, these should use distinct signing keys and signing key
    directories.
+
+5.7.  Reverse proxy consideration
+
+   An origin may be placed behind a reverse proxy.  This means that the
+   proxy is seeing the signature before the origin.
+
+   It implies that the proxy sees the Signature before the origin does,
+   may strip it, or even attempt to replay it against other reverse
+   proxies used by the origin.
+
+   Origins may require a specific nonce policy to prevent such malicious
+   behaviour and decide to validate the signature themselves.
 
 6.  Privacy Considerations
 
@@ -490,6 +561,11 @@ Table of Contents
               Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
               February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
 
+   [HTTP-MORE-STATUS-CODE]
+              Nottingham, M. and R. Fielding, "Additional HTTP Status
+              Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
+              <https://www.rfc-editor.org/rfc/rfc6585>.
+
    [JWK-OKP]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
               and Signatures in JSON Object Signing and Encryption
               (JOSE)", RFC 8037, DOI 10.17487/RFC8037, January 2017,
@@ -517,16 +593,95 @@ Table of Contents
               DOI 10.17487/RFC6750, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6750>.
 
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
 Appendix A.  Test Vectors
 
-A.1.  Ed25519
+A.1.  RSASSA-PSS Using SHA-512
+
+   The test vectors in this section use the RSA-PSS key defined in
+   Appendix B.1.2 of [HTTP-MESSAGE-SIGNATURES].  This section include
+   non-normative test vectors that may be used as test cases to validate
+   implementation correctness.
+
+A.1.1.  Signature-Agent absent from the request
+
+   This example presents a minimal signature using the rsa-pss-sha512
+   algorithm over test-request.  The request does not contain a
+   Signature-Agent header.
+
+   The corresponding signature base is:
+
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"@signature-params": ("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+
+   This results in the following Signature-Input and Signature header
+   fields being added to the message under the label sig1:
+
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Input: sig1=("@authority")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="VWVqoo2bMPlekOx7xwJ2XjFsB6otZZjadh1Yy/USTQDArX3vhLS2tVkZM7uynqPbHmRfAUZ5jnEX9wZ7NODiBw=="\
+ ;tag="web-bot-auth"
+Signature: sig1=:j7b33aGZs9JjA7OSLeM4PazwTJU8xG0N6NP4S1EsZiGi2YrvB0KOHCZbriq76NLXDfge8liqVLRdr5H0QQwgFfKoq/rNjImQMIE2ZhxDPJc4GMrqApsqoLg4i7A1yu9a5+ODrGzxH0OhniloJ7i3sl8wkD1TgtsR0fEg7M0zdUPVmcVB2AkTMWrqhDKg9puKjRiT9Z6pdr/3LJFcjbOqnyymimjK0YFVpr8RH3gv4NNtCdQEmBWhdgrZRr9xb0WlMHLGu+CT5vmCck4m8v7V9CuNR9ezp875QOLslOcUpiuhIKf/eW/BL1QlPDc9KoMYKdt/D0mGKb8fWafXbf4BDQ==:
+
+A.1.2.  Signature-Agent included present on the request
+
+   This example presents a minimal signature using the rsa-pss-sha512
+   algorithm over test-request.  The request contains a Signature-Agent
+   header.
+
+   The corresponding signature base is:
+
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": signature-agent.test
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+
+   This results in the following Signature-Input and Signature header
+   fields being added to the message under the label sig2:
+
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: signature-agent.test
+Signature-Input: sig2=("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="p7UJcLF6Ym0Uon2QQNEezcK+WX63HsIWttaCkZ/824kOKCvmKZrqRLQgTmJmWYnTs67LpSRRxRjE//j9z1MdVg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:Fe+JhZi3Xh4wWeOvNQjTWC/D8piUAUqg2e2gtjaM4gN2pj4utROGgJ57DFq9nr7x83KlxzjXvjL8YAPsYI9ugpBMDu2xTvprYQLeL9Y83ucMGXdv7YxzmbgTRoUPjSpaU18AHiiaRjnd3DPLh5j3O4wE1q81dyDXJkktnf+IUG04chur+ylzohfmb9t+xY0BBOnwgC1dKRa7B3knwCUCTqrGVQOCvN13NYFdCCiRLEshG4BA/7O6PQOBmgiHyY43NEMf9hYwUW/tLgmc+6wukpU7kHJjPUFGVjj0P6o3Cgo78BP3M/eDEIvTdGKaHDnuoZ+CS+hBmQnYP5MPHeaLwA==:
+
+A.2.  EdDSA Using Curve edwards25519
 
    The test vectors in this section use the Ed25519 key defined in
    Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].  This section include
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
-A.1.1.  Signature-Agent absent from the request
+A.2.1.  Signature-Agent absent from the request
 
    This example presents a minimal signature using the ed25519 algorithm
    over test-request.  The request does not contain a Signature-Agent
@@ -559,7 +714,7 @@ Signature-Input: sig1=("@authority")\
  ;tag="web-bot-auth"
 Signature: sig1=:uz2SAv+VIemw+Oo890bhYh6Xf5qZdLUgv6/PbiQfCFXcX/vt1A8Pf7OcgL2yUDUYXFtffNpkEr5W6dldqFrkDg==:
 
-A.1.2.  Signature-Agent included present on the request
+A.2.2.  Signature-Agent included present on the request
 
    This example presents a minimal signature using the ed25519 algorithm
    over test-request.  The request contains a Signature-Agent header.
@@ -595,31 +750,45 @@ Signature: sig2=:bcWij+p0SZDQ0hF7Bk8scjEVRMJZlk1EzEHEHUzT58VbPWRrdIRYJgYerlC4fZ0
 
 Appendix B.  Implementations
 
-   This draft has a couple of implementations
-   (https://github.com/cloudflareresearch/web-bot-auth)
-
-   Clients:
-
-   *  Chrome MV3
-
-   *  Cloudflare Workers
-
-   Servers:
-
-   *  Caddy plugin
-
-   *  Cloudflare Workers
-
-   Test vectors:
-
-   *  In JSON format
-
-   A demonstration server has been deployed to https://http-message-
-   signatures-example.research.cloudflare.com/ (https://http-message-
-   signatures-example.research.cloudflare.com/).
+   This draft has a couple of implementations.  A demonstration server
+   has been deployed to https://http-message-signatures-
+   example.research.cloudflare.com/ (https://http-message-signatures-
+   example.research.cloudflare.com/).
 
    It uses ed25519 example signing and verifying keys defined in
    Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].
+
+B.1.  Clients
+
+   *  Chrome MV3 (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+   *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+   *  Guzzle middleware (https://github.com/olipayne/guzzle-web-bot-
+      auth-middleware) (PHP)
+
+   *  Python script (https://zenn.dev/oymk/articles/944069e5eddc27)
+
+   *  Linzer
+      (https://github.com/nomadium/linzer/blob/master/spec/integration/
+      cloudflare_example_research.rb) (Ruby)
+
+   *  Rust binaries (https://github.com/cloudflare/web-bot-auth) (Rust)
+
+B.2.  Servers
+
+   *  Caddy plugin (https://github.com/cloudflare/web-bot-auth) (Go)
+
+   *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
+      (TypeScript)
+
+B.3.  Test vectors
+
+   *  In JSON format (https://github.com/cloudflare/web-bot-
+      auth/blob/main/packages/web-bot-auth/test/test_data/
+      web_bot_auth_architecture_v1.json)
 
 Acknowledgments
 
@@ -627,7 +796,39 @@ Acknowledgments
    in alphabetical order) for feedback, insight, and implementation of
    this document - Marwan Fayed, Maxime Guerreiro, Scott Hendrickson,
    Jonathan Hoyland, Mark Nottingham, Eugenio Panero, Lucas Pardue,
-   Tanya Verma.
+   Malte Ubl, Loganaden Velvindron, Tanya Verma.
+
+Changelog
+
+   v01
+
+   *  Add mandatory signing of Signature-Agent by clients if present
+
+   *  Add test vectors for request with and without Signature-Agent
+
+   *  Update example diagram to be correct
+
+   *  Add security consideration about reverse proxy
+
+   *  Update why origin may request a new signature
+
+   *  Update nonce validation wording and global uniqueness
+
+   *  Acknowledgements
+
+   v00
+
+   *  Initial draft
+
+   *  How to leverage HTTP Message Signature to sign request
+
+   *  How to verify these Signature
+
+   *  Define web-bot-auth tag to scope this signature
+
+   *  Derive keyid using JWK Thumbprint
+
+   *  High level Security and Privacy considerations
 
 Author's Address
 
