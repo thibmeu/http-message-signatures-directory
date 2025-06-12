@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-10T02:04:06.134499+00:00",
+  "timestamp": "2025-06-12T02:01:36.198779+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -532,6 +532,44 @@
       "body": "Since web bot auth architecture is an application of HTTP Message Signatures, as defined in [RFC 9421 section 1.4](https://www.rfc-editor.org/rfc/rfc9421#section-1.4), the draft should specify appropriate HTTP status codes for signature verification failures. Currently, section 4.4 references the verification algorithm but doesn't specify what status codes origins should return for different failure scenarios. \n\nWe could add a new section specifying appropriate HTTP status codes for different failure scenarios:\n1. 401 Unauthorized: Missing/invalid/expired signatures, unknown keyid\n2. 403 Forbidden: Valid signature but access denied by policy\n3. 400 Bad Request: Malformed headers, missing required components, invalid tag, reusing nonce\n",
       "createdAt": "2025-06-09T13:53:04Z",
       "updatedAt": "2025-06-09T13:53:04Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 36,
+      "id": "I_kwDOOXJyWM66xTMS",
+      "title": "Add Key binding consideration in directory draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/36",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "It could be useful for keys to be binded to a domain. There are multiple approaches that could be used, and I'm not sure which one should be mandated, if any. Possible approaches I see at the moment\n\n1. /.well-known/... to be served with one/more HTTP Message Signature over the digest. This allows mirroring\n2. have a challenge mechanism for updates/key liveness\n3. have an identity string as part of JWK\n4. Require bots to register their keys as part of a directory (similar to certificate transparency)\n5. suggest integration with OIDC\n\nIt would be great if these process allow for key mirroring.",
+      "createdAt": "2025-06-10T12:52:52Z",
+      "updatedAt": "2025-06-10T12:53:15Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 38,
+      "id": "I_kwDOOXJyWM66-gHa",
+      "title": "Signature-Agent is a string structured field",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/38",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "This is how the directory draft defines it.\n\nAs pointed out by @AkshatM, the architecture draft provides incorrect examples, and does not escape the string as required by [Section 3.3.3 of RFC8941](https://www.rfc-editor.org/rfc/rfc8941#name-strings).\n\nWe should correct it.\n\nThis includes regenerating test vectors\n",
+      "createdAt": "2025-06-11T13:58:19Z",
+      "updatedAt": "2025-06-11T13:58:19Z",
       "closedAt": null,
       "comments": []
     }
@@ -1349,6 +1387,66 @@
           "updatedAt": "2025-05-28T09:18:21Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 37,
+      "id": "PR_kwDOOXJyWM6aBypg",
+      "title": "Add suggested response status code",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/37",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "When an Origin respond after refusing an HTTP message signatures, the spec recommends status code.\r\n\r\nThis commit adds:\r\n1. 403 when returning a new `Accept-Signature` header. This is because 401 requires `WWW-Authenticate` to be returned, which does not apply. fyi @smhendrickson\r\n2. 429 for a new nonce/replay\r\n3. 400 for malformatted headers\r\n\r\nWe do not recommend status code when a tag is not present given the signature would be ignore, or when the keyid is unknown because the key would be ignored as well. This would be a final response status code, that is up to the origin to decide.\r\n\r\nCloses #35\r\n\r\n@gauribaraskar",
+      "createdAt": "2025-06-11T12:55:23Z",
+      "updatedAt": "2025-06-11T12:55:23Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "d2faa3b031afbf08b87078870dc8c1011a1a52c1",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-status-code",
+      "headRefOid": "78f8741abc715ac72add996ec82a1eaa2d7d77fc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 39,
+      "id": "PR_kwDOOXJyWM6aC_Wo",
+      "title": "Fix Signature-Agent as a structured field",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/39",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Closes #38",
+      "createdAt": "2025-06-11T14:33:23Z",
+      "updatedAt": "2025-06-11T14:33:23Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "d2faa3b031afbf08b87078870dc8c1011a1a52c1",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-structured-field-signature-agent",
+      "headRefOid": "edbb294679ce8b8491d3598a21cb8c0a69fb550c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
