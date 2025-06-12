@@ -345,14 +345,17 @@ Table of Contents
 
    Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
-   by an origin.  Origin MAY choose to request signatures from clients
-   that did not initially provide them.  If requesting, Origins MUST use
-   the same parameters as those defined by the Section 4.2.
+   by an origin.  An Origin MAY choose to request signatures from
+   clients that did not initially provide them.  If requesting, Origins
+   MUST use the same parameters as those defined by the Section 4.2.
+   The status code SHOULD be 403 Forbidden as defined in Section 15.5.4
+   of [HTTP].
 
    Origin MAY request a new signature with tag "web-bot-auth" even if a
    nonce is provided, for example if it believes the nonce is a replay,
    or if it doesn't store nonces and thus requests new signatures every
-   time.
+   time.  The status code SHOULD be 429 Forbidden as defined in
+   Section 15.5.4 of [HTTP-MORE-STATUS-CODE].
 
 4.4.  Validating Message signature
 
@@ -362,6 +365,11 @@ Table of Contents
    this happens at the HTTP layer, once headers are received.
 
    Additional requirements are placed on this validation:
+
+   *  During step 1 to 3 included, if the Origin fails to parse the
+      provided Signature, Signature-Input, or Signature-Agent headers,
+      it MAY respond with status code 400 Bad Request as defined in
+      Section 15.5.1 of [HTTP].
 
    *  During step 4, the Origin MAY discard signatures for which the tag
       is not set to web-bot-auth.
@@ -552,6 +560,11 @@ Table of Contents
               Backman, A., Ed., Richer, J., Ed., and M. Sporny, "HTTP
               Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
               February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
+
+   [HTTP-MORE-STATUS-CODE]
+              Nottingham, M. and R. Fielding, "Additional HTTP Status
+              Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
+              <https://www.rfc-editor.org/rfc/rfc6585>.
 
    [JWK-OKP]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
               and Signatures in JSON Object Signing and Encryption
