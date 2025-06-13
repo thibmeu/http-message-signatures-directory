@@ -34,6 +34,8 @@ normative:
     title: HTTP Message Signatures
     target: https://www.iana.org/assignments/http-message-signature/http-message-signature.xhtml
   JWK: RFC7517
+  JWK-OKP: RFC8037
+  JWK-THUMBPRINT: RFC7638
   STRUCTURED-HEADERS: RFC8941
   URI: RFC8820
   WellKnownURIs:
@@ -79,7 +81,7 @@ Together, these mechanisms enable key distribution and discovery for HTTP Messag
 The key directory is served as a JSON Web Key Set (JWKS) as defined in {{Section 5 of JWK}}.
 The "alg" parameter are restricted to algorithm registered against HTTP Signature Algorithms Section of {{HTTP-MESSAGE-SIGNATURES-IANA}}
 
-The directory SHOULD be server over HTTPS.
+The directory SHOULD be served over HTTPS.
 The directory MUST be served with media type `application/http-message-signatures-directory`.
 
 Client application SHOULD validate the directory format and reject malformed entries.
@@ -126,6 +128,41 @@ with different validity period. When rotating keys, clients SHOULD:
 3. Remove expired keys from the directory
 
 Servers SHOULD cache the directory contents and refresh upon expiration.
+
+## Binding keys to the directory authority
+
+To ensure the authenticity and integrity of the key material provided by the
+directory, clients **SHOULD** validate the directory's response.
+
+When a directory server provides a key directory over HTTP or HTTPS, it is
+RECOMMENDED that it constructs and includes one HTTP Message Signatures per keys
+with the response, as defined in {{HTTP-MESSAGE-SIGNATURES}}.
+Each key SHOULD be used to provide one signature.
+
+Directory server SHOULD include:
+
+`@authority`
+: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+Directory server SHOULD include the following `@signature-params` as defined in
+{{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`created`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`expires`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`keyid`
+: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
+
+`tag`
+: MUST be `http-message-signatures-directory`
+
+Clients SHOULD validate these signatures using the keys provided by the
+directory. Clients SHOULD ignore keys from a directory response that do not have
+a corresponding valid signature. This validation ensures the integrity of the
+key set and its association with the intended directory.
 
 # Privacy Considerations
 
