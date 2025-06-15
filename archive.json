@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-12T02:01:36.198779+00:00",
+  "timestamp": "2025-06-15T02:18:23.633418+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -524,15 +524,15 @@
       "id": "I_kwDOOXJyWM66leH8",
       "title": "Add HTTP Status Code Specifications for Signature Verification Errors",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/35",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "gauribaraskar",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Since web bot auth architecture is an application of HTTP Message Signatures, as defined in [RFC 9421 section 1.4](https://www.rfc-editor.org/rfc/rfc9421#section-1.4), the draft should specify appropriate HTTP status codes for signature verification failures. Currently, section 4.4 references the verification algorithm but doesn't specify what status codes origins should return for different failure scenarios. \n\nWe could add a new section specifying appropriate HTTP status codes for different failure scenarios:\n1. 401 Unauthorized: Missing/invalid/expired signatures, unknown keyid\n2. 403 Forbidden: Valid signature but access denied by policy\n3. 400 Bad Request: Malformed headers, missing required components, invalid tag, reusing nonce\n",
       "createdAt": "2025-06-09T13:53:04Z",
-      "updatedAt": "2025-06-09T13:53:04Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-12T12:10:47Z",
+      "closedAt": "2025-06-12T12:10:47Z",
       "comments": []
     },
     {
@@ -547,18 +547,54 @@
       "labels": [
         "question"
       ],
-      "body": "It could be useful for keys to be binded to a domain. There are multiple approaches that could be used, and I'm not sure which one should be mandated, if any. Possible approaches I see at the moment\n\n1. /.well-known/... to be served with one/more HTTP Message Signature over the digest. This allows mirroring\n2. have a challenge mechanism for updates/key liveness\n3. have an identity string as part of JWK\n4. Require bots to register their keys as part of a directory (similar to certificate transparency)\n5. suggest integration with OIDC\n\nIt would be great if these process allow for key mirroring.",
+      "body": "It could be useful for keys to be binded to a domain. There are multiple approaches that could be used, and I'm not sure which one should be mandated, if any. Possible approaches I see at the moment\n\n1. /.well-known/... to be served with one/more HTTP Message Signature over the digest and `@authority` \n2. have a challenge mechanism for updates/key liveness\n3. have an identity string as part of JWK. It could be via x5c if leveraging certificates associated to a signature-agent, or a new field\n4. Require bots to register their keys as part of a global root (similar to webpki)\n\nIt would be great if these process allow for key mirroring.",
       "createdAt": "2025-06-10T12:52:52Z",
-      "updatedAt": "2025-06-10T12:53:15Z",
+      "updatedAt": "2025-06-12T18:44:53Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "Can you clarify what the goal is in binding a key to a domain? If to associate some well known identity to the bot: is domain always an appropriate form of identity?\n",
+          "createdAt": "2025-06-12T16:48:20Z",
+          "updatedAt": "2025-06-12T16:48:20Z"
+        },
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think 1 could be fine, assuming the domain is also in the signed portion.",
+          "createdAt": "2025-06-12T16:50:05Z",
+          "updatedAt": "2025-06-12T16:50:05Z"
+        },
+        {
+          "author": "jhoyla",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Maybe realm is more flexible than domain?",
+          "createdAt": "2025-06-12T16:50:40Z",
+          "updatedAt": "2025-06-12T16:50:40Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "The goal of binding to a domain is to ensure that when consuming a directory, you still preserve the domain it was served from.\n\nIf you have two bots a and b with keyA and keyB, bot b may serve keyA in its directory.\nAnd when validating keyA, you may be unable to tell if it's the key of bot a or bot b, even though only bot a is able to produce such signatures.\n\nTherefore you need a binding to ensure keyA is always associated to bot a\n\n\nThis is specific to the directory, therefore using domains. The architecture works with keyid that a client trusts. You can define other retrieval mechanism that would work fine as long as you have confidence that the key uniquely identifies a bot.",
+          "createdAt": "2025-06-12T16:54:32Z",
+          "updatedAt": "2025-06-12T16:54:32Z"
+        },
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "Option 1 seems reasonable to me.",
+          "createdAt": "2025-06-12T18:44:53Z",
+          "updatedAt": "2025-06-12T18:44:53Z"
+        }
+      ]
     },
     {
       "number": 38,
       "id": "I_kwDOOXJyWM66-gHa",
       "title": "Signature-Agent is a string structured field",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/38",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -569,7 +605,41 @@
       ],
       "body": "This is how the directory draft defines it.\n\nAs pointed out by @AkshatM, the architecture draft provides incorrect examples, and does not escape the string as required by [Section 3.3.3 of RFC8941](https://www.rfc-editor.org/rfc/rfc8941#name-strings).\n\nWe should correct it.\n\nThis includes regenerating test vectors\n",
       "createdAt": "2025-06-11T13:58:19Z",
-      "updatedAt": "2025-06-11T13:58:19Z",
+      "updatedAt": "2025-06-12T07:54:52Z",
+      "closedAt": "2025-06-12T07:54:52Z",
+      "comments": []
+    },
+    {
+      "number": 43,
+      "id": "I_kwDOOXJyWM67YoAW",
+      "title": "Security consideration regarding semantically equivalent field values",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/43",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "HTTP Message Signatures relies on strwuctured field to canonicalise an HTTP request.\nStructured fields allow for two different inputs to be canonicalised to the same string.\n\nThere are considerations around this in HTTP Message Signatures [RFC 9421, Section 7.5.2](https://www.rfc-editor.org/rfc/rfc9421#section-7.5.2).\n\nAt minimum, the architecture draft has to restate these.\n\nThere is an open question if the architecture should place additional rules which are not part of HTTP Message Signatures.",
+      "createdAt": "2025-06-13T14:37:28Z",
+      "updatedAt": "2025-06-13T14:37:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 44,
+      "id": "I_kwDOOXJyWM67b6M4",
+      "title": "Binding a public key to an identity possible with x5c chaining (rogue key attacks)",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/44",
+      "state": "OPEN",
+      "author": "EthanHeilman",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This may not be a concern for this use case  but wanted to make a note of it.\n\nSince the JWK isn't covered by the HTTP message signature it is possible to do a rogue key attack where you associate someone else's public key with your own identity. These attacks don't break signature forgability because you aren't able to create new signatures under that key, but there are cases in some protocols where the confusion between public key and identity may result in harm.\n\n1. See JWK and HTTP signature for identity example.com\n2. Sign x509 cert for evil.com with public key from JWK and replay HTTP signature.\n\nThe replay attack doesn't violate your security model, but someone might be able to bind a public key which they don't know the signing key for to their identity. I don't think the x509 format protects against rogue keys, but I could be wrong",
+      "createdAt": "2025-06-13T20:11:43Z",
+      "updatedAt": "2025-06-13T20:11:43Z",
       "closedAt": null,
       "comments": []
     }
@@ -1394,7 +1464,7 @@
       "id": "PR_kwDOOXJyWM6aBypg",
       "title": "Add suggested response status code",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/37",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -1405,18 +1475,28 @@
       ],
       "body": "When an Origin respond after refusing an HTTP message signatures, the spec recommends status code.\r\n\r\nThis commit adds:\r\n1. 403 when returning a new `Accept-Signature` header. This is because 401 requires `WWW-Authenticate` to be returned, which does not apply. fyi @smhendrickson\r\n2. 429 for a new nonce/replay\r\n3. 400 for malformatted headers\r\n\r\nWe do not recommend status code when a tag is not present given the signature would be ignore, or when the keyid is unknown because the key would be ignored as well. This would be a final response status code, that is up to the origin to decide.\r\n\r\nCloses #35\r\n\r\n@gauribaraskar",
       "createdAt": "2025-06-11T12:55:23Z",
-      "updatedAt": "2025-06-11T12:55:23Z",
+      "updatedAt": "2025-06-12T12:10:49Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "d2faa3b031afbf08b87078870dc8c1011a1a52c1",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-status-code",
       "headRefOid": "78f8741abc715ac72add996ec82a1eaa2d7d77fc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2025-06-12T12:10:46Z",
+      "mergedAt": "2025-06-12T12:10:46Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "6131752251fad4c7edb4c7c6604fbc2338f25cab"
+      },
+      "comments": [
+        {
+          "author": "gcloudflare",
+          "authorAssociation": "NONE",
+          "body": "LGTM",
+          "createdAt": "2025-06-12T11:53:26Z",
+          "updatedAt": "2025-06-12T11:53:26Z"
+        }
+      ],
       "reviews": []
     },
     {
@@ -1424,7 +1504,7 @@
       "id": "PR_kwDOOXJyWM6aC_Wo",
       "title": "Fix Signature-Agent as a structured field",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/39",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -1435,17 +1515,226 @@
       ],
       "body": "Closes #38",
       "createdAt": "2025-06-11T14:33:23Z",
-      "updatedAt": "2025-06-11T14:33:23Z",
+      "updatedAt": "2025-06-12T07:54:55Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "d2faa3b031afbf08b87078870dc8c1011a1a52c1",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-structured-field-signature-agent",
       "headRefOid": "edbb294679ce8b8491d3598a21cb8c0a69fb550c",
+      "closedAt": "2025-06-12T07:54:52Z",
+      "mergedAt": "2025-06-12T07:54:52Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "37af506083d535339ca8c8d6a83740c722bc3b39"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 40,
+      "id": "PR_kwDOOXJyWM6aR4dH",
+      "title": "Add key binding to domain name consideration in directory draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/40",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "HTTP Message Signature directory is served via a well known. To ease validation and prevent malicious mirroring, we add reccomendation to serve the directory along with one message signature per key.\r\n\r\nCloses #36\r\n",
+      "createdAt": "2025-06-12T20:04:13Z",
+      "updatedAt": "2025-06-14T14:49:38Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "6131752251fad4c7edb4c7c6604fbc2338f25cab",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-36",
+      "headRefOid": "5de2a72d8a82441c223afd1f72c685c34e6ab8ce",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6uiznE",
+          "commit": {
+            "abbreviatedOid": "5de2a72"
+          },
+          "author": "AkshatM",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-14T13:56:33Z",
+          "updatedAt": "2025-06-14T13:56:34Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "I realized too late that [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421#name-creating-the-signature-base) doesn't actually specify a way to sign message _bodies_ - only headers and derived components. \r\n\r\nIn Section 7.4.2, they recommend use of the DIGEST header: https://www.rfc-editor.org/rfc/rfc9421#security-message-content\r\n\r\nWe should amend this so that `Content-Digest` is generated and included in the response, with the signature components covering `Content-Digest`",
+              "createdAt": "2025-06-14T13:56:33Z",
+              "updatedAt": "2025-06-14T13:56:45Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6ui4ok",
+          "commit": {
+            "abbreviatedOid": "5de2a72"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-14T14:21:53Z",
+          "updatedAt": "2025-06-14T14:21:53Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "The change in this PR does not mention signing the digest. Solely `@authority`.",
+              "createdAt": "2025-06-14T14:21:53Z",
+              "updatedAt": "2025-06-14T14:21:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6ujBd9",
+          "commit": {
+            "abbreviatedOid": "5de2a72"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-14T14:49:38Z",
+          "updatedAt": "2025-06-14T14:49:38Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "The reasoning about not having digest: authority+signature is sufficient to validate one has the correct public key. Digest over the whole body may prevent mirroring.\r\n\r\nShould we recommended Content-Digest to be set: maybe. But that would be a separate issue",
+              "createdAt": "2025-06-14T14:49:38Z",
+              "updatedAt": "2025-06-14T14:49:38Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "PR_kwDOOXJyWM6aXrT7",
+      "title": "Add chaining example",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/41",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "JWK support chaining via x5c field.\r\nThis commit adds such example to the directory draft.\r\n\r\nIt leverages RFC9500 test key as the \"Root\", and keeps RFC9421 key for the child.\r\n\r\n@sandormajor I think your review could be valuable here as discussed on the mailing.\r\nAlso @EthanHeilman fyi. There might be a neat solution with JWK that I'm not seeing.\r\n\r\nCloses #27 ",
+      "createdAt": "2025-06-13T10:50:31Z",
+      "updatedAt": "2025-06-14T14:52:33Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "4f6550fddba70dd345f8955c5794416a8313dee9",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "chaining-27",
+      "headRefOid": "d4e9553b13a69b2c13c823c4032c405adfd9b8dc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6uaA-Z",
+          "commit": {
+            "abbreviatedOid": "34a0533"
+          },
+          "author": "EthanHeilman",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T19:02:48Z",
+          "updatedAt": "2025-06-13T19:02:48Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "Why is keys a dict rather than a list of dicts i.e., \r\n\r\n```\r\n  \"keys\": [\r\n     {\r\n    \"kty\": \"OKP\",\r\n    \"crv\": \"Ed25519\",\r\n    \"kid\": \"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw\",\r\n    \"x\": \"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs\",\r\n    \"use\": \"sig\",\r\n    \"nbf\": 1712793600,\r\n    \"exp\": 1715385600\r\n    }    \r\n ]   \r\n ```  \r\n\r\n\r\n\r\n",
+              "createdAt": "2025-06-13T19:02:48Z",
+              "updatedAt": "2025-06-13T19:02:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6uaLf8",
+          "commit": {
+            "abbreviatedOid": "34a0533"
+          },
+          "author": "EthanHeilman",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "I'm a big fan of x5c in JWKs so I like this approach you have here.\r\n\r\nIs the identity which is signing the message the x509 subject identity given in the leaf x509 cert in the x5c?\r\n\r\n",
+          "createdAt": "2025-06-13T19:22:26Z",
+          "updatedAt": "2025-06-13T19:23:27Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6ujCbq",
+          "commit": {
+            "abbreviatedOid": "34a0533"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-14T14:52:33Z",
+          "updatedAt": "2025-06-14T14:52:33Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "good catch. this was an issue with the old example as well. i've fixed it.",
+              "createdAt": "2025-06-14T14:52:33Z",
+              "updatedAt": "2025-06-14T14:52:33Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOOXJyWM6aZva-",
+      "title": "Fix example Signature-Agent header to include protocol",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/42",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Signature-Agent MUST include a protocol. The example did not have any. We update them to use `https`.\r\n\r\nGenerated via the npm version https://github.com/cloudflare/web-bot-auth/pull/31",
+      "createdAt": "2025-06-13T14:25:24Z",
+      "updatedAt": "2025-06-13T14:41:09Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "6131752251fad4c7edb4c7c6604fbc2338f25cab",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-protocol-signature-agent-examples",
+      "headRefOid": "6c2b3bc66dcdfc827fb636a8fab9745f085e192e",
+      "closedAt": "2025-06-13T14:41:07Z",
+      "mergedAt": "2025-06-13T14:41:07Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "4f6550fddba70dd345f8955c5794416a8313dee9"
+      },
       "comments": [],
       "reviews": []
     }
