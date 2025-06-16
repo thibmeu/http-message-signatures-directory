@@ -114,8 +114,6 @@ as per {{BASE64}}.
 Multiple `Signature-Agent` header fields MAY be present in a request. Processors SHOULD
 use the first valid URI that provides a valid key directory.
 
-TODO: for inlining, CBOR Keys could be useful
-
 # Security Considerations {#security}
 
 ## Key rotation
