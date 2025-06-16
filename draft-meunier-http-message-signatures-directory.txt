@@ -4,8 +4,8 @@
 
 HTTP                                                          T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                            13 June 2025
-Expires: 15 December 2025
+Intended status: Standards Track                            16 June 2025
+Expires: 18 December 2025
 
 
                    HTTP Message Signatures Directory
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 December 2025.
+   This Internet-Draft will expire on 18 December 2025.
 
 Copyright Notice
 
@@ -77,6 +77,7 @@ Table of Contents
      4.1.  Header Field Definition
    5.  Security Considerations
      5.1.  Key rotation
+     5.2.  Binding keys to the directory authority
    6.  Privacy Considerations
      6.1.  Directory Content
      6.2.  Access Patterns
@@ -126,7 +127,7 @@ Table of Contents
    algorithm registered against HTTP Signature Algorithms Section of
    [HTTP-MESSAGE-SIGNATURES-IANA]
 
-   The directory SHOULD be server over HTTPS.  The directory MUST be
+   The directory SHOULD be served over HTTPS.  The directory MUST be
    served with media type application/http-message-signatures-directory.
 
    Client application SHOULD validate the directory format and reject
@@ -179,6 +180,40 @@ Table of Contents
 
    Servers SHOULD cache the directory contents and refresh upon
    expiration.
+
+5.2.  Binding keys to the directory authority
+
+   To ensure the authenticity and integrity of the key material provided
+   by the directory, clients *SHOULD* validate the directory's response.
+
+   When a directory server provides a key directory over HTTP or HTTPS,
+   it is RECOMMENDED that it constructs and includes one HTTP Message
+   Signatures per keys with the response, as defined in
+   [HTTP-MESSAGE-SIGNATURES].  Each key SHOULD be used to provide one
+   signature.
+
+   Directory server SHOULD include:
+
+   @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES]
+
+   Directory server SHOULD include the following @signature-params as
+   defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
+
+   created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
+
+   expires  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
+
+   keyid  MUST be a base64url JWK SHA-256 Thumbprint as defined in
+      Section 3.2 of [JWK-THUMBPRINT] for RSA and EC, and in
+      Appendix A.3 of [JWK-OKP] for ed25519.
+
+   tag  MUST be http-message-signatures-directory
+
+   Clients SHOULD validate these signatures using the keys provided by
+   the directory.  Clients SHOULD ignore keys from a directory response
+   that do not have a corresponding valid signature.  This validation
+   ensures the integrity of the key set and its association with the
+   intended directory.
 
 6.  Privacy Considerations
 
@@ -274,6 +309,16 @@ Table of Contents
    [JWK]      Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015,
               <https://www.rfc-editor.org/rfc/rfc7517>.
+
+   [JWK-OKP]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
+              and Signatures in JSON Object Signing and Encryption
+              (JOSE)", RFC 8037, DOI 10.17487/RFC8037, January 2017,
+              <https://www.rfc-editor.org/rfc/rfc8037>.
+
+   [JWK-THUMBPRINT]
+              Jones, M. and N. Sakimura, "JSON Web Key (JWK)
+              Thumbprint", RFC 7638, DOI 10.17487/RFC7638, September
+              2015, <https://www.rfc-editor.org/rfc/rfc7638>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
