@@ -82,7 +82,7 @@ The key directory is served as a JSON Web Key Set (JWKS) as defined in {{Section
 The "alg" parameter are restricted to algorithm registered against HTTP Signature Algorithms Section of {{HTTP-MESSAGE-SIGNATURES-IANA}}
 
 The directory SHOULD be served over HTTPS.
-The directory MUST be served with media type `application/http-message-signatures-directory`.
+The directory MUST be served with media type `application/http-message-signatures-directory+json`.
 
 Client application SHOULD validate the directory format and reject malformed entries.
 
@@ -108,7 +108,7 @@ The URI scheme MUST be one of:
 - **data**: Contains an inline key directory
 
 When using the "data" URI scheme, the media type MUST be
-`application/http-message-signatures-directory`. The content MAY be base64 encoded
+`application/http-message-signatures-directory+json`. The content MAY be base64 encoded
 as per {{BASE64}}.
 
 Multiple `Signature-Agent` header fields MAY be present in a request. Processors SHOULD
@@ -198,12 +198,12 @@ following values.
 The following entries should be added to the IANA "media types"
 registry:
 
-- "application/http-message-signatures-directory"
+- "application/http-message-signatures-directory+json"
 
 The templates for these entries are listed below and the
 reference should be this RFC.
 
-### "application/http-message-signatures-directory" media type
+### "application/http-message-signatures-directory+json" media type
 
 Type name:
 
@@ -288,10 +288,10 @@ Change controller:
 ~~~
 GET /.well-known/bar HTTP/1.1
 Host: example.com
-Accept: application/http-message-signatures-directory
+Accept: application/http-message-signatures-directory+json
 
 HTTP/1.1 200 OK
-Content-Type: application/http-message-signatures-directory
+Content-Type: application/http-message-signatures-directory+json
 Cache-Control: max-age=86400
 {
   "keys": {
