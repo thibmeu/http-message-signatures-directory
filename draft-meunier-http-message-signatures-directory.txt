@@ -84,8 +84,8 @@ Table of Contents
    7.  IANA Considerations
      7.1.  Well-Known 'http-message-signatures-directory' URI
      7.2.  Media Types
-       7.2.1.  "application/http-message-signatures-directory" media
-               type
+       7.2.1.  "application/http-message-signatures-directory+json"
+               media type
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -128,7 +128,8 @@ Table of Contents
    [HTTP-MESSAGE-SIGNATURES-IANA]
 
    The directory SHOULD be served over HTTPS.  The directory MUST be
-   served with media type application/http-message-signatures-directory.
+   served with media type application/http-message-signatures-
+   directory+json.
 
    Client application SHOULD validate the directory format and reject
    malformed entries.
@@ -155,14 +156,12 @@ Table of Contents
    directory
 
    When using the "data" URI scheme, the media type MUST be application/
-   http-message-signatures-directory.  The content MAY be base64 encoded
-   as per [BASE64].
+   http-message-signatures-directory+json.  The content MAY be base64
+   encoded as per [BASE64].
 
    Multiple Signature-Agent header fields MAY be present in a request.
    Processors SHOULD use the first valid URI that provides a valid key
    directory.
-
-   TODO: for inlining, CBOR Keys could be useful
 
 5.  Security Considerations
 
@@ -257,12 +256,12 @@ Table of Contents
    The following entries should be added to the IANA "media types"
    registry:
 
-   *  "application/http-message-signatures-directory"
+   *  "application/http-message-signatures-directory+json"
 
    The templates for these entries are listed below and the reference
    should be this RFC.
 
-7.2.1.  "application/http-message-signatures-directory" media type
+7.2.1.  "application/http-message-signatures-directory+json" media type
 
    Type name:  application
    Subtype name:  http-message-signatures-directory
@@ -355,10 +354,10 @@ A.1.  Key Directory on example.com
 
    GET /.well-known/bar HTTP/1.1
    Host: example.com
-   Accept: application/http-message-signatures-directory
+   Accept: application/http-message-signatures-directory+json
 
    HTTP/1.1 200 OK
-   Content-Type: application/http-message-signatures-directory
+   Content-Type: application/http-message-signatures-directory+json
    Cache-Control: max-age=86400
    {
      "keys": {
