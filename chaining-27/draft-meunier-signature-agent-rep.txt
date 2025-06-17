@@ -4,11 +4,11 @@
 
 HTTP                                                          T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                            14 June 2025
-Expires: 16 December 2025
+Intended status: Standards Track                            17 June 2025
+Expires: 19 December 2025
 
 
-              Signature-Agent for Robot Exclusion Protocol
+    Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol
                 draft-meunier-signature-agent-rep-latest
 
 Abstract
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 December 2025.
+   This Internet-Draft will expire on 19 December 2025.
 
 Copyright Notice
 
@@ -73,6 +73,8 @@ Table of Contents
      3.1.  Protocol Definition
      3.2.  Formal Syntax
        3.2.1.  Signature-Agent line
+       3.2.2.  Max-Crawl-Rate line
+       3.2.3.  Sitemaps
    4.  Security Considerations
    5.  IANA Considerations
    6.  Normative References
@@ -86,10 +88,11 @@ Table of Contents
 
    Bots are increasigly using Signature-Agent as a way to convey
    identity.  As such, there is interest from Origins to define robot
-   policy based on this header.
+   policy based on this header.  In addition, it'd be ideal if some
+   sample rate limit could be communicated.
 
    This documents extends Robot Exclusion Protocol to support these, by
-   defining a new group starting with signature-agent.
+   extending the user-agent group with new rules.
 
 2.  Conventions and Definitions
 
@@ -103,23 +106,31 @@ Table of Contents
 
 3.1.  Protocol Definition
 
-   Group  One or more signature-agent lines that are followed by one or
-      more rules.  The group is terminated by a signature-agent line or
-      end of file.  See Section 3.2.1.  The last group may have no
-      rules, which means it implicitly allows everything.
+   Group  One or more user-agent lines that are followed by one or more
+      signature-agents, max-crawl-rate, and rules.  The group is
+      terminated by a user-agent line or end of file.  The last group
+      may have no rules, which means it implicitly allows everything.
 
 3.2.  Formal Syntax
 
    Based on the formal syntax defined in Section 2.2 of [RFC9309]
 
-startgroupline = user-agent-line / signature-agent-line ; a group can either be a user-agent, a signature-agent, or both.
+ group = startgroupline *(startgroupline / emptyline) ; We start with a user-agent line and possibly more
+         *(signatureagentline / emptyline)            ; Specification for signature-agent
+         *(maxcrawlrateline / emptyline)              ;
+         *(rule / emptyline)                          ; followed by rules relevant for the preceding lines
 
-user-agent-line = *WS "user-agent" *WS ":" *WS product-token EOL
-signature-agent-line = *WS "signature-agent" *WS ":" *WS directory-token EOL
+modifierline = signature-agent-line ; a modifier can either be multiple things, or both.
 
-directory-token = fqdn
+signatureagentline = *WS "signature-agent" *WS ":" *WS directory-token EOL
+maxcrawlrateline = *WS 1*DIGIT *WS ["/" *WS timeunit] *WS
 
-fqdn = ... ; domain as defined by signature-agent
+directory-token = DQUOTE "https://" fqdn DQUOTE
+timeunit = "s"/"m"/"h"/"d"/"w"
+
+fqdn = ... ; domain as defined by signature-agent. TBD
+
+DQUOTE = "\""
 
 3.2.1.  Signature-Agent line
 
@@ -143,6 +154,20 @@ fqdn = ... ; domain as defined by signature-agent
 +==========================================+==============================+
 | Signature-Agent: crawler.example.com     | signature-agent: example.com |
 +------------------------------------------+------------------------------+
+
+3.2.2.  Max-Crawl-Rate line
+
+   The max-crawl-rate directive specifies the maximum number of requests
+   that a robot SHOULD make to the origin server, for the group it
+   applies to.  Well-behaved agents are expected to comply by limiting
+   their request rate accordingly.  This directive does not enforce
+   technical access restrictions, and adherence is voluntary.  Servers
+   MAY monitor agents behavior and take measures if necessary to protect
+   resources.
+
+3.2.3.  Sitemaps
+
+   Should sitemaps be added here?
 
 4.  Security Considerations
 

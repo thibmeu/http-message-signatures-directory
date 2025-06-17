@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Signature-Agent for Robot Exclusion Protocol</title>
+<title>Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol</title>
 <meta content="Thibault Meunier" name="author">
 <meta content="
        This document describes a new directive to allow Signature-Agent ( ) directive in the Robot Exclusion Protocol ( ). 
@@ -14,7 +14,7 @@
 <meta content="draft-meunier-signature-agent-rep-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.28.1
-    Python 3.12.10
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -23,7 +23,7 @@
     platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
+    requests 2.32.4
     setuptools 80.9.0
     wcwidth 0.2.13
 -->
@@ -1043,12 +1043,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">Signature-Agent for Robot Exclusion Prot</td>
+<td class="center">Signature-Agent and Max-Crawl-rate for R</td>
 <td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 16 December 2025</td>
+<td class="center">Expires 19 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-signature-agent-rep-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-14" class="published">14 June 2025</time>
+<time datetime="2025-06-17" class="published">17 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-16">16 December 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-19">19 December 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1076,7 +1076,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">Signature-Agent for Robot Exclusion Protocol</h1>
+<h1 id="title">Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document describes a new directive to allow Signature-Agent (<span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-00#section-4" class="relref">Section 4</a> of [<a href="#SIGNATURE-DIRECTORY" class="cite xref">SIGNATURE-DIRECTORY</a>]</span>) directive in the Robot Exclusion Protocol (<span>[<a href="#RFC9309" class="cite xref">RFC9309</a>]</span>).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1162,6 +1162,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
                     <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-signature-agent-line" class="internal xref">Signature-Agent line</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-max-crawl-rate-line" class="internal xref">Max-Crawl-Rate line</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="auto internal xref">3.2.3</a>.  <a href="#name-sitemaps" class="internal xref">Sitemaps</a></p>
+</li>
                 </ul>
 </li>
             </ul>
@@ -1202,8 +1208,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Bots are increasigly using Signature-Agent as a way to convey identity.
-As such, there is interest from Origins to define robot policy based on this header.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This documents extends Robot Exclusion Protocol to support these, by defining a new group starting with signature-agent.<a href="#section-1-2" class="pilcrow">¶</a></p>
+As such, there is interest from Origins to define robot policy based on this header.
+In addition, it'd be ideal if some sample rate limit could be communicated.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This documents extends Robot Exclusion Protocol to support these, by extending the user-agent group with new rules.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1230,7 +1237,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <span class="break"></span><dl class="dlParallel" id="section-3.1-1">
           <dt id="section-3.1-1.1">Group</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-1.2">
-            <p id="section-3.1-1.2.1">One or more signature-agent lines that are followed by one or more rules. The group is terminated by a signature-agent line or end of file. See <a href="#signature-agent-line" class="auto internal xref">Section 3.2.1</a>. The last group may have no rules, which means it implicitly allows everything.<a href="#section-3.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-1.2.1">One or more user-agent lines that are followed by one or more signature-agents, max-crawl-rate, and rules. The group is terminated by a user-agent line or end of file. The last group may have no rules, which means it implicitly allows everything.<a href="#section-3.1-1.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1244,14 +1251,22 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-3.2-1">Based on the formal syntax defined in <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2" class="relref">Section 2.2</a> of [<a href="#RFC9309" class="cite xref">RFC9309</a>]</span><a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.2-2">
 <pre>
-startgroupline = user-agent-line / signature-agent-line ; a group can either be a user-agent, a signature-agent, or both.
+ group = startgroupline *(startgroupline / emptyline) ; We start with a user-agent line and possibly more
+         *(signatureagentline / emptyline)            ; Specification for signature-agent
+         *(maxcrawlrateline / emptyline)              ;
+         *(rule / emptyline)                          ; followed by rules relevant for the preceding lines
 
-user-agent-line = *WS "user-agent" *WS ":" *WS product-token EOL
-signature-agent-line = *WS "signature-agent" *WS ":" *WS directory-token EOL
+modifierline = signature-agent-line ; a modifier can either be multiple things, or both.
 
-directory-token = fqdn
+signatureagentline = *WS "signature-agent" *WS ":" *WS directory-token EOL
+maxcrawlrateline = *WS 1*DIGIT *WS ["/" *WS timeunit] *WS
 
-fqdn = ... ; domain as defined by signature-agent
+directory-token = DQUOTE "https://" fqdn DQUOTE
+timeunit = "s"/"m"/"h"/"d"/"w"
+
+fqdn = ... ; domain as defined by signature-agent. TBD
+
+DQUOTE = "\""
 </pre><a href="#section-3.2-2" class="pilcrow">¶</a>
 </div>
 <div id="signature-agent-line">
@@ -1275,6 +1290,25 @@ Here's an example of a Signature-Agent HTTP request header with a link pointing 
 +------------------------------------------+------------------------------+
 </pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
 </div>
+</section>
+</div>
+<div id="max-crawl-rate-line">
+<section id="section-3.2.2">
+          <h4 id="name-max-crawl-rate-line">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-max-crawl-rate-line" class="section-name selfRef">Max-Crawl-Rate line</a>
+          </h4>
+<p id="section-3.2.2-1">The max-crawl-rate directive specifies the maximum number of requests that a robot <span class="bcp14">SHOULD</span> make to the origin server, for the group it applies to.
+Well-behaved agents are expected to comply by limiting their request rate accordingly.
+This directive does not enforce technical access restrictions, and adherence is voluntary.
+Servers <span class="bcp14">MAY</span> monitor agents behavior and take measures if necessary to protect resources.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sitemaps">
+<section id="section-3.2.3">
+          <h4 id="name-sitemaps">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-sitemaps" class="section-name selfRef">Sitemaps</a>
+          </h4>
+<p id="section-3.2.3-1">Should sitemaps be added here?<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
