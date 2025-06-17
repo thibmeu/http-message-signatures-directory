@@ -8,7 +8,7 @@ Intended status: Standards Track                            17 June 2025
 Expires: 19 December 2025
 
 
-              Signature-Agent for Robot Exclusion Protocol
+    Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol
                 draft-meunier-signature-agent-rep-latest
 
 Abstract
@@ -88,10 +88,11 @@ Table of Contents
 
    Bots are increasigly using Signature-Agent as a way to convey
    identity.  As such, there is interest from Origins to define robot
-   policy based on this header.
+   policy based on this header.  In addition, it'd be ideal if some
+   sample rate limit could be communicated.
 
    This documents extends Robot Exclusion Protocol to support these, by
-   defining a new group starting with signature-agent.
+   extending the user-agent group with new rules.
 
 2.  Conventions and Definitions
 
