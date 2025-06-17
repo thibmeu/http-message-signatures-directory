@@ -60,21 +60,29 @@ This documents extends Robot Exclusion Protocol to support these, by defining a 
 ## Protocol Definition
 
 Group
-: One or more signature-agent lines that are followed by one or more rules. The group is terminated by a signature-agent line or end of file. See {{signature-agent-line}}. The last group may have no rules, which means it implicitly allows everything.
+: One or more user-agent lines that are followed by one or more signature-agents, max-crawl-rate, and rules. The group is terminated by a user-agent line or end of file. The last group may have no rules, which means it implicitly allows everything.
 
 ## Formal Syntax
 
 Based on the formal syntax defined in {{Section 2.2 of RFC9309}}
 
 ~~~
-startgroupline = user-agent-line / signature-agent-line ; a group can either be a user-agent, a signature-agent, or both.
+ group = startgroupline *(startgroupline / emptyline) ; We start with a user-agent line and possibly more
+         *(signatureagentline / emptyline)            ; Specification for signature-agent
+         *(maxcrawlrateline / emptyline)              ;
+         *(rule / emptyline)                          ; followed by rules relevant for the preceding lines
 
-user-agent-line = *WS "user-agent" *WS ":" *WS product-token EOL
-signature-agent-line = *WS "signature-agent" *WS ":" *WS directory-token EOL
+modifierline = signature-agent-line ; a modifier can either be multiple things, or both.
 
-directory-token = fqdn
+signatureagentline = *WS "signature-agent" *WS ":" *WS directory-token EOL
+maxcrawlrateline = *WS 1*DIGIT *WS ["/" *WS timeunit] *WS
 
-fqdn = ... ; domain as defined by signature-agent
+directory-token = DQUOTE "https://" fqdn DQUOTE
+timeunit = "s"/"m"/"h"/"d"/"w"
+
+fqdn = ... ; domain as defined by signature-agent. TBD
+
+DQUOTE = "\""
 ~~~
 
 ### Signature-Agent line
@@ -94,6 +102,17 @@ Here's an example of a Signature-Agent HTTP request header with a link pointing 
 | Signature-Agent: crawler.example.com     | signature-agent: example.com |
 +------------------------------------------+------------------------------+
 ~~~
+
+### Max-Crawl-Rate line
+
+The max-crawl-rate directive specifies the maximum number of requests that a robot SHOULD make to the origin server, for the group it applies to.
+Well-behaved agents are expected to comply by limiting their request rate accordingly.
+This directive does not enforce technical access restrictions, and adherence is voluntary.
+Servers MAY monitor agents behavior and take measures if necessary to protect resources.
+
+### Sitemaps
+
+Should sitemaps be added here?
 
 # Security Considerations {#security}
 
