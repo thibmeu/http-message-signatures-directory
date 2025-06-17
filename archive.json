@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-15T02:18:23.633418+00:00",
+  "timestamp": "2025-06-17T02:03:26.085268+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -181,7 +181,7 @@
       "id": "I_kwDOOXJyWM6zq4sH",
       "title": "Support for CBOR and COSE Keys",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -190,8 +190,8 @@
       ],
       "body": "There are multiple places where CBOR and CBOR Web keys could be introduced.\n\n1. HTTP Message Signature directory format. I'd be in favor of add `+json` at the end of the directory Media type, so that we can declare `+cbor` when relevant\n2. JSON Web Thumbprint is used as a key id. This is great because it provides a unique key id that is derived from the key material. I'd be in favor of sticking to ONE key id derivation method, even though [RFC 9679](https://www.rfc-editor.org/rfc/rfc9679.html) defines a Thumbprint for COSE Keys.",
       "createdAt": "2025-04-23T15:12:02Z",
-      "updatedAt": "2025-04-23T15:12:02Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-16T13:08:09Z",
+      "closedAt": "2025-06-16T13:08:09Z",
       "comments": []
     },
     {
@@ -540,7 +540,7 @@
       "id": "I_kwDOOXJyWM66xTMS",
       "title": "Add Key binding consideration in directory draft",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/36",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -549,8 +549,8 @@
       ],
       "body": "It could be useful for keys to be binded to a domain. There are multiple approaches that could be used, and I'm not sure which one should be mandated, if any. Possible approaches I see at the moment\n\n1. /.well-known/... to be served with one/more HTTP Message Signature over the digest and `@authority` \n2. have a challenge mechanism for updates/key liveness\n3. have an identity string as part of JWK. It could be via x5c if leveraging certificates associated to a signature-agent, or a new field\n4. Require bots to register their keys as part of a global root (similar to webpki)\n\nIt would be great if these process allow for key mirroring.",
       "createdAt": "2025-06-10T12:52:52Z",
-      "updatedAt": "2025-06-12T18:44:53Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-16T09:33:43Z",
+      "closedAt": "2025-06-16T09:33:43Z",
       "comments": [
         {
           "author": "cjpatton",
@@ -1536,7 +1536,7 @@
       "id": "PR_kwDOOXJyWM6aR4dH",
       "title": "Add key binding to domain name consideration in directory draft",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/40",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -1547,17 +1547,19 @@
       ],
       "body": "HTTP Message Signature directory is served via a well known. To ease validation and prevent malicious mirroring, we add reccomendation to serve the directory along with one message signature per key.\r\n\r\nCloses #36\r\n",
       "createdAt": "2025-06-12T20:04:13Z",
-      "updatedAt": "2025-06-14T14:49:38Z",
+      "updatedAt": "2025-06-16T09:33:45Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "6131752251fad4c7edb4c7c6604fbc2338f25cab",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-36",
       "headRefOid": "5de2a72d8a82441c223afd1f72c685c34e6ab8ce",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-06-16T09:33:42Z",
+      "mergedAt": "2025-06-16T09:33:42Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "72cf4cca81abab3802f26ecad791620eaf972e4d"
+      },
       "comments": [],
       "reviews": [
         {
