@@ -1,6 +1,6 @@
 ---
-title: "Signature-Agent for Robot Exclusion Protocol"
-abbrev: "Signature-Agent for Robot Exclusion Protocol"
+title: "Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol"
+abbrev: "Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol"
 category: std
 
 docname: draft-meunier-signature-agent-rep-latest
@@ -47,8 +47,9 @@ This document describes a new directive to allow Signature-Agent ({{Section 4 of
 
 Bots are increasigly using Signature-Agent as a way to convey identity.
 As such, there is interest from Origins to define robot policy based on this header.
+In addition, it'd be ideal if some sample rate limit could be communicated.
 
-This documents extends Robot Exclusion Protocol to support these, by defining a new group starting with signature-agent.
+This documents extends Robot Exclusion Protocol to support these, by extending the user-agent group with new rules.
 
 
 # Conventions and Definitions
