@@ -449,3 +449,20 @@ HTTP/1.1 200 OK
 {:numbered="false"}
 
 TODO acknowledge.
+
+# Changelog
+{:numbered="false"}
+
+v01
+
+- Update content-type from `application/http-message-signatures-directory` to `application/http-message-signatures-directory+json`
+- Add delegation and chaining examples: full x5c chain, AIA extension, and x5u
+- Add inline directory example with data URI
+- Fix well-known path in examples
+
+v00
+
+- Initial draft
+- Definition of Signature-Agent and its three supported URI https, http, and data.
+- Leverages JWKS as a directory fo HTTP Message Signatures
+- Well-known and content-type
