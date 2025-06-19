@@ -4,8 +4,8 @@
 
 HTTP                                                          T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                            17 June 2025
-Expires: 19 December 2025
+Intended status: Standards Track                            19 June 2025
+Expires: 21 December 2025
 
 
                    HTTP Message Signatures Directory
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 December 2025.
+   This Internet-Draft will expire on 21 December 2025.
 
 Copyright Notice
 
@@ -91,7 +91,15 @@ Table of Contents
      8.2.  Informative References
    Appendix A.  Examples
      A.1.  Key Directory on example.com
-     A.2.  Request with HTTP Signature-Agent
+     A.2.  Delegation and chaining
+       A.2.1.  Key Directory on sub.example.com with a delegation from
+               example.com via x5c full certificate chain
+       A.2.2.  Key Directory on sub.example.com with a delegation from
+               example.com via a leaf certificate and AIA field
+       A.2.3.  Key Directory on sub.example.com with a delegation from
+               example.com via x5u field
+     A.3.  Request with HTTP Signature-Agent
+     A.4.  Request with data URI Signature-Agent
    Acknowledgments
    Author's Address
 
@@ -348,11 +356,23 @@ Table of Contents
               DOI 10.17487/RFC2397, August 1998,
               <https://www.rfc-editor.org/rfc/rfc2397>.
 
+   [CRYPTO-TEST-KEYS]
+              Gutmann, P. and C. Bonnell, "Standard Public Key
+              Cryptography (PKC) Test Keys", RFC 9500,
+              DOI 10.17487/RFC9500, December 2023,
+              <https://www.rfc-editor.org/rfc/rfc9500>.
+
+   [X509-PKI] Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/rfc/rfc5280>.
+
 Appendix A.  Examples
 
 A.1.  Key Directory on example.com
 
-   GET /.well-known/bar HTTP/1.1
+   GET /.well-known/http-message-signatures-directory HTTP/1.1
    Host: example.com
    Accept: application/http-message-signatures-directory+json
 
@@ -360,7 +380,7 @@ A.1.  Key Directory on example.com
    Content-Type: application/http-message-signatures-directory+json
    Cache-Control: max-age=86400
    {
-     "keys": {
+     "keys": [{
        "kty": "OKP",
        "crv": "Ed25519",
        "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -368,10 +388,118 @@ A.1.  Key Directory on example.com
        "use": "sig",
        "nbf": 1712793600,
        "exp": 1715385600
-     }
+     }]
    }
 
-A.2.  Request with HTTP Signature-Agent
+A.2.  Delegation and chaining
+
+   There are multiple methods to perform delegation and chaining.  There
+   are no specific methods that have been favored by implementation so
+   far, should they even support them.  It is adviced to consider
+   delegation as experimental for now, and provide input on the
+   associated GitHub issue (https://github.com/thibmeu/http-message-
+   signatures-directory/issues/27).
+
+A.2.1.  Key Directory on sub.example.com with a delegation from
+        example.com via x5c full certificate chain
+
+   In this example, example.com key is testECCP256 provided in
+   Section 2.3 of [CRYPTO-TEST-KEYS].  Certificate chain is passed via
+   x5c key parameter defined in Section 4.7 of [JWK].
+
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
+Accept: application/http-message-signatures-directory
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory
+Cache-Control: max-age=86400
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600,
+    "x5c": [
+      "MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv",
+      "MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV"
+    ]
+  }]
+}
+
+A.2.2.  Key Directory on sub.example.com with a delegation from
+        example.com via a leaf certificate and AIA field
+
+   In this example, example.com key is testECCP256 provided in
+   Section 2.3 of [CRYPTO-TEST-KEYS].  Certificate chain is passed via
+   x5c key parameter defined in Section 4.7 of [JWK], and the root
+   certificate is signaled by the presence of an Authority Information
+   Access extension as defined in Section 5.2.7 of [X509-PKI].
+
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
+Accept: application/http-message-signatures-directory
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory
+Cache-Control: max-age=86400
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600,
+    "x5c": [
+      "MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv"
+    ]
+  }]
+}
+
+   The AIA extension is as follow
+
+X509v3 extensions:
+  Authority Information Access:
+    CA Issuers - URI:https://example.com/.well-known/http-message-signatures-directory.crt
+
+   The verifier should validate the signature with the public key in the
+   Signature-Agent, match the public key with the leaf cert, then fetch
+   the root cert from the AIA URI and verify the leaf cert with it.
+
+A.2.3.  Key Directory on sub.example.com with a delegation from
+        example.com via x5u field
+
+   Leveraging x5c imposes that a PEM encoded certificate is present in
+   the returned JWKS.  If size is a constraint, or deployment imposes a
+   more dynamic certificate management, directory server may use x5u key
+   parameter defined in Section 4.6 of [JWK].
+
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
+Accept: application/http-message-signatures-directory
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory
+Cache-Control: max-age=86400
+
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600,
+    "x5u": "https://example.com/.well-known/http-message-signature-chain/sub.example.com.crt"
+}
+
+A.3.  Request with HTTP Signature-Agent
 
    This extend the examples from Appendix B of
    [HTTP-MESSAGE-SIGNATURES].
@@ -383,6 +511,23 @@ A.2.  Request with HTTP Signature-Agent
 
    HTTP/1.1 200 OK
    {"message": "good dog"}
+
+A.4.  Request with data URI Signature-Agent
+
+   A Signature-Agent using data URI can be used to communicate an
+   ephemeral keys, as long as there is a chain to a certificate trusted
+   by the origin.
+
+   In this example, the directory is signed by example.com.  The CA is
+   self-signed, even though it MAY be part of an existing PKI.
+
+POST /foo?param=Value&Pet=dog HTTP/1.1
+Host: example.com
+Signature-Agent: data:application/http-message-signatures-directory;utf8,{"keys":[{"kty":"OKP","crv":"Ed25519","kid":"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw","x":"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs","use":"sig","nbf":1712793600,"exp":1715385600,"x5c":["MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv","MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV"]}]}
+{"hello": "world"}
+
+HTTP/1.1 200 OK
+{"message": "good dog"}
 
 Acknowledgments
 
