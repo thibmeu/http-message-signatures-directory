@@ -232,7 +232,7 @@ An Agent SHOULD send a request with the signature generated above. Updating the 
                 |                  expires=1700011111;\               |
                 |                  keyid="ba3e64==";\                 |
                 |                  tag="web-bot-auth"                 |
-                | Signature-Agent: "signer.example.com"               |
+                | Signature-Agent: "https://signer.example.com"       |
                 '-----------------------------------------------------'
 ~~~
 
@@ -600,6 +600,19 @@ Tanya Verma.
 
 # Changelog
 {:numbered="false"}
+
+v02
+
+- Add response status code
+- Add a few reference to improve readability
+- Add consideration to sign additional headers
+- Add use of TLS in security considerations
+- Add RSASSA-PSS example
+- Update acknowledgement section
+- Reference new implementations: PHP, Python, Ruby, Rust
+- Fix signature-agent in the arch diagram to use structured fields
+- Fix test vectors to use signature-agent with structured fields
+- Fix some typos
 
 v01
 
