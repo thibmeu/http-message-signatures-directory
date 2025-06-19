@@ -45,6 +45,7 @@ normative:
 informative:
   BASE64: RFC2397
   CRYPTO-TEST-KEYS: RFC9500
+  X509-PKI: RFC5280
 
 
 --- abstract
@@ -285,7 +286,7 @@ Change controller:
 ## Key Directory on example.com
 
 ~~~
-GET /.well-known/bar HTTP/1.1
+GET /.well-known/http-message-signatures-directory HTTP/1.1
 Host: example.com
 Accept: application/http-message-signatures-directory+json
 
@@ -305,13 +306,21 @@ Cache-Control: max-age=86400
 }
 ~~~
 
-## Key Directory on sub.example.com with a delegation from example.com
+## Delegation and chaining
+
+There are multiple methods to perform delegation and chaining. There are no specific methods
+that have been favored by implementation so far, should they even support them.
+It is adviced to consider delegation as experimental for now, and provide input on the associated
+[GitHub issue](https://github.com/thibmeu/http-message-signatures-directory/issues/27).
+
+### Key Directory on sub.example.com with a delegation from example.com via x5c full certificate chain
 
 In this example, example.com key is testECCP256 provided in {{Section 2.3 of CRYPTO-TEST-KEYS}}.
+Certificate chain is passed via x5c key parameter defined in {{Section 4.7 of JWK}}.
 
 ~~~
-GET /.well-known/bar HTTP/1.1
-Host: example.com
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
 Accept: application/http-message-signatures-directory
 
 HTTP/1.1 200 OK
@@ -331,6 +340,78 @@ Cache-Control: max-age=86400
       "MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV"
     ]
   }]
+}
+~~~
+
+### Key Directory on sub.example.com with a delegation from example.com via a leaf certificate and AIA field
+
+In this example, example.com key is testECCP256 provided in {{Section 2.3 of CRYPTO-TEST-KEYS}}.
+Certificate chain is passed via x5c key parameter defined in {{Section 4.7 of JWK}},
+and the root certificate is signaled by the presence of an Authority Information Access extension
+as defined in {{Section 5.2.7 of X509-PKI}}.
+
+~~~
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
+Accept: application/http-message-signatures-directory
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory
+Cache-Control: max-age=86400
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600,
+    "x5c": [
+      "MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv"
+    ]
+  }]
+}
+~~~
+
+The AIA extension is as follow
+
+~~~
+X509v3 extensions:
+  Authority Information Access:
+    CA Issuers - URI:https://example.com/.well-known/http-message-signatures-directory.crt
+~~~
+
+<!-- Words from @sandormajor. TODO: add acknowledgement -->
+
+The verifier should validate the signature with the public key in the Signature-Agent,
+match the public key with the leaf cert, then fetch the root cert from the AIA URI and verify the leaf cert with it.
+
+### Key Directory on sub.example.com with a delegation from example.com via x5u field
+
+Leveraging x5c imposes that a PEM encoded certificate is present in the returned JWKS.
+If size is a constraint, or deployment imposes a more dynamic certificate management,
+directory server may use x5u key parameter defined in {{Section 4.6 of JWK}}.
+
+~~~
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: sub.example.com
+Accept: application/http-message-signatures-directory
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory
+Cache-Control: max-age=86400
+
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600,
+    "x5u": "https://example.com/.well-known/http-message-signature-chain/sub.example.com.crt"
 }
 ~~~
 
