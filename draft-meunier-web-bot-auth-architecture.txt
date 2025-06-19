@@ -28,10 +28,10 @@ About This Document
    document may be found at https://datatracker.ietf.org/doc/draft-
    meunier-web-bot-auth-architecture/.
 
-   Discussion of this document takes place on the WG Web Bot Auth
-   mailing list (mailto:web-bot-auth@ietf.org), which is archived at
-   https://mailarchive.ietf.org/arch/browse/web-bot-auth/.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/web-bot-auth/.
+   Discussion of this document takes place on the Web Bot Auth Working
+   Group mailing list (mailto:web-bot-auth@ietf.org), which is archived
+   at https://mailarchive.ietf.org/arch/browse/web-bot-auth/.  Subscribe
+   at https://www.ietf.org/mailman/listinfo/web-bot-auth/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/thibmeu/http-message-signatures-directory.
