@@ -10,14 +10,14 @@ date:
 consensus: true
 v: 3
 area: "Web and Internet Transport"
-workgroup: "HTTP"
+workgroup: "Web Bot Auth"
 keyword:
  - not-yet
 venue:
-  group: "HTTP"
-  type: ""
-  mail: "ietf-http-wg@w3.org"
-  arch: "https://lists.w3.org/Archives/Public/ietf-http-wg/"
+  group: "Web Bot Auth"
+  type: "Working Group"
+  mail: "web-bot-auth@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
   github: "thibmeu/http-message-signatures-directory"
   latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html"
 

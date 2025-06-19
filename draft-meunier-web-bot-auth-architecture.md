@@ -9,13 +9,13 @@ number:
 date:
 consensus: true
 v: 3
-area: Web and Internet Transport
-workgroup: Web Bot Auth
+area: "Web and Internet Transport"
+workgroup: "Web Bot Auth"
 keyword:
  - not-yet
 venue:
-  group: WG
-  type: Web Bot Auth
+  group: "Web Bot Auth"
+  type: "Working Group"
   mail: "web-bot-auth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
   github: "thibmeu/http-message-signatures-directory"
