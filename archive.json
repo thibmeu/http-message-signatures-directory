@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-19T02:03:27.497566+00:00",
+  "timestamp": "2025-06-22T02:16:43.972124+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -462,9 +462,17 @@
       ],
       "body": "Chaining should be possible with the draft as it stand.\n\n1. Off path, use x5c field of the JWK\n2. On path, pass the directory base64 encoded within Signature-Agent header with a JWK containing x5c.\n\nThe use case seems to be required by a message on [web-bot-auth](https://mailarchive.ietf.org/arch/msg/web-bot-auth/azPrcKBzKpdnAKJG8-ZpPN1WD04/) list. If there is interest, we should consider fleshing it out as its own section.",
       "createdAt": "2025-05-21T12:57:07Z",
-      "updatedAt": "2025-05-21T12:57:07Z",
+      "updatedAt": "2025-06-19T09:13:01Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "A dedicated section with multiple examples has been added. There is no concensus nor strong opinion yet on which option should be favored. All of them are supported by existing JWKS standard, and it's a matter of if and how we want to restrict them.",
+          "createdAt": "2025-06-19T09:13:01Z",
+          "updatedAt": "2025-06-19T09:13:01Z"
+        }
+      ]
     },
     {
       "number": 30,
@@ -658,6 +666,25 @@
       "body": "When a client fetches a directory endpoint on `/.well-known/...`, the directory signs the `@authority` with every keys.\n\nIt'd be interesting to have a `nonce` be signed, with the nonce provided by the client. It would ensure ownership of the domain.\n\nThere are security considerations, given the directory has to dynamically sign client input instead of serving a static resources.\n\nThere are likely other mechanism to consider. We should understand if this is an issue shared among bots and verifiers, and if the solution seems amenable.",
       "createdAt": "2025-06-18T10:17:18Z",
       "updatedAt": "2025-06-18T10:17:18Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 46,
+      "id": "I_kwDOOXJyWM68lJtZ",
+      "title": "Interaction with CORS headers",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/46",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "bug",
+        "question"
+      ],
+      "body": "How does HTTP Message sigs interact with CORS and preflight?\n\nfrom @sandormajor",
+      "createdAt": "2025-06-20T16:37:40Z",
+      "updatedAt": "2025-06-20T16:37:48Z",
       "closedAt": null,
       "comments": []
     }
@@ -1654,7 +1681,7 @@
       "id": "PR_kwDOOXJyWM6aXrT7",
       "title": "Add chaining example",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/41",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -1663,19 +1690,21 @@
       "labels": [
         "enhancement"
       ],
-      "body": "JWK support chaining via x5c field.\r\nThis commit adds such example to the directory draft.\r\n\r\nIt leverages RFC9500 test key as the \"Root\", and keeps RFC9421 key for the child.\r\n\r\n@sandormajor I think your review could be valuable here as discussed on the mailing.\r\nAlso @EthanHeilman fyi. There might be a neat solution with JWK that I'm not seeing.\r\n\r\nCloses #27 ",
+      "body": "JWK support chaining via x5c field.\r\nThis commit adds such example to the directory draft.\r\n\r\nIt leverages RFC9500 test key as the \"Root\", and keeps RFC9421 key for the child.\r\n\r\n@sandormajor I think your review could be valuable here as discussed on the mailing.\r\nAlso @EthanHeilman fyi. There might be a neat solution with JWK that I'm not seeing.",
       "createdAt": "2025-06-13T10:50:31Z",
-      "updatedAt": "2025-06-17T19:31:32Z",
+      "updatedAt": "2025-06-19T12:56:34Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "21ae250b7064a0a6006fa4acadb321a0643eb080",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "chaining-27",
-      "headRefOid": "75cb52b11c135f5ec76b31cc18a1c406b7a6a006",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "e018dd0e04d31749c5d84c4524080401fd893b80",
+      "closedAt": "2025-06-19T09:11:46Z",
+      "mergedAt": "2025-06-19T09:11:46Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "f6d8526e7fa0caeeb1c583194ef92125b14f62a5"
+      },
       "comments": [
         {
           "author": "thibmeu",
@@ -1683,6 +1712,13 @@
           "body": "@sandormajor I like the idea of using AIA for this. Specifically, I like that the JWK only include the leaf cert and a pointer to the parent root certificate.\r\nRealistically, I imagine having the whole root is valuable as well, but that increases the size of the header quite significantly.\r\n\r\nAnother consideration I had was to use `x5u` from [RFC 7515](https://www.rfc-editor.org/rfc/rfc7515.html#section-4.1.5) to get the certificate chain directly from a parent user agent. \r\nThe example would look as follow\r\n\r\n```json\r\n{\r\n  \"keys\": [{\r\n    \"kty\": \"OKP\",\r\n    \"crv\": \"Ed25519\",\r\n    \"kid\": \"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw\",\r\n    \"x\": \"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs\",\r\n    \"use\": \"sig\",\r\n    \"nbf\": 1712793600,\r\n    \"exp\": 1715385600,\r\n    \"x5u\": \"https://example.com/.well-known/http-message-signature-chain/sub.example.com.crt\"\r\n}\r\n```\r\n\r\nFor now, I thin we can include all these as examples, given that's supported by the underlying JWK standards.\r\nSitting down and deciding what is going to be used by crawlers/bots and what is reasonable to ask from verifiers seems to be needed, and having all examples at hand will be useful then.\r\n\r\nWhat do you think?",
           "createdAt": "2025-06-17T19:19:15Z",
           "updatedAt": "2025-06-17T19:19:15Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I've added all three chaining/delegation as examples, with a mention that while all would be supported by JWKS or X509 standards, implementers should be careful while implementing it, as there is no consensus on the right method for HTTP Message Signatures yet.\r\n\r\nI'll add it as a discussion item for the upcoming IETF and for the group.\r\n\r\nHaving all examples laid out should help to better understand them, and improve future drafts.",
+          "createdAt": "2025-06-19T09:11:42Z",
+          "updatedAt": "2025-06-19T09:11:42Z"
         }
       ],
       "reviews": [
@@ -1778,6 +1814,32 @@
               "updatedAt": "2025-06-17T19:10:58Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6vaOdG",
+          "commit": {
+            "abbreviatedOid": "e018dd0"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "Looks good, thanks Thibault! The `x5u` also makes sense, although that has the same problem when issuing thousands of leaf keys, that you have to publish all of them in the well-known but now also need to serve the certificate for all of them. But it makes sense to have an example there for further discussion.",
+          "createdAt": "2025-06-19T12:45:49Z",
+          "updatedAt": "2025-06-19T12:45:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6vaYWm",
+          "commit": {
+            "abbreviatedOid": "e018dd0"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-19T12:56:34Z",
+          "updatedAt": "2025-06-19T12:56:34Z",
+          "comments": []
         }
       ]
     },
