@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                              19 June 2025
-Expires: 21 December 2025
+Intended status: Informational                              26 June 2025
+Expires: 28 December 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 December 2025.
+   This Internet-Draft will expire on 28 December 2025.
 
 Copyright Notice
 
@@ -354,8 +354,8 @@ Table of Contents
    Origin MAY request a new signature with tag "web-bot-auth" even if a
    nonce is provided, for example if it believes the nonce is a replay,
    or if it doesn't store nonces and thus requests new signatures every
-   time.  The status code SHOULD be 429 Forbidden as defined in
-   Section 15.5.4 of [HTTP-MORE-STATUS-CODE].
+   time.  The status code SHOULD be 429 Too Many Requests as defined in
+   Section 4 of [HTTP-MORE-STATUS-CODE].
 
 4.4.  Validating Message signature
 
@@ -541,9 +541,9 @@ Table of Contents
    [DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-00, 15 April 2025,
+              signatures-directory-01, 19 June 2025,
               <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-00>.
+              message-signatures-directory-01>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
