@@ -250,7 +250,7 @@ An Origin MAY choose to request signatures from clients that did not initially p
 The status code SHOULD be 403 Forbidden as defined in {{Section 15.5.4 of HTTP}}.
 
 Origin MAY request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.
-The status code SHOULD be 429 Forbidden as defined in {{Section 15.5.4 of HTTP-MORE-STATUS-CODE}}.
+The status code SHOULD be 429 Too Many Requests as defined in {{Section 4 of HTTP-MORE-STATUS-CODE}}.
 
 ## Validating Message signature
 
