@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-22T02:16:43.972124+00:00",
+  "timestamp": "2025-06-29T02:20:28.368890+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -259,9 +259,17 @@
       ],
       "body": "There has been a couple of feedback about why not use OAuth 2, DPoP, maybe OIDC in general. We should consider having a section in the appendix to address that.\n\nFrom the top of my head:\n* This is similar indeed: one standard which we scope specifically for bots, with a tag/purpose, key ID definition\n* HTTP Message Signatures provides @authority derived component\n* The use of JWK Thumbprint as keyid is sufficient. No need for DPoP\n* DPoP is specifically addressing replay and access refresh\n* The Authorization server is the client, which seems to be closer to HTTP Message Signatures design\n* Extensibility to allow request integrity and non-repudiability with HTTP Message Signatures, possibly with mulitple ones\n",
       "createdAt": "2025-04-28T07:55:30Z",
-      "updatedAt": "2025-05-07T06:42:15Z",
+      "updatedAt": "2025-06-26T16:47:09Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "From @garyillyes on the [mailing list](https://mailarchive.ietf.org/arch/msg/web-bot-auth/JHZcHwwYlOt_y1T_YcENGP5yAnM/): consideration about [SPIFFE](https://spiffe.io/). Trying to recall the differences from the top of my head before i log out for the day and reply on the mailing:\n\n1. I understand SPIFFE as being based on trust domain. Signature-Agent helps with that discovery to avoid a central registry for a public web.\n2. Transitivity is a nice property of HTTP Sigs\n3. There is no binding to a specific authority, or headers, like with HTTP Sigs. This is a nice to have\n4. There is an ongoing thread on [oauth mailing list](https://mailarchive.ietf.org/arch/msg/oauth/3dpBuZqHRxlx33AyTZNUqofnM_0/) about dynamic registration with OAuth using SPIFFE sharing some of the properties\n\nTLDR is registration is covered with Signature-Agent allowing for multiple trust domains. SPIFFE would be interesting to provide that unique workload URL, and possibly identify a specific workload instead of their principals.",
+          "createdAt": "2025-06-26T16:36:35Z",
+          "updatedAt": "2025-06-26T16:47:09Z"
+        }
+      ]
     },
     {
       "number": 14,
@@ -308,7 +316,7 @@
       "labels": [],
       "body": "In addition to using User-Agent directive as per [RFC 9309](https://datatracker.ietf.org/doc/html/rfc9309), it would be interesting for robots.txt to support Signature-Agent header.",
       "createdAt": "2025-05-12T15:11:01Z",
-      "updatedAt": "2025-05-29T18:10:26Z",
+      "updatedAt": "2025-06-27T10:44:30Z",
       "closedAt": null,
       "comments": [
         {
@@ -338,6 +346,13 @@
           "body": "> We could also tweak [user-agent-purpose](https://www.ietf.org/archive/id/draft-illyes-rep-purpose-00.html) to signature-agent-purpose.\n\nThis seems to be going beyond solely having a registry. If there is a clear purpose, it could be added as its own draft, similar to user-agent-purpose. At the moment, it seems Signature-Agent would be sufficient.",
           "createdAt": "2025-05-29T18:10:25Z",
           "updatedAt": "2025-05-29T18:10:25Z"
+        },
+        {
+          "author": "neilstuartcraig",
+          "authorAssociation": "NONE",
+          "body": "Hello!\nI've spoken with @thibmeu around this and he asked me to add our (BBC) current-known use case. I _think_ this is probably the most appropriate existing issue but please let me know if you want me to move it.\n\nWe have some folks in BBC Studios who are looking at the potential for licensing our content (or subsets of it) for use in various ways e.g. LLM training, paid-for reformatting/summarisation etc.\n\nRight now, we use robots.txt where we can in the usual/standard way but this is a seriously poor whack-a-mole experience from our PoV because:\n\n* Bot documentation quality is extremely variable so it's not always easy/possible to work out what a specific bot's intent (purpose) is\n* Sometimes the intent of a bot changes over time (or there may be multiple intents for a single bot)\n* The User-Agent string isn't necessarily the same as the robots.txt token\n* We end up with loads of robots.txt `disallow` entries which is hard to manage\n\nWhat we'd dearly love is a broader intent-based system (with the intent included in the bot signature) whereby we could e.g. `disallow` all bots which have a stated intent of \"LLM training\" then have specific `allow`-based exceptions to that for any companies with which we have a commercial usage contract. This'd obviously be a divergence from the current robots.txt system which lists per-bot/UA tokens but it would be so much more manageable.\n\nHope all that makes sense!\n\n",
+          "createdAt": "2025-06-27T10:44:30Z",
+          "updatedAt": "2025-06-27T10:44:30Z"
         }
       ]
     },
