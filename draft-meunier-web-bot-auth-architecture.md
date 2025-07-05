@@ -568,7 +568,7 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Python script](https://zenn.dev/oymk/articles/944069e5eddc27)
 
-* [Linzer](https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research.rb) (Ruby)
+* [Linzer](https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research_spec.rb) (Ruby)
 
 * [Rust binaries](https://github.com/cloudflare/web-bot-auth) (Rust)
 
