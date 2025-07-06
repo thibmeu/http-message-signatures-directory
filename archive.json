@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-29T02:20:28.368890+00:00",
+  "timestamp": "2025-07-06T02:18:54.262800+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -700,6 +700,22 @@
       "body": "How does HTTP Message sigs interact with CORS and preflight?\n\nfrom @sandormajor",
       "createdAt": "2025-06-20T16:37:40Z",
       "updatedAt": "2025-06-20T16:37:48Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 47,
+      "id": "I_kwDOOXJyWM6-5T2P",
+      "title": "Add known test key SHOULD be rejected in considerations",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/47",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "RFC 9421 provides test keys in [Appendix B.1](https://www.rfc-editor.org/rfc/rfc9421.html#name-example-keys).\n\nIt would be ideal for security consideration/deployment consideration to mention that such keys SHOULD be rejected or notified to the client.\n\nThe correct mechanism to do this may not be straight forward.",
+      "createdAt": "2025-07-04T13:06:21Z",
+      "updatedAt": "2025-07-04T13:06:21Z",
       "closedAt": null,
       "comments": []
     }
@@ -1889,6 +1905,48 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDOOXJyWM6dkCOe",
+      "title": "Update linzer url",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/48",
+      "state": "MERGED",
+      "author": "nomadium",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Thanks for including Linzer as client in this specification.\r\n\r\nI noticed that the URL included in the draft is now broken since I renamed the file referenced there a few weeks ago, so I'm sending this small PR to correct it.\r\n\r\nThanks!",
+      "createdAt": "2025-07-05T15:23:26Z",
+      "updatedAt": "2025-07-05T16:15:39Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "7eb86ccaf00ef9feca08dec8ad10f95c8ad639f3",
+      "headRepository": "nomadium/http-message-signatures-directory",
+      "headRefName": "fix-linzer-url",
+      "headRefOid": "559402fa032cb520a41dedea90f3d5829a763a31",
+      "closedAt": "2025-07-05T16:15:39Z",
+      "mergedAt": "2025-07-05T16:15:38Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "64f821abd21c1ffa34dbcebc96ac5e416cb5dd0e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM6yO6a1",
+          "commit": {
+            "abbreviatedOid": "559402f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thanks a lot for the PR. Approved.\r\n\r\nIf that happens again down the line, a solution may just be to have a commit based link",
+          "createdAt": "2025-07-05T16:15:33Z",
+          "updatedAt": "2025-07-05T16:15:33Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
