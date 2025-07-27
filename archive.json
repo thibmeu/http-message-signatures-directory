@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T02:18:54.262800+00:00",
+  "timestamp": "2025-07-27T02:27:01.478737+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1506,21 +1506,21 @@
       "id": "PR_kwDOOXJyWM6X1iSA",
       "title": "Update REP draft with max-crawl-rate directive",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/34",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "gauribaraskar",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Update the REP extension to include multiple directives.",
       "createdAt": "2025-05-27T19:16:23Z",
-      "updatedAt": "2025-06-17T08:18:32Z",
+      "updatedAt": "2025-07-24T15:33:09Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "77eeb6f0964e1dccd5c790e57101c795dbda4cf2",
       "headRepository": "gauribaraskar/http-message-signatures-directory",
       "headRefName": "update-to-rep-directives",
       "headRefOid": "6af3f92359f91165a9b7ab726e17ec2968672041",
-      "closedAt": null,
+      "closedAt": "2025-07-24T15:33:08Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -1538,6 +1538,13 @@
           "body": "added, with a different framing and definition. you can review on the draft directly. This is likely to evolve, as other directives are being discussed in [ai-control mailing](https://mailarchive.ietf.org/arch/msg/ai-control/eFJw6WJlu38ag541YYLdy3p6lxU/) for instance ",
           "createdAt": "2025-06-17T08:18:32Z",
           "updatedAt": "2025-06-17T08:18:32Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "closing as off focus for now. we can come back to it if there are expressions of a clearer need.",
+          "createdAt": "2025-07-24T15:33:08Z",
+          "updatedAt": "2025-07-24T15:33:08Z"
         }
       ],
       "reviews": []
