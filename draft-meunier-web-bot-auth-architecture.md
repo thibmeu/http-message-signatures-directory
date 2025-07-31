@@ -98,7 +98,7 @@ mechanism that empowers small and large agents to share their identity.
 
 ## HTTP layer choice
 
-This architectures operates solely at the HTTP layer.
+This architecture operates solely at the HTTP layer.
 It allows signatures to be generated and
 verified without modifying the transport layer or TLS stack. It enables
 flexible deployment across proxies, gateways, and origin servers, and aligns
@@ -142,7 +142,7 @@ The following terms are used throughout this document:
 A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}
-along with `Signature-Agent` header for discovery for its
+along with the `Signature-Agent` header for discovery for its
 verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.
@@ -178,7 +178,7 @@ The signing key is available to the agent at request time. Algorithms should be 
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
-It is RECOMMEND the expiry to be no more than 24 hours.
+It is RECOMMENDED the expiry to be no more than 24 hours.
 
 ### Signature-Agent {#signature-agent}
 
@@ -197,7 +197,7 @@ This results in the following components to be signed
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
 This is described in {{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}.
 
-Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follow
+Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follows:
 
 `nonce`
 : base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
@@ -274,9 +274,9 @@ This section describes the discovery mechanism for the agent directory.
 The reference for discovery is a FQDN. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
 
 We add one field to the directory defined in the other draft:
-"purpose": Ideally matches some IANA registry for preferences
+"purpose": Ideally matches some IANA registry for preferences.
 
-Example
+Example:
 
 ~~~json
 {
@@ -304,7 +304,7 @@ Could be a GitHub repository like the public suffix list. The issue is the gatin
 
 ### Signature-Agent header {#signature-agent-header}
 
-This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
+This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
 See {{signature-agent}} for more details.
 
 # Security Considerations
@@ -401,7 +401,7 @@ This document has no IANA actions.
 ## RSASSA-PSS Using SHA-512
 
 The test vectors in this section use the RSA-PSS key defined in {{Appendix B.1.2 of HTTP-MESSAGE-SIGNATURES}}.
-This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
+This section includes non-normative test vectors that may be used as test cases to validate implementation correctness.
 
 ### Signature-Agent absent from the request
 
