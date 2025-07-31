@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-27T02:27:01.478737+00:00",
+  "timestamp": "2025-07-31T02:19:39.836655+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -716,6 +716,24 @@
       "body": "RFC 9421 provides test keys in [Appendix B.1](https://www.rfc-editor.org/rfc/rfc9421.html#name-example-keys).\n\nIt would be ideal for security consideration/deployment consideration to mention that such keys SHOULD be rejected or notified to the client.\n\nThe correct mechanism to do this may not be straight forward.",
       "createdAt": "2025-07-04T13:06:21Z",
       "updatedAt": "2025-07-04T13:06:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 49,
+      "id": "I_kwDOOXJyWM7DIz2i",
+      "title": "Signature Agent card",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/49",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "There has been a couple of mention to draft a way to share information about a specific bot/signature-agent.\n\nThis could take the form of a signature-agent card.\n\nIt would contain information about the service, its name, description, key directory, expected crawl rate, type of traffic.\n\nIt is high level at the moment, adding this ticket as a placeholder.",
+      "createdAt": "2025-07-29T14:25:52Z",
+      "updatedAt": "2025-07-29T14:25:59Z",
       "closedAt": null,
       "comments": []
     }
