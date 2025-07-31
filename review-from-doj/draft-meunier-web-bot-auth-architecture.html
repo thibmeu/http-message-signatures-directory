@@ -12,11 +12,11 @@ traffic using  . The goal
 is to allow automated HTTP clients to cryptographically sign outbound
 requests, allowing HTTP servers to verify their identity with confidence. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.0" name="generator">
 <meta content="not-yet" name="keyword">
 <meta content="draft-meunier-web-bot-auth-architecture-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.0
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1047,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Message Signatures for Bots</td>
-<td class="right">June 2025</td>
+<td class="right">July 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier</td>
-<td class="center">Expires 21 December 2025</td>
+<td class="center">Expires 1 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-19" class="published">19 June 2025</time>
+<time datetime="2025-07-31" class="published">31 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-21">21 December 2025</time></dd>
+<dd class="expires"><time datetime="2026-02-01">1 February 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1097,7 +1097,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-meunier-web-bot-auth-architecture/">https://datatracker.ietf.org/doc/draft-meunier-web-bot-auth-architecture/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        WG Web Bot Auth mailing list (<span><a href="mailto:web-bot-auth@ietf.org">mailto:web-bot-auth@ietf.org</a></span>),
+        Web Bot Auth Working Group mailing list (<span><a href="mailto:web-bot-auth@ietf.org">mailto:web-bot-auth@ietf.org</a></span>),
         which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/web-bot-auth/">https://mailarchive.ietf.org/arch/browse/web-bot-auth/</a></span>.
         Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/web-bot-auth/">https://www.ietf.org/mailman/listinfo/web-bot-auth/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
@@ -1122,7 +1122,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1388,7 +1388,7 @@ mechanism that empowers small and large agents to share their identity.<a href="
         <h3 id="name-http-layer-choice">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-http-layer-choice" class="section-name selfRef">HTTP layer choice</a>
         </h3>
-<p id="section-2.1-1">This architectures operates solely at the HTTP layer.
+<p id="section-2.1-1">This architecture operates solely at the HTTP layer.
 It allows signatures to be generated and
 verified without modifying the transport layer or TLS stack. It enables
 flexible deployment across proxies, gateways, and origin servers, and aligns
@@ -1488,7 +1488,7 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
 <p id="section-4-2">A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>
-along with <code>Signature-Agent</code> header for discovery for its
+along with the <code>Signature-Agent</code> header for discovery for its
 verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.<a href="#section-4-2" class="pilcrow">¶</a></p>
@@ -1539,7 +1539,7 @@ validates the signature, and processes the request if the signature is valid.<a 
 </dl>
 <p id="section-4.2-6">The signing key is available to the agent at request time. Algorithms should be registered with IANA as part of HTTP Message Signatures Algorithm registry.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 <p id="section-4.2-7">The creation of the signature is defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
-<p id="section-4.2-8">It is RECOMMEND the expiry to be no more than 24 hours.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.2-8">It is <span class="bcp14">RECOMMENDED</span> the expiry to be no more than 24 hours.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
 <div id="signature-agent">
 <section id="section-4.2.1">
           <h4 id="name-signature-agent">
@@ -1563,7 +1563,7 @@ If the header is to be sent, it <span class="bcp14">MUST</span> be signed as a c
           </h4>
 <p id="section-4.2.2-1">Origins <span class="bcp14">MAY</span> want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a <code>nonce</code> to be added to the <code>@signature-params</code>.
 This is described in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.2" class="relref">Section 7.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.2-2">Agents <span class="bcp14">SHOULD</span> extend <code>@signature-parameters</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a> as follow<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-2">Agents <span class="bcp14">SHOULD</span> extend <code>@signature-parameters</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a> as follows:<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-4.2.2-3">
             <dt id="section-4.2.2-3.1"><code>nonce</code></dt>
             <dd style="margin-left: 1.5em" id="section-4.2.2-3.2">
@@ -1635,7 +1635,7 @@ and request a new signature, as described in <a href="#requesting-message-signat
                   <text x="356" y="212">keyid="ba3e64==";\</text>
                   <text x="356" y="228">tag="web-bot-auth"</text>
                   <text x="212" y="244">Signature-Agent:</text>
-                  <text x="364" y="244">"signer.example.com"</text>
+                  <text x="396" y="244">"https://signer.example.com"</text>
                 </g>
               </svg><a href="#section-4.2.4-2.1" class="pilcrow">¶</a>
 </div>
@@ -1663,7 +1663,7 @@ and request a new signature, as described in <a href="#requesting-message-signat
 An Origin <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially provide them. If requesting, Origins <span class="bcp14">MUST</span> use the same parameters as those defined by the <a href="#generating-http-message-signature" class="auto internal xref">Section 4.2</a>.
 The status code <span class="bcp14">SHOULD</span> be 403 Forbidden as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-15.5.4" class="relref">Section 15.5.4</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">Origin <span class="bcp14">MAY</span> request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.
-The status code <span class="bcp14">SHOULD</span> be 429 Forbidden as defined in <span><a href="https://rfc-editor.org/rfc/rfc6585#section-15.5.4" class="relref">Section 15.5.4</a> of [<a href="#HTTP-MORE-STATUS-CODE" class="cite xref">HTTP-MORE-STATUS-CODE</a>]</span>.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+The status code <span class="bcp14">SHOULD</span> be 429 Too Many Requests as defined in <span><a href="https://rfc-editor.org/rfc/rfc6585#section-4" class="relref">Section 4</a> of [<a href="#HTTP-MORE-STATUS-CODE" class="cite xref">HTTP-MORE-STATUS-CODE</a>]</span>.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="validating-message-signature">
@@ -1699,8 +1699,8 @@ Similar to a regular User-Agent check, this happens at the HTTP layer, once head
 <p id="section-4.5-1">This section describes the discovery mechanism for the agent directory.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.5-2">The reference for discovery is a FQDN. It <span class="bcp14">SHOULD</span> provide a directory hosted on the well known registered in Section 4 of <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 <p id="section-4.5-3">We add one field to the directory defined in the other draft:
-"purpose": Ideally matches some IANA registry for preferences<a href="#section-4.5-3" class="pilcrow">¶</a></p>
-<p id="section-4.5-4">Example<a href="#section-4.5-4" class="pilcrow">¶</a></p>
+"purpose": Ideally matches some IANA registry for preferences.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">Example:<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-4.5-5">
 <pre>
 {
@@ -1739,7 +1739,7 @@ Similar to a regular User-Agent check, this happens at the HTTP layer, once head
           <h4 id="name-signature-agent-header">
 <a href="#section-4.5.3" class="section-number selfRef">4.5.3. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
           </h4>
-<p id="section-4.5.3-1">This allows for backward compatibility with existing header agent filtering, and an upgrade to cryptographically secured protocol.
+<p id="section-4.5.3-1">This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
 See <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a> for more details.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1892,7 +1892,7 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
 <dl class="references">
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
-<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-00</span>, <time datetime="2025-04-15" class="refDate">15 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-00">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-00</a>&gt;</span>. </dd>
+<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-01</span>, <time datetime="2025-06-19" class="refDate">19 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-01">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -1959,7 +1959,7 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-rsassa-pss-using-sha-512" class="section-name selfRef">RSASSA-PSS Using SHA-512</a>
         </h3>
 <p id="appendix-A.1-1">The test vectors in this section use the RSA-PSS key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.2" class="relref">Appendix B.1.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-This section include non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+This section includes non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div id="signature-agent-absent-from-the-request">
 <section id="appendix-A.1.1">
           <h4 id="name-signature-agent-absent-from">
@@ -2159,7 +2159,7 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
             <p id="appendix-B.1-1.4.1"><a href="https://zenn.dev/oymk/articles/944069e5eddc27">Python script</a><a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1"><a href="https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research.rb">Linzer</a> (Ruby)<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.5.1"><a href="https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research_spec.rb">Linzer</a> (Ruby)<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.6">
             <p id="appendix-B.1-1.6.1"><a href="https://github.com/cloudflare/web-bot-auth">Rust binaries</a> (Rust)<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
@@ -2219,49 +2219,82 @@ Tanya Verma.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v01<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">v02<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Add mandatory signing of Signature-Agent by clients if present<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Add response status code<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.2">
-          <p id="appendix-D-2.2.1">Add test vectors for request with and without Signature-Agent<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.2.1">Add a few reference to improve readability<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.3">
-          <p id="appendix-D-2.3.1">Update example diagram to be correct<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.3.1">Add consideration to sign additional headers<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.4">
-          <p id="appendix-D-2.4.1">Add security consideration about reverse proxy<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.4.1">Add use of TLS in security considerations<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.5">
-          <p id="appendix-D-2.5.1">Update why origin may request a new signature<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.5.1">Add RSASSA-PSS example<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.6">
-          <p id="appendix-D-2.6.1">Update nonce validation wording and global uniqueness<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.6.1">Update acknowledgement section<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.7">
-          <p id="appendix-D-2.7.1">Acknowledgements<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.7.1">Reference new implementations: PHP, Python, Ruby, Rust<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.8">
+          <p id="appendix-D-2.8.1">Fix signature-agent in the arch diagram to use structured fields<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.9">
+          <p id="appendix-D-2.9.1">Fix test vectors to use signature-agent with structured fields<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.10">
+          <p id="appendix-D-2.10.1">Fix some typos<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-3">v00<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-3">v01<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-4.1">
-          <p id="appendix-D-4.1.1">Initial draft<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.1.1">Add mandatory signing of Signature-Agent by clients if present<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.2">
-          <p id="appendix-D-4.2.1">How to leverage HTTP Message Signature to sign request<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.2.1">Add test vectors for request with and without Signature-Agent<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.3">
-          <p id="appendix-D-4.3.1">How to verify these Signature<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.3.1">Update example diagram to be correct<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.4">
-          <p id="appendix-D-4.4.1">Define web-bot-auth tag to scope this signature<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.4.1">Add security consideration about reverse proxy<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.5">
-          <p id="appendix-D-4.5.1">Derive keyid using JWK Thumbprint<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.5.1">Update why origin may request a new signature<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.6">
-          <p id="appendix-D-4.6.1">High level Security and Privacy considerations<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.6.1">Update nonce validation wording and global uniqueness<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.7">
+          <p id="appendix-D-4.7.1">Acknowledgements<a href="#appendix-D-4.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-5">v00<a href="#appendix-D-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-6.1">
+          <p id="appendix-D-6.1.1">Initial draft<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.2">
+          <p id="appendix-D-6.2.1">How to leverage HTTP Message Signature to sign request<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.3">
+          <p id="appendix-D-6.3.1">How to verify these Signature<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.4">
+          <p id="appendix-D-6.4.1">Define web-bot-auth tag to scope this signature<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.5">
+          <p id="appendix-D-6.5.1">Derive keyid using JWK Thumbprint<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.6">
+          <p id="appendix-D-6.6.1">High level Security and Privacy considerations<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
