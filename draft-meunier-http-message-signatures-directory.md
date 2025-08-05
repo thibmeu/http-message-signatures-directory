@@ -67,9 +67,10 @@ signers' key material, requiring out-of-band key distribution mechanisms. This c
 friction and limits the ability to dynamically verify signatures from previously unknown signers.
 
 This document defines:
-1. A standardized key directory format based on JWKS for publishing HTTP Message Signatures keys
-2. A well-known URI location for discovering these key directories
-3. A new HTTP header field enabling in-band key directory location discovery
+
+1. A standardized key directory format based on JWKS for publishing HTTP Message Signatures keys,
+2. A well-known URI location for discovering these key directories,
+3. A new HTTP header field enabling in-band key directory location discovery.
 
 Together, these mechanisms enable key distribution and discovery for HTTP Message Signatures cryptographic material.
 
@@ -86,7 +87,7 @@ The "alg" parameter are restricted to algorithm registered against HTTP Signatur
 The directory SHOULD be served over HTTPS.
 The directory MUST be served with media type `application/http-message-signatures-directory+json`.
 
-Client application SHOULD validate the directory format and reject malformed entries.
+A client application SHOULD validate the directory format and reject malformed entries.
 
 # HTTP Method Context `Signature-Agent`
 
@@ -105,6 +106,7 @@ Signature-Agent = sf-string   ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
 ~~~
 
 The URI scheme MUST be one of:
+
 - **https (RECOMMENDED)**: Points to an HTTPS resource serving the key directory
 - **http**: Points to an HTTP resource serving the key directory
 - **data**: Contains an inline key directory
@@ -121,7 +123,7 @@ use the first valid URI that provides a valid key directory.
 ## Key rotation
 
 Clients SHOULD implement key rotation by including multiple keys in the directory
-with different validity period. When rotating keys, clients SHOULD:
+with a different validity period. When rotating keys, clients SHOULD:
 
 1. Add the new key to the directory before its intended use date
 2. Continue to include the old key until its expiration date
