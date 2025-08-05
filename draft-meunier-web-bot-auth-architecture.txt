@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                               5 July 2025
-Expires: 6 January 2026
+Intended status: Informational                             5 August 2025
+Expires: 6 February 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2026.
+   This Internet-Draft will expire on 6 February 2026.
 
 Copyright Notice
 
@@ -177,7 +177,7 @@ Table of Contents
 
 2.1.  HTTP layer choice
 
-   This architectures operates solely at the HTTP layer.  It allows
+   This architecture operates solely at the HTTP layer.  It allows
    signatures to be generated and verified without modifying the
    transport layer or TLS stack.  It enables flexible deployment across
    proxies, gateways, and origin servers, and aligns with existing
@@ -227,9 +227,9 @@ Table of Contents
    A User initiates an action requiring the Agent to perform an HTTP
    request.  The Agent constructs the request, generates a signature
    using its signing key, and includes it in the request as defined in
-   Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along with Signature-Agent
-   header for discovery for its verification key.  Upon receiving the
-   request, the Origin ensures it has the verification key for the
+   Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along with the Signature-
+   Agent header for discovery for its verification key.  Upon receiving
+   the request, the Origin ensures it has the verification key for the
    Agent, validates the signature, and processes the request if the
    signature is valid.
 
@@ -269,7 +269,7 @@ Table of Contents
    The creation of the signature is defined in Section 3.1 of
    [HTTP-MESSAGE-SIGNATURES].
 
-   It is RECOMMEND the expiry to be no more than 24 hours.
+   It is RECOMMENDED the expiry to be no more than 24 hours.
 
 4.2.1.  Signature-Agent
 
@@ -291,7 +291,7 @@ Table of Contents
    [HTTP-MESSAGE-SIGNATURES].
 
    Agents SHOULD extend @signature-parameters defined in Section 4.2 as
-   follow
+   follows:
 
    nonce  base64url encoded random byte array.  It is RECOMMENDED to use
       a 64-byte array.
@@ -395,9 +395,9 @@ Table of Contents
    hosted on the well known registered in Section 4 of [DIRECTORY].
 
    We add one field to the directory defined in the other draft:
-   "purpose": Ideally matches some IANA registry for preferences
+   "purpose": Ideally matches some IANA registry for preferences.
 
-   Example
+   Example:
 
    {
      "keys": {
@@ -426,8 +426,8 @@ Table of Contents
 4.5.3.  Signature-Agent header
 
    This allows for backward compatibility with existing header agent
-   filtering, and an upgrade to cryptographically secured protocol.  See
-   Section 4.2.1 for more details.
+   filtering, and an upgrade to a cryptographically secured protocol.
+   See Section 4.2.1 for more details.
 
 5.  Security Considerations
 
@@ -602,7 +602,7 @@ Appendix A.  Test Vectors
 A.1.  RSASSA-PSS Using SHA-512
 
    The test vectors in this section use the RSA-PSS key defined in
-   Appendix B.1.2 of [HTTP-MESSAGE-SIGNATURES].  This section include
+   Appendix B.1.2 of [HTTP-MESSAGE-SIGNATURES].  This section includes
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
