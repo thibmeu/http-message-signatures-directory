@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-03T02:29:23.085063+00:00",
+  "timestamp": "2025-08-07T02:21:21.578633+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1978,7 +1978,7 @@
       "id": "PR_kwDOOXJyWM6hgOEi",
       "title": "Address review from @doj",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/50",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -1989,17 +1989,19 @@
       ],
       "body": "This commit addresses the review from @doj.\r\n\r\nIf you're OK with it, happy to add a commit to list you as a contributor.\r\n\r\nReview provided below\r\n\r\n```\r\nsection 2.1 HTTP layer choice: s/This architectures operates/This\r\narchitecture operates/\r\n\r\nsection 4 Architecture: s/along with Signature-Agent header/along with\r\nthe Signature-Agent header/\r\n\r\nsection 4.2.  Generating HTTP Message Signature: s/It is RECOMMEND the\r\nexpiry/It is RECOMMENDED the expiry/.\r\n\r\nsection 4.2.2.  Anti-replay: s/defined in Section 4.2 as follow/defined\r\nin Section 4.2 as follows:/\r\n\r\nsection 4.5.  Key Distribution and Discovery: s/Ideally matches some\r\nIANA registry for preferences/Ideally matches some IANA registry for\r\npreferences./\r\n\r\ns/Examples/Examples:/\r\n\r\nsection 4.5.3.  Signature-Agent header: s/and an upgrade to\r\ncryptographically secured protocol./and an upgrade to a\r\ncryptographically secured protocol./\r\n\r\nsection A.2.  EdDSA Using Curve edwards25519: s/This section\r\ninclude/This section includes/\r\n```",
       "createdAt": "2025-07-31T09:56:29Z",
-      "updatedAt": "2025-07-31T15:52:17Z",
+      "updatedAt": "2025-08-05T07:08:20Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "64f821abd21c1ffa34dbcebc96ac5e416cb5dd0e",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "review-from-doj",
       "headRefOid": "653bc7f5790464441b9e14e69af2fbad2102309a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-08-05T07:06:42Z",
+      "mergedAt": "2025-08-05T07:06:42Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "183cea3c6c5b9381ed0dedfc29cc01b63f868ac5"
+      },
       "comments": [
         {
           "author": "doj",
@@ -2007,6 +2009,46 @@
           "body": "looks good to me.",
           "createdAt": "2025-07-31T15:52:17Z",
           "updatedAt": "2025-07-31T15:52:17Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 51,
+      "id": "PR_kwDOOXJyWM6iOwNJ",
+      "title": "Address review from @doj on directory draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/51",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "section 1. Introduction: I would add a newline and a character like dash\r\n- or star * to make this a list of items for the three listed items after \"This document defines:\"\r\n\r\ns/directory location discovery/directory location discovery./\r\n\r\nsection 3. Configuration: s/Client application SHOULD/A client application SHOULD/\r\n\r\nsection 4.1. Header Field Definition: add a newline character before the list items of the paragraph \"The URI scheme MUST be one of:\"\r\n\r\nsection 5.1. Key rotation: s/with different validity period./with a different validity period./",
+      "createdAt": "2025-08-05T16:35:17Z",
+      "updatedAt": "2025-08-05T16:54:49Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "183cea3c6c5b9381ed0dedfc29cc01b63f868ac5",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "review-from-doj-2",
+      "headRefOid": "94883bfe53adeafdc62f28c932684ccc4b3c1e44",
+      "closedAt": "2025-08-05T16:54:48Z",
+      "mergedAt": "2025-08-05T16:54:48Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "41ab44b873a688d90b470e3cfb02848558459a90"
+      },
+      "comments": [
+        {
+          "author": "doj",
+          "authorAssociation": "NONE",
+          "body": "changes look good.",
+          "createdAt": "2025-08-05T16:48:44Z",
+          "updatedAt": "2025-08-05T16:48:44Z"
         }
       ],
       "reviews": []
