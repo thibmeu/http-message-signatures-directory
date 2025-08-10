@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-07T02:21:21.578633+00:00",
+  "timestamp": "2025-08-10T02:24:50.990637+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1256,7 +1256,7 @@
       ],
       "body": "Close #22",
       "createdAt": "2025-05-20T09:36:05Z",
-      "updatedAt": "2025-05-20T12:18:21Z",
+      "updatedAt": "2025-08-07T10:24:08Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "a8ab1dcf1fa34814cf6656b09ad1207cfcaa9585",
@@ -2029,7 +2029,7 @@
       ],
       "body": "section 1. Introduction: I would add a newline and a character like dash\r\n- or star * to make this a list of items for the three listed items after \"This document defines:\"\r\n\r\ns/directory location discovery/directory location discovery./\r\n\r\nsection 3. Configuration: s/Client application SHOULD/A client application SHOULD/\r\n\r\nsection 4.1. Header Field Definition: add a newline character before the list items of the paragraph \"The URI scheme MUST be one of:\"\r\n\r\nsection 5.1. Key rotation: s/with different validity period./with a different validity period./",
       "createdAt": "2025-08-05T16:35:17Z",
-      "updatedAt": "2025-08-05T16:54:49Z",
+      "updatedAt": "2025-08-07T10:24:06Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "183cea3c6c5b9381ed0dedfc29cc01b63f868ac5",
