@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-10T02:24:50.990637+00:00",
+  "timestamp": "2025-08-24T02:07:11.106047+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -733,9 +733,17 @@
       ],
       "body": "There has been a couple of mention to draft a way to share information about a specific bot/signature-agent.\n\nThis could take the form of a signature-agent card.\n\nIt would contain information about the service, its name, description, key directory, expected crawl rate, type of traffic.\n\nIt is high level at the moment, adding this ticket as a placeholder.",
       "createdAt": "2025-07-29T14:25:52Z",
-      "updatedAt": "2025-07-29T14:25:59Z",
+      "updatedAt": "2025-08-21T15:06:09Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "body": "I support the idea of a standardized friendly bot card, and would suggest including the following fields:\n\n\nField | Description | Example / Notes\n-- | -- | --\nFriendly name | Human-readable bot name | `Googlebot`, `Facebook External Hit`\nContact method | Email or other reliable communication channel | `bot-support@example.com`, `https://.../contact`\nLogo | Optional image for quick visual identification | PNG/SVG URL, 64x64\nExpected user agent(s) | Exact string(s) or fragment patterns | `Googlebot/`\nrobots.txt identifier | Name(s) used for robots.txt directives | `Googlebot\nRespects robots.txt? | Does the bot follow robots.txt directives? | `true` / `false`\nTrigger mechanism | Whether it acts as a fetcher (requested by user) or crawler (autonomous scanning) | Fetcher = on-demand preview; Crawler = site-wide scan\nPurpose | Intended use for collected data | Search indexing, link preview, AI model training\nTargeted content | Specific type of data sought | SEO analysis, vulnerability scanning, ads verification\nTraffic control | How to configure or limit crawl rate | Crawl-delay in robots.txt, contact request, link to Google Webmaster Tools, response header\nTraffic scope | Typical frequency/intensity of requests | ~500 req/day; spikes during reindexing\nKnown URL targets | Predictable endpoints accessed, if known | `/ads.txt`, `/favicon.ico`, `/.well-known/something/...`\n\n",
+          "createdAt": "2025-08-21T15:06:09Z",
+          "updatedAt": "2025-08-21T15:06:09Z"
+        }
+      ]
     }
   ],
   "pulls": [
