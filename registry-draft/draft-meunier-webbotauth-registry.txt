@@ -355,17 +355,17 @@ Table of Contents
 
    New registrations need to list the following attributes:
 
-   Parameter Name:  The name requested (e.g. "useragent").  This name is
-      case sensitive.  Names may not match other registered names in a
-      case-insensitive manner unless the Designated Experts state that
+   *Parameter Name:*  The name requested (e.g. "useragent").  This name
+      is case sensitive.  Names may not match other registered names in
+      a case-insensitive manner unless the Designated Experts state that
       there is a compelling reason to allow an exception
-   Parameter Description:  Brief description of the Header Parameter
-   Change Controller:  For Standards Track RFCs, list the "IESG".  For
+   *Parameter Description:*  Brief description of the Header Parameter
+   *Change Controller:*  For Standards Track RFCs, list the "IESG".  For
       others, give the name of the responsible party.  Other details
       (e.g., postal address, email address, home page URI) may also be
       included.
-   Reference:  Where this parameter is defined
-   Notes:  Any notes associated with the entry
+   *Reference:*  Where this parameter is defined
+   *Notes:*  Any notes associated with the entry
 
    New entries in this registry are subject to the Specification
    Required registration policy ([RFC8126], Section 4.6).  Designated
@@ -379,163 +379,138 @@ Table of Contents
    This section registers the Signature Agent Card Parameter names
    defined in Section 3 in this registry.
 
-   Parameter Name:
+   *Parameter Name:*  name
 
-   :  name Parameter Description:
+   *Parameter Description:*  A friendly name for your signature agent.
 
-      A friendly name for your signature agent.  Change Controller:
+   *Change Controller:*  IETF
 
-      IETF Reference:
+   *Reference:*  Section 3.1
 
-      Section 3.1 Notes:
+   *Notes:*  N/A
 
-      N/A
+   *Parameter Name:*  contact
 
-   Parameter Name:
+   *Parameter Description:*  Email or any other reliable communication
+      channel
 
-   :  contact Parameter Description:
+   *Change Controller:*  IETF
 
-      Email or any other reliable communication channel Change
-      Controller:
+   *Reference:*  Section 3.2
 
-      IETF Reference:
+   *Notes:*  N/A
 
-      Section 3.2 Notes:
+   *Parameter Name:*  logo
 
-      N/A
+   *Parameter Description:*  Image for a quick visual identification
 
-   Parameter Name:
+   *Change Controller:*  IETF
 
-   :  logo Parameter Description:
+   *Reference:*  Section 3.3
 
-      Image for a quick visual identification Change Controller:
+   *Notes:*  N/A
 
-      IETF Reference:
+   *Parameter Name:*  expected-user-agent
 
-      Section 3.3 Notes:
+   *Parameter Description:*  String or fragment patterns
 
-      N/A
+   *Change Controller:*  IETF
 
-   Parameter Name:
+   *Reference:*  Section 3.4
 
-   :  expected-user-agent Parameter Description:
+   *Notes:*  N/A
 
-      String or fragment patterns Change Controller:
+   *Parameter Name:*  rfc9309-product-token
 
-      IETF Reference:
+   *Parameter Description:*  Robots.txt product token your signature-
+      agent satisfies.
 
-      Section 3.4 Notes:
+   *Change Controller:*  IETF
 
-      N/A
+   *Reference:*  Section 3.5
 
-   Parameter Name:
+   *Notes:*  N/A
 
-   :  rfc9309-product-token Parameter Description:
+   *Parameter Name:*  rfc9309-compliance
 
-      Robots.txt product token your signature-agent satisfies.  Change
-      Controller:
+   *Parameter Description:*  Does your signature-agent respect
+      robots.txt.
 
-      IETF Reference:
+   *Change Controller:*  IETF
 
-      Section 3.5 Notes:
+   *Reference:*  Section 3.6
 
-      N/A
+   *Notes:*  N/A
 
-   Parameter Name:
+   *Parameter Name:*  trigger
 
-   :  rfc9309-compliance Parameter Description:
+   *Parameter Description:*  Fetcher/Crawler
 
-      Does your signature-agent respect robots.txt.  Change Controller:
+   *Change Controller:*  IETF
 
-      IETF Reference:
+   *Reference:*  Section 3.7
 
-      Section 3.6 Notes:
+   *Notes:*  N/A
 
-      N/A
+   *Parameter Name:*  purpose
 
-   Parameter Name:
+   *Parameter Description:*  Intended use for the collected data
 
-   :  trigger Parameter Description:
+   *Change Controller:*  IETF
 
-      Fetcher/Crawler Change Controller:
+   *Reference:*  Section 3.8
 
-      IETF Reference:
+   *Notes:*  N/A
 
-      Section 3.7 Notes:
+   *Parameter Name:*  targeted-content
 
-      N/A
+   *Parameter Description:*  Type of data your agent seeks
 
-   Parameter Name:
+   *Change Controller:*  IETF
 
-   :  purpose Parameter Description:
+   *Reference:*  Section 3.9
 
-      Intended use for the collected data Change Controller:
+   *Notes:*  N/A
 
-      IETF Reference:
+   *Parameter Name:*  rate-control
 
-      Section 3.8 Notes:
+   *Parameter Description:*  How can an origin control your crawl rate
 
-      N/A
+   *Change Controller:*  IETF
 
-   Parameter Name:
+   *Reference:*  Section 3.10
 
-   :  targeted-content Parameter Description:
+   *Notes:*  N/A
 
-      Type of data your agent seeks Change Controller:
+   *Parameter Name:*  rate-expectation
 
-      IETF Reference:
+   *Parameter Description:*  Expected traffic and intensity
 
-      Section 3.9 Notes:
+   *Change Controller:*  IETF
 
-      N/A
+   *Reference:*  Section 3.11
 
-   Parameter Name:
+   *Notes:*  N/A
 
-   :  rate-control Parameter Description:
+   *Parameter Name:*  known-urls
 
-      How can an origin control your crawl rate Change Controller:
+   *Parameter Description:*  Predictable endpoint accessed
 
-      IETF Reference:
+   *Change Controller:*  IETF
 
-      Section 3.10 Notes:
+   *Reference:*  Section 3.12
 
-      N/A
+   *Notes:*  N/A
 
-   Parameter Name:
+   *Parameter Name:*  keys
 
-   :  rate-expectation Parameter Description:
+   *Parameter Description:*  JWKS Endpoint
 
-      Expected traffic and intensity Change Controller:
+   *Change Controller:*  IETF
 
-      IETF Reference:
+   *Reference:*  Section 3.13
 
-      Section 3.11 Notes:
-
-      N/A
-
-   Parameter Name:
-
-   :  known-urls Parameter Description:
-
-      Predictable endpoint accessed Change Controller:
-
-      IETF Reference:
-
-      Section 3.12 Notes:
-
-      N/A
-
-   Parameter Name:
-
-   :  keys Parameter Description:
-
-      JWKS Endpoint Change Controller:
-
-      IETF Reference:
-
-      Section 3.13 Notes:
-
-      N/A
+   *Notes:*  N/A
 
 8.  References
 
