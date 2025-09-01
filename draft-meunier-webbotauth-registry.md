@@ -275,9 +275,6 @@ TODO
 
 IANA is requested to create a new "Signature Agent Card Parameters" registry in a new
 "Signature Agent Card" page to list metadata for signature agent protocols.
-defined for use with the Privacy Pass token authentication scheme. These
-identifiers are two-byte values, so the maximum possible value is
-0xFFFF = 65535.
 
 ### Registration template
 
