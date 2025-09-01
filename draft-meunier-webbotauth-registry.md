@@ -316,6 +316,7 @@ that they do not meet the security and privacy requirements defined in TODO.
 This section registers the Signature Agent Card Parameter names defined
 in {{signature-agent-card}} in this registry.
 
+#### Name Parameter
 
 **Parameter Name:**
 : name
@@ -332,6 +333,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Contact Parameter
 
 **Parameter Name:**
 : contact
@@ -348,6 +350,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Logo Parameter
 
 **Parameter Name:**
 : logo
@@ -364,6 +367,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Expected User Agent Parameter
 
 **Parameter Name:**
 : expected-user-agent
@@ -380,6 +384,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### RFC9309 Product Token Parameter
 
 **Parameter Name:**
 : rfc9309-product-token
@@ -396,6 +401,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### RFC9309 Compliance Parameter
 
 **Parameter Name:**
 : rfc9309-compliance
@@ -412,6 +418,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Trigger Parameter
 
 **Parameter Name:**
 : trigger
@@ -428,6 +435,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Purpose Parameter
 
 **Parameter Name:**
 : purpose
@@ -444,6 +452,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Targeted Content Parameter
 
 **Parameter Name:**
 : targeted-content
@@ -460,6 +469,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Rate control Parameter
 
 **Parameter Name:**
 : rate-control
@@ -476,6 +486,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Rate expectation Parameter
 
 **Parameter Name:**
 : rate-expectation
@@ -492,6 +503,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Known URLs Parameter
 
 **Parameter Name:**
 : known-urls
@@ -508,6 +520,7 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### Keys Parameter
 
 **Parameter Name:**
 : keys
