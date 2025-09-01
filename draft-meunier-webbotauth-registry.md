@@ -283,29 +283,24 @@ identifiers are two-byte values, so the maximum possible value is
 
 New registrations need to list the following attributes:
 
-Parameter Name:
-
+**Parameter Name:**
 : The name requested (e.g. "useragent"). This name is
 case sensitive.  Names may not match other registered names in a
 case-insensitive manner unless the Designated Experts state that
 there is a compelling reason to allow an exception
 
-Parameter Description:
-
+**Parameter Description:**
 : Brief description of the Header Parameter
 
-Change Controller:
-
+**Change Controller:**
 : For Standards Track RFCs, list the "IESG".  For others, give the
 name of the responsible party.  Other details (e.g., postal
 address, email address, home page URI) may also be included.
 
-Reference:
-
+**Reference:**
 : Where this parameter is defined
 
-Notes:
-
+**Notes:**
 : Any notes associated with the entry
 {: spacing="compact"}
 
@@ -321,212 +316,212 @@ that they do not meet the security and privacy requirements defined in TODO.
 This section registers the Signature Agent Card Parameter names defined
 in {{signature-agent-card}} in this registry.
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : name
-Parameter Description:
 
+**Parameter Description:**
 : A friendly name for your signature agent.
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-name}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : contact
-Parameter Description:
 
+**Parameter Description:**
 : Email or any other reliable communication channel
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-contact}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : logo
-Parameter Description:
 
+**Parameter Description:**
 : Image for a quick visual identification
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-logo}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : expected-user-agent
-Parameter Description:
 
+**Parameter Description:**
 : String or fragment patterns
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-user-agent}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : rfc9309-product-token
-Parameter Description:
 
+**Parameter Description:**
 : Robots.txt product token your signature-agent satisfies.
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-robotstxt-token}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : rfc9309-compliance
-Parameter Description:
 
+**Parameter Description:**
 : Does your signature-agent respect robots.txt.
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-robotstxt-compliance}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : trigger
-Parameter Description:
 
+**Parameter Description:**
 : Fetcher/Crawler
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-trigger}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : purpose
-Parameter Description:
 
+**Parameter Description:**
 : Intended use for the collected data
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-purpose}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : targeted-content
-Parameter Description:
 
+**Parameter Description:**
 : Type of data your agent seeks
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-targeted-content}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : rate-control
-Parameter Description:
 
+**Parameter Description:**
 : How can an origin control your crawl rate
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-rate-control}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : rate-expectation
-Parameter Description:
 
+**Parameter Description:**
 : Expected traffic and intensity
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-rate-expectation}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : known-urls
-Parameter Description:
 
+**Parameter Description:**
 : Predictable endpoint accessed
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-known-urls}}
-Notes:
 
+**Notes:**
 : N/A
 
-Parameter Name:
-:
+
+**Parameter Name:**
 : keys
-Parameter Description:
 
+**Parameter Description:**
 : JWKS Endpoint
-Change Controller:
 
+**Change Controller:**
 : IETF
-Reference:
 
+**Reference:**
 : {{signature-agent-parameter-keys}}
-Notes:
 
+**Notes:**
 : N/A
 
 --- back
