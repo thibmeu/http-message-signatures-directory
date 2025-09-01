@@ -379,135 +379,161 @@ Table of Contents
    This section registers the Signature Agent Card Parameter names
    defined in Section 3 in this registry.
 
-   Parameter Name  name Parameter Description
+   Parameter Name:
 
-      A friendly name for your signature agent.  Change Controller
+   :  name Parameter Description:
 
-      IETF Reference
+      A friendly name for your signature agent.  Change Controller:
 
-      Section 3.1 Notes
+      IETF Reference:
+
+      Section 3.1 Notes:
 
       N/A
 
-   Parameter Name  contact Parameter Description
+   Parameter Name:
+
+   :  contact Parameter Description:
 
       Email or any other reliable communication channel Change
-      Controller
+      Controller:
 
-      IETF Reference
+      IETF Reference:
 
-      Section 3.2 Notes
-
-      N/A
-
-   Parameter Name  logo Parameter Description
-
-      Image for a quick visual identification Change Controller
-
-      IETF Reference
-
-      Section 3.3 Notes
+      Section 3.2 Notes:
 
       N/A
 
-   Parameter Name  expected-user-agent Parameter Description
+   Parameter Name:
 
-      String or fragment patterns Change Controller
+   :  logo Parameter Description:
 
-      IETF Reference
+      Image for a quick visual identification Change Controller:
 
-      Section 3.4 Notes
+      IETF Reference:
+
+      Section 3.3 Notes:
 
       N/A
 
-   Parameter Name  rfc9309-product-token Parameter Description
+   Parameter Name:
+
+   :  expected-user-agent Parameter Description:
+
+      String or fragment patterns Change Controller:
+
+      IETF Reference:
+
+      Section 3.4 Notes:
+
+      N/A
+
+   Parameter Name:
+
+   :  rfc9309-product-token Parameter Description:
 
       Robots.txt product token your signature-agent satisfies.  Change
-      Controller
+      Controller:
 
-      IETF Reference
+      IETF Reference:
 
-      Section 3.5 Notes
-
-      N/A
-
-   Parameter Name  rfc9309-compliance Parameter Description
-
-      Does your signature-agent respect robots.txt.  Change Controller
-
-      IETF Reference
-
-      Section 3.6 Notes
+      Section 3.5 Notes:
 
       N/A
 
-   Parameter Name  trigger Parameter Description
+   Parameter Name:
 
-      Fetcher/Crawler Change Controller
+   :  rfc9309-compliance Parameter Description:
 
-      IETF Reference
+      Does your signature-agent respect robots.txt.  Change Controller:
 
-      Section 3.7 Notes
+      IETF Reference:
 
-      N/A
-
-   Parameter Name  purpose Parameter Description
-
-      Intended use for the collected data Change Controller
-
-      IETF Reference
-
-      Section 3.8 Notes
+      Section 3.6 Notes:
 
       N/A
 
-   Parameter Name  targeted-content Parameter Description
+   Parameter Name:
 
-      Type of data your agent seeks Change Controller
+   :  trigger Parameter Description:
 
-      IETF Reference
+      Fetcher/Crawler Change Controller:
 
-      Section 3.9 Notes
+      IETF Reference:
 
-      N/A
-
-   Parameter Name  rate-control Parameter Description
-
-      How can an origin control your crawl rate Change Controller
-
-      IETF Reference
-
-      Section 3.10 Notes
+      Section 3.7 Notes:
 
       N/A
 
-   Parameter Name  rate-expectation Parameter Description
+   Parameter Name:
 
-      Expected traffic and intensity Change Controller
+   :  purpose Parameter Description:
 
-      IETF Reference
+      Intended use for the collected data Change Controller:
 
-      Section 3.11 Notes
+      IETF Reference:
 
-      N/A
-
-   Parameter Name  known-urls Parameter Description
-
-      Predictable endpoint accessed Change Controller
-
-      IETF Reference
-
-      Section 3.12 Notes
+      Section 3.8 Notes:
 
       N/A
 
-   Parameter Name  keys Parameter Description
+   Parameter Name:
 
-      JWKS Endpoint Change Controller
+   :  targeted-content Parameter Description:
 
-      IETF Reference
+      Type of data your agent seeks Change Controller:
 
-      Section 3.13 Notes
+      IETF Reference:
+
+      Section 3.9 Notes:
+
+      N/A
+
+   Parameter Name:
+
+   :  rate-control Parameter Description:
+
+      How can an origin control your crawl rate Change Controller:
+
+      IETF Reference:
+
+      Section 3.10 Notes:
+
+      N/A
+
+   Parameter Name:
+
+   :  rate-expectation Parameter Description:
+
+      Expected traffic and intensity Change Controller:
+
+      IETF Reference:
+
+      Section 3.11 Notes:
+
+      N/A
+
+   Parameter Name:
+
+   :  known-urls Parameter Description:
+
+      Predictable endpoint accessed Change Controller:
+
+      IETF Reference:
+
+      Section 3.12 Notes:
+
+      N/A
+
+   Parameter Name:
+
+   :  keys Parameter Description:
+
+      JWKS Endpoint Change Controller:
+
+      IETF Reference:
+
+      Section 3.13 Notes:
 
       N/A
 
