@@ -379,6 +379,8 @@ Table of Contents
    This section registers the Signature Agent Card Parameter names
    defined in Section 3 in this registry.
 
+7.1.2.1.  Name Parameter
+
    *Parameter Name:*  name
 
    *Parameter Description:*  A friendly name for your signature agent.
@@ -388,6 +390,8 @@ Table of Contents
    *Reference:*  Section 3.1
 
    *Notes:*  N/A
+
+7.1.2.2.  Contact Parameter
 
    *Parameter Name:*  contact
 
@@ -400,6 +404,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.3.  Logo Parameter
+
    *Parameter Name:*  logo
 
    *Parameter Description:*  Image for a quick visual identification
@@ -410,6 +416,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.4.  Expected User Agent Parameter
+
    *Parameter Name:*  expected-user-agent
 
    *Parameter Description:*  String or fragment patterns
@@ -419,6 +427,8 @@ Table of Contents
    *Reference:*  Section 3.4
 
    *Notes:*  N/A
+
+7.1.2.5.  RFC9309 Product Token Parameter
 
    *Parameter Name:*  rfc9309-product-token
 
@@ -431,6 +441,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.6.  RFC9309 Compliance Parameter
+
    *Parameter Name:*  rfc9309-compliance
 
    *Parameter Description:*  Does your signature-agent respect
@@ -442,6 +454,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.7.  Trigger Parameter
+
    *Parameter Name:*  trigger
 
    *Parameter Description:*  Fetcher/Crawler
@@ -451,6 +465,8 @@ Table of Contents
    *Reference:*  Section 3.7
 
    *Notes:*  N/A
+
+7.1.2.8.  Purpose Parameter
 
    *Parameter Name:*  purpose
 
@@ -462,6 +478,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.9.  Targeted Content Parameter
+
    *Parameter Name:*  targeted-content
 
    *Parameter Description:*  Type of data your agent seeks
@@ -471,6 +489,8 @@ Table of Contents
    *Reference:*  Section 3.9
 
    *Notes:*  N/A
+
+7.1.2.10.  Rate control Parameter
 
    *Parameter Name:*  rate-control
 
@@ -482,6 +502,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.11.  Rate expectation Parameter
+
    *Parameter Name:*  rate-expectation
 
    *Parameter Description:*  Expected traffic and intensity
@@ -492,6 +514,8 @@ Table of Contents
 
    *Notes:*  N/A
 
+7.1.2.12.  Known URLs Parameter
+
    *Parameter Name:*  known-urls
 
    *Parameter Description:*  Predictable endpoint accessed
@@ -501,6 +525,8 @@ Table of Contents
    *Reference:*  Section 3.12
 
    *Notes:*  N/A
+
+7.1.2.13.  Keys Parameter
 
    *Parameter Name:*  keys
 
