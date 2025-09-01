@@ -1,0 +1,631 @@
+
+
+
+
+Web Bot Auth                                                  T. Meunier
+Internet-Draft                                                Cloudflare
+Intended status: Informational                          1 September 2025
+Expires: 5 March 2026
+
+
+           Registry and Signature Agent card for Web bot auth
+                draft-meunier-webbotauth-registry-latest
+
+Abstract
+
+   This document describes a JSON based format for clients using
+   [DIRECTORY] to advertise information about themselves.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://thibmeu.github.io/http-message-signatures-directory/draft-
+   meunier-webbotauth-registry.html.  Status information for this
+   document may be found at https://datatracker.ietf.org/doc/draft-
+   meunier-webbotauth-registry/.
+
+   Discussion of this document takes place on the Web Bot Auth Working
+   Group mailing list (mailto:web-bot-auth@ietf.org), which is archived
+   at https://mailarchive.ietf.org/arch/browse/web-bot-auth/.  Subscribe
+   at https://www.ietf.org/mailman/listinfo/web-bot-auth/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/thibmeu/http-message-signatures-directory.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 5 March 2026.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  Signature Agent Card
+     3.1.  Name
+     3.2.  Contact
+     3.3.  Logo
+     3.4.  Expected user agent
+     3.5.  robots.txt product token
+     3.6.  robots.txt compliance
+     3.7.  Trigger
+     3.8.  Purpose
+     3.9.  Targeted content
+     3.10. Rate control
+     3.11. Rate expectation
+     3.12. Known URLs
+     3.13. Keys
+   4.  Discovery
+     4.1.  Out-of-band communication between client and origin
+       4.1.1.  Public list
+       4.1.2.  Signature-Agent-Card header
+   5.  Security Considerations
+   6.  Privacy Considerations
+   7.  IANA Considerations
+     7.1.  Signature Agent Card Parameters Registry
+       7.1.1.  Registration template
+       7.1.2.  Initial Registry content
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Appendix A.  Test Vectors
+   Appendix B.  Implementations
+   Acknowledgments
+   Changelog
+   Author's Address
+
+1.  Introduction
+
+   TODO
+
+   Bots developers, platform providers, and users of [DIRECTORY] are
+   sharing metadata.  This include name, contact, logo, or even their
+   targetted purpose.  Not all providers have the exact same set of
+   attribute they'd like to share, but the attribute set is sufficiently
+   large to justify a common definition.
+
+   Existing discovery mechanism, such as [OPENID-CONNECT-DISCOVERY] do
+   not have the necessary granularity, and purposue different goals.
+
+   This document introduces a new IANA registry "Signature Agent Card
+   parameters", and defines initial attributes.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Signature Agent Card
+
+   Section 4.1 of [DIRECTORY]
+
+{
+  "name": "Example Bot",
+  "contact": "bot-support@example.com",
+  "logo": "https://example.com/",
+  "expected-user-agent": "Mozilla/5.0 ExampleBot",
+  "rfc9309-product-token": "ExampleBot",
+  "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
+  "trigger": "fetcher",
+  "purpose": "tdm",
+  "targeted-content": "Cat pictures",
+  "rate-control": undefined,
+  "rate-expectation": "avg=10rps;max=100rps",
+  "known-urls": ["/", "/robots.txt", "*.png"],
+  "keys": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "use": "sig",
+    "nbf": 1712793600,
+    "exp": 1715385600
+  }
+}
+
+3.1.  Name
+
+   A friendly name for your signature agent.
+
+   Example
+
+   *  ExampleBot
+
+   *  My remote browser company
+
+3.2.  Contact
+
+   Email or other reliable communication channel.
+
+   Example * bot-support@example.com * https://example.com/contact
+
+3.3.  Logo
+
+   Image for quick visual identification
+
+   Example
+
+   *  data:image/svg+xml;base64,deadbeef
+
+   *  https://example.com/logo.png
+
+3.4.  Expected user agent
+
+   Exact string(s) or fragment patterns
+
+   TODO: what is a fragment pattern? is this defined somewhere? a quick
+   regex language should be good.
+
+   Quote [RFC9110]
+
+   Example
+
+   *  Mozilla/5.0 ExampleBot
+
+3.5.  robots.txt product token
+
+   Product token to be used for robots.txt directives per Section 2.2.1
+   of [ROBOTSTXT].
+
+   Example
+
+   *  ExampleBot
+
+3.6.  robots.txt compliance
+
+   List of primitive the crawler is in compliance with for robots.txt
+
+   Example
+
+   *  ["User-Agent", "Disallow"]
+
+   *  ["User-Agent", "Disallow", "CrawlDelay"]
+
+3.7.  Trigger
+
+   Whether it acts as a fetcher (requested by user) or crawler
+   (autonomous scanning).
+
+   Proposed values:
+
+   1.  "fetcher"
+
+   2.  "crawler"
+
+3.8.  Purpose
+
+   Intended use for collected data
+
+   Example
+
+   *  use aipref vocabulary
+
+3.9.  Targeted content
+
+   Specific type of data your agent seeks
+
+   Example
+
+   *  SEO analysis
+
+   *  Vulnerability scanning
+
+   *  Ads verification
+
+3.10.  Rate control
+
+   How can an origin control your crawl rate
+
+   Example
+
+   *  None
+
+   *  CrawlDelay in robots.txt (non-standard)
+
+   *  Custom webmaster tool
+
+   *  429 + [RATELIMIT-HEADER]
+
+3.11.  Rate expectation
+
+   Expected traffic and intensity of requests
+
+   Example
+
+   *  500 rps
+
+   *  Spikes during reindexing
+
+3.12.  Known URLs
+
+   Predictable endpoints accessed, if known
+
+   Example
+
+   *  /
+
+   *  /ads.txt
+
+   *  /favicon.ico
+
+   *  /index.html
+
+3.13.  Keys
+
+   JWKS endpoint.
+
+   If key is present, it is RECOMMENDED that the card is signed using
+   [HTTP-MESSAGE-SIGNATURES].  Content-Digest header should be part of
+   the signature.
+
+   TODO: describe signature, CWS keys.
+
+   Example
+
+   *  https://example.com/.well-known/http-message-signatures-directory
+
+   *  JWKS-directory
+
+4.  Discovery
+
+   Discovery is done via a registry.  A registry is a list of URLs, each
+   one pointing to a signature card.
+
+   URLS can be:
+
+   *  https
+
+   *  http
+
+   *  data
+
+   Example
+
+   https://bot1.example.com/.well-known/signature-agent-card
+   https://crawler2.example.com/.well-known/signature-agent-card
+   https://zerotrust-gateway.example.com/.well-known/signature-agent-card
+   data:application/json;,...
+
+4.1.  Out-of-band communication between client and origin
+
+   A service submitting their key to an origin, or the origin manually
+   adding a service to their trusted list.
+
+4.1.1.  Public list
+
+   Could be a GitHub repository like the public suffix list.  The issue
+   is the gating of such repositories, and therefore its governance.
+
+4.1.2.  Signature-Agent-Card header
+
+   This allows for backward compatibility with existing header agent
+   filtering, and an upgrade to a cryptographically secured protocol.
+
+5.  Security Considerations
+
+   Malicious actors may put properties which are not theirs in the
+   registry.  Client SHOULD verify signature if they are present.
+
+6.  Privacy Considerations
+
+   TODO
+
+7.  IANA Considerations
+
+7.1.  Signature Agent Card Parameters Registry
+
+   IANA is requested to create a new "Signature Agent Card Parameters"
+   registry in a new "Signature Agent Card" page to list metadata for
+   signature agent protocols. defined for use with the Privacy Pass
+   token authentication scheme.  These identifiers are two-byte values,
+   so the maximum possible value is 0xFFFF = 65535.
+
+7.1.1.  Registration template
+
+   New registrations need to list the following attributes:
+
+   Parameter Name:  The name requested (e.g. "useragent").  This name is
+      case sensitive.  Names may not match other registered names in a
+      case-insensitive manner unless the Designated Experts state that
+      there is a compelling reason to allow an exception
+   Parameter Description:  Brief description of the Header Parameter
+   Change Controller:  For Standards Track RFCs, list the "IESG".  For
+      others, give the name of the responsible party.  Other details
+      (e.g., postal address, email address, home page URI) may also be
+      included.
+   Reference:  Where this parameter is defined
+   Notes:  Any notes associated with the entry
+
+   New entries in this registry are subject to the Specification
+   Required registration policy ([RFC8126], Section 4.6).  Designated
+   experts need to ensure that the token type is defined to be used for
+   both token issuance and redemption.  Additionally, the experts can
+   reject registrations on the basis that they do not meet the security
+   and privacy requirements defined in TODO.
+
+7.1.2.  Initial Registry content
+
+   This section registers the Signature Agent Card Parameter names
+   defined in Section 3 in this registry.
+
+   Parameter Name  name Parameter Description
+
+      A friendly name for your signature agent.  Change Controller
+
+      IETF Reference
+
+      Section 3.1 Notes
+
+      N/A
+
+   Parameter Name  contact Parameter Description
+
+      Email or any other reliable communication channel Change
+      Controller
+
+      IETF Reference
+
+      Section 3.2 Notes
+
+      N/A
+
+   Parameter Name  logo Parameter Description
+
+      Image for a quick visual identification Change Controller
+
+      IETF Reference
+
+      Section 3.3 Notes
+
+      N/A
+
+   Parameter Name  expected-user-agent Parameter Description
+
+      String or fragment patterns Change Controller
+
+      IETF Reference
+
+      Section 3.4 Notes
+
+      N/A
+
+   Parameter Name  rfc9309-product-token Parameter Description
+
+      Robots.txt product token your signature-agent satisfies.  Change
+      Controller
+
+      IETF Reference
+
+      Section 3.5 Notes
+
+      N/A
+
+   Parameter Name  rfc9309-compliance Parameter Description
+
+      Does your signature-agent respect robots.txt.  Change Controller
+
+      IETF Reference
+
+      Section 3.6 Notes
+
+      N/A
+
+   Parameter Name  trigger Parameter Description
+
+      Fetcher/Crawler Change Controller
+
+      IETF Reference
+
+      Section 3.7 Notes
+
+      N/A
+
+   Parameter Name  purpose Parameter Description
+
+      Intended use for the collected data Change Controller
+
+      IETF Reference
+
+      Section 3.8 Notes
+
+      N/A
+
+   Parameter Name  targeted-content Parameter Description
+
+      Type of data your agent seeks Change Controller
+
+      IETF Reference
+
+      Section 3.9 Notes
+
+      N/A
+
+   Parameter Name  rate-control Parameter Description
+
+      How can an origin control your crawl rate Change Controller
+
+      IETF Reference
+
+      Section 3.10 Notes
+
+      N/A
+
+   Parameter Name  rate-expectation Parameter Description
+
+      Expected traffic and intensity Change Controller
+
+      IETF Reference
+
+      Section 3.11 Notes
+
+      N/A
+
+   Parameter Name  known-urls Parameter Description
+
+      Predictable endpoint accessed Change Controller
+
+      IETF Reference
+
+      Section 3.12 Notes
+
+      N/A
+
+   Parameter Name  keys Parameter Description
+
+      JWKS Endpoint Change Controller
+
+      IETF Reference
+
+      Section 3.13 Notes
+
+      N/A
+
+8.  References
+
+8.1.  Normative References
+
+   [DIRECTORY]
+              Meunier, T., "HTTP Message Signatures Directory", Work in
+              Progress, Internet-Draft, draft-meunier-http-message-
+              signatures-directory-02, 29 August 2025,
+              <https://datatracker.ietf.org/doc/html/draft-meunier-http-
+              message-signatures-directory-02>.
+
+   [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+   [HTTP-CACHE]
+              Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Caching", STD 98, RFC 9111,
+              DOI 10.17487/RFC9111, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9111>.
+
+   [HTTP-MESSAGE-SIGNATURES]
+              Backman, A., Ed., Richer, J., Ed., and M. Sporny, "HTTP
+              Message Signatures", RFC 9421, DOI 10.17487/RFC9421,
+              February 2024, <https://www.rfc-editor.org/rfc/rfc9421>.
+
+   [HTTP-MORE-STATUS-CODE]
+              Nottingham, M. and R. Fielding, "Additional HTTP Status
+              Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
+              <https://www.rfc-editor.org/rfc/rfc6585>.
+
+   [JWK-OKP]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
+              and Signatures in JSON Object Signing and Encryption
+              (JOSE)", RFC 8037, DOI 10.17487/RFC8037, January 2017,
+              <https://www.rfc-editor.org/rfc/rfc8037>.
+
+   [JWK-THUMBPRINT]
+              Jones, M. and N. Sakimura, "JSON Web Key (JWK)
+              Thumbprint", RFC 7638, DOI 10.17487/RFC7638, September
+              2015, <https://www.rfc-editor.org/rfc/rfc7638>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+8.2.  Informative References
+
+   [OAUTH-BEARER]
+              Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
+              Framework: Bearer Token Usage", RFC 6750,
+              DOI 10.17487/RFC6750, October 2012,
+              <https://www.rfc-editor.org/rfc/rfc6750>.
+
+   [OPENID-CONNECT-DISCOVERY]
+              "OpenID Connect Discovery 1.0", n.d.,
+              <https://openid.net/specs/openid-connect-discovery-
+              1_0.html>.
+
+   [RATELIMIT-HEADER]
+              Polli, R., Ruiz, A. M., and D. Miller, "RateLimit header
+              fields for HTTP", Work in Progress, Internet-Draft, draft-
+              ietf-httpapi-ratelimit-headers-09, 17 March 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-
+              ratelimit-headers-09>.
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [ROBOTSTXT]
+              Koster, M., Illyes, G., Zeller, H., and L. Sassman,
+              "Robots Exclusion Protocol", RFC 9309,
+              DOI 10.17487/RFC9309, September 2022,
+              <https://www.rfc-editor.org/rfc/rfc9309>.
+
+Appendix A.  Test Vectors
+
+   TODO
+
+Appendix B.  Implementations
+
+   TODO
+
+Acknowledgments
+
+   TODO
+
+   The editor would also like to thank the following individuals (listed
+   in alphabetical order) for feedback, insight, and implementation of
+   this document -
+
+Changelog
+
+   v00
+
+   *  Initial draft
+
+Author's Address
+
+   Thibault Meunier
+   Cloudflare
+   Email: ot-ietf@thibault.uk
