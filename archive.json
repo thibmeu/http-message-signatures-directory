@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-31T01:58:33.999324+00:00",
+  "timestamp": "2025-09-02T01:54:55.292318+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -749,6 +749,37 @@
           "body": "Nice. And where do you imagine this being hosted and made discoverable? One possibility is that a field in the key directory entry points to a url with this content in JSON. (See related discussion in https://mailarchive.ietf.org/arch/msg/web-bot-auth/BD1UvNzSX-DfN1uFe_weOjd9GRY/)",
           "createdAt": "2025-08-30T00:19:35Z",
           "updatedAt": "2025-08-30T00:19:35Z"
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "I_kwDOOXJyWM7I-4fd",
+      "title": "HTTP Message signature to allow filtering based on key thumbprint",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/52",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "HTTP Message signature directory may contain a lot of keys.\n\nFor certain use cases, proviing optional query parameter to allow the server to return only a specific key would be great.\n\nFilters may include:\n* JWK Thumbprint\n* kid\n* type\n* expiresAfter\n* ...\n\nThis may be an additional draft, given the media type and signature requirement would remain the same.\n\ncc @ThisIsMissEm",
+      "createdAt": "2025-09-01T09:20:52Z",
+      "updatedAt": "2025-09-01T10:34:03Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ThisIsMissEm",
+          "authorAssociation": "NONE",
+          "body": "Ah, cool, thanks \u2014 I somehow missed that there was an issue tracker yesterday ",
+          "createdAt": "2025-09-01T10:32:35Z",
+          "updatedAt": "2025-09-01T10:32:59Z"
+        },
+        {
+          "author": "ThisIsMissEm",
+          "authorAssociation": "NONE",
+          "body": "I'd probably at minimum support filtering by kid, since that's what you're using to identify the key in HTTP Message Signatures",
+          "createdAt": "2025-09-01T10:34:03Z",
+          "updatedAt": "2025-09-01T10:34:03Z"
         }
       ]
     }
