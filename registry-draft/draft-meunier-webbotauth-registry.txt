@@ -2,10 +2,10 @@
 
 
 
-Web Bot Auth                                                  T. Meunier
-Internet-Draft                                                Cloudflare
-Intended status: Informational                          1 September 2025
-Expires: 5 March 2026
+Web Bot Auth                                                M. Guerreiro
+Internet-Draft                                                T. Meunier
+Intended status: Informational                                Cloudflare
+Expires: 6 March 2026                                   2 September 2025
 
 
            Registry and Signature Agent card for Web bot auth
@@ -15,6 +15,13 @@ Abstract
 
    This document describes a JSON based format for clients using
    [DIRECTORY] to advertise information about themselves.
+
+   This document describes a JSON-based "Signature Agent Card" format
+   for signature agent using [DIRECTORY] to advertise metadata about
+   themselve.  This includes identity, purpose, rate expectations, and
+   cryptographic keys.  It also establishes an IANA registry for
+   Signature Agent Card parameters, enabling extensible and
+   interoperable discovery of agent information.
 
 About This Document
 
@@ -49,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 March 2026.
+   This Internet-Draft will expire on 6 March 2026.
 
 Copyright Notice
 
@@ -100,23 +107,31 @@ Table of Contents
    Appendix B.  Implementations
    Acknowledgments
    Changelog
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
-   TODO
+   Signature Agents are entities that originate or forward signed HTTP
+   requests on behalf of users or services.  They include bots
+   developers, platforms providers, and other intermediaries using
+   [DIRECTORY].  These agents often need to identify themselves, and
+   establish trust with origin servers.
 
-   Bots developers, platform providers, and users of [DIRECTORY] are
-   sharing metadata.  This include name, contact, logo, or even their
-   targetted purpose.  Not all providers have the exact same set of
-   attribute they'd like to share, but the attribute set is sufficiently
-   large to justify a common definition.
+   Today, the mechanisms for doing so are inconsistent: some rely on
+   User-Agent strings (e.g. MyCompanyBot/1.0), others on IP address
+   lists hosted on file servers (e.g. badbots.com), and still others on
+   out-of-band definitions (e.g. documentation on docs.example.com/
+   mybot).  This diversity makes it difficult for operators and origin
+   servers to reliably discover and share a Signature Agent’s purpose,
+   contact information, or rate expectations.  Existing discovery
+   mechanisms, such as [OPENID-CONNECT-DISCOVERY], do not have the
+   necessary granularity, and pursue different goals.
 
-   Existing discovery mechanism, such as [OPENID-CONNECT-DISCOVERY] do
-   not have the necessary granularity, and purposue different goals.
-
-   This document introduces a new IANA registry "Signature Agent Card
-   parameters", and defines initial attributes.
+   This document introduces a JSON-based "Signature Agent Card" format
+   for Signature Agents, to be published in registries and discovered by
+   servers.  It also creates a new IANA registry of "Signature Agent
+   Card Parameters" to ensure extensibility and consistency of future
+   attributes.
 
 2.  Conventions and Definitions
 
@@ -128,7 +143,9 @@ Table of Contents
 
 3.  Signature Agent Card
 
-   Section 4.1 of [DIRECTORY]
+   Signature-Agent header is defined in Section 4.1 of [DIRECTORY].
+   This section describes Signature Agent Card, a JSON object containing
+   parameters describing the Signature Agent.
 
 {
   "name": "Example Bot",
@@ -140,7 +157,7 @@ Table of Contents
   "trigger": "fetcher",
   "purpose": "tdm",
   "targeted-content": "Cat pictures",
-  "rate-control": undefined,
+  "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
   "keys": {
@@ -154,9 +171,14 @@ Table of Contents
   }
 }
 
+   Unless otherwise specified, all parameters in this document are
+   OPTIONAL.  Unknown parameters MUST be ignored.  All string values are
+   UTF-8.
+
 3.1.  Name
 
-   A friendly name for your signature agent.
+   The name parameter provides a friendly identifier for the Signature
+   Agent.
 
    Example
 
@@ -166,13 +188,15 @@ Table of Contents
 
 3.2.  Contact
 
-   Email or other reliable communication channel.
+   The contact parameter provides an email address or reliable
+   communication channel.
 
    Example * bot-support@example.com * https://example.com/contact
 
 3.3.  Logo
 
-   Image for quick visual identification
+   The logo parameter provides an image reference for visual
+   identification.
 
    Example
 
@@ -182,12 +206,9 @@ Table of Contents
 
 3.4.  Expected user agent
 
-   Exact string(s) or fragment patterns
-
-   TODO: what is a fragment pattern? is this defined somewhere? a quick
-   regex language should be good.
-
-   Quote [RFC9110]
+   The expected-user-agent parameter specifies one or more User-Agent
+   strings as defined in Section 10.1.5 of [HTTP] or prefix matches.
+   Prefixes MAY use * as a wildcard.
 
    Example
 
@@ -195,8 +216,8 @@ Table of Contents
 
 3.5.  robots.txt product token
 
-   Product token to be used for robots.txt directives per Section 2.2.1
-   of [ROBOTSTXT].
+   The rfc9309-product-token parameter specifies the product token used
+   for robots.txt directives per Section 2.2.1 of [ROBOTSTXT].
 
    Example
 
@@ -204,7 +225,8 @@ Table of Contents
 
 3.6.  robots.txt compliance
 
-   List of primitive the crawler is in compliance with for robots.txt
+   The rfc9309-compliance parameter lists directives from robots.txt
+   that the agent implements.
 
    Example
 
@@ -214,26 +236,30 @@ Table of Contents
 
 3.7.  Trigger
 
-   Whether it acts as a fetcher (requested by user) or crawler
-   (autonomous scanning).
+   The trigger parameter indicates the operational mode of the agent.
 
-   Proposed values:
+   Valid values:
 
-   1.  "fetcher"
+   1.  "fetcher" - request initiated by the user
 
-   2.  "crawler"
+   2.  "crawler" - autonomous scanning
 
 3.8.  Purpose
 
-   Intended use for collected data
+   The purpose parameter describes the intended use of collected data.
+   Values SHOULD be drawn from a controlled vocabulary, such as
+   [AIPREF-VOCAB].
 
    Example
 
-   *  use aipref vocabulary
+   *  search
+
+   *  tdm
 
 3.9.  Targeted content
 
-   Specific type of data your agent seeks
+   The targeted-content parameter specifies the type of data the agent
+   seeks.
 
    Example
 
@@ -245,21 +271,25 @@ Table of Contents
 
 3.10.  Rate control
 
-   How can an origin control your crawl rate
+   The rate-control parameter indicates how origins can influence the
+   agent’s request rate.
+
+   TODO: specify a format
 
    Example
 
-   *  None
-
    *  CrawlDelay in robots.txt (non-standard)
 
-   *  Custom webmaster tool
+   *  Custom tool
 
    *  429 + [RATELIMIT-HEADER]
 
 3.11.  Rate expectation
 
-   Expected traffic and intensity of requests
+   The rate-expectation parameter specifies anticipated request volume
+   or burstiness.
+
+   TODO: consider a format such as avg=10rps;max=100rps
 
    Example
 
@@ -269,7 +299,8 @@ Table of Contents
 
 3.12.  Known URLs
 
-   Predictable endpoints accessed, if known
+   The known-urls parameter lists predictable endpoints accessed by the
+   agent.
 
    Example
 
@@ -283,11 +314,11 @@ Table of Contents
 
 3.13.  Keys
 
-   JWKS endpoint.
+   The keys parameter contains a JWKS as defined in Section 5 of [JWK].
 
-   If key is present, it is RECOMMENDED that the card is signed using
-   [HTTP-MESSAGE-SIGNATURES].  Content-Digest header should be part of
-   the signature.
+   If keys is present, it is RECOMMENDED that the card is signed using
+   [HTTP-MESSAGE-SIGNATURES].  Content-Digest header MUST be included in
+   the covered components.
 
    TODO: describe signature, CWS keys.
 
@@ -540,6 +571,13 @@ Table of Contents
 
 8.1.  Normative References
 
+   [AIPREF-VOCAB]
+              Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
+              Usage Preferences", Work in Progress, Internet-Draft,
+              draft-ietf-aipref-vocab-02, 21 July 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
+              vocab-02>.
+
    [DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
@@ -568,6 +606,10 @@ Table of Contents
               Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
               <https://www.rfc-editor.org/rfc/rfc6585>.
 
+   [JWK]      Jones, M., "JSON Web Key (JWK)", RFC 7517,
+              DOI 10.17487/RFC7517, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7517>.
+
    [JWK-OKP]  Liusvaara, I., "CFRG Elliptic Curve Diffie-Hellman (ECDH)
               and Signatures in JSON Object Signing and Encryption
               (JOSE)", RFC 8037, DOI 10.17487/RFC8037, January 2017,
@@ -591,11 +633,6 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
-
-   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
-              Ed., "HTTP Semantics", STD 97, RFC 9110,
-              DOI 10.17487/RFC9110, June 2022,
-              <https://www.rfc-editor.org/rfc/rfc9110>.
 
 8.2.  Informative References
 
@@ -649,7 +686,12 @@ Changelog
 
    *  Initial draft
 
-Author's Address
+Authors' Addresses
+
+   Maxime Guerreiro
+   Cloudflare
+   Email: maxime.guerreiro@gmail.com
+
 
    Thibault Meunier
    Cloudflare

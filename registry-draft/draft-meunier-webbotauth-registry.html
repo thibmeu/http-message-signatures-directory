@@ -5,11 +5,16 @@
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>Registry and Signature Agent card for Web bot auth</title>
+<meta content="Maxime Guerreiro" name="author">
 <meta content="Thibault Meunier" name="author">
-<meta content="
+<meta content='
        This document describes a JSON based format for clients using  
 to advertise information about themselves. 
-    " name="description">
+       This document describes a JSON-based "Signature Agent Card" format for signature agent using   to advertise metadata about themselve. This includes identity, purpose, rate expectations,
+and cryptographic keys. It also establishes an IANA registry for Signature Agent
+Card parameters, enabling extensible and interoperable discovery of agent
+information. 
+    ' name="description">
 <meta content="xml2rfc 3.30.0" name="generator">
 <meta content="not-yet" name="keyword">
 <meta content="draft-meunier-webbotauth-registry-latest" name="ietf.draft">
@@ -1048,8 +1053,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <td class="right">September 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Meunier</td>
-<td class="center">Expires 5 March 2026</td>
+<td class="left">Guerreiro &amp; Meunier</td>
+<td class="center">Expires 6 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1062,14 +1067,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-webbotauth-registry-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-01" class="published">1 September 2025</time>
+<time datetime="2025-09-02" class="published">2 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-05">5 March 2026</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2026-03-06">6 March 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
+<div class="author">
+      <div class="author-name">M. Guerreiro</div>
+<div class="org">Cloudflare</div>
+</div>
 <div class="author">
       <div class="author-name">T. Meunier</div>
 <div class="org">Cloudflare</div>
@@ -1082,6 +1091,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document describes a JSON based format for clients using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>
 to advertise information about themselves.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">This document describes a JSON-based "Signature Agent Card" format for signature agent using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> to advertise metadata about themselve. This includes identity, purpose, rate expectations,
+and cryptographic keys. It also establishes an IANA registry for Signature Agent
+Card parameters, enabling extensible and interoperable discovery of agent
+information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1118,7 +1131,7 @@ to advertise information about themselves.<a href="#section-abstract-1" class="p
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1259,7 +1272,7 @@ to advertise information about themselves.<a href="#section-abstract-1" class="p
             <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-changelog" class="internal xref">Changelog</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1270,15 +1283,22 @@ to advertise information about themselves.<a href="#section-abstract-1" class="p
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Bots developers, platform providers, and users of <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> are sharing metadata.
-This include name, contact, logo, or even their targetted purpose. Not all providers
-have the exact same set of attribute they'd like to share, but the attribute set
-is sufficiently large to justify a common definition.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Existing discovery mechanism, such as <span>[<a href="#OPENID-CONNECT-DISCOVERY" class="cite xref">OPENID-CONNECT-DISCOVERY</a>]</span> do not have the necessary
-granularity, and purposue different goals.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document introduces a new IANA registry "Signature Agent Card parameters", and
-defines initial attributes.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-1">Signature Agents are entities that originate or forward signed HTTP requests on behalf
+of users or services. They include bots developers, platforms providers,
+and other intermediaries using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>. These agents often
+need to identify themselves, and establish
+trust with origin servers.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Today, the mechanisms for doing so are inconsistent: some rely on User-Agent
+strings (e.g. <code>MyCompanyBot/1.0</code>), others on IP address lists hosted on file servers (e.g. <code>badbots.com</code>), and still others on out-of-band
+definitions (e.g. documentation on docs.example.com/mybot). This diversity makes it difficult for operators and origin servers
+to reliably discover and share a Signature Agent’s purpose, contact information, or rate
+expectations.
+Existing discovery mechanisms, such as <span>[<a href="#OPENID-CONNECT-DISCOVERY" class="cite xref">OPENID-CONNECT-DISCOVERY</a>]</span>, do not have the necessary
+granularity, and pursue different goals.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This document introduces a JSON-based "Signature Agent Card" format for Signature
+Agents, to be published in registries and discovered by servers. It also
+creates a new IANA registry of "Signature Agent Card Parameters" to ensure
+extensibility and consistency of future attributes.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1297,7 +1317,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-signature-agent-card">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-signature-agent-card" class="section-name selfRef">Signature Agent Card</a>
       </h2>
-<p id="section-3-1"><span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-02#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span><a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-02#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
+This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-2">
 <pre>
 {
@@ -1310,7 +1331,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
   "trigger": "fetcher",
   "purpose": "tdm",
   "targeted-content": "Cat pictures",
-  "rate-control": undefined,
+  "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
   "keys": {
@@ -1325,12 +1346,14 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 }
 </pre><a href="#section-3-2" class="pilcrow">¶</a>
 </div>
+<p id="section-3-3">Unless otherwise specified, all parameters in this document are <span class="bcp14">OPTIONAL</span>.
+Unknown parameters <span class="bcp14">MUST</span> be ignored. All string values are UTF-8.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="signature-agent-parameter-name">
 <section id="section-3.1">
         <h3 id="name-name">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-name" class="section-name selfRef">Name</a>
         </h3>
-<p id="section-3.1-1">A friendly name for your signature agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The <code>name</code> parameter provides a friendly identifier for the Signature Agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">Example<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
@@ -1347,7 +1370,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-contact">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-contact" class="section-name selfRef">Contact</a>
         </h3>
-<p id="section-3.2-1">Email or other reliable communication channel.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The <code>contact</code> parameter provides an email address or reliable communication
+channel.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">Example
 * bot-support@example.com
 * https://example.com/contact<a href="#section-3.2-2" class="pilcrow">¶</a></p>
@@ -1358,7 +1382,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-logo">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-logo" class="section-name selfRef">Logo</a>
         </h3>
-<p id="section-3.3-1">Image for quick visual identification<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">The <code>logo</code> parameter provides an image reference for visual identification.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">Example<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-3.1">
@@ -1375,13 +1399,12 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-expected-user-agent">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-expected-user-agent" class="section-name selfRef">Expected user agent</a>
         </h3>
-<p id="section-3.4-1">Exact string(s) or fragment patterns<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">TODO: what is a fragment pattern? is this defined somewhere? a quick regex language should be good.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">Quote <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span><a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">Example<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">The <code>expected-user-agent</code> parameter specifies one or more <code>User-Agent</code> strings as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>
+or prefix matches. Prefixes <span class="bcp14">MAY</span> use <code>*</code> as a wildcard.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">Example<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-5.1">
-            <p id="section-3.4-5.1.1">Mozilla/5.0 ExampleBot<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-3.1">
+            <p id="section-3.4-3.1.1">Mozilla/5.0 ExampleBot<a href="#section-3.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1391,7 +1414,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-robotstxt-product-token">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-robotstxt-product-token" class="section-name selfRef">robots.txt product token</a>
         </h3>
-<p id="section-3.5-1">Product token to be used for robots.txt directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The <code>rfc9309-product-token</code> parameter specifies the product token used for
+<code>robots.txt</code> directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <p id="section-3.5-2">Example<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.5-3.1">
@@ -1405,7 +1429,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-robotstxt-compliance">
 <a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-robotstxt-compliance" class="section-name selfRef">robots.txt compliance</a>
         </h3>
-<p id="section-3.6-1">List of primitive the crawler is in compliance with for robots.txt<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-1">The <code>rfc9309-compliance</code> parameter lists directives from <code>robots.txt</code> that the
+agent implements.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
 <p id="section-3.6-2">Example<a href="#section-3.6-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.6-3.1">
@@ -1422,14 +1447,14 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-trigger">
 <a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-trigger" class="section-name selfRef">Trigger</a>
         </h3>
-<p id="section-3.7-1">Whether it acts as a fetcher (requested by user) or crawler (autonomous scanning).<a href="#section-3.7-1" class="pilcrow">¶</a></p>
-<p id="section-3.7-2">Proposed values:<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+<p id="section-3.7-1">The <code>trigger</code> parameter indicates the operational mode of the agent.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-2">Valid values:<a href="#section-3.7-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.7-3">
 <li id="section-3.7-3.1">
-            <p id="section-3.7-3.1.1">"fetcher"<a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.7-3.1.1">"fetcher" - request initiated by the user<a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.7-3.2">
-            <p id="section-3.7-3.2.1">"crawler"<a href="#section-3.7-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.7-3.2.1">"crawler" - autonomous scanning<a href="#section-3.7-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 </section>
@@ -1439,11 +1464,15 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-purpose">
 <a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-purpose" class="section-name selfRef">Purpose</a>
         </h3>
-<p id="section-3.8-1">Intended use for collected data<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.8-1">The <code>purpose</code> parameter describes the intended use of collected data. Values
+<span class="bcp14">SHOULD</span> be drawn from a controlled vocabulary, such as <span>[<a href="#AIPREF-VOCAB" class="cite xref">AIPREF-VOCAB</a>]</span>.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
 <p id="section-3.8-2">Example<a href="#section-3.8-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.8-3.1">
-            <p id="section-3.8-3.1.1">use aipref vocabulary<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.8-3.1.1">search<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.8-3.2">
+            <p id="section-3.8-3.2.1">tdm<a href="#section-3.8-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1453,7 +1482,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-targeted-content">
 <a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-targeted-content" class="section-name selfRef">Targeted content</a>
         </h3>
-<p id="section-3.9-1">Specific type of data your agent seeks<a href="#section-3.9-1" class="pilcrow">¶</a></p>
+<p id="section-3.9-1">The <code>targeted-content</code> parameter specifies the type of data the agent seeks.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
 <p id="section-3.9-2">Example<a href="#section-3.9-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.9-3.1">
@@ -1473,20 +1502,19 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-rate-control">
 <a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-rate-control" class="section-name selfRef">Rate control</a>
         </h3>
-<p id="section-3.10-1">How can an origin control your crawl rate<a href="#section-3.10-1" class="pilcrow">¶</a></p>
-<p id="section-3.10-2">Example<a href="#section-3.10-2" class="pilcrow">¶</a></p>
+<p id="section-3.10-1">The <code>rate-control</code> parameter indicates how origins can influence the agent’s
+request rate.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
+<p id="section-3.10-2">TODO: specify a format<a href="#section-3.10-2" class="pilcrow">¶</a></p>
+<p id="section-3.10-3">Example<a href="#section-3.10-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.10-3.1">
-            <p id="section-3.10-3.1.1">None<a href="#section-3.10-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.10-4.1">
+            <p id="section-3.10-4.1.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.10-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.10-3.2">
-            <p id="section-3.10-3.2.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.10-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.10-4.2">
+            <p id="section-3.10-4.2.1">Custom tool<a href="#section-3.10-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.10-3.3">
-            <p id="section-3.10-3.3.1">Custom webmaster tool<a href="#section-3.10-3.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.10-3.4">
-            <p id="section-3.10-3.4.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.10-3.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.10-4.3">
+            <p id="section-3.10-4.3.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.10-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1496,14 +1524,16 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-rate-expectation">
 <a href="#section-3.11" class="section-number selfRef">3.11. </a><a href="#name-rate-expectation" class="section-name selfRef">Rate expectation</a>
         </h3>
-<p id="section-3.11-1">Expected traffic and intensity of requests<a href="#section-3.11-1" class="pilcrow">¶</a></p>
-<p id="section-3.11-2">Example<a href="#section-3.11-2" class="pilcrow">¶</a></p>
+<p id="section-3.11-1">The <code>rate-expectation</code> parameter specifies anticipated request volume or
+burstiness.<a href="#section-3.11-1" class="pilcrow">¶</a></p>
+<p id="section-3.11-2">TODO: consider a format such as <code>avg=10rps;max=100rps</code><a href="#section-3.11-2" class="pilcrow">¶</a></p>
+<p id="section-3.11-3">Example<a href="#section-3.11-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.11-3.1">
-            <p id="section-3.11-3.1.1">500 rps<a href="#section-3.11-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.11-4.1">
+            <p id="section-3.11-4.1.1">500 rps<a href="#section-3.11-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.11-3.2">
-            <p id="section-3.11-3.2.1">Spikes during reindexing<a href="#section-3.11-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.11-4.2">
+            <p id="section-3.11-4.2.1">Spikes during reindexing<a href="#section-3.11-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1513,7 +1543,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-known-urls">
 <a href="#section-3.12" class="section-number selfRef">3.12. </a><a href="#name-known-urls" class="section-name selfRef">Known URLs</a>
         </h3>
-<p id="section-3.12-1">Predictable endpoints accessed, if known<a href="#section-3.12-1" class="pilcrow">¶</a></p>
+<p id="section-3.12-1">The <code>known-urls</code> parameter lists predictable endpoints accessed by the agent.<a href="#section-3.12-1" class="pilcrow">¶</a></p>
 <p id="section-3.12-2">Example<a href="#section-3.12-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.12-3.1">
@@ -1536,9 +1566,9 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-keys">
 <a href="#section-3.13" class="section-number selfRef">3.13. </a><a href="#name-keys" class="section-name selfRef">Keys</a>
         </h3>
-<p id="section-3.13-1">JWKS endpoint.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
-<p id="section-3.13-2">If key is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-Content-Digest header should be part of the signature.<a href="#section-3.13-2" class="pilcrow">¶</a></p>
+<p id="section-3.13-1">The <code>keys</code> parameter contains a JWKS as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
+<p id="section-3.13-2">If <code>keys</code> is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<code>Content-Digest</code> header <span class="bcp14">MUST</span> be included in the covered components.<a href="#section-3.13-2" class="pilcrow">¶</a></p>
 <p id="section-3.13-3">TODO: describe signature, CWS keys.<a href="#section-3.13-3" class="pilcrow">¶</a></p>
 <p id="section-3.13-4">Example<a href="#section-3.13-4" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2146,6 +2176,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="AIPREF-VOCAB">[AIPREF-VOCAB]</dt>
+        <dd>
+<span class="refAuthor">Keller, P.</span> and <span class="refAuthor">M. Thomson</span>, <span class="refTitle">"A Vocabulary For Expressing AI Usage Preferences"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-aipref-vocab-02</span>, <time datetime="2025-07-21" class="refDate">21 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-02">https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-02</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
 <span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-02</span>, <time datetime="2025-08-29" class="refDate">29 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-02">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-02</a>&gt;</span>. </dd>
@@ -2166,6 +2200,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
         <dd>
 <span class="refAuthor">Nottingham, M.</span> and <span class="refAuthor">R. Fielding</span>, <span class="refTitle">"Additional HTTP Status Codes"</span>, <span class="seriesInfo">RFC 6585</span>, <span class="seriesInfo">DOI 10.17487/RFC6585</span>, <time datetime="2012-04" class="refDate">April 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6585">https://www.rfc-editor.org/rfc/rfc6585</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="JWK">[JWK]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refTitle">"JSON Web Key (JWK)"</span>, <span class="seriesInfo">RFC 7517</span>, <span class="seriesInfo">DOI 10.17487/RFC7517</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7517">https://www.rfc-editor.org/rfc/rfc7517</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="JWK-OKP">[JWK-OKP]</dt>
         <dd>
 <span class="refAuthor">Liusvaara, I.</span>, <span class="refTitle">"CFRG Elliptic Curve Diffie-Hellman (ECDH) and Signatures in JSON Object Signing and Encryption (JOSE)"</span>, <span class="seriesInfo">RFC 8037</span>, <span class="seriesInfo">DOI 10.17487/RFC8037</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8037">https://www.rfc-editor.org/rfc/rfc8037</a>&gt;</span>. </dd>
@@ -2183,12 +2221,8 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Leiba, B.</span>, and <span class="refAuthor">T. Narten</span>, <span class="refTitle">"Guidelines for Writing an IANA Considerations Section in RFCs"</span>, <span class="seriesInfo">BCP 26</span>, <span class="seriesInfo">RFC 8126</span>, <span class="seriesInfo">DOI 10.17487/RFC8126</span>, <time datetime="2017-06" class="refDate">June 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8126">https://www.rfc-editor.org/rfc/rfc8126</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-        <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9110">[RFC9110]</dt>
       <dd>
-<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2264,9 +2298,17 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </div>
 <div id="authors-addresses">
 <section id="appendix-E">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Maxime Guerreiro</span></div>
+<div dir="auto" class="left"><span class="org">Cloudflare</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:maxime.guerreiro@gmail.com" class="email">maxime.guerreiro@gmail.com</a>
+</div>
+</address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Thibault Meunier</span></div>
 <div dir="auto" class="left"><span class="org">Cloudflare</span></div>
