@@ -28,11 +28,13 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
+  AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
   DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
   HTTP-MORE-STATUS-CODE: RFC6585
+  JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
 
@@ -51,22 +53,33 @@ informative:
 This document describes a JSON based format for clients using {{DIRECTORY}}
 to advertise information about themselves.
 
+This document describes a JSON-based "Signature Agent Card" format for signature agent using {{DIRECTORY}} to advertise metadata about themselve. This includes identity, purpose, rate expectations,
+and cryptographic keys. It also establishes an IANA registry for Signature Agent
+Card parameters, enabling extensible and interoperable discovery of agent
+information.
+
 --- middle
 
 # Introduction
 
-TODO
+Signature Agents are entities that originate or forward signed HTTP requests on behalf
+of users or services. They include bots developers, platforms providers,
+and other intermediaries using {{DIRECTORY}}. These agents often
+need to identify themselves, and establish
+trust with origin servers.
 
-Bots developers, platform providers, and users of {{DIRECTORY}} are sharing metadata.
-This include name, contact, logo, or even their targetted purpose. Not all providers
-have the exact same set of attribute they'd like to share, but the attribute set
-is sufficiently large to justify a common definition.
+Today, the mechanisms for doing so are inconsistent: some rely on User-Agent
+strings (e.g. `MyCompanyBot/1.0`), others on IP address lists hosted on file servers (e.g. `badbots.com`), and still others on out-of-band
+definitions (e.g. documentation on docs.example.com/mybot). This diversity makes it difficult for operators and origin servers
+to reliably discover and share a Signature Agent’s purpose, contact information, or rate
+expectations.
+Existing discovery mechanisms, such as {{OPENID-CONNECT-DISCOVERY}}, do not have the necessary
+granularity, and pursue different goals.
 
-Existing discovery mechanism, such as {{OPENID-CONNECT-DISCOVERY}} do not have the necessary
-granularity, and purposue different goals.
-
-This document introduces a new IANA registry "Signature Agent Card parameters", and
-defines initial attributes.
+This document introduces a JSON-based "Signature Agent Card" format for Signature
+Agents, to be published in registries and discovered by servers. It also
+creates a new IANA registry of "Signature Agent Card Parameters" to ensure
+extensibility and consistency of future attributes.
 
 # Conventions and Definitions
 
@@ -74,7 +87,8 @@ defines initial attributes.
 
 # Signature Agent Card {#signature-agent-card}
 
-{{Section 4.1 of DIRECTORY}}
+Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}}.
+This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.
 
 ~~~
 {
@@ -87,7 +101,7 @@ defines initial attributes.
   "trigger": "fetcher",
   "purpose": "tdm",
   "targeted-content": "Cat pictures",
-  "rate-control": undefined,
+  "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
   "keys": {
@@ -102,9 +116,12 @@ defines initial attributes.
 }
 ~~~
 
+Unless otherwise specified, all parameters in this document are OPTIONAL.
+Unknown parameters MUST be ignored. All string values are UTF-8.
+
 ## Name {#signature-agent-parameter-name}
 
-A friendly name for your signature agent.
+The `name` parameter provides a friendly identifier for the Signature Agent.
 
 Example
 
@@ -113,7 +130,8 @@ Example
 
 ## Contact {#signature-agent-parameter-contact}
 
-Email or other reliable communication channel.
+The `contact` parameter provides an email address or reliable communication
+channel.
 
 Example
 * bot-support@example.com
@@ -121,7 +139,7 @@ Example
 
 ## Logo {#signature-agent-parameter-logo}
 
-Image for quick visual identification
+The `logo` parameter provides an image reference for visual identification.
 
 Example
 
@@ -130,11 +148,8 @@ Example
 
 ## Expected user agent {#signature-agent-parameter-user-agent}
 
-Exact string(s) or fragment patterns
-
-TODO: what is a fragment pattern? is this defined somewhere? a quick regex language should be good.
-
-Quote {{!RFC9110}}
+The `expected-user-agent` parameter specifies one or more `User-Agent` strings as defined in {{Section 10.1.5 of HTTP}}
+or prefix matches. Prefixes MAY use `*` as a wildcard.
 
 Example
 
@@ -142,7 +157,8 @@ Example
 
 ## robots.txt product token {#signature-agent-parameter-robotstxt-token}
 
-Product token to be used for robots.txt directives per {{Section 2.2.1 of ROBOTSTXT}}.
+The `rfc9309-product-token` parameter specifies the product token used for
+`robots.txt` directives per {{Section 2.2.1 of ROBOTSTXT}}.
 
 Example
 
@@ -150,7 +166,8 @@ Example
 
 ## robots.txt compliance {#signature-agent-parameter-robotstxt-compliance}
 
-List of primitive the crawler is in compliance with for robots.txt
+The `rfc9309-compliance` parameter lists directives from `robots.txt` that the
+agent implements.
 
 Example
 
@@ -159,24 +176,26 @@ Example
 
 ## Trigger {#signature-agent-parameter-trigger}
 
-Whether it acts as a fetcher (requested by user) or crawler (autonomous scanning).
+The `trigger` parameter indicates the operational mode of the agent.
 
-Proposed values:
+Valid values:
 
-1. "fetcher"
-2. "crawler"
+1. "fetcher" - request initiated by the user
+2. "crawler" - autonomous scanning
 
 ## Purpose {#signature-agent-parameter-purpose}
 
-Intended use for collected data
+The `purpose` parameter describes the intended use of collected data. Values
+SHOULD be drawn from a controlled vocabulary, such as {{AIPREF-VOCAB}}.
 
 Example
 
-* use aipref vocabulary
+* search
+* tdm
 
 ## Targeted content {#signature-agent-parameter-targeted-content}
 
-Specific type of data your agent seeks
+The `targeted-content` parameter specifies the type of data the agent seeks.
 
 Example
 
@@ -186,18 +205,23 @@ Example
 
 ## Rate control {#signature-agent-parameter-rate-control}
 
-How can an origin control your crawl rate
+The `rate-control` parameter indicates how origins can influence the agent’s
+request rate.
+
+TODO: specify a format
 
 Example
 
-* None
 * CrawlDelay in robots.txt (non-standard)
-* Custom webmaster tool
+* Custom tool
 * 429 + {{RATELIMIT-HEADER}}
 
 ## Rate expectation {#signature-agent-parameter-rate-expectation}
 
-Expected traffic and intensity of requests
+The `rate-expectation` parameter specifies anticipated request volume or
+burstiness.
+
+TODO: consider a format such as `avg=10rps;max=100rps`
 
 Example
 
@@ -206,7 +230,7 @@ Example
 
 ## Known URLs {#signature-agent-parameter-known-urls}
 
-Predictable endpoints accessed, if known
+The `known-urls` parameter lists predictable endpoints accessed by the agent.
 
 Example
 
@@ -217,10 +241,10 @@ Example
 
 ## Keys {#signature-agent-parameter-keys}
 
-JWKS endpoint.
+The `keys` parameter contains a JWKS as defined in {{Section 5 of JWK}}.
 
-If key is present, it is RECOMMENDED that the card is signed using {{HTTP-MESSAGE-SIGNATURES}}.
-Content-Digest header should be part of the signature.
+If `keys` is present, it is RECOMMENDED that the card is signed using {{HTTP-MESSAGE-SIGNATURES}}.
+`Content-Digest` header MUST be included in the covered components.
 
 TODO: describe signature, CWS keys.
 
