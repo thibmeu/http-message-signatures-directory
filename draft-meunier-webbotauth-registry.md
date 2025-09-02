@@ -23,6 +23,10 @@ venue:
 
 author:
  -
+    fullname: Maxime Guerreiro
+    organization: Cloudflare
+    email: maxime.guerreiro@gmail.com
+ -
     fullname: Thibault Meunier
     organization: Cloudflare
     email: ot-ietf@thibault.uk
