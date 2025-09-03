@@ -320,7 +320,7 @@ An origin SHOULD refuse Signature headers when communicated over an unsecured ch
 
 Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
 
-## Nonce validation
+## Nonce validation {#nonce-validation}
 
 Clients are the one controlling the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
 
@@ -350,11 +350,24 @@ these should use distinct signing keys and signing key directories.
 
 ## Reverse proxy consideration {#reverse-proxy}
 
-An origin may be placed behind a reverse proxy. This means that the proxy is seeing the signature before the origin.
+An origin may be placed behind a reverse proxy, which means the proxy will see
+the `Signature` and `Signature-Agent` headers before the origin does.
+A proxy SHOULD NOT strip the `Signature` or `Signature-Agent` headers from
+requests.
 
-It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.
 
-Origins may require a specific nonce policy to prevent such malicious behaviour and decide to validate the signature themselves.
+A proxy SHOULD NOT replay signatures against other reverse proxies used by the
+origin, as this allows impersonation of the principal signature agent.
+
+Origins MAY require a specific nonce policy to prevent such malicious behaviour
+and decide to validate the signature themselves. This has to be done in
+accordance with {{nonce-validation}}. For example, an origin could
+require a nonce derived from public information (such as the current date),
+mandate nonce chaining (where each nonce is the hash of the previous one),
+or provide its own nonce in an `Accept-Signature` response to challenge the agent.
+
+Such policies MAY incur additional round-trip between the client and the origin
+to convey `accept-signature` header, or deployment specific exchanges.
 
 # Privacy Considerations
 
