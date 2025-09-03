@@ -273,9 +273,6 @@ This section describes the discovery mechanism for the agent directory.
 
 The reference for discovery is a FQDN. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
 
-We add one field to the directory defined in the other draft:
-"purpose": Ideally matches some IANA registry for preferences.
-
 Example:
 
 ~~~json
@@ -288,9 +285,7 @@ Example:
     "use": "sig",
     "nbf": 1712793600,
     "exp": 1715385600
-  },
-  "signature_agent": "https://directory.test",
-  "purpose": "rag"
+  }
 }
 ~~~
 
@@ -349,7 +344,7 @@ needed.
 
 ## Key Reuse Considered Harmful
 
-Implementations MUST NOT reuse a signing key for different purposes. For
+Implementations SHOULD NOT reuse a signing key for different purposes. For
 example, if an agent implementor has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.
 
