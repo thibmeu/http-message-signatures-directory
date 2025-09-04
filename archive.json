@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-02T01:54:55.292318+00:00",
+  "timestamp": "2025-09-04T01:47:32.293331+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -733,7 +733,7 @@
       ],
       "body": "There has been a couple of mention to draft a way to share information about a specific bot/signature-agent.\n\nThis could take the form of a signature-agent card.\n\nIt would contain information about the service, its name, description, key directory, expected crawl rate, type of traffic.\n\nIt is high level at the moment, adding this ticket as a placeholder.",
       "createdAt": "2025-07-29T14:25:52Z",
-      "updatedAt": "2025-08-30T00:19:35Z",
+      "updatedAt": "2025-09-03T17:25:47Z",
       "closedAt": null,
       "comments": [
         {
@@ -749,6 +749,20 @@
           "body": "Nice. And where do you imagine this being hosted and made discoverable? One possibility is that a field in the key directory entry points to a url with this content in JSON. (See related discussion in https://mailarchive.ietf.org/arch/msg/web-bot-auth/BD1UvNzSX-DfN1uFe_weOjd9GRY/)",
           "createdAt": "2025-08-30T00:19:35Z",
           "updatedAt": "2025-08-30T00:19:35Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I've added all these considerations into a WIP draft on branch [registry-draft](/thibmeu/http-message-signatures-directory/tree/registry-draft). The rendered draft is accessible on the repo [Github Pages](https://thibmeu.github.io/http-message-signatures-directory/registry-draft/draft-meunier-webbotauth-registry.html).\n\nFor discovery, there are likely improvements to be made on the signing part to ensure the directory is correctly linked to the keys.\nAnother open question I have is if metadata should be an extension of the existing JWKS directory, or have their own dedicated endpoint.",
+          "createdAt": "2025-09-02T08:28:08Z",
+          "updatedAt": "2025-09-02T08:28:08Z"
+        },
+        {
+          "author": "ulaskira",
+          "authorAssociation": "NONE",
+          "body": "Thanks Thibault. I am trying to understand how Signature Agent Card interacts with Signature Agent. Is this an alternative to Signature Agent that includes both the agent card and the key (vs Signature Agent that only includes the key)? So an agent would use one or the other header based on whether they want to have a model card or just key?",
+          "createdAt": "2025-09-03T17:25:47Z",
+          "updatedAt": "2025-09-03T17:25:47Z"
         }
       ]
     },
@@ -780,6 +794,75 @@
           "body": "I'd probably at minimum support filtering by kid, since that's what you're using to identify the key in HTTP Message Signatures",
           "createdAt": "2025-09-01T10:34:03Z",
           "updatedAt": "2025-09-01T10:34:03Z"
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "I_kwDOOXJyWM7JTOaP",
+      "title": "Clarify or remove \"purpose\" in/from section 4.5., Key Distribution and Discovery",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/53",
+      "state": "OPEN",
+      "author": "garyillyes",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "There's a new \"purpose\" field in the example key in [section 4.5., Key Distribution and Discovery](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-key-distribution-and-discov).\n\nThe field should be either: \n1. clarified and properly referenced (e.g., ai-pref drafts), or\n2. removed, because considering that once the request is signed the rest of the headers can be de-facto trusted, so perhaps the \"purpose\" field should be outside the JSON \n\nAlternatively, the language in the section should be phrased as an example, such as `Implementers MAY add new fields from a IANA registry to the <JSON>; for example, \"purpose\" in the following example.`\n\nIMO it should be removed. It's unclear that the existence of this field is useful in the key, instead, the purpose of a client should be advertised in other headers (and hopefully WG ai-pref will deal with that)",
+      "createdAt": "2025-09-02T19:34:33Z",
+      "updatedAt": "2025-09-03T09:14:20Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Re option 2: I would not rely on a defacto trust, I think if a new header is added then it will need to be signed by the agent as well. I would maybe even note it somewhere that the verifier should not trust unsigned parts of the message.\n\nOtherwise I agree that the purpose field in the key file is a bit odd and can also be confused with the `use` field that \"[identifies the intended use of the public key](https://datatracker.ietf.org/doc/html/rfc7517#section-4.2)\". It can be an easy way to share some information about a particular agent, instead of sending it over on every request and signing it, but it might make sense to discuss in a separate document. That doc could go into the details of how it's linked with aipref, what are the available options, provide examples, etc. I saw for instance in some key files very broad purposes like \"ai\" \u2013 if these are not defined somewhere then I think the utility of this field will not be too high.",
+          "createdAt": "2025-09-03T03:23:03Z",
+          "updatedAt": "2025-09-03T03:23:03Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "On a related note: [section 5.6. Key Reuse Considered Harmful](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-key-reuse-considered-harmfu) also refers to \"purposes\" but it seems to be different from the one in the `purpose` field. E.g. I can have two agents that both have the `purpose` of `rag` but one has the \"purpose\" of finding me code, the other is to help me find plane tickets. So should I create a single key for all my rag or I must not reuse it?\n\nFor very large scale systems it might also not be feasible to issue a new identity for every service that might send web requests. If it's a must to issue fine grained identities then I would prefer the SPIFFE-style naming where the workload's identity is in the path and not the domain.\n\nIn general, I think the protocol should not prescribe how to shard or group various identities. It's good to highlight the risks of using a mega identity for everything, or to provide guidelines/examples, but requesting it as a must might not work in practice. Or at least it would require a good definition of a \"purpose\".",
+          "createdAt": "2025-09-03T03:56:24Z",
+          "updatedAt": "2025-09-03T03:56:24Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Agree that `\"purpose\"` field should probably should be removed from the directory draft. I've openned #55\n\nFor @sandormajor comment on the `keys MUST NOT be used for different purposes`, I'm proposing we update it to `keys SHOULD NOT be used for different purposes`, which is more in line with `Security guidelines`.\n\nOn the side, and following discussions in #49, there seems to be interest to provide some guidelines to share metadata associated to a signature agent. These metadata include the `purpose` field within an IANA registry. We are currently drafting something on [registry-draft](https://github.com/thibmeu/http-message-signatures-directory/tree/registry-draft) branch, with a [rendered draft](https://thibmeu.github.io/http-message-signatures-directory/registry-draft/draft-meunier-webbotauth-registry.html). To be sent to the mailing soonish.",
+          "createdAt": "2025-09-03T09:14:20Z",
+          "updatedAt": "2025-09-03T09:14:20Z"
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "I_kwDOOXJyWM7JXCJK",
+      "title": "Clarification on 5.7.  Reverse proxy consideration",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/54",
+      "state": "OPEN",
+      "author": "sandormajor",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "[5.7. ](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#section-5.7)[Reverse proxy consideration](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-reverse-proxy-consideration) says \"It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.\"\n\n1) I think this should have something like \"proxies SHOULD NOT (or MUST NOT) strip the `Signature` and `Signature-Agent` headers\"\n2) Can you please elaborate on \"[Origins may require a specific nonce policy](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-reverse-proxy-consideration:~:text=Origins%20may%20require%20a%20specific%20nonce%20policy)\"? Maybe linking to [5.3. ](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#section-5.3)[Nonce validation](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-nonce-validation) is enough but an example could be helpful too.\n3) \"to prevent such malicious behaviour\" implies that the nonce can prevent both replay of the signatures, and the striping of them. They can help with replays but if the proxy strips the signature the best an origin can do is to reject the request with an `accept-signature` response, and maybe provide a nonce itself to challenge the agent. But that would require an extra roundtrip. So I think for striping we should at least have some wording like in point 1",
+      "createdAt": "2025-09-03T04:30:17Z",
+      "updatedAt": "2025-09-03T21:28:46Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "1. agree. I think we could also mention more clearly that intermediaries MAY add extra signature\n2. even though a client generates a random nonce, an origin may want specific freshness, or for the nonce to be derived from certain parameters (the current date, the previous nonce, others)\n3. the sentence indeed implies a second round trip with accept-signature. probably worth adding\n\nI've opened #56 to address these with specific wording proposals",
+          "createdAt": "2025-09-03T09:58:56Z",
+          "updatedAt": "2025-09-03T09:58:56Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Thank you! I'm taking a look",
+          "createdAt": "2025-09-03T21:28:46Z",
+          "updatedAt": "2025-09-03T21:28:46Z"
         }
       ]
     }
@@ -2097,6 +2180,80 @@
           "updatedAt": "2025-08-05T16:48:44Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 55,
+      "id": "PR_kwDOOXJyWM6mm6Li",
+      "title": "Remove \"purpose\" field from web-bot-auth architecture",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/55",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "The field isnot used, is not clearly defined, and probably should be in its own dedicated draft if introduced.\r\n\r\nCloses #53\r\n\r\ncc @garyillyes @sandormajor",
+      "createdAt": "2025-09-03T09:13:53Z",
+      "updatedAt": "2025-09-03T21:30:58Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "6b25d457b2e1b76c8e05dda377572e7e6dd1bcce",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-purpose-field-architecture",
+      "headRefOid": "d9cdbfa00587a48fb853c645f407a78a4a1eb3b3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM69skxE",
+          "commit": {
+            "abbreviatedOid": "d9cdbfa"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "looks good to me, thank you!",
+          "createdAt": "2025-09-03T21:30:58Z",
+          "updatedAt": "2025-09-03T21:30:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOOXJyWM6mna0j",
+      "title": "Improve reverse proxy section and nonce validation",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/56",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Adds\r\n* precision about impersonation\r\n* examples of origin nonce validation policies\r\n* round trip considerations\r\n\r\ncc @sandormajor\r\n\r\nCloses #54",
+      "createdAt": "2025-09-03T09:58:39Z",
+      "updatedAt": "2025-09-03T09:58:39Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "6b25d457b2e1b76c8e05dda377572e7e6dd1bcce",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-reverse-proxy-consideratoins",
+      "headRefOid": "ed9861fc15cd1c2fd77a5968b52f6208f40beed8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
