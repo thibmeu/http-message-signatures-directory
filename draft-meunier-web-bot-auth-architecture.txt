@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                             5 August 2025
-Expires: 6 February 2026
+Intended status: Informational                          5 September 2025
+Expires: 9 March 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 February 2026.
+   This Internet-Draft will expire on 9 March 2026.
 
 Copyright Notice
 
@@ -394,9 +394,6 @@ Table of Contents
    The reference for discovery is a FQDN.  It SHOULD provide a directory
    hosted on the well known registered in Section 4 of [DIRECTORY].
 
-   We add one field to the directory defined in the other draft:
-   "purpose": Ideally matches some IANA registry for preferences.
-
    Example:
 
    {
@@ -408,9 +405,7 @@ Table of Contents
        "use": "sig",
        "nbf": 1712793600,
        "exp": 1715385600
-     },
-     "signature_agent": "https://directory.test",
-     "purpose": "rag"
+     }
    }
 
 4.5.1.  Out-of-band communication between client and origin
@@ -486,10 +481,10 @@ Table of Contents
 
 5.6.  Key Reuse Considered Harmful
 
-   Implementations MUST NOT reuse a signing key for different purposes.
-   For example, if an agent implementor has two agents they want to
-   differentiate, these should use distinct signing keys and signing key
-   directories.
+   Implementations SHOULD NOT reuse a signing key for different
+   purposes.  For example, if an agent implementor has two agents they
+   want to differentiate, these should use distinct signing keys and
+   signing key directories.
 
 5.7.  Reverse proxy consideration
 
@@ -541,9 +536,9 @@ Table of Contents
    [DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-01, 19 June 2025,
+              signatures-directory-02, 29 August 2025,
               <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-01>.
+              message-signatures-directory-02>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
