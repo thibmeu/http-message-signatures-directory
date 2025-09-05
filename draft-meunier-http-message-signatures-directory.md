@@ -455,6 +455,14 @@ TODO acknowledge.
 # Changelog
 {:numbered="false"}
 
+v03
+
+- Remove "purpose" field from web-bot-auth
+
+v02
+
+- Correct typos
+
 v01
 
 - Update content-type from `application/http-message-signatures-directory` to `application/http-message-signatures-directory+json`
