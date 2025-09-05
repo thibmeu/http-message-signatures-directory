@@ -211,9 +211,9 @@ DQUOTE = "\""
    [SIGNATURE-DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-02, 29 August 2025,
+              signatures-directory-03, 5 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-02>.
+              message-signatures-directory-03>.
 
 Appendix A.  Examples
 
