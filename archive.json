@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-04T01:47:32.293331+00:00",
+  "timestamp": "2025-09-07T01:55:59.065109+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -733,7 +733,7 @@
       ],
       "body": "There has been a couple of mention to draft a way to share information about a specific bot/signature-agent.\n\nThis could take the form of a signature-agent card.\n\nIt would contain information about the service, its name, description, key directory, expected crawl rate, type of traffic.\n\nIt is high level at the moment, adding this ticket as a placeholder.",
       "createdAt": "2025-07-29T14:25:52Z",
-      "updatedAt": "2025-09-03T17:25:47Z",
+      "updatedAt": "2025-09-05T08:07:46Z",
       "closedAt": null,
       "comments": [
         {
@@ -763,6 +763,13 @@
           "body": "Thanks Thibault. I am trying to understand how Signature Agent Card interacts with Signature Agent. Is this an alternative to Signature Agent that includes both the agent card and the key (vs Signature Agent that only includes the key)? So an agent would use one or the other header based on whether they want to have a model card or just key?",
           "createdAt": "2025-09-03T17:25:47Z",
           "updatedAt": "2025-09-03T17:25:47Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I think of it has an extension. The format is extending the directory.\n\nRegarding what the agent would use, this would likely be a modification of the architecture draft. I think having a distinct header is helpful, because your metadata may not rotate as often as your keys. However, that should not prevent the Signature-Agent to hold all the metadata already.\n\nSuggestion welcome, this is very much a first pass so we have a shared basis for discussion.",
+          "createdAt": "2025-09-05T08:07:45Z",
+          "updatedAt": "2025-09-05T08:07:45Z"
         }
       ]
     },
@@ -778,7 +785,7 @@
       "labels": [],
       "body": "HTTP Message signature directory may contain a lot of keys.\n\nFor certain use cases, proviing optional query parameter to allow the server to return only a specific key would be great.\n\nFilters may include:\n* JWK Thumbprint\n* kid\n* type\n* expiresAfter\n* ...\n\nThis may be an additional draft, given the media type and signature requirement would remain the same.\n\ncc @ThisIsMissEm",
       "createdAt": "2025-09-01T09:20:52Z",
-      "updatedAt": "2025-09-01T10:34:03Z",
+      "updatedAt": "2025-09-05T08:37:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -794,6 +801,13 @@
           "body": "I'd probably at minimum support filtering by kid, since that's what you're using to identify the key in HTTP Message Signatures",
           "createdAt": "2025-09-01T10:34:03Z",
           "updatedAt": "2025-09-01T10:34:03Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "None of the draft is using `kid` to identify the keys in HTTP Message Signatures. Both draft rely on a deterministic base64 encoded JWK Thumbprint.\n\nTrying to explore possible solutions:\n1. I think having a dedicated path to allow for filtering would be nice. A query may be misleading as the server may not support filtering\n2. Filtering should be limited to registered [IANA JSON Web Parameters](https://www.iana.org/assignments/jose/jose.xhtml#web-key-parameters)\n3. Given we need filtering based on a thumbprint and thumbprint are not IANA JSON Web Parameters, I'd suggest we register one\n\nAll this would lead to something like this example\n\n```\n/.well-known/http-message-signatures-directory - the full directory\n/.well-known/http-message-signatures-directory/:jwk-attribute/:exact-value\n```",
+          "createdAt": "2025-09-05T08:37:06Z",
+          "updatedAt": "2025-09-05T08:37:06Z"
         }
       ]
     },
@@ -802,15 +816,15 @@
       "id": "I_kwDOOXJyWM7JTOaP",
       "title": "Clarify or remove \"purpose\" in/from section 4.5., Key Distribution and Discovery",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/53",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "garyillyes",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "There's a new \"purpose\" field in the example key in [section 4.5., Key Distribution and Discovery](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-key-distribution-and-discov).\n\nThe field should be either: \n1. clarified and properly referenced (e.g., ai-pref drafts), or\n2. removed, because considering that once the request is signed the rest of the headers can be de-facto trusted, so perhaps the \"purpose\" field should be outside the JSON \n\nAlternatively, the language in the section should be phrased as an example, such as `Implementers MAY add new fields from a IANA registry to the <JSON>; for example, \"purpose\" in the following example.`\n\nIMO it should be removed. It's unclear that the existence of this field is useful in the key, instead, the purpose of a client should be advertised in other headers (and hopefully WG ai-pref will deal with that)",
       "createdAt": "2025-09-02T19:34:33Z",
-      "updatedAt": "2025-09-03T09:14:20Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-05T08:04:54Z",
+      "closedAt": "2025-09-05T08:04:54Z",
       "comments": [
         {
           "author": "sandormajor",
@@ -2187,7 +2201,7 @@
       "id": "PR_kwDOOXJyWM6mm6Li",
       "title": "Remove \"purpose\" field from web-bot-auth architecture",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/55",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2198,17 +2212,19 @@
       ],
       "body": "The field isnot used, is not clearly defined, and probably should be in its own dedicated draft if introduced.\r\n\r\nCloses #53\r\n\r\ncc @garyillyes @sandormajor",
       "createdAt": "2025-09-03T09:13:53Z",
-      "updatedAt": "2025-09-03T21:30:58Z",
+      "updatedAt": "2025-09-05T08:04:57Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "6b25d457b2e1b76c8e05dda377572e7e6dd1bcce",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-purpose-field-architecture",
       "headRefOid": "d9cdbfa00587a48fb853c645f407a78a4a1eb3b3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-09-05T08:04:53Z",
+      "mergedAt": "2025-09-05T08:04:53Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "182402830c04dc05b78d446e2445904d5818fc10"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2253,6 +2269,70 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 57,
+      "id": "PR_kwDOOXJyWM6nAmsM",
+      "title": "Update changelog for directory draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/57",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "documentation"
+      ],
+      "body": "Simple changelog update",
+      "createdAt": "2025-09-05T09:02:49Z",
+      "updatedAt": "2025-09-05T09:08:26Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "182402830c04dc05b78d446e2445904d5818fc10",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "changelog-update-directory-v03",
+      "headRefOid": "0531be0dec370953079ec9409ae390725c55e841",
+      "closedAt": "2025-09-05T09:08:01Z",
+      "mergedAt": "2025-09-05T09:08:01Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "d9f1953d2379c8557c7d90592b5d07a62827cc51"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOOXJyWM6nBARO",
+      "title": "Registry and signature argent card draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/58",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "This draft introdudes signature agent cards, and a registry to hold them\r\n\r\nSignature-agent card allows signers to provide information about themselves: name, contact, keys, supported rfc9309 directive, expected crawl rate, etc. Initial parameters suggested in #49. They are an extension of HTTP Message Signature directory, which should facilitate adoption.\r\n\r\nRegistry is a plain text response with one signature-agent card per line. This is similar to raw IP list that can be found on GitHub or on providers websites. It allows to host registries on any file server.\r\n\r\nTo be published and sent to the list\r\n\r\n",
+      "createdAt": "2025-09-05T09:47:01Z",
+      "updatedAt": "2025-09-05T09:51:56Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "d9f1953d2379c8557c7d90592b5d07a62827cc51",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "registry-draft",
+      "headRefOid": "f3be70c6256c1d96b8402f1f6f701c0db0330327",
+      "closedAt": "2025-09-05T09:47:08Z",
+      "mergedAt": "2025-09-05T09:47:08Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "abc786361d679f123851f124998d65a2675706c7"
+      },
       "comments": [],
       "reviews": []
     }
