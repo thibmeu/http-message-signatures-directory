@@ -121,7 +121,10 @@ This section describes Signature Agent Card, a JSON object containing parameters
 ~~~
 
 Unless otherwise specified, all parameters in this document are OPTIONAL.
-Unknown parameters MUST be ignored. All string values are UTF-8.
+There MUST be at least one parameter set.
+
+Parameters for which the value is unknown MUST be ignored.
+All string values are UTF-8.
 
 ## Name {#signature-agent-parameter-name}
 
@@ -144,6 +147,8 @@ Example
 ## Logo {#signature-agent-parameter-logo}
 
 The `logo` parameter provides an image reference for visual identification.
+
+TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.
 
 Example
 
@@ -200,6 +205,7 @@ Example
 ## Targeted content {#signature-agent-parameter-targeted-content}
 
 The `targeted-content` parameter specifies the type of data the agent seeks.
+Its format is arbitrary UTF-8 encoded string.
 
 Example
 
@@ -235,6 +241,11 @@ Example
 ## Known URLs {#signature-agent-parameter-known-urls}
 
 The `known-urls` parameter lists predictable endpoints accessed by the agent.
+
+
+These URLs may be absolute URLs like `https://example.com/index.html`.
+They could be relative path like `/ads.txt`.
+Or they can use `*` as wildcard such as `*.png`.
 
 Example
 
@@ -290,7 +301,8 @@ This allows for backward compatibility with existing header agent filtering, and
 
 # Security Considerations
 
-Malicious actors may put properties which are not theirs in the registry. Client SHOULD verify signature if they are present.
+Malicious actors may put properties which are not theirs in the registry. If signatures are present, clients MUST verify them.
+Clients SHOULD reject cards with invalid signatures.
 
 # Privacy Considerations
 
