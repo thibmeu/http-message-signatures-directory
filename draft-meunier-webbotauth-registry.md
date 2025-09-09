@@ -98,6 +98,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
 {
   "name": "Example Bot",
   "contact": "bot-support@example.com",
+  "about-url": "https://example.com/bot/about.html",
   "logo": "https://example.com/",
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
@@ -140,6 +141,13 @@ channel.
 Example
 * bot-support@example.com
 * https://example.com/contact
+
+## About url {#signature-agent-parameter-about-url}
+
+The `about-url` parameter provides a web page describing the bot.
+
+Example
+* https://example.com/bot/about.html
 
 ## Logo {#signature-agent-parameter-logo}
 
