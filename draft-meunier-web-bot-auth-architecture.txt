@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                          5 September 2025
-Expires: 9 March 2026
+Intended status: Informational                          9 September 2025
+Expires: 13 March 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 March 2026.
+   This Internet-Draft will expire on 13 March 2026.
 
 Copyright Notice
 
@@ -488,15 +488,26 @@ Table of Contents
 
 5.7.  Reverse proxy consideration
 
-   An origin may be placed behind a reverse proxy.  This means that the
-   proxy is seeing the signature before the origin.
+   An origin may be placed behind a reverse proxy, which means the proxy
+   will see the Signature and Signature-Agent headers before the origin
+   does.  A proxy SHOULD NOT strip the Signature or Signature-Agent
+   headers from requests.
 
-   It implies that the proxy sees the Signature before the origin does,
-   may strip it, or even attempt to replay it against other reverse
-   proxies used by the origin.
+   A proxy SHOULD NOT replay signatures against other reverse proxies
+   used by the origin, as this allows impersonation of the principal
+   signature agent.
 
-   Origins may require a specific nonce policy to prevent such malicious
-   behaviour and decide to validate the signature themselves.
+   Origins MAY require a specific nonce policy to prevent such malicious
+   behaviour and decide to validate the signature themselves.  This has
+   to be done in accordance with Section 5.3.  For example, an origin
+   could require a nonce derived from public information (such as the
+   current date), mandate nonce chaining (where each nonce is the hash
+   of the previous one), or provide its own nonce in an Accept-Signature
+   response to challenge the agent.
+
+   Such policies MAY incur additional round-trip between the client and
+   the origin to convey accept-signature header, or deployment specific
+   exchanges.
 
 6.  Privacy Considerations
 
