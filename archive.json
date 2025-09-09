@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-07T01:55:59.065109+00:00",
+  "timestamp": "2025-09-09T01:52:05.197544+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -2333,6 +2333,36 @@
       "mergeCommit": {
         "oid": "abc786361d679f123851f124998d65a2675706c7"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 59,
+      "id": "PR_kwDOOXJyWM6nYPTW",
+      "title": "Address comments for registry draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/59",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Add precisions about known URLs\r\nAdd placeholder for image size\r\n\r\nOn recommendation from Bill",
+      "createdAt": "2025-09-08T12:51:15Z",
+      "updatedAt": "2025-09-08T12:51:15Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "abc786361d679f123851f124998d65a2675706c7",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-bill-comment",
+      "headRefOid": "7b35a97490be5c279e581133da864781eb51c353",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
