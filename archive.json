@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-09T01:52:05.197544+00:00",
+  "timestamp": "2025-09-11T01:51:05.188120+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -733,7 +733,7 @@
       ],
       "body": "There has been a couple of mention to draft a way to share information about a specific bot/signature-agent.\n\nThis could take the form of a signature-agent card.\n\nIt would contain information about the service, its name, description, key directory, expected crawl rate, type of traffic.\n\nIt is high level at the moment, adding this ticket as a placeholder.",
       "createdAt": "2025-07-29T14:25:52Z",
-      "updatedAt": "2025-09-05T08:07:46Z",
+      "updatedAt": "2025-09-09T17:12:14Z",
       "closedAt": null,
       "comments": [
         {
@@ -770,6 +770,20 @@
           "body": "I think of it has an extension. The format is extending the directory.\n\nRegarding what the agent would use, this would likely be a modification of the architecture draft. I think having a distinct header is helpful, because your metadata may not rotate as often as your keys. However, that should not prevent the Signature-Agent to hold all the metadata already.\n\nSuggestion welcome, this is very much a first pass so we have a shared basis for discussion.",
           "createdAt": "2025-09-05T08:07:45Z",
           "updatedAt": "2025-09-05T08:07:45Z"
+        },
+        {
+          "author": "ulaskira",
+          "authorAssociation": "NONE",
+          "body": "I see, so you mean it is the same container described in https://datatracker.ietf.org/doc/html/draft-meunier-web-bot-auth-architecture#name-key-distribution-and-discov but you are defining more entries at the top level of the signature agent, at the same level as \"keys\"? And using these keys is optional (hence \"extension\")?",
+          "createdAt": "2025-09-09T16:35:19Z",
+          "updatedAt": "2025-09-09T16:35:19Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "You're correct.\nRegarding section 4.5, the extra parameters have been removed from the directory spec and moved to the registry spec with comments from #53. You can see the latest version on [GitHub pages](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#name-key-distribution-and-discov).\n\nThe current version is that the directory re-uses JWKS directory definition as is, and all external parameters are in the registry draft.",
+          "createdAt": "2025-09-09T17:12:14Z",
+          "updatedAt": "2025-09-09T17:12:14Z"
         }
       ]
     },
@@ -854,15 +868,15 @@
       "id": "I_kwDOOXJyWM7JXCJK",
       "title": "Clarification on 5.7.  Reverse proxy consideration",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/54",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sandormajor",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "[5.7. ](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#section-5.7)[Reverse proxy consideration](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-reverse-proxy-consideration) says \"It implies that the proxy sees the Signature before the origin does, may strip it, or even attempt to replay it against other reverse proxies used by the origin.\"\n\n1) I think this should have something like \"proxies SHOULD NOT (or MUST NOT) strip the `Signature` and `Signature-Agent` headers\"\n2) Can you please elaborate on \"[Origins may require a specific nonce policy](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-reverse-proxy-consideration:~:text=Origins%20may%20require%20a%20specific%20nonce%20policy)\"? Maybe linking to [5.3. ](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#section-5.3)[Nonce validation](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-03.html#name-nonce-validation) is enough but an example could be helpful too.\n3) \"to prevent such malicious behaviour\" implies that the nonce can prevent both replay of the signatures, and the striping of them. They can help with replays but if the proxy strips the signature the best an origin can do is to reject the request with an `accept-signature` response, and maybe provide a nonce itself to challenge the agent. But that would require an extra roundtrip. So I think for striping we should at least have some wording like in point 1",
       "createdAt": "2025-09-03T04:30:17Z",
-      "updatedAt": "2025-09-03T21:28:46Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-09T16:53:49Z",
+      "closedAt": "2025-09-09T16:53:49Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -879,6 +893,56 @@
           "updatedAt": "2025-09-03T21:28:46Z"
         }
       ]
+    },
+    {
+      "number": 60,
+      "id": "I_kwDOOXJyWM7KlUFz",
+      "title": "Consider a mechanism for identifiers (and abuse reporting)",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/60",
+      "state": "OPEN",
+      "author": "chhamilton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Consider the following two examples:\n\n(1) A single customer spins up 1000 instances of an agent to automate actions against ticketseller.com to try to buy tickets to a concert for resale.\n(2) 1000 customers each spin up 1 instance of an agent to automate actions against ticketseller.com to try to buy tickets to a concert for personal use.\n\nThese both look indentical to ticketseller.com (or its designated security service provider). While there's some amount of responsibility of the agent platform to try restrict abuse of their platform, security platforms also have their role to play. If these standards provide the ability for each signatory (in this case the platform operator) to encode a pseudonymous customer identifier, it makes it easy to distinguish between (1) and (2). It also enables downstream security service providers to build per-customer reputation tracking. For the purposes of anti-abuse it's fine for these to be pseudonymous, and to rotate with some mid-term frequency (O(weeks) is probably fine)?\n\nThis also creates the ability for collaborative policing. You could imagine creating an abuse reporting endpoint (can be advertised by the platform operator's metadata in their .wellknown file) where websites and/or security providers can inform the platform operator of abusive actions that were made against a site. Having a well defined identifiers allows them to reference specific actions made by their platform.\n\nIf a pseudonymous customer identifier is too much to ask for, at the very least an anonymous session identifier could play the role of grouping together semantically related requests as well as providing an identifier for abuse reporting.\n\nFor abuse reporting, I was thinking of something spiritually similar to ARF for spam email.",
+      "createdAt": "2025-09-09T14:40:14Z",
+      "updatedAt": "2025-09-09T17:55:48Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 61,
+      "id": "I_kwDOOXJyWM7KmVue",
+      "title": "Nonce negotiation",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/61",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "question"
+      ],
+      "body": "Consider having a protocol to negotiate nonce between client and server",
+      "createdAt": "2025-09-09T15:59:05Z",
+      "updatedAt": "2025-09-09T15:59:05Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 62,
+      "id": "I_kwDOOXJyWM7K2r9x",
+      "title": "Support registries linking to registries",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/62",
+      "state": "OPEN",
+      "author": "AkshatM",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The proposed specification for registries only allows linking to signature agent cards directly, which means all registries are stand alone and disconnected. \n\nRegistries should be able to link to other registries, allowing for a trust web that may allow some registries to become authoritative. This has benefits:\n\n1. If a registry is compromised, an authoritative registry may revoke trust in it.\n2. Today, identity binding is not solved, but an authoritative registry may detect conflicts in identities bound to signature agents by smaller registries. \n\n",
+      "createdAt": "2025-09-10T17:48:56Z",
+      "updatedAt": "2025-09-10T17:48:56Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -2247,7 +2311,7 @@
       "id": "PR_kwDOOXJyWM6mna0j",
       "title": "Improve reverse proxy section and nonce validation",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/56",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2258,19 +2322,117 @@
       ],
       "body": "Adds\r\n* precision about impersonation\r\n* examples of origin nonce validation policies\r\n* round trip considerations\r\n\r\ncc @sandormajor\r\n\r\nCloses #54",
       "createdAt": "2025-09-03T09:58:39Z",
-      "updatedAt": "2025-09-03T09:58:39Z",
+      "updatedAt": "2025-09-09T20:15:13Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "6b25d457b2e1b76c8e05dda377572e7e6dd1bcce",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-reverse-proxy-consideratoins",
       "headRefOid": "ed9861fc15cd1c2fd77a5968b52f6208f40beed8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2025-09-09T16:53:48Z",
+      "mergedAt": "2025-09-09T16:53:48Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "e63b5aa8185ad82b4ec341928752250fafb81a6a"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Poke @sandormajor",
+          "createdAt": "2025-09-09T07:13:07Z",
+          "updatedAt": "2025-09-09T07:13:07Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "> Poke @sandormajor\r\n\r\nI left a comment last week but I'm not sure if it was published. Overall it looks good to me, I only have a question about negotiating the nonce strategy. The text gives examples of potential nonce strategies but it's not clear how the origin/bot should communicate the expected/used strategy",
+          "createdAt": "2025-09-09T15:50:33Z",
+          "updatedAt": "2025-09-09T15:50:33Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM69sjM8",
+          "commit": {
+            "abbreviatedOid": "ed9861f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-03T21:28:26Z",
+          "updatedAt": "2025-09-09T15:47:25Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "Is there a mechanism today to negotiate the nonce strategy? If the origin sends an `accept-signature` with the nonce, the agent should use that nonce, but any other strategy would need to be negotiated out of bound, right?",
+              "createdAt": "2025-09-03T21:28:26Z",
+              "updatedAt": "2025-09-09T15:47:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6-3wr0",
+          "commit": {
+            "abbreviatedOid": "ed9861f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-09-09T15:57:34Z",
+          "updatedAt": "2025-09-09T15:57:34Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "no other strategy afaik.\r\n\r\nadding a ticket",
+              "createdAt": "2025-09-09T15:57:34Z",
+              "updatedAt": "2025-09-09T15:57:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6-4d8V",
+          "commit": {
+            "abbreviatedOid": "ed9861f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-09-09T16:53:33Z",
+          "updatedAt": "2025-09-09T16:53:33Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "#61 ",
+              "createdAt": "2025-09-09T16:53:33Z",
+              "updatedAt": "2025-09-09T16:53:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM6-6_zb",
+          "commit": {
+            "abbreviatedOid": "ed9861f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-09-09T20:15:12Z",
+          "updatedAt": "2025-09-09T20:15:13Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "Thanks",
+              "createdAt": "2025-09-09T20:15:13Z",
+              "updatedAt": "2025-09-09T20:15:13Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 57,
@@ -2350,9 +2512,9 @@
       "labels": [
         "bug"
       ],
-      "body": "Add precisions about known URLs\r\nAdd placeholder for image size\r\n\r\nOn recommendation from Bill",
+      "body": "Add precisions about known URLs\r\nAdd placeholder for image size\r\n\r\nOn recommendation from Bill\r\n\r\ncc @punkeel for review",
       "createdAt": "2025-09-08T12:51:15Z",
-      "updatedAt": "2025-09-08T12:51:15Z",
+      "updatedAt": "2025-09-09T07:12:47Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "abc786361d679f123851f124998d65a2675706c7",
