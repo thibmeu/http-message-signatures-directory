@@ -32,6 +32,7 @@ author:
     email: ot-ietf@thibault.uk
 
 normative:
+  ABNF: RFC5234
   AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
   DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
@@ -44,6 +45,7 @@ normative:
 
 
 informative:
+  DATAURL: RFC2397
   OAUTH-BEARER: RFC6750
   OPENID-CONNECT-DISCOVERY:
     title: OpenID Connect Discovery 1.0
@@ -51,6 +53,7 @@ informative:
   RATELIMIT-HEADER: I-D.draft-ietf-httpapi-ratelimit-headers
   RFC8446:
   ROBOTSTXT: RFC9309
+  UTF8: RFC3629
 
 --- abstract
 
@@ -270,34 +273,86 @@ Example
 
 # Discovery
 
-Discovery is done via a registry.
-A registry is a list of URLs, each one pointing to a signature card.
+A registry is a list of URLs, each refering to a signature agent card.
 
-URLS can be:
+The URI scheme MUST be one of:
 
-* https
-* http
-* data
+* https (RECOMMENDED): Points to an HTTPS resource serving a signature agent card
+* http: Points to an HTTP resource serving a signature agent card
+* data: Contains an inline signature agent card
 
 Example
 
 ~~~txt
+# An example list of bots
 https://bot1.example.com/.well-known/signature-agent-card
 https://crawler2.example.com/.well-known/signature-agent-card
+
+# Now the list of platforms
 https://zerotrust-gateway.example.com/.well-known/signature-agent-card
-data:application/json;,...
+
+# Below is an inlined card with the data URL scheme
+data:application/json;,... # Invalid, not defined
 ~~~
 
-### Out-of-band communication between client and origin
-A service submitting their key to an origin, or the origin manually adding a service to their trusted list.
+## Formal Syntax
 
-### Public list
+Below is an Augmented Backus-Naur Form (ABNF) description, as described in {{ABNF}}.
 
-Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.
+The below definition imports `http-URI` and `https-URI` from {{HTTP}}, and
+`dataurl` from {{DATAURL}}.
 
-### Signature-Agent-Card header {#signature-agent-card-header}
+~~~
+registry = *(cardendpointline / emptyline)
+cardendpointline = (
+    http-URI /       ; As defined in Section 4.2.1 of RFC 9110
+    https-URI /      ; As defined in Section 4.2.2 of RFC 9110
+    dataurl          ; As defined in Section 3 of RFC 2397
+) EOL
 
-This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
+
+comment = "#" *(UTF8-char-noctl / WS / "#")
+emptyline = EOL
+EOL = *WS [comment] NL ; end-of-line may have
+                       ; optional trailing comment
+NL = %x0D / %x0A / %x0D.0A
+WS = %x20 / %x09
+
+; UTF8 derived from RFC 3629, but excluding control characters
+
+UTF8-char-noctl = UTF8-1-noctl / UTF8-2 / UTF8-3 / UTF8-4
+UTF8-1-noctl = %x21 / %x22 / %x24-7F ; excluding control, space, "#"
+UTF8-2 = %xC2-DF UTF8-tail
+UTF8-3 = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2UTF8-tail /
+         %xED %x80-9F UTF8-tail / %xEE-EF 2UTF8-tail
+UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
+         %xF4 %x80-8F 2UTF8-tail
+
+UTF8-tail = %x80-BF
+~~~
+
+## Out-of-band communication between client and origin
+
+A signature agent MAY submit their signature agent card to an origin, or the
+origin MAY manually add them to their local registry.
+
+## Public list
+
+A registry MAY be provided via a GitHub repository, a public file server, or a
+dedicated endpoint.
+
+The registry SHOULD be served over HTTPS.
+
+A client application SHOULD validate the directory format and reject malformed
+entries.
+
+## Signature-Agent header {#signature-agent-header}
+
+Signature Agent Card format defined in {{signature-agent-card}} extends the
+format of `Signature-Agent` header as defined in {{Section 4.1 of DIRECTORY}}.
+
+When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
+Agent Card MAY be discovered via a `Signature-Agent` header.
 
 # Security Considerations
 
@@ -310,11 +365,6 @@ TODO
 
 
 # IANA Considerations {#iana}
-
-## Signature Agent Card Parameters Registry {#signature-agent-card-registry}
-
-IANA is requested to create a new "Signature Agent Card Parameters" registry in a new
-"Signature Agent Card" page to list metadata for signature agent protocols.
 
 ### Registration template
 
