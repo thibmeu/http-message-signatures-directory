@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-11T01:51:05.188120+00:00",
+  "timestamp": "2025-09-14T01:55:28.692030+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -937,10 +937,38 @@
       "author": "AkshatM",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "question"
+      ],
       "body": "The proposed specification for registries only allows linking to signature agent cards directly, which means all registries are stand alone and disconnected. \n\nRegistries should be able to link to other registries, allowing for a trust web that may allow some registries to become authoritative. This has benefits:\n\n1. If a registry is compromised, an authoritative registry may revoke trust in it.\n2. Today, identity binding is not solved, but an authoritative registry may detect conflicts in identities bound to signature agents by smaller registries. \n\n",
       "createdAt": "2025-09-10T17:48:56Z",
-      "updatedAt": "2025-09-10T17:48:56Z",
+      "updatedAt": "2025-09-12T13:59:12Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Agree this seems to be a direction worth exploring.\n\nThere probably should be consideration for performance. Why link to another registry rather than hosting a webserver with symlinks for instance.",
+          "createdAt": "2025-09-12T13:59:09Z",
+          "updatedAt": "2025-09-12T13:59:09Z"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "I_kwDOOXJyWM7LGDtu",
+      "title": "Registry format should support empty lines and comment",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/63",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "This is a consideration. A registry could include comment lines and empty lines.\n\n```\n### The examples\nhttps://example.com/.well-known/http-message-signatures-directory\n\n### Even more examples\nhttps://more.example.com/jwks.json\nhttps://more.more.example.com/path/to/signature/agent/card.json\n```",
+      "createdAt": "2025-09-11T16:53:33Z",
+      "updatedAt": "2025-09-13T07:35:54Z",
       "closedAt": null,
       "comments": []
     }
@@ -2521,6 +2549,79 @@
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-bill-comment",
       "headRefOid": "7b35a97490be5c279e581133da864781eb51c353",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 64,
+      "id": "PR_kwDOOXJyWM6oVK0t",
+      "title": "Add an about-url field",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/64",
+      "state": "OPEN",
+      "author": "ulaskira",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "",
+      "createdAt": "2025-09-12T22:00:40Z",
+      "updatedAt": "2025-09-13T15:46:37Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "e63b5aa8185ad82b4ec341928752250fafb81a6a",
+      "headRepository": "ulaskira/http-message-signatures-directory",
+      "headRefName": "ulas/abouturl",
+      "headRefOid": "6c89edf729bdc90a34433375b8941dd6afeee6f4",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Thanks for the proposal.\r\n\r\nSome questions I have:\r\n1. should this be `about-url`, or simply `about`.\r\n2. With a url, it's nice to specify the authorised scheme. For instance, I believe authorising `data:` could be useful to inline the about content\r\n3. Is the field meant to be `about` or `description`\r\n\r\nOn the specific PR, you should also modify the IANA registration section to register `about-url` (o whatever the end parameter is)",
+          "createdAt": "2025-09-13T07:00:31Z",
+          "updatedAt": "2025-09-13T07:00:31Z"
+        },
+        {
+          "author": "ulaskira",
+          "authorAssociation": "NONE",
+          "body": "I am open to calling this \"description\" and allowing `data:` as a type. Does that work?",
+          "createdAt": "2025-09-13T15:46:37Z",
+          "updatedAt": "2025-09-13T15:46:37Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 65,
+      "id": "PR_kwDOOXJyWM6oXyiV",
+      "title": "Refine the discovery section of the registry draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/65",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "* Define a first formal syntax\r\n* Allow for empty line and comments\r\n* Improve the discovery wording for out of band and public list\r\n* Remove `Signature-Agent-Card` header until further discussions\r\n\r\nClose #63\r\n\r\n@punkeel for review",
+      "createdAt": "2025-09-13T07:37:33Z",
+      "updatedAt": "2025-09-13T07:37:33Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "e63b5aa8185ad82b4ec341928752250fafb81a6a",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "registry-refine-format",
+      "headRefOid": "27f658a1c329030cfd25e21a089dd19ddf82d2cb",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
