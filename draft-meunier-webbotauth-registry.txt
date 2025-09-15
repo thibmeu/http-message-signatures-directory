@@ -91,15 +91,15 @@ Table of Contents
      3.12. Known URLs
      3.13. Keys
    4.  Discovery
-     4.1.  Out-of-band communication between client and origin
-       4.1.1.  Public list
-       4.1.2.  Signature-Agent-Card header
+     4.1.  Formal Syntax
+     4.2.  Out-of-band communication between client and origin
+     4.3.  Public list
+     4.4.  Signature-Agent header
    5.  Security Considerations
    6.  Privacy Considerations
    7.  IANA Considerations
-     7.1.  Signature Agent Card Parameters Registry
-       7.1.1.  Registration template
-       7.1.2.  Initial Registry content
+     7.1.  Registration template
+       7.1.1.  Initial Registry content
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -339,38 +339,88 @@ Table of Contents
 
 4.  Discovery
 
-   Discovery is done via a registry.  A registry is a list of URLs, each
-   one pointing to a signature card.
+   A registry is a list of URLs, each refering to a signature agent
+   card.
 
-   URLS can be:
+   The URI scheme MUST be one of:
 
-   *  https
+   *  https (RECOMMENDED): Points to an HTTPS resource serving a
+      signature agent card
 
-   *  http
+   *  http: Points to an HTTP resource serving a signature agent card
 
-   *  data
+   *  data: Contains an inline signature agent card
 
    Example
 
+   # An example list of bots
    https://bot1.example.com/.well-known/signature-agent-card
    https://crawler2.example.com/.well-known/signature-agent-card
+
+   # Now the list of platforms
    https://zerotrust-gateway.example.com/.well-known/signature-agent-card
-   data:application/json;,...
 
-4.1.  Out-of-band communication between client and origin
+   # Below is an inlined card with the data URL scheme
+   data:application/json;,... # Invalid, not defined
 
-   A service submitting their key to an origin, or the origin manually
-   adding a service to their trusted list.
+4.1.  Formal Syntax
 
-4.1.1.  Public list
+   Below is an Augmented Backus-Naur Form (ABNF) description, as
+   described in [ABNF].
 
-   Could be a GitHub repository like the public suffix list.  The issue
-   is the gating of such repositories, and therefore its governance.
+   The below definition imports http-URI and https-URI from [HTTP], and
+   dataurl from [DATAURL].
 
-4.1.2.  Signature-Agent-Card header
+   registry = *(cardendpointline / emptyline)
+   cardendpointline = (
+       http-URI /       ; As defined in Section 4.2.1 of RFC 9110
+       https-URI /      ; As defined in Section 4.2.2 of RFC 9110
+       dataurl          ; As defined in Section 3 of RFC 2397
+   ) EOL
 
-   This allows for backward compatibility with existing header agent
-   filtering, and an upgrade to a cryptographically secured protocol.
+
+   comment = "#" *(UTF8-char-noctl / WS / "#")
+   emptyline = EOL
+   EOL = *WS [comment] NL ; end-of-line may have
+                          ; optional trailing comment
+   NL = %x0D / %x0A / %x0D.0A
+   WS = %x20 / %x09
+
+   ; UTF8 derived from RFC 3629, but excluding control characters
+
+   UTF8-char-noctl = UTF8-1-noctl / UTF8-2 / UTF8-3 / UTF8-4
+   UTF8-1-noctl = %x21 / %x22 / %x24-7F ; excluding control, space, "#"
+   UTF8-2 = %xC2-DF UTF8-tail
+   UTF8-3 = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2UTF8-tail /
+            %xED %x80-9F UTF8-tail / %xEE-EF 2UTF8-tail
+   UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
+            %xF4 %x80-8F 2UTF8-tail
+
+   UTF8-tail = %x80-BF
+
+4.2.  Out-of-band communication between client and origin
+
+   A signature agent MAY submit their signature agent card to an origin,
+   or the origin MAY manually add them to their local registry.
+
+4.3.  Public list
+
+   A registry MAY be provided via a GitHub repository, a public file
+   server, or a dedicated endpoint.
+
+   The registry SHOULD be served over HTTPS.
+
+   A client application SHOULD validate the directory format and reject
+   malformed entries.
+
+4.4.  Signature-Agent header
+
+   Signature Agent Card format defined in Section 3 extends the format
+   of Signature-Agent header as defined in Section 4.1 of [DIRECTORY].
+
+   When used for HTTP Message Signatures, and hosted on a well-known
+   URL, Signature Agent Card MAY be discovered via a Signature-Agent
+   header.
 
 5.  Security Considerations
 
@@ -384,13 +434,7 @@ Table of Contents
 
 7.  IANA Considerations
 
-7.1.  Signature Agent Card Parameters Registry
-
-   IANA is requested to create a new "Signature Agent Card Parameters"
-   registry in a new "Signature Agent Card" page to list metadata for
-   signature agent protocols.
-
-7.1.1.  Registration template
+7.1.  Registration template
 
    New registrations need to list the following attributes:
 
@@ -413,12 +457,12 @@ Table of Contents
    reject registrations on the basis that they do not meet the security
    and privacy requirements defined in TODO.
 
-7.1.2.  Initial Registry content
+7.1.1.  Initial Registry content
 
    This section registers the Signature Agent Card Parameter names
    defined in Section 3 in this registry.
 
-7.1.2.1.  Name Parameter
+7.1.1.1.  Name Parameter
 
    *Parameter Name:*  name
 
@@ -430,7 +474,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.2.  Contact Parameter
+7.1.1.2.  Contact Parameter
 
    *Parameter Name:*  contact
 
@@ -443,7 +487,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.3.  Logo Parameter
+7.1.1.3.  Logo Parameter
 
    *Parameter Name:*  logo
 
@@ -455,7 +499,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.4.  Expected User Agent Parameter
+7.1.1.4.  Expected User Agent Parameter
 
    *Parameter Name:*  expected-user-agent
 
@@ -467,7 +511,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.5.  RFC9309 Product Token Parameter
+7.1.1.5.  RFC9309 Product Token Parameter
 
    *Parameter Name:*  rfc9309-product-token
 
@@ -480,7 +524,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.6.  RFC9309 Compliance Parameter
+7.1.1.6.  RFC9309 Compliance Parameter
 
    *Parameter Name:*  rfc9309-compliance
 
@@ -493,7 +537,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.7.  Trigger Parameter
+7.1.1.7.  Trigger Parameter
 
    *Parameter Name:*  trigger
 
@@ -505,7 +549,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.8.  Purpose Parameter
+7.1.1.8.  Purpose Parameter
 
    *Parameter Name:*  purpose
 
@@ -517,7 +561,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.9.  Targeted Content Parameter
+7.1.1.9.  Targeted Content Parameter
 
    *Parameter Name:*  targeted-content
 
@@ -529,7 +573,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.10.  Rate control Parameter
+7.1.1.10.  Rate control Parameter
 
    *Parameter Name:*  rate-control
 
@@ -541,7 +585,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.11.  Rate expectation Parameter
+7.1.1.11.  Rate expectation Parameter
 
    *Parameter Name:*  rate-expectation
 
@@ -553,7 +597,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.12.  Known URLs Parameter
+7.1.1.12.  Known URLs Parameter
 
    *Parameter Name:*  known-urls
 
@@ -565,7 +609,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.13.  Keys Parameter
+7.1.1.13.  Keys Parameter
 
    *Parameter Name:*  keys
 
@@ -580,6 +624,11 @@ Table of Contents
 8.  References
 
 8.1.  Normative References
+
+   [ABNF]     Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/rfc/rfc5234>.
 
    [AIPREF-VOCAB]
               Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
@@ -646,6 +695,10 @@ Table of Contents
 
 8.2.  Informative References
 
+   [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
+              DOI 10.17487/RFC2397, August 1998,
+              <https://www.rfc-editor.org/rfc/rfc2397>.
+
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
@@ -673,6 +726,10 @@ Table of Contents
               "Robots Exclusion Protocol", RFC 9309,
               DOI 10.17487/RFC9309, September 2022,
               <https://www.rfc-editor.org/rfc/rfc9309>.
+
+   [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
+              2003, <https://www.rfc-editor.org/rfc/rfc3629>.
 
 Appendix A.  Test Vectors
 

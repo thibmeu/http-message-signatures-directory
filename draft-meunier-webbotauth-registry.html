@@ -1214,15 +1214,16 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-discovery" class="internal xref">Discovery</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
-                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-public-list" class="internal xref">Public list</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-formal-syntax" class="internal xref">Formal Syntax</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
-                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-signature-agent-card-header" class="internal xref">Signature-Agent-Card header</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
 </li>
-                </ul>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-public-list" class="internal xref">Public list</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent header</a></p>
 </li>
             </ul>
 </li>
@@ -1236,13 +1237,10 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-signature-agent-card-parame" class="internal xref">Signature Agent Card Parameters Registry</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-registration-template" class="internal xref">Registration template</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
-                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-registration-template" class="internal xref">Registration template</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
-                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-initial-registry-content" class="internal xref">Initial Registry content</a></p>
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-initial-registry-content" class="internal xref">Initial Registry content</a></p>
 </li>
                 </ul>
 </li>
@@ -1595,51 +1593,103 @@ Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#
       <h2 id="name-discovery">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-discovery" class="section-name selfRef">Discovery</a>
       </h2>
-<p id="section-4-1">Discovery is done via a registry.
-A registry is a list of URLs, each one pointing to a signature card.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">URLS can be:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-1">A registry is a list of URLs, each refering to a signature agent card.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The URI scheme <span class="bcp14">MUST</span> be one of:<a href="#section-4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-3.1">
-          <p id="section-4-3.1.1">https<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.1.1">https (<span class="bcp14">RECOMMENDED</span>): Points to an HTTPS resource serving a signature agent card<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.2">
-          <p id="section-4-3.2.1">http<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.2.1">http: Points to an HTTP resource serving a signature agent card<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.3">
-          <p id="section-4-3.3.1">data<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.3.1">data: Contains an inline signature agent card<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-4-4">Example<a href="#section-4-4" class="pilcrow">¶</a></p>
 <div class="lang-txt sourcecode" id="section-4-5">
 <pre>
+# An example list of bots
 https://bot1.example.com/.well-known/signature-agent-card
 https://crawler2.example.com/.well-known/signature-agent-card
+
+# Now the list of platforms
 https://zerotrust-gateway.example.com/.well-known/signature-agent-card
-data:application/json;,...
+
+# Below is an inlined card with the data URL scheme
+data:application/json;,... # Invalid, not defined
 </pre><a href="#section-4-5" class="pilcrow">¶</a>
 </div>
-<div id="out-of-band-communication-between-client-and-origin">
+<div id="formal-syntax">
 <section id="section-4.1">
-        <h3 id="name-out-of-band-communication-b">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
+        <h3 id="name-formal-syntax">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-formal-syntax" class="section-name selfRef">Formal Syntax</a>
         </h3>
-<p id="section-4.1-1">A service submitting their key to an origin, or the origin manually adding a service to their trusted list.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">Below is an Augmented Backus-Naur Form (ABNF) description, as described in <span>[<a href="#ABNF" class="cite xref">ABNF</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The below definition imports <code>http-URI</code> and <code>https-URI</code> from <span>[<a href="#HTTP" class="cite xref">HTTP</a>]</span>, and
+<code>dataurl</code> from <span>[<a href="#DATAURL" class="cite xref">DATAURL</a>]</span>.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-3">
+<pre>
+registry = *(cardendpointline / emptyline)
+cardendpointline = (
+    http-URI /       ; As defined in Section 4.2.1 of RFC 9110
+    https-URI /      ; As defined in Section 4.2.2 of RFC 9110
+    dataurl          ; As defined in Section 3 of RFC 2397
+) EOL
+
+
+comment = "#" *(UTF8-char-noctl / WS / "#")
+emptyline = EOL
+EOL = *WS [comment] NL ; end-of-line may have
+                       ; optional trailing comment
+NL = %x0D / %x0A / %x0D.0A
+WS = %x20 / %x09
+
+; UTF8 derived from RFC 3629, but excluding control characters
+
+UTF8-char-noctl = UTF8-1-noctl / UTF8-2 / UTF8-3 / UTF8-4
+UTF8-1-noctl = %x21 / %x22 / %x24-7F ; excluding control, space, "#"
+UTF8-2 = %xC2-DF UTF8-tail
+UTF8-3 = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2UTF8-tail /
+         %xED %x80-9F UTF8-tail / %xEE-EF 2UTF8-tail
+UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
+         %xF4 %x80-8F 2UTF8-tail
+
+UTF8-tail = %x80-BF
+</pre><a href="#section-4.1-3" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="out-of-band-communication-between-client-and-origin">
+<section id="section-4.2">
+        <h3 id="name-out-of-band-communication-b">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
+        </h3>
+<p id="section-4.2-1">A signature agent <span class="bcp14">MAY</span> submit their signature agent card to an origin, or the
+origin <span class="bcp14">MAY</span> manually add them to their local registry.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="public-list">
-<section id="section-4.1.1">
-          <h4 id="name-public-list">
-<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-public-list" class="section-name selfRef">Public list</a>
-          </h4>
-<p id="section-4.1.1-1">Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<section id="section-4.3">
+        <h3 id="name-public-list">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-public-list" class="section-name selfRef">Public list</a>
+        </h3>
+<p id="section-4.3-1">A registry <span class="bcp14">MAY</span> be provided via a GitHub repository, a public file server, or a
+dedicated endpoint.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">The registry <span class="bcp14">SHOULD</span> be served over HTTPS.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-3">A client application <span class="bcp14">SHOULD</span> validate the directory format and reject malformed
+entries.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="signature-agent-card-header">
-<section id="section-4.1.2">
-          <h4 id="name-signature-agent-card-header">
-<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-signature-agent-card-header" class="section-name selfRef">Signature-Agent-Card header</a>
-          </h4>
-<p id="section-4.1.2-1">This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
+<div id="signature-agent-header">
+<section id="section-4.4">
+        <h3 id="name-signature-agent-header">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
+        </h3>
+<p id="section-4.4-1">Signature Agent Card format defined in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> extends the
+format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
+Agent Card <span class="bcp14">MAY</span> be discovered via a <code>Signature-Agent</code> header.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1666,502 +1716,493 @@ Clients <span class="bcp14">SHOULD</span> reject cards with invalid signatures.<
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<div id="signature-agent-card-registry">
-<section id="section-7.1">
-        <h3 id="name-signature-agent-card-parame">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-signature-agent-card-parame" class="section-name selfRef">Signature Agent Card Parameters Registry</a>
-        </h3>
-<p id="section-7.1-1">IANA is requested to create a new "Signature Agent Card Parameters" registry in a new
-"Signature Agent Card" page to list metadata for signature agent protocols.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <div id="registration-template">
-<section id="section-7.1.1">
-          <h4 id="name-registration-template">
-<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-registration-template" class="section-name selfRef">Registration template</a>
-          </h4>
-<p id="section-7.1.1-1">New registrations need to list the following attributes:<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.1.1-2">
-            <dt id="section-7.1.1-2.1"><strong>Parameter Name:</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-7.1.1-2.2">
-              <p id="section-7.1.1-2.2.1">The name requested (e.g. "useragent"). This name is
+<section id="section-7.1">
+        <h3 id="name-registration-template">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-registration-template" class="section-name selfRef">Registration template</a>
+        </h3>
+<p id="section-7.1-1">New registrations need to list the following attributes:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.1-2">
+          <dt id="section-7.1-2.1"><strong>Parameter Name:</strong></dt>
+          <dd style="margin-left: 1.5em" id="section-7.1-2.2">
+            <p id="section-7.1-2.2.1">The name requested (e.g. "useragent"). This name is
 case sensitive.  Names may not match other registered names in a
 case-insensitive manner unless the Designated Experts state that
-there is a compelling reason to allow an exception<a href="#section-7.1.1-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-7.1.1-2.3"><strong>Parameter Description:</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-7.1.1-2.4">
-              <p id="section-7.1.1-2.4.1">Brief description of the Header Parameter<a href="#section-7.1.1-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-7.1.1-2.5"><strong>Change Controller:</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-7.1.1-2.6">
-              <p id="section-7.1.1-2.6.1">For Standards Track RFCs, list the "IESG".  For others, give the
-name of the responsible party.  Other details (e.g., postal
-address, email address, home page URI) may also be included.<a href="#section-7.1.1-2.6.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-7.1.1-2.7"><strong>Reference:</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-7.1.1-2.8">
-              <p id="section-7.1.1-2.8.1">Where this parameter is defined<a href="#section-7.1.1-2.8.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-7.1.1-2.9"><strong>Notes:</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-7.1.1-2.10">
-              <p id="section-7.1.1-2.10.1">Any notes associated with the entry<a href="#section-7.1.1-2.10.1" class="pilcrow">¶</a></p>
+there is a compelling reason to allow an exception<a href="#section-7.1-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
+<dt id="section-7.1-2.3"><strong>Parameter Description:</strong></dt>
+          <dd style="margin-left: 1.5em" id="section-7.1-2.4">
+            <p id="section-7.1-2.4.1">Brief description of the Header Parameter<a href="#section-7.1-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-7.1-2.5"><strong>Change Controller:</strong></dt>
+          <dd style="margin-left: 1.5em" id="section-7.1-2.6">
+            <p id="section-7.1-2.6.1">For Standards Track RFCs, list the "IESG".  For others, give the
+name of the responsible party.  Other details (e.g., postal
+address, email address, home page URI) may also be included.<a href="#section-7.1-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-7.1-2.7"><strong>Reference:</strong></dt>
+          <dd style="margin-left: 1.5em" id="section-7.1-2.8">
+            <p id="section-7.1-2.8.1">Where this parameter is defined<a href="#section-7.1-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-7.1-2.9"><strong>Notes:</strong></dt>
+          <dd style="margin-left: 1.5em" id="section-7.1-2.10">
+            <p id="section-7.1-2.10.1">Any notes associated with the entry<a href="#section-7.1-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
 </dl>
-<p id="section-7.1.1-3">New entries in this registry are subject to the Specification Required
+<p id="section-7.1-3">New entries in this registry are subject to the Specification Required
 registration policy (<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>], <a href="https://rfc-editor.org/rfc/rfc8126#section-4.6" class="relref">Section 4.6</a></span>). Designated experts need to
 ensure that the token type is defined to be used for both token issuance and
 redemption. Additionally, the experts can reject registrations on the basis
-that they do not meet the security and privacy requirements defined in TODO.<a href="#section-7.1.1-3" class="pilcrow">¶</a></p>
-</section>
-</div>
+that they do not meet the security and privacy requirements defined in TODO.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <div id="initial-registry-content">
-<section id="section-7.1.2">
+<section id="section-7.1.1">
           <h4 id="name-initial-registry-content">
-<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-initial-registry-content" class="section-name selfRef">Initial Registry content</a>
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-initial-registry-content" class="section-name selfRef">Initial Registry content</a>
           </h4>
-<p id="section-7.1.2-1">This section registers the Signature Agent Card Parameter names defined
-in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in this registry.<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-1">This section registers the Signature Agent Card Parameter names defined
+in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in this registry.<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
 <div id="name-parameter">
-<section id="section-7.1.2.1">
+<section id="section-7.1.1.1">
             <h5 id="name-name-parameter">
-<a href="#section-7.1.2.1" class="section-number selfRef">7.1.2.1. </a><a href="#name-name-parameter" class="section-name selfRef">Name Parameter</a>
+<a href="#section-7.1.1.1" class="section-number selfRef">7.1.1.1. </a><a href="#name-name-parameter" class="section-name selfRef">Name Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.1-1">
-              <dt id="section-7.1.2.1-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.1-1.2">
-                <p id="section-7.1.2.1-1.2.1">name<a href="#section-7.1.2.1-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.1-1">
+              <dt id="section-7.1.1.1-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.2">
+                <p id="section-7.1.1.1-1.2.1">name<a href="#section-7.1.1.1-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.1-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.1-1.4">
-                <p id="section-7.1.2.1-1.4.1">A friendly name for your signature agent.<a href="#section-7.1.2.1-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.1-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.4">
+                <p id="section-7.1.1.1-1.4.1">A friendly name for your signature agent.<a href="#section-7.1.1.1-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.1-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.1-1.6">
-                <p id="section-7.1.2.1-1.6.1">IETF<a href="#section-7.1.2.1-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.1-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.6">
+                <p id="section-7.1.1.1-1.6.1">IETF<a href="#section-7.1.1.1-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.1-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.1-1.8">
-                <p id="section-7.1.2.1-1.8.1"><a href="#signature-agent-parameter-name" class="auto internal xref">Section 3.1</a><a href="#section-7.1.2.1-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.1-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.8">
+                <p id="section-7.1.1.1-1.8.1"><a href="#signature-agent-parameter-name" class="auto internal xref">Section 3.1</a><a href="#section-7.1.1.1-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.1-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.1-1.10">
-                <p id="section-7.1.2.1-1.10.1">N/A<a href="#section-7.1.2.1-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.1-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.10">
+                <p id="section-7.1.1.1-1.10.1">N/A<a href="#section-7.1.1.1-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="contact-parameter">
-<section id="section-7.1.2.2">
+<section id="section-7.1.1.2">
             <h5 id="name-contact-parameter">
-<a href="#section-7.1.2.2" class="section-number selfRef">7.1.2.2. </a><a href="#name-contact-parameter" class="section-name selfRef">Contact Parameter</a>
+<a href="#section-7.1.1.2" class="section-number selfRef">7.1.1.2. </a><a href="#name-contact-parameter" class="section-name selfRef">Contact Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.2-1">
-              <dt id="section-7.1.2.2-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.2-1.2">
-                <p id="section-7.1.2.2-1.2.1">contact<a href="#section-7.1.2.2-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.2-1">
+              <dt id="section-7.1.1.2-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.2">
+                <p id="section-7.1.1.2-1.2.1">contact<a href="#section-7.1.1.2-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.2-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.2-1.4">
-                <p id="section-7.1.2.2-1.4.1">Email or any other reliable communication channel<a href="#section-7.1.2.2-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.2-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.4">
+                <p id="section-7.1.1.2-1.4.1">Email or any other reliable communication channel<a href="#section-7.1.1.2-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.2-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.2-1.6">
-                <p id="section-7.1.2.2-1.6.1">IETF<a href="#section-7.1.2.2-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.2-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.6">
+                <p id="section-7.1.1.2-1.6.1">IETF<a href="#section-7.1.1.2-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.2-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.2-1.8">
-                <p id="section-7.1.2.2-1.8.1"><a href="#signature-agent-parameter-contact" class="auto internal xref">Section 3.2</a><a href="#section-7.1.2.2-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.2-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.8">
+                <p id="section-7.1.1.2-1.8.1"><a href="#signature-agent-parameter-contact" class="auto internal xref">Section 3.2</a><a href="#section-7.1.1.2-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.2-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.2-1.10">
-                <p id="section-7.1.2.2-1.10.1">N/A<a href="#section-7.1.2.2-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.2-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.10">
+                <p id="section-7.1.1.2-1.10.1">N/A<a href="#section-7.1.1.2-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="logo-parameter">
-<section id="section-7.1.2.3">
+<section id="section-7.1.1.3">
             <h5 id="name-logo-parameter">
-<a href="#section-7.1.2.3" class="section-number selfRef">7.1.2.3. </a><a href="#name-logo-parameter" class="section-name selfRef">Logo Parameter</a>
+<a href="#section-7.1.1.3" class="section-number selfRef">7.1.1.3. </a><a href="#name-logo-parameter" class="section-name selfRef">Logo Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.3-1">
-              <dt id="section-7.1.2.3-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.3-1.2">
-                <p id="section-7.1.2.3-1.2.1">logo<a href="#section-7.1.2.3-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.3-1">
+              <dt id="section-7.1.1.3-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.2">
+                <p id="section-7.1.1.3-1.2.1">logo<a href="#section-7.1.1.3-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.3-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.3-1.4">
-                <p id="section-7.1.2.3-1.4.1">Image for a quick visual identification<a href="#section-7.1.2.3-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.3-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.4">
+                <p id="section-7.1.1.3-1.4.1">Image for a quick visual identification<a href="#section-7.1.1.3-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.3-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.3-1.6">
-                <p id="section-7.1.2.3-1.6.1">IETF<a href="#section-7.1.2.3-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.3-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.6">
+                <p id="section-7.1.1.3-1.6.1">IETF<a href="#section-7.1.1.3-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.3-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.3-1.8">
-                <p id="section-7.1.2.3-1.8.1"><a href="#signature-agent-parameter-logo" class="auto internal xref">Section 3.3</a><a href="#section-7.1.2.3-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.3-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.8">
+                <p id="section-7.1.1.3-1.8.1"><a href="#signature-agent-parameter-logo" class="auto internal xref">Section 3.3</a><a href="#section-7.1.1.3-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.3-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.3-1.10">
-                <p id="section-7.1.2.3-1.10.1">N/A<a href="#section-7.1.2.3-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.3-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.10">
+                <p id="section-7.1.1.3-1.10.1">N/A<a href="#section-7.1.1.3-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="expected-user-agent-parameter">
-<section id="section-7.1.2.4">
+<section id="section-7.1.1.4">
             <h5 id="name-expected-user-agent-paramet">
-<a href="#section-7.1.2.4" class="section-number selfRef">7.1.2.4. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
+<a href="#section-7.1.1.4" class="section-number selfRef">7.1.1.4. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.4-1">
-              <dt id="section-7.1.2.4-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.4-1.2">
-                <p id="section-7.1.2.4-1.2.1">expected-user-agent<a href="#section-7.1.2.4-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.4-1">
+              <dt id="section-7.1.1.4-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.2">
+                <p id="section-7.1.1.4-1.2.1">expected-user-agent<a href="#section-7.1.1.4-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.4-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.4-1.4">
-                <p id="section-7.1.2.4-1.4.1">String or fragment patterns<a href="#section-7.1.2.4-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.4-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.4">
+                <p id="section-7.1.1.4-1.4.1">String or fragment patterns<a href="#section-7.1.1.4-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.4-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.4-1.6">
-                <p id="section-7.1.2.4-1.6.1">IETF<a href="#section-7.1.2.4-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.4-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.6">
+                <p id="section-7.1.1.4-1.6.1">IETF<a href="#section-7.1.1.4-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.4-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.4-1.8">
-                <p id="section-7.1.2.4-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.4</a><a href="#section-7.1.2.4-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.4-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.8">
+                <p id="section-7.1.1.4-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.4</a><a href="#section-7.1.1.4-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.4-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.4-1.10">
-                <p id="section-7.1.2.4-1.10.1">N/A<a href="#section-7.1.2.4-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.4-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.10">
+                <p id="section-7.1.1.4-1.10.1">N/A<a href="#section-7.1.1.4-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rfc9309-product-token-parameter">
-<section id="section-7.1.2.5">
+<section id="section-7.1.1.5">
             <h5 id="name-rfc9309-product-token-param">
-<a href="#section-7.1.2.5" class="section-number selfRef">7.1.2.5. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
+<a href="#section-7.1.1.5" class="section-number selfRef">7.1.1.5. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.5-1">
-              <dt id="section-7.1.2.5-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.5-1.2">
-                <p id="section-7.1.2.5-1.2.1">rfc9309-product-token<a href="#section-7.1.2.5-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.5-1">
+              <dt id="section-7.1.1.5-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.2">
+                <p id="section-7.1.1.5-1.2.1">rfc9309-product-token<a href="#section-7.1.1.5-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.5-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.5-1.4">
-                <p id="section-7.1.2.5-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.1.2.5-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.5-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.4">
+                <p id="section-7.1.1.5-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.1.1.5-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.5-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.5-1.6">
-                <p id="section-7.1.2.5-1.6.1">IETF<a href="#section-7.1.2.5-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.5-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.6">
+                <p id="section-7.1.1.5-1.6.1">IETF<a href="#section-7.1.1.5-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.5-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.5-1.8">
-                <p id="section-7.1.2.5-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.5</a><a href="#section-7.1.2.5-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.5-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.8">
+                <p id="section-7.1.1.5-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.5</a><a href="#section-7.1.1.5-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.5-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.5-1.10">
-                <p id="section-7.1.2.5-1.10.1">N/A<a href="#section-7.1.2.5-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.5-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.10">
+                <p id="section-7.1.1.5-1.10.1">N/A<a href="#section-7.1.1.5-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rfc9309-compliance-parameter">
-<section id="section-7.1.2.6">
+<section id="section-7.1.1.6">
             <h5 id="name-rfc9309-compliance-paramete">
-<a href="#section-7.1.2.6" class="section-number selfRef">7.1.2.6. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
+<a href="#section-7.1.1.6" class="section-number selfRef">7.1.1.6. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.6-1">
-              <dt id="section-7.1.2.6-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.6-1.2">
-                <p id="section-7.1.2.6-1.2.1">rfc9309-compliance<a href="#section-7.1.2.6-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.6-1">
+              <dt id="section-7.1.1.6-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.2">
+                <p id="section-7.1.1.6-1.2.1">rfc9309-compliance<a href="#section-7.1.1.6-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.6-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.6-1.4">
-                <p id="section-7.1.2.6-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.1.2.6-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.6-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.4">
+                <p id="section-7.1.1.6-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.1.1.6-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.6-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.6-1.6">
-                <p id="section-7.1.2.6-1.6.1">IETF<a href="#section-7.1.2.6-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.6-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.6">
+                <p id="section-7.1.1.6-1.6.1">IETF<a href="#section-7.1.1.6-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.6-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.6-1.8">
-                <p id="section-7.1.2.6-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.6</a><a href="#section-7.1.2.6-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.6-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.8">
+                <p id="section-7.1.1.6-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.6</a><a href="#section-7.1.1.6-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.6-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.6-1.10">
-                <p id="section-7.1.2.6-1.10.1">N/A<a href="#section-7.1.2.6-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.6-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.10">
+                <p id="section-7.1.1.6-1.10.1">N/A<a href="#section-7.1.1.6-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="trigger-parameter">
-<section id="section-7.1.2.7">
+<section id="section-7.1.1.7">
             <h5 id="name-trigger-parameter">
-<a href="#section-7.1.2.7" class="section-number selfRef">7.1.2.7. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
+<a href="#section-7.1.1.7" class="section-number selfRef">7.1.1.7. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.7-1">
-              <dt id="section-7.1.2.7-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.7-1.2">
-                <p id="section-7.1.2.7-1.2.1">trigger<a href="#section-7.1.2.7-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.7-1">
+              <dt id="section-7.1.1.7-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.2">
+                <p id="section-7.1.1.7-1.2.1">trigger<a href="#section-7.1.1.7-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.7-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.7-1.4">
-                <p id="section-7.1.2.7-1.4.1">Fetcher/Crawler<a href="#section-7.1.2.7-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.7-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.4">
+                <p id="section-7.1.1.7-1.4.1">Fetcher/Crawler<a href="#section-7.1.1.7-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.7-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.7-1.6">
-                <p id="section-7.1.2.7-1.6.1">IETF<a href="#section-7.1.2.7-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.7-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.6">
+                <p id="section-7.1.1.7-1.6.1">IETF<a href="#section-7.1.1.7-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.7-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.7-1.8">
-                <p id="section-7.1.2.7-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.7</a><a href="#section-7.1.2.7-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.7-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.8">
+                <p id="section-7.1.1.7-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.7</a><a href="#section-7.1.1.7-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.7-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.7-1.10">
-                <p id="section-7.1.2.7-1.10.1">N/A<a href="#section-7.1.2.7-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.7-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.10">
+                <p id="section-7.1.1.7-1.10.1">N/A<a href="#section-7.1.1.7-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="purpose-parameter">
-<section id="section-7.1.2.8">
+<section id="section-7.1.1.8">
             <h5 id="name-purpose-parameter">
-<a href="#section-7.1.2.8" class="section-number selfRef">7.1.2.8. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
+<a href="#section-7.1.1.8" class="section-number selfRef">7.1.1.8. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.8-1">
-              <dt id="section-7.1.2.8-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.8-1.2">
-                <p id="section-7.1.2.8-1.2.1">purpose<a href="#section-7.1.2.8-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.8-1">
+              <dt id="section-7.1.1.8-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.2">
+                <p id="section-7.1.1.8-1.2.1">purpose<a href="#section-7.1.1.8-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.8-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.8-1.4">
-                <p id="section-7.1.2.8-1.4.1">Intended use for the collected data<a href="#section-7.1.2.8-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.8-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.4">
+                <p id="section-7.1.1.8-1.4.1">Intended use for the collected data<a href="#section-7.1.1.8-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.8-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.8-1.6">
-                <p id="section-7.1.2.8-1.6.1">IETF<a href="#section-7.1.2.8-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.8-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.6">
+                <p id="section-7.1.1.8-1.6.1">IETF<a href="#section-7.1.1.8-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.8-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.8-1.8">
-                <p id="section-7.1.2.8-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.8</a><a href="#section-7.1.2.8-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.8-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.8">
+                <p id="section-7.1.1.8-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.8</a><a href="#section-7.1.1.8-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.8-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.8-1.10">
-                <p id="section-7.1.2.8-1.10.1">N/A<a href="#section-7.1.2.8-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.8-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.10">
+                <p id="section-7.1.1.8-1.10.1">N/A<a href="#section-7.1.1.8-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="targeted-content-parameter">
-<section id="section-7.1.2.9">
+<section id="section-7.1.1.9">
             <h5 id="name-targeted-content-parameter">
-<a href="#section-7.1.2.9" class="section-number selfRef">7.1.2.9. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
+<a href="#section-7.1.1.9" class="section-number selfRef">7.1.1.9. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.9-1">
-              <dt id="section-7.1.2.9-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.9-1.2">
-                <p id="section-7.1.2.9-1.2.1">targeted-content<a href="#section-7.1.2.9-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.9-1">
+              <dt id="section-7.1.1.9-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.2">
+                <p id="section-7.1.1.9-1.2.1">targeted-content<a href="#section-7.1.1.9-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.9-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.9-1.4">
-                <p id="section-7.1.2.9-1.4.1">Type of data your agent seeks<a href="#section-7.1.2.9-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.9-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.4">
+                <p id="section-7.1.1.9-1.4.1">Type of data your agent seeks<a href="#section-7.1.1.9-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.9-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.9-1.6">
-                <p id="section-7.1.2.9-1.6.1">IETF<a href="#section-7.1.2.9-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.9-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.6">
+                <p id="section-7.1.1.9-1.6.1">IETF<a href="#section-7.1.1.9-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.9-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.9-1.8">
-                <p id="section-7.1.2.9-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.9</a><a href="#section-7.1.2.9-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.9-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.8">
+                <p id="section-7.1.1.9-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.9</a><a href="#section-7.1.1.9-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.9-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.9-1.10">
-                <p id="section-7.1.2.9-1.10.1">N/A<a href="#section-7.1.2.9-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.9-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.10">
+                <p id="section-7.1.1.9-1.10.1">N/A<a href="#section-7.1.1.9-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rate-control-parameter">
-<section id="section-7.1.2.10">
+<section id="section-7.1.1.10">
             <h5 id="name-rate-control-parameter">
-<a href="#section-7.1.2.10" class="section-number selfRef">7.1.2.10. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
+<a href="#section-7.1.1.10" class="section-number selfRef">7.1.1.10. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.10-1">
-              <dt id="section-7.1.2.10-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.10-1.2">
-                <p id="section-7.1.2.10-1.2.1">rate-control<a href="#section-7.1.2.10-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.10-1">
+              <dt id="section-7.1.1.10-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.2">
+                <p id="section-7.1.1.10-1.2.1">rate-control<a href="#section-7.1.1.10-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.10-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.10-1.4">
-                <p id="section-7.1.2.10-1.4.1">How can an origin control your crawl rate<a href="#section-7.1.2.10-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.10-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.4">
+                <p id="section-7.1.1.10-1.4.1">How can an origin control your crawl rate<a href="#section-7.1.1.10-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.10-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.10-1.6">
-                <p id="section-7.1.2.10-1.6.1">IETF<a href="#section-7.1.2.10-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.10-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.6">
+                <p id="section-7.1.1.10-1.6.1">IETF<a href="#section-7.1.1.10-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.10-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.10-1.8">
-                <p id="section-7.1.2.10-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.10</a><a href="#section-7.1.2.10-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.10-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.8">
+                <p id="section-7.1.1.10-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.10</a><a href="#section-7.1.1.10-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.10-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.10-1.10">
-                <p id="section-7.1.2.10-1.10.1">N/A<a href="#section-7.1.2.10-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.10-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.10">
+                <p id="section-7.1.1.10-1.10.1">N/A<a href="#section-7.1.1.10-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rate-expectation-parameter">
-<section id="section-7.1.2.11">
+<section id="section-7.1.1.11">
             <h5 id="name-rate-expectation-parameter">
-<a href="#section-7.1.2.11" class="section-number selfRef">7.1.2.11. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
+<a href="#section-7.1.1.11" class="section-number selfRef">7.1.1.11. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.11-1">
-              <dt id="section-7.1.2.11-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.11-1.2">
-                <p id="section-7.1.2.11-1.2.1">rate-expectation<a href="#section-7.1.2.11-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.11-1">
+              <dt id="section-7.1.1.11-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.2">
+                <p id="section-7.1.1.11-1.2.1">rate-expectation<a href="#section-7.1.1.11-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.11-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.11-1.4">
-                <p id="section-7.1.2.11-1.4.1">Expected traffic and intensity<a href="#section-7.1.2.11-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.11-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.4">
+                <p id="section-7.1.1.11-1.4.1">Expected traffic and intensity<a href="#section-7.1.1.11-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.11-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.11-1.6">
-                <p id="section-7.1.2.11-1.6.1">IETF<a href="#section-7.1.2.11-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.11-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.6">
+                <p id="section-7.1.1.11-1.6.1">IETF<a href="#section-7.1.1.11-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.11-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.11-1.8">
-                <p id="section-7.1.2.11-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.11</a><a href="#section-7.1.2.11-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.11-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.8">
+                <p id="section-7.1.1.11-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.11</a><a href="#section-7.1.1.11-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.11-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.11-1.10">
-                <p id="section-7.1.2.11-1.10.1">N/A<a href="#section-7.1.2.11-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.11-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.10">
+                <p id="section-7.1.1.11-1.10.1">N/A<a href="#section-7.1.1.11-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="known-urls-parameter">
-<section id="section-7.1.2.12">
+<section id="section-7.1.1.12">
             <h5 id="name-known-urls-parameter">
-<a href="#section-7.1.2.12" class="section-number selfRef">7.1.2.12. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
+<a href="#section-7.1.1.12" class="section-number selfRef">7.1.1.12. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.12-1">
-              <dt id="section-7.1.2.12-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.12-1.2">
-                <p id="section-7.1.2.12-1.2.1">known-urls<a href="#section-7.1.2.12-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.12-1">
+              <dt id="section-7.1.1.12-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.2">
+                <p id="section-7.1.1.12-1.2.1">known-urls<a href="#section-7.1.1.12-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.12-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.12-1.4">
-                <p id="section-7.1.2.12-1.4.1">Predictable endpoint accessed<a href="#section-7.1.2.12-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.12-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.4">
+                <p id="section-7.1.1.12-1.4.1">Predictable endpoint accessed<a href="#section-7.1.1.12-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.12-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.12-1.6">
-                <p id="section-7.1.2.12-1.6.1">IETF<a href="#section-7.1.2.12-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.12-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.6">
+                <p id="section-7.1.1.12-1.6.1">IETF<a href="#section-7.1.1.12-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.12-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.12-1.8">
-                <p id="section-7.1.2.12-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.12</a><a href="#section-7.1.2.12-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.12-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.8">
+                <p id="section-7.1.1.12-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.12</a><a href="#section-7.1.1.12-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.12-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.12-1.10">
-                <p id="section-7.1.2.12-1.10.1">N/A<a href="#section-7.1.2.12-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.12-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.10">
+                <p id="section-7.1.1.12-1.10.1">N/A<a href="#section-7.1.1.12-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="keys-parameter">
-<section id="section-7.1.2.13">
+<section id="section-7.1.1.13">
             <h5 id="name-keys-parameter">
-<a href="#section-7.1.2.13" class="section-number selfRef">7.1.2.13. </a><a href="#name-keys-parameter" class="section-name selfRef">Keys Parameter</a>
+<a href="#section-7.1.1.13" class="section-number selfRef">7.1.1.13. </a><a href="#name-keys-parameter" class="section-name selfRef">Keys Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.2.13-1">
-              <dt id="section-7.1.2.13-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.13-1.2">
-                <p id="section-7.1.2.13-1.2.1">keys<a href="#section-7.1.2.13-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.13-1">
+              <dt id="section-7.1.1.13-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.2">
+                <p id="section-7.1.1.13-1.2.1">keys<a href="#section-7.1.1.13-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.13-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.13-1.4">
-                <p id="section-7.1.2.13-1.4.1">JWKS Endpoint<a href="#section-7.1.2.13-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.13-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.4">
+                <p id="section-7.1.1.13-1.4.1">JWKS Endpoint<a href="#section-7.1.1.13-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.13-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.13-1.6">
-                <p id="section-7.1.2.13-1.6.1">IETF<a href="#section-7.1.2.13-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.13-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.6">
+                <p id="section-7.1.1.13-1.6.1">IETF<a href="#section-7.1.1.13-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.13-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.13-1.8">
-                <p id="section-7.1.2.13-1.8.1"><a href="#signature-agent-parameter-keys" class="auto internal xref">Section 3.13</a><a href="#section-7.1.2.13-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.13-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.8">
+                <p id="section-7.1.1.13-1.8.1"><a href="#signature-agent-parameter-keys" class="auto internal xref">Section 3.13</a><a href="#section-7.1.1.13-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.2.13-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.2.13-1.10">
-                <p id="section-7.1.2.13-1.10.1">N/A<a href="#section-7.1.2.13-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.1.1.13-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.10">
+                <p id="section-7.1.1.13-1.10.1">N/A<a href="#section-7.1.1.13-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2184,6 +2225,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="ABNF">[ABNF]</dt>
+        <dd>
+<span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5234">https://www.rfc-editor.org/rfc/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="AIPREF-VOCAB">[AIPREF-VOCAB]</dt>
         <dd>
 <span class="refAuthor">Keller, P.</span> and <span class="refAuthor">M. Thomson</span>, <span class="refTitle">"A Vocabulary For Expressing AI Usage Preferences"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-aipref-vocab-03</span>, <time datetime="2025-09-04" class="refDate">4 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-03">https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-03</a>&gt;</span>. </dd>
@@ -2241,6 +2286,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="DATAURL">[DATAURL]</dt>
+        <dd>
+<span class="refAuthor">Masinter, L.</span>, <span class="refTitle">"The "data" URL scheme"</span>, <span class="seriesInfo">RFC 2397</span>, <span class="seriesInfo">DOI 10.17487/RFC2397</span>, <time datetime="1998-08" class="refDate">August 1998</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2397">https://www.rfc-editor.org/rfc/rfc2397</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OAUTH-BEARER">[OAUTH-BEARER]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span> and <span class="refAuthor">D. Hardt</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: Bearer Token Usage"</span>, <span class="seriesInfo">RFC 6750</span>, <span class="seriesInfo">DOI 10.17487/RFC6750</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6750">https://www.rfc-editor.org/rfc/rfc6750</a>&gt;</span>. </dd>
@@ -2258,8 +2307,12 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ROBOTSTXT">[ROBOTSTXT]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Koster, M.</span>, <span class="refAuthor">Illyes, G.</span>, <span class="refAuthor">Zeller, H.</span>, and <span class="refAuthor">L. Sassman</span>, <span class="refTitle">"Robots Exclusion Protocol"</span>, <span class="seriesInfo">RFC 9309</span>, <span class="seriesInfo">DOI 10.17487/RFC9309</span>, <time datetime="2022-09" class="refDate">September 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9309">https://www.rfc-editor.org/rfc/rfc9309</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="UTF8">[UTF8]</dt>
+      <dd>
+<span class="refAuthor">Yergeau, F.</span>, <span class="refTitle">"UTF-8, a transformation format of ISO 10646"</span>, <span class="seriesInfo">STD 63</span>, <span class="seriesInfo">RFC 3629</span>, <span class="seriesInfo">DOI 10.17487/RFC3629</span>, <time datetime="2003-11" class="refDate">November 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3629">https://www.rfc-editor.org/rfc/rfc3629</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
