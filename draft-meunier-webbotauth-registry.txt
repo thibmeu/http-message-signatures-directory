@@ -5,7 +5,7 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                T. Meunier
 Intended status: Informational                                Cloudflare
-Expires: 13 March 2026                                  9 September 2025
+Expires: 19 March 2026                                 15 September 2025
 
 
            Registry and Signature Agent card for Web bot auth
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2026.
+   This Internet-Draft will expire on 19 March 2026.
 
 Copyright Notice
 
@@ -172,8 +172,10 @@ Table of Contents
 }
 
    Unless otherwise specified, all parameters in this document are
-   OPTIONAL.  Unknown parameters MUST be ignored.  All string values are
-   UTF-8.
+   OPTIONAL.  There MUST be at least one parameter set.
+
+   Parameters for which the value is unknown MUST be ignored.  All
+   string values are UTF-8.
 
 3.1.  Name
 
@@ -197,6 +199,9 @@ Table of Contents
 
    The logo parameter provides an image reference for visual
    identification.
+
+   TODO: Recommendation for size and format, if there is a clear
+   consensus or reference we can point to.
 
    Example
 
@@ -259,7 +264,7 @@ Table of Contents
 3.9.  Targeted content
 
    The targeted-content parameter specifies the type of data the agent
-   seeks.
+   seeks.  Its format is arbitrary UTF-8 encoded string.
 
    Example
 
@@ -301,6 +306,10 @@ Table of Contents
 
    The known-urls parameter lists predictable endpoints accessed by the
    agent.
+
+   These URLs may be absolute URLs like https://example.com/index.html.
+   They could be relative path like /ads.txt.  Or they can use * as
+   wildcard such as *.png.
 
    Example
 
@@ -366,7 +375,8 @@ Table of Contents
 5.  Security Considerations
 
    Malicious actors may put properties which are not theirs in the
-   registry.  Client SHOULD verify signature if they are present.
+   registry.  If signatures are present, clients MUST verify them.
+   Clients SHOULD reject cards with invalid signatures.
 
 6.  Privacy Considerations
 
