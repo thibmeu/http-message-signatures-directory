@@ -101,6 +101,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
 {
   "name": "Example Bot",
   "contact": "bot-support@example.com",
+  "about": "https://example.com/bot/about.html",
   "logo": "https://example.com/",
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
@@ -146,6 +147,16 @@ channel.
 Example
 * bot-support@example.com
 * https://example.com/contact
+
+## About {#signature-agent-parameter-about}
+
+The `about` parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.
+
+Only http, https or data:text/plain are allowed.
+
+Example
+* https://example.com/bot/about.html
+* data:text/plain,The Example bot is about providing an example.
 
 ## Logo {#signature-agent-parameter-logo}
 
@@ -433,6 +444,23 @@ in {{signature-agent-card}} in this registry.
 
 **Reference:**
 : {{signature-agent-parameter-contact}}
+
+**Notes:**
+: N/A
+
+#### About Parameter
+
+**Parameter Name:**
+: about
+
+**Parameter Description:**
+: Describes what the bot does inline or with a link to an external resource
+
+**Change Controller:**
+: IETF
+
+**Reference:**
+: {{signature-agent-parameter-about}}
 
 **Notes:**
 : N/A
