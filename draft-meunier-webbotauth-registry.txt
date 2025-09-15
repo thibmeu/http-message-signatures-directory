@@ -79,17 +79,18 @@ Table of Contents
    3.  Signature Agent Card
      3.1.  Name
      3.2.  Contact
-     3.3.  Logo
-     3.4.  Expected user agent
-     3.5.  robots.txt product token
-     3.6.  robots.txt compliance
-     3.7.  Trigger
-     3.8.  Purpose
-     3.9.  Targeted content
-     3.10. Rate control
-     3.11. Rate expectation
-     3.12. Known URLs
-     3.13. Keys
+     3.3.  About
+     3.4.  Logo
+     3.5.  Expected user agent
+     3.6.  robots.txt product token
+     3.7.  robots.txt compliance
+     3.8.  Trigger
+     3.9.  Purpose
+     3.10. Targeted content
+     3.11. Rate control
+     3.12. Rate expectation
+     3.13. Known URLs
+     3.14. Keys
    4.  Discovery
      4.1.  Formal Syntax
      4.2.  Out-of-band communication between client and origin
@@ -150,6 +151,7 @@ Table of Contents
 {
   "name": "Example Bot",
   "contact": "bot-support@example.com",
+  "about": "https://example.com/bot/about.html",
   "logo": "https://example.com/",
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
@@ -195,7 +197,17 @@ Table of Contents
 
    Example * bot-support@example.com * https://example.com/contact
 
-3.3.  Logo
+3.3.  About
+
+   The about parameter provides inline content or a web page describing
+   the bot: e.g. what does it do, how it handles data it fetches.
+
+   Only http, https or data:text/plain are allowed.
+
+   Example * https://example.com/bot/about.html * data:text/plain,The
+   Example bot is about providing an example.
+
+3.4.  Logo
 
    The logo parameter provides an image reference for visual
    identification.
@@ -209,7 +221,7 @@ Table of Contents
 
    *  https://example.com/logo.png
 
-3.4.  Expected user agent
+3.5.  Expected user agent
 
    The expected-user-agent parameter specifies one or more User-Agent
    strings as defined in Section 10.1.5 of [HTTP] or prefix matches.
@@ -219,7 +231,7 @@ Table of Contents
 
    *  Mozilla/5.0 ExampleBot
 
-3.5.  robots.txt product token
+3.6.  robots.txt product token
 
    The rfc9309-product-token parameter specifies the product token used
    for robots.txt directives per Section 2.2.1 of [ROBOTSTXT].
@@ -228,7 +240,7 @@ Table of Contents
 
    *  ExampleBot
 
-3.6.  robots.txt compliance
+3.7.  robots.txt compliance
 
    The rfc9309-compliance parameter lists directives from robots.txt
    that the agent implements.
@@ -239,7 +251,7 @@ Table of Contents
 
    *  ["User-Agent", "Disallow", "CrawlDelay"]
 
-3.7.  Trigger
+3.8.  Trigger
 
    The trigger parameter indicates the operational mode of the agent.
 
@@ -249,7 +261,7 @@ Table of Contents
 
    2.  "crawler" - autonomous scanning
 
-3.8.  Purpose
+3.9.  Purpose
 
    The purpose parameter describes the intended use of collected data.
    Values SHOULD be drawn from a controlled vocabulary, such as
@@ -261,7 +273,7 @@ Table of Contents
 
    *  tdm
 
-3.9.  Targeted content
+3.10.  Targeted content
 
    The targeted-content parameter specifies the type of data the agent
    seeks.  Its format is arbitrary UTF-8 encoded string.
@@ -274,7 +286,7 @@ Table of Contents
 
    *  Ads verification
 
-3.10.  Rate control
+3.11.  Rate control
 
    The rate-control parameter indicates how origins can influence the
    agent’s request rate.
@@ -289,7 +301,7 @@ Table of Contents
 
    *  429 + [RATELIMIT-HEADER]
 
-3.11.  Rate expectation
+3.12.  Rate expectation
 
    The rate-expectation parameter specifies anticipated request volume
    or burstiness.
@@ -302,7 +314,7 @@ Table of Contents
 
    *  Spikes during reindexing
 
-3.12.  Known URLs
+3.13.  Known URLs
 
    The known-urls parameter lists predictable endpoints accessed by the
    agent.
@@ -321,7 +333,7 @@ Table of Contents
 
    *  /index.html
 
-3.13.  Keys
+3.14.  Keys
 
    The keys parameter contains a JWKS as defined in Section 5 of [JWK].
 
@@ -487,11 +499,12 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.1.3.  Logo Parameter
+7.1.1.3.  About Parameter
 
-   *Parameter Name:*  logo
+   *Parameter Name:*  about
 
-   *Parameter Description:*  Image for a quick visual identification
+   *Parameter Description:*  Describes what the bot does inline or with
+      a link to an external resource
 
    *Change Controller:*  IETF
 
@@ -499,11 +512,11 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.1.4.  Expected User Agent Parameter
+7.1.1.4.  Logo Parameter
 
-   *Parameter Name:*  expected-user-agent
+   *Parameter Name:*  logo
 
-   *Parameter Description:*  String or fragment patterns
+   *Parameter Description:*  Image for a quick visual identification
 
    *Change Controller:*  IETF
 
@@ -511,7 +524,19 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.1.5.  RFC9309 Product Token Parameter
+7.1.1.5.  Expected User Agent Parameter
+
+   *Parameter Name:*  expected-user-agent
+
+   *Parameter Description:*  String or fragment patterns
+
+   *Change Controller:*  IETF
+
+   *Reference:*  Section 3.5
+
+   *Notes:*  N/A
+
+7.1.1.6.  RFC9309 Product Token Parameter
 
    *Parameter Name:*  rfc9309-product-token
 
@@ -520,11 +545,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.5
+   *Reference:*  Section 3.6
 
    *Notes:*  N/A
 
-7.1.1.6.  RFC9309 Compliance Parameter
+7.1.1.7.  RFC9309 Compliance Parameter
 
    *Parameter Name:*  rfc9309-compliance
 
@@ -533,11 +558,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.6
+   *Reference:*  Section 3.7
 
    *Notes:*  N/A
 
-7.1.1.7.  Trigger Parameter
+7.1.1.8.  Trigger Parameter
 
    *Parameter Name:*  trigger
 
@@ -545,11 +570,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.7
+   *Reference:*  Section 3.8
 
    *Notes:*  N/A
 
-7.1.1.8.  Purpose Parameter
+7.1.1.9.  Purpose Parameter
 
    *Parameter Name:*  purpose
 
@@ -557,11 +582,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.8
+   *Reference:*  Section 3.9
 
    *Notes:*  N/A
 
-7.1.1.9.  Targeted Content Parameter
+7.1.1.10.  Targeted Content Parameter
 
    *Parameter Name:*  targeted-content
 
@@ -569,11 +594,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.9
+   *Reference:*  Section 3.10
 
    *Notes:*  N/A
 
-7.1.1.10.  Rate control Parameter
+7.1.1.11.  Rate control Parameter
 
    *Parameter Name:*  rate-control
 
@@ -581,11 +606,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.10
+   *Reference:*  Section 3.11
 
    *Notes:*  N/A
 
-7.1.1.11.  Rate expectation Parameter
+7.1.1.12.  Rate expectation Parameter
 
    *Parameter Name:*  rate-expectation
 
@@ -593,11 +618,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.11
+   *Reference:*  Section 3.12
 
    *Notes:*  N/A
 
-7.1.1.12.  Known URLs Parameter
+7.1.1.13.  Known URLs Parameter
 
    *Parameter Name:*  known-urls
 
@@ -605,11 +630,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.12
+   *Reference:*  Section 3.13
 
    *Notes:*  N/A
 
-7.1.1.13.  Keys Parameter
+7.1.1.14.  Keys Parameter
 
    *Parameter Name:*  keys
 
@@ -617,7 +642,7 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.13
+   *Reference:*  Section 3.14
 
    *Notes:*  N/A
 
