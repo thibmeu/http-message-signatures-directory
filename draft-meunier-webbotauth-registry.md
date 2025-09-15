@@ -146,6 +146,8 @@ Example
 
 The `about` parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.
 
+Only http, https or data:text/plain are allowed.
+
 Example
 * https://example.com/bot/about.html
 * data:text/plain,The Example bot is about providing an example.
@@ -390,7 +392,7 @@ in {{signature-agent-card}} in this registry.
 : about
 
 **Parameter Description:**
-: Describes what the bot does
+: Describes what the bot does inline or with a link to an external resource
 
 **Change Controller:**
 : IETF
