@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-14T01:55:28.692030+00:00",
+  "timestamp": "2025-09-16T01:48:08.675068+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -959,7 +959,7 @@
       "id": "I_kwDOOXJyWM7LGDtu",
       "title": "Registry format should support empty lines and comment",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/63",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -968,8 +968,8 @@
       ],
       "body": "This is a consideration. A registry could include comment lines and empty lines.\n\n```\n### The examples\nhttps://example.com/.well-known/http-message-signatures-directory\n\n### Even more examples\nhttps://more.example.com/jwks.json\nhttps://more.more.example.com/path/to/signature/agent/card.json\n```",
       "createdAt": "2025-09-11T16:53:33Z",
-      "updatedAt": "2025-09-13T07:35:54Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-15T13:08:07Z",
+      "closedAt": "2025-09-15T13:08:07Z",
       "comments": []
     }
   ],
@@ -2531,7 +2531,7 @@
       "id": "PR_kwDOOXJyWM6nYPTW",
       "title": "Address comments for registry draft",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/59",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2542,17 +2542,19 @@
       ],
       "body": "Add precisions about known URLs\r\nAdd placeholder for image size\r\n\r\nOn recommendation from Bill\r\n\r\ncc @punkeel for review",
       "createdAt": "2025-09-08T12:51:15Z",
-      "updatedAt": "2025-09-09T07:12:47Z",
+      "updatedAt": "2025-09-15T09:31:05Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "abc786361d679f123851f124998d65a2675706c7",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-bill-comment",
       "headRefOid": "7b35a97490be5c279e581133da864781eb51c353",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-09-15T09:31:02Z",
+      "mergedAt": "2025-09-15T09:31:02Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "0ecbb763ed01f4a9f19da8f725cd5458384beda1"
+      },
       "comments": [],
       "reviews": []
     },
@@ -2561,26 +2563,28 @@
       "id": "PR_kwDOOXJyWM6oVK0t",
       "title": "Add an about-url field",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/64",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ulaskira",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [
         "enhancement"
       ],
       "body": "",
       "createdAt": "2025-09-12T22:00:40Z",
-      "updatedAt": "2025-09-13T15:46:37Z",
+      "updatedAt": "2025-09-15T15:45:54Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "e63b5aa8185ad82b4ec341928752250fafb81a6a",
       "headRepository": "ulaskira/http-message-signatures-directory",
       "headRefName": "ulas/abouturl",
-      "headRefOid": "6c89edf729bdc90a34433375b8941dd6afeee6f4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "e68486f97c4f0444c4cfb6178bb5e6d51b747256",
+      "closedAt": "2025-09-15T15:45:54Z",
+      "mergedAt": "2025-09-15T15:45:54Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "76f2e0c62fc0549eb58f4e198014c41e844f25ef"
+      },
       "comments": [
         {
           "author": "thibmeu",
@@ -2591,20 +2595,88 @@
         },
         {
           "author": "ulaskira",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I am open to calling this \"description\" and allowing `data:` as a type. Does that work?",
           "createdAt": "2025-09-13T15:46:37Z",
           "updatedAt": "2025-09-13T15:46:37Z"
+        },
+        {
+          "author": "ulaskira",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "On second thought, I'd love to keep the \"about\" name but remove \"-url\" and allow data: as a type.",
+          "createdAt": "2025-09-14T03:19:26Z",
+          "updatedAt": "2025-09-14T03:19:26Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "`about` is ok for me for now. The draft is still an individual draft, not adopted by a WG, and therefore is likely to receive more review/change over time.\r\n\r\nFor the registration, you should also add the parameter under the `Initial registry content` section https://github.com/thibmeu/http-message-signatures-directory/blob/main/draft-meunier-webbotauth-registry.md?plain=1#L361-L376",
+          "createdAt": "2025-09-14T06:27:18Z",
+          "updatedAt": "2025-09-14T06:27:18Z"
+        },
+        {
+          "author": "ulaskira",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Cool, updated.",
+          "createdAt": "2025-09-14T20:20:35Z",
+          "updatedAt": "2025-09-14T20:20:35Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Thanks for the PR and updates @ulaskira ",
+          "createdAt": "2025-09-15T15:45:27Z",
+          "updatedAt": "2025-09-15T15:45:27Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7AMpGE",
+          "commit": {
+            "abbreviatedOid": "0a44ab2"
+          },
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-15T13:10:53Z",
+          "updatedAt": "2025-09-15T13:13:23Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "or provides a link to an external resource",
+              "createdAt": "2025-09-15T13:10:53Z",
+              "updatedAt": "2025-09-15T13:13:23Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "mind explicitly allowing ONLY the `http` / `https` / `data:text/plain,` schemes? (to make it clear this is not intended to store full HTML pages)",
+              "createdAt": "2025-09-15T13:12:10Z",
+              "updatedAt": "2025-09-15T13:13:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7APgmh",
+          "commit": {
+            "abbreviatedOid": "e68486f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-15T15:45:34Z",
+          "updatedAt": "2025-09-15T15:45:34Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 65,
       "id": "PR_kwDOOXJyWM6oXyiV",
       "title": "Refine the discovery section of the registry draft",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/65",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2615,13 +2687,59 @@
       ],
       "body": "* Define a first formal syntax\r\n* Allow for empty line and comments\r\n* Improve the discovery wording for out of band and public list\r\n* Remove `Signature-Agent-Card` header until further discussions\r\n\r\nClose #63\r\n\r\n@punkeel for review",
       "createdAt": "2025-09-13T07:37:33Z",
-      "updatedAt": "2025-09-13T07:37:33Z",
+      "updatedAt": "2025-09-15T13:08:10Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "e63b5aa8185ad82b4ec341928752250fafb81a6a",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "registry-refine-format",
       "headRefOid": "27f658a1c329030cfd25e21a089dd19ddf82d2cb",
+      "closedAt": "2025-09-15T13:08:06Z",
+      "mergedAt": "2025-09-15T13:08:06Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "f0a4b5e146e156d070afab909598944a7736106e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7AMjeR",
+          "commit": {
+            "abbreviatedOid": "27f658a"
+          },
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-15T13:05:11Z",
+          "updatedAt": "2025-09-15T13:05:11Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 66,
+      "id": "PR_kwDOOXJyWM6oqdDS",
+      "title": "Add new implementations of architecture drafts",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/66",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Adding implementation of cyberdomu and HUMAN\r\nBoth in Python",
+      "createdAt": "2025-09-15T15:24:03Z",
+      "updatedAt": "2025-09-15T15:24:03Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "f0a4b5e146e156d070afab909598944a7736106e",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-new-implementations",
+      "headRefOid": "3962cf23dd622f870ced346ae1c86222f255974b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
