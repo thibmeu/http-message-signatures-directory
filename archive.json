@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-16T01:48:08.675068+00:00",
+  "timestamp": "2025-09-21T01:58:44.597479+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -970,6 +970,22 @@
       "createdAt": "2025-09-11T16:53:33Z",
       "updatedAt": "2025-09-15T13:08:07Z",
       "closedAt": "2025-09-15T13:08:07Z",
+      "comments": []
+    },
+    {
+      "number": 67,
+      "id": "I_kwDOOXJyWM7M1eAO",
+      "title": "Remove rfc7638 requirement from `keyid` and make it match `kid`",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/67",
+      "state": "OPEN",
+      "author": "sandormajor",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Both [HTTP Message Signatures for automated traffic Architecture](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html) and [HTTP Message Signatures Directory](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html) says\n\n> `keyid` MUST be a base64url JWK SHA-256 Thumbprint as defined in [Section 3.2](https://rfc-editor.org/rfc/rfc7638#section-3.2) of [[JWK-THUMBPRINT](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-THUMBPRINT)] for RSA and EC, and in [Appendix A.3](https://rfc-editor.org/rfc/rfc8037#appendix-A.3) of [[JWK-OKP](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-OKP)] for ed25519\n\nI would change \"MUST\" here to \"MAY\". Key management systems often have IDs for their keys already so they could just print them here from a DB, instead of constructing and serializing a temporary JWK into a json and hashing that per rfc7638, then adding it back to the structure and serializing again. The Tink library also seems to have a notion of a [Key ID](https://developers.google.com/tink/wire-format#tink_output_prefix), and I also like that it's 4 bytes, instead of 32 like the SHA256. People might also use dates or other examples used in the rfc7638 or rfc9421, I think that's fine as long as it helps finding the key in the dictionary.\n\nThe specs could also say that `keyid` and `kid` should match between an entry of the JWKS and the`Signature-Input`, to speed up verification, otherwise verifiers might drop the request.",
+      "createdAt": "2025-09-20T04:11:00Z",
+      "updatedAt": "2025-09-20T04:11:00Z",
+      "closedAt": null,
       "comments": []
     }
   ],
