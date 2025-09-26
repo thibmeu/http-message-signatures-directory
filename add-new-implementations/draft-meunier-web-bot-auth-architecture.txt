@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                         15 September 2025
-Expires: 19 March 2026
+Intended status: Informational                         26 September 2025
+Expires: 30 March 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 March 2026.
+   This Internet-Draft will expire on 30 March 2026.
 
 Copyright Notice
 
@@ -771,6 +771,9 @@ B.1.  Clients
 
    *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
       (TypeScript)
+
+   *  Puppeteer script (https://github.com/stytchauth/web-bot-auth-
+      example) (JavaScript)
 
    *  Guzzle middleware (https://github.com/olipayne/guzzle-web-bot-
       auth-middleware) (PHP)
