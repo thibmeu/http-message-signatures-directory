@@ -572,6 +572,8 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
 
+* [Puppeteer script](https://github.com/stytchauth/web-bot-auth-example) (JavaScript)
+
 * [Guzzle middleware](https://github.com/olipayne/guzzle-web-bot-auth-middleware) (PHP)
 
 * [Python script](https://zenn.dev/oymk/articles/944069e5eddc27) (Python)
