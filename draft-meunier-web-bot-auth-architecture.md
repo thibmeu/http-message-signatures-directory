@@ -562,7 +562,7 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
 
 # Implementations
 
-This draft has a couple of implementations. A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
+This draft has a couple of public implementations. A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
 
 It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 
@@ -572,9 +572,19 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
 
+* [Puppeteer script](https://github.com/stytchauth/web-bot-auth-example) (JavaScript)
+
 * [Guzzle middleware](https://github.com/olipayne/guzzle-web-bot-auth-middleware) (PHP)
 
-* [Python script](https://zenn.dev/oymk/articles/944069e5eddc27)
+* [Python script](https://zenn.dev/oymk/articles/944069e5eddc27) (Python)
+
+* [Bot-Authentication](https://github.com/cyberstormdotmu/bot-authentication) (Python)
+
+* [HTPie plugin](https://github.com/cloudflare/web-bot-auth) (Python)
+
+* [Web scrapers (scrapy/crawl4ai)](https://github.com/cyberstormdotmu/bot-authentication) (Python)
+
+* [HUMAN Verified AI Agents](https://github.com/HumanSecurity/human-verified-ai-agent) (Python)
 
 * [Linzer](https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research_spec.rb) (Ruby)
 
@@ -585,6 +595,8 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 * [Caddy plugin](https://github.com/cloudflare/web-bot-auth) (Go)
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+* [Apache module](https://github.com/garyillyes/web-bot-auth-apache) (C)
 
 ## Test vectors
 
