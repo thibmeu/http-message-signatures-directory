@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                         26 September 2025
-Expires: 30 March 2026
+Intended status: Informational                         29 September 2025
+Expires: 2 April 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 March 2026.
+   This Internet-Draft will expire on 2 April 2026.
 
 Copyright Notice
 
@@ -784,6 +784,8 @@ B.1.  Clients
    *  Bot-Authentication (https://github.com/cyberstormdotmu/bot-
       authentication) (Python)
 
+   *  HTPie plugin (https://github.com/cloudflare/web-bot-auth) (Python)
+
    *  Web scrapers (scrapy/crawl4ai)
       (https://github.com/cyberstormdotmu/bot-authentication) (Python)
 
@@ -802,6 +804,9 @@ B.2.  Servers
 
    *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
       (TypeScript)
+
+   *  Apache module (https://github.com/garyillyes/web-bot-auth-apache)
+      (C)
 
 B.3.  Test vectors
 
