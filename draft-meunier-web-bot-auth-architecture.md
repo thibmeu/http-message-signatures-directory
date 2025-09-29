@@ -580,6 +580,8 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Bot-Authentication](https://github.com/cyberstormdotmu/bot-authentication) (Python)
 
+* [HTPie plugin](https://github.com/cloudflare/web-bot-auth) (Python)
+
 * [Web scrapers (scrapy/crawl4ai)](https://github.com/cyberstormdotmu/bot-authentication) (Python)
 
 * [HUMAN Verified AI Agents](https://github.com/HumanSecurity/human-verified-ai-agent) (Python)
@@ -593,6 +595,8 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 * [Caddy plugin](https://github.com/cloudflare/web-bot-auth) (Go)
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+* [Apache module](https://github.com/garyillyes/web-bot-auth-apache) (C)
 
 ## Test vectors
 
