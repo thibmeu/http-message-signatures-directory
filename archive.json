@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-28T01:59:31.035360+00:00",
+  "timestamp": "2025-09-30T01:48:09.937282+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1026,12 +1026,22 @@
       "author": "sandormajor",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "question"
+      ],
       "body": "I ran across [this article](https://chrisleverseo.com/blog/how-to-fix-shopify-crawl-issues-in-screaming-frog-and-sitebulb-using-web-bot-auth/). This might be the first attempt of someone implementing delegation.\n\nShopify [uses](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store) WBA to allow crawlers back to stores hosted by Shopify itself. This doesn't seem to be better than using oldschool API keys, but introduces a lot of unnecessary payload and extra hops to fetch Shopify's own public key (that will not change ever anyway because everyone will hardcode the signatures in the requests of their 3P tools).\n\nI think WBA's goal in a scenario like this should be to identify the crawler (e.g. \"screamingfrog.co.uk\", or \"sitebulb.com\") and not Shopify itself. The user could then select on the Shopify UI which bots to allow, without all the manual copy-pasting and hardcoding signatures. The signatures meant to be short lived and ideally used once. The signatures issued by Shopify have no expiry and no nonce, a leaked signature can be used forever to crawl a store. Even if the user manually rotates the signatures, thinking it's kind of a token, the verification will succeed until the public key is rotated. And the signing key can leak too, so rotating it is required. WBA provides a nice key-publishing mechanism through the .well-known file, but updating that now would mean that Shopify will need to break all the integrations of all their customers. All users would need to go back and manually generate a new signature using the new key and update them at all their 3Ps. The `exp` of [their key](https://www.shopify.com/.well-known/http-message-signatures-directory) is July next year so they might have a breakage around that time.\n\nI think to avoid such misuse the spec should say that the signing agent MUST rotate the keys at least daily, and signatures MUST have an expiry shorter than X \u2013\u00a0e.g. 5 minutes.\n\nIf the goal of Shopify here was to kind of \"approve\" a request sent by someone else, then issuing a certificate for the crawler and then letting the crawler sign the request with their own signing key would be a better approach, but I'm not sure if that's even necessary here.\n\nEdit: There might be some expiry on the signature, I realized it's masked out on the screenshot, and the [docs](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store#:~:text=Set%20signatures%20to%20expire%20after%20a%20specific%20period.%20The%20maximum%20period%20is%203%20months) say \"Set signatures to expire after a specific period. The maximum period is 3 months\". Which is a bit odd because the users will need to manually rotate these signatures. And I think 3 months is too long.",
       "createdAt": "2025-09-24T19:46:19Z",
-      "updatedAt": "2025-09-26T00:49:06Z",
+      "updatedAt": "2025-09-29T16:17:01Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "The initial intent of WBA is indeed to have crawler self-identifying themselves.\n\nUsing Signature-Agent as a convenient way to distribute signatures and an allowed registration mechanism is quite interesting indeed. In a way, it works similar to webhook authentication. There is an authentication you'll need to handle in the future, and instead of an arbitrary bearer you use HTTP Sigs to carry this.\n\nTwo actions that could help down the line:\n* [Key rotation is a recommendation](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html#name-key-rotation). I don't think we can actually make it mandatory with a MUST, but it'd be worth highlighting in a best practice document\n* Have a clear [delegation story](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html#name-delegation-and-chaining). The directory draft provides a couple of examples, but does not have a preferred mechanism. I think it would help here. Again, part of a best practice document.\n\nSide: Both do seem relevant for wimse working group as well.",
+          "createdAt": "2025-09-29T16:16:57Z",
+          "updatedAt": "2025-09-29T16:16:57Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -2794,13 +2804,13 @@
       ],
       "body": "Adding implementation of cyberdomu and HUMAN\r\nBoth in Python",
       "createdAt": "2025-09-15T15:24:03Z",
-      "updatedAt": "2025-09-26T12:33:57Z",
+      "updatedAt": "2025-09-29T12:29:30Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f0a4b5e146e156d070afab909598944a7736106e",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-new-implementations",
-      "headRefOid": "e6489dd812a30767705936ebe3fb01c3619d337d",
+      "headRefOid": "b88adacd7732179a646d978a2b9fc4f1db90b40a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
