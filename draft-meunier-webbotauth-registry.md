@@ -112,7 +112,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
-  "keys": {
+  "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
     "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -120,7 +120,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
     "use": "sig",
     "nbf": 1712793600,
     "exp": 1715385600
-  }
+  }]
 }
 ~~~
 
