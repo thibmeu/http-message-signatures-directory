@@ -99,10 +99,10 @@ This section describes Signature Agent Card, a JSON object containing parameters
 
 ~~~
 {
-  "name": "Example Bot",
-  "contact": "bot-support@example.com",
-  "about": "https://example.com/bot/about.html",
-  "logo": "https://example.com/",
+  "client_name": "Example Bot",
+  "client_uri": "https://example.com/bot/about.html",
+  "logo_uri": "https://example.com/",
+  "contacts": ["mailto:bot-support@example.com"],
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
   "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
@@ -130,44 +130,46 @@ There MUST be at least one parameter set.
 Parameters for which the value is unknown MUST be ignored.
 All string values are UTF-8.
 
-## Name {#signature-agent-parameter-name}
+## Client Name {#signature-agent-parameter-name}
 
-The `name` parameter provides a friendly identifier for the Signature Agent.
-
-Example
-
-* ExampleBot
-* My remote browser company
-
-## Contact {#signature-agent-parameter-contact}
-
-The `contact` parameter provides an email address or reliable communication
-channel.
+The `client_name` parameter provides a friendly identifier for the Signature Agent.
 
 Example
-* bot-support@example.com
-* https://example.com/contact
 
-## About {#signature-agent-parameter-about}
+* `ExampleBot`
+* `My remote browser company`
 
-The `about` parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.
+## Client URI {#signature-agent-parameter-about}
+
+The `client_uri` parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.
 
 Only http, https or data:text/plain are allowed.
 
 Example
-* https://example.com/bot/about.html
-* data:text/plain,The Example bot is about providing an example.
 
-## Logo {#signature-agent-parameter-logo}
+* `https://example.com/bot/about.html`
+* `data:text/plain,The Example bot is about providing an example.`
 
-The `logo` parameter provides an image reference for visual identification.
+## Contacts {#signature-agent-parameter-contact}
+
+The `contacts` parameter provides reliable communication channels in URI forms.
+Typically, this is an email address.
+
+Example
+
+* `["mailto:bot-support@example.com"]`
+* `["https://example.com/contact"]`
+
+## Logo URI {#signature-agent-parameter-logo}
+
+The `logo_uri` parameter provides an image reference for visual identification.
 
 TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.
 
 Example
 
-* data:image/svg+xml;base64,deadbeef
-* https://example.com/logo.png
+* `data:image/svg+xml;base64,deadbeef`
+* `https://example.com/logo.png`
 
 ## Expected user agent {#signature-agent-parameter-user-agent}
 
@@ -176,7 +178,7 @@ or prefix matches. Prefixes MAY use `*` as a wildcard.
 
 Example
 
-* Mozilla/5.0 ExampleBot
+* `Mozilla/5.0 ExampleBot`
 
 ## robots.txt product token {#signature-agent-parameter-robotstxt-token}
 
@@ -185,7 +187,7 @@ The `rfc9309-product-token` parameter specifies the product token used for
 
 Example
 
-* ExampleBot
+* `ExampleBot`
 
 ## robots.txt compliance {#signature-agent-parameter-robotstxt-compliance}
 
@@ -203,8 +205,8 @@ The `trigger` parameter indicates the operational mode of the agent.
 
 Valid values:
 
-1. "fetcher" - request initiated by the user
-2. "crawler" - autonomous scanning
+1. `fetcher` - request initiated by the user
+2. `crawler` - autonomous scanning
 
 ## Purpose {#signature-agent-parameter-purpose}
 
@@ -213,8 +215,8 @@ SHOULD be drawn from a controlled vocabulary, such as {{AIPREF-VOCAB}}.
 
 Example
 
-* search
-* tdm
+* `search`
+* `tdm`
 
 ## Targeted content {#signature-agent-parameter-targeted-content}
 
@@ -223,9 +225,9 @@ Its format is arbitrary UTF-8 encoded string.
 
 Example
 
-* SEO analysis
-* Vulnerability scanning
-* Ads verification
+* `SEO analysis`
+* `Vulnerability scanning`
+* `Ads verification`
 
 ## Rate control {#signature-agent-parameter-rate-control}
 
@@ -263,10 +265,10 @@ Or they can use `*` as wildcard such as `*.png`.
 
 Example
 
-* /
-* /ads.txt
-* /favicon.ico
-* /index.html
+* `["/"]`
+* `["/ads.txt"]`
+* `["/favicon.ico"]`
+* `["/index.html"]`
 
 ## Keys {#signature-agent-parameter-keys}
 
@@ -414,10 +416,10 @@ that they do not meet the security and privacy requirements defined in TODO.
 This section registers the Signature Agent Card Parameter names defined
 in {{signature-agent-card}} in this registry.
 
-#### Name Parameter
+#### Client Name Parameter
 
 **Parameter Name:**
-: name
+: client_name
 
 **Parameter Description:**
 : A friendly name for your signature agent.
@@ -431,30 +433,13 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
-#### Contact Parameter
+#### Client URI Parameter
 
 **Parameter Name:**
-: contact
+: client_uri
 
 **Parameter Description:**
-: Email or any other reliable communication channel
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-contact}}
-
-**Notes:**
-: N/A
-
-#### About Parameter
-
-**Parameter Name:**
-: about
-
-**Parameter Description:**
-: Describes what the bot does inline or with a link to an external resource
+: Describes what the bot does inline with data URI or with an HTTP link to an external resource
 
 **Change Controller:**
 : IETF
@@ -465,10 +450,10 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
-#### Logo Parameter
+#### Logo URI Parameter
 
 **Parameter Name:**
-: logo
+: logo_uri
 
 **Parameter Description:**
 : Image for a quick visual identification
@@ -478,6 +463,23 @@ in {{signature-agent-card}} in this registry.
 
 **Reference:**
 : {{signature-agent-parameter-logo}}
+
+**Notes:**
+: N/A
+
+#### Contacts Parameter
+
+**Parameter Name:**
+: contacts
+
+**Parameter Description:**
+: An array of URI with a reliable communication channel; typically email addresses
+
+**Change Controller:**
+: IETF
+
+**Reference:**
+: {{signature-agent-parameter-contact}}
 
 **Notes:**
 : N/A
