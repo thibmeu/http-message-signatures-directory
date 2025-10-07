@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-30T01:48:09.937282+00:00",
+  "timestamp": "2025-10-07T01:48:49.301914+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -984,7 +984,7 @@
       "labels": [],
       "body": "Both [HTTP Message Signatures for automated traffic Architecture](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html) and [HTTP Message Signatures Directory](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html) says\n\n> `keyid` MUST be a base64url JWK SHA-256 Thumbprint as defined in [Section 3.2](https://rfc-editor.org/rfc/rfc7638#section-3.2) of [[JWK-THUMBPRINT](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-THUMBPRINT)] for RSA and EC, and in [Appendix A.3](https://rfc-editor.org/rfc/rfc8037#appendix-A.3) of [[JWK-OKP](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-OKP)] for ed25519\n\nI would change \"MUST\" here to \"MAY\". Key management systems often have IDs for their keys already so they could just print them here from a DB, instead of constructing and serializing a temporary JWK into a json and hashing that per rfc7638, then adding it back to the structure and serializing again. The Tink library also seems to have a notion of a [Key ID](https://developers.google.com/tink/wire-format#tink_output_prefix), and I also like that it's 4 bytes, instead of 32 like the SHA256. People might also use dates or other examples used in the rfc7638 or rfc9421, I think that's fine as long as it helps finding the key in the dictionary.\n\nThe specs could also say that `keyid` and `kid` should match between an entry of the JWKS and the`Signature-Input`, to speed up verification, otherwise verifiers might drop the request.",
       "createdAt": "2025-09-20T04:11:00Z",
-      "updatedAt": "2025-09-26T16:24:52Z",
+      "updatedAt": "2025-10-06T19:13:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -1014,6 +1014,13 @@
           "body": "> Signature-Agent is optional (despite RECOMMENDED). You are right that, as defined by [RFC 9421 Section 2.3](https://datatracker.ietf.org/doc/html/rfc9421#signature-params), keyid is `The identifier for the key material as a String value`. It does not say it should be kid. In fact, kid is optional per [RFC 7515](https://www.rfc-editor.org/rfc/rfc7517.html#section-4.5). An identifier may even just be the order of the key: key 0, key 1, etc.\n\nYes, `kid` is optional per the rfc but I think this spec could introduce new constraints. E.g. if it specifies how the keys are distributed, it could ask for the `keyid` to match the `kid`.\n\n> Setting it to the thumbprint guarantees global uniqueness, and discovery in the presence or absence of a Signature-Agent.\n\nThat's a good point, I haven't really thought of out-of-band key sharing. I think in that case enforcing a certain ID type is even worse. In that case it's up to the parties involved to agree on the key format, key type, and how to share the keys \u2013 why would we enforce a certain key ID type? They might not even use a JWK format.\n\n> On your mention of\n> \n> > I'm not going to add it to that keystore system\n> > is the blocker internal process?\n\nNo, processes could add probably months of lead time, that would be unfortunate of course, but the more problematic part is that this system is not concerned about JWKs or various serializations of the keys, it doesn't really belong there. If I would own the service (and I wouldn't have concerns about the ID length) I would add it, but since this is a gigantic horizontal people will have strong opinions about it. This is not unique to Google btw, this is a problem people using common keystores will have. E.g. if you're using GCP's Cloud KMS you won't be able to store the thumbprint in KMS either (maybe as labels but that would be odd). You also can't subscribe to key rotation events so you'd need to parse audit logs with Eventarc or something, or just keep fetching the keys to detect changes. I think AWS KMS might have events for key rotation but it also can't store the thumbprint so teams would need to store them somewhere else.\n\n> Would a wording you'd be after be\n> \n> > When a Signature-Agent is provided, `kid` MUST be set for every key and `keyid` SHOULD equal to a kid in the directory\n\nI'd change the SHOULD to a MUST, maybe with the caveat \"if there are multiple keys in the directory\". I think the `keyid` must tell which key to use from the keyset, but if there's a single key then there's no point in sending the `keyid`.",
           "createdAt": "2025-09-25T20:35:50Z",
           "updatedAt": "2025-09-26T16:24:52Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Posted on the web-bot-auth mailing list: https://mailarchive.ietf.org/arch/msg/web-bot-auth/x1xwQc86LEwQfTYDkrOykKZ7m4o/",
+          "createdAt": "2025-10-06T19:13:03Z",
+          "updatedAt": "2025-10-06T19:13:03Z"
         }
       ]
     },
@@ -1031,7 +1038,7 @@
       ],
       "body": "I ran across [this article](https://chrisleverseo.com/blog/how-to-fix-shopify-crawl-issues-in-screaming-frog-and-sitebulb-using-web-bot-auth/). This might be the first attempt of someone implementing delegation.\n\nShopify [uses](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store) WBA to allow crawlers back to stores hosted by Shopify itself. This doesn't seem to be better than using oldschool API keys, but introduces a lot of unnecessary payload and extra hops to fetch Shopify's own public key (that will not change ever anyway because everyone will hardcode the signatures in the requests of their 3P tools).\n\nI think WBA's goal in a scenario like this should be to identify the crawler (e.g. \"screamingfrog.co.uk\", or \"sitebulb.com\") and not Shopify itself. The user could then select on the Shopify UI which bots to allow, without all the manual copy-pasting and hardcoding signatures. The signatures meant to be short lived and ideally used once. The signatures issued by Shopify have no expiry and no nonce, a leaked signature can be used forever to crawl a store. Even if the user manually rotates the signatures, thinking it's kind of a token, the verification will succeed until the public key is rotated. And the signing key can leak too, so rotating it is required. WBA provides a nice key-publishing mechanism through the .well-known file, but updating that now would mean that Shopify will need to break all the integrations of all their customers. All users would need to go back and manually generate a new signature using the new key and update them at all their 3Ps. The `exp` of [their key](https://www.shopify.com/.well-known/http-message-signatures-directory) is July next year so they might have a breakage around that time.\n\nI think to avoid such misuse the spec should say that the signing agent MUST rotate the keys at least daily, and signatures MUST have an expiry shorter than X \u2013\u00a0e.g. 5 minutes.\n\nIf the goal of Shopify here was to kind of \"approve\" a request sent by someone else, then issuing a certificate for the crawler and then letting the crawler sign the request with their own signing key would be a better approach, but I'm not sure if that's even necessary here.\n\nEdit: There might be some expiry on the signature, I realized it's masked out on the screenshot, and the [docs](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store#:~:text=Set%20signatures%20to%20expire%20after%20a%20specific%20period.%20The%20maximum%20period%20is%203%20months) say \"Set signatures to expire after a specific period. The maximum period is 3 months\". Which is a bit odd because the users will need to manually rotate these signatures. And I think 3 months is too long.",
       "createdAt": "2025-09-24T19:46:19Z",
-      "updatedAt": "2025-09-29T16:17:01Z",
+      "updatedAt": "2025-10-06T19:44:56Z",
       "closedAt": null,
       "comments": [
         {
@@ -1040,8 +1047,31 @@
           "body": "The initial intent of WBA is indeed to have crawler self-identifying themselves.\n\nUsing Signature-Agent as a convenient way to distribute signatures and an allowed registration mechanism is quite interesting indeed. In a way, it works similar to webhook authentication. There is an authentication you'll need to handle in the future, and instead of an arbitrary bearer you use HTTP Sigs to carry this.\n\nTwo actions that could help down the line:\n* [Key rotation is a recommendation](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html#name-key-rotation). I don't think we can actually make it mandatory with a MUST, but it'd be worth highlighting in a best practice document\n* Have a clear [delegation story](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html#name-delegation-and-chaining). The directory draft provides a couple of examples, but does not have a preferred mechanism. I think it would help here. Again, part of a best practice document.\n\nSide: Both do seem relevant for wimse working group as well.",
           "createdAt": "2025-09-29T16:16:57Z",
           "updatedAt": "2025-09-29T16:16:57Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "I agree, this seems similar to a webhook auth, but I'd argue it is worse because of the above mentioned reasons. I think it would be great \u2013 both for this specific case and for the delegation story \u2013 to understand what their intent was.\n\nRegarding the actions:\n\n1. Since this is a new protocol I think this is the best time to make it mandatory. Why do you think it might not work? Once people start aligning with a lax requirement it will be impossible to make it more strict. Going the other way is easier. Frequent key rotation can avoid lots of issues, just think of a key you might deploy to your domain today to play with the protocol, then 10 years later with all the other protocols built around web-bot-auth you somehow become liable for something someone did with your key you long forgot about. I would maybe even go so far as to say that verifiers MUST NOT accept keys older than a certain time frame. Obviously a text will not prevent people from misimplementing it but I think the spec should be clear that key rotation is a must.\n2. I'm not sure delegation is really needed here. It would be great to ask Shopify if you talk to them. But otherwise I agree that it would be great to have some guidelines for delegation. I will think more about it.",
+          "createdAt": "2025-10-06T19:44:56Z",
+          "updatedAt": "2025-10-06T19:44:56Z"
         }
       ]
+    },
+    {
+      "number": 70,
+      "id": "I_kwDOOXJyWM7P9VoL",
+      "title": "Change `Signature-Agent` to a sf-dictionary",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/70",
+      "state": "OPEN",
+      "author": "sandormajor",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently `Signature-Agent` is a string so there's no relation of it to the signatures, and you also can't sign `Signature-Agent` if different parties add headers with this name. I propose converting the SA header to a dictionary and linking a particular signature to a specific agent, e.g. like this:\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\nOr maybe something like\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"agent1\");signature-agent=agent1;...\nSignature-Agent: agent1=\"https://example.com\"\n```",
+      "createdAt": "2025-10-06T20:26:07Z",
+      "updatedAt": "2025-10-06T20:26:07Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -2817,6 +2847,50 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 69,
+      "id": "PR_kwDOOXJyWM6sVGct",
+      "title": "Aligning registry draft with oauth dynamic client registration iana registry",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/69",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Seems like an easy fix\r\n\r\nLink is https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml#client-metadata\r\n\r\n@punkeel for review\r\n\r\nfyi @ulaskira ",
+      "createdAt": "2025-10-06T17:37:56Z",
+      "updatedAt": "2025-10-06T22:24:11Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "5d6c78885345c64742871a804c75694a048be4c3",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "align-oauth-registry",
+      "headRefOid": "09ced995e1cc029106b53d0e5e2b03de0f77df20",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7FJ3hF",
+          "commit": {
+            "abbreviatedOid": "09ced99"
+          },
+          "author": "ulaskira",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks, this is very reasonable.",
+          "createdAt": "2025-10-06T22:24:11Z",
+          "updatedAt": "2025-10-06T22:24:11Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
