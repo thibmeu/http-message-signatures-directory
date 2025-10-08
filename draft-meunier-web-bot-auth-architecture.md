@@ -184,13 +184,15 @@ It is RECOMMENDED the expiry to be no more than 24 hours.
 
 `Signature-Agent` is an HTTP Method context header defined in Section 4.1 of {{DIRECTORY}}.
 It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
-If the header is to be sent, it MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
+If the header is to be sent, one of its members MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
 
 This results in the following components to be signed
 
 ~~~
-("@authority" "signature-agent")
+("@authority" "signature-agent";key="sig1")
 ~~~
+
+It is RECOMMENDED that the `key` matches the signature label.
 
 ### Anti-replay {#anti-replay}
 
@@ -219,21 +221,21 @@ and request a new signature, as described in {{requesting-message-signature}}.
 An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.
 
 ~~~aasvg
-+---------+                                                                    +----------+
-|         |                              Exchange                              |          |
-|         |<=========================  Cryptographic  ========================>|          |
-|         |                              material                              |          |
-|  Agent  |                                                                    |  Origin  |
-|         |     .-----------------------------------------------------.        |          |
-|         +-----| GET /path/to/resource                               |------->|          |
-|         |     | Signature: abc==                                    |        |          |
-+---------+     | Signature-Input: sig=(@authority signature-agent);\ |        +----------+
-                |                  created=1700000000;\               |
-                |                  expires=1700011111;\               |
-                |                  keyid="ba3e64==";\                 |
-                |                  tag="web-bot-auth"                 |
-                | Signature-Agent: "https://signer.example.com"       |
-                '-----------------------------------------------------'
++---------+                                                                                  +----------+
+|         |                                     Exchange                                     |          |
+|         |<================================  Cryptographic  ===============================>|          |
+|         |                                     material                                     |          |
+|  Agent  |                                                                                  |  Origin  |
+|         |     .-------------------------------------------------------------------.        |          |
+|         +-----| GET /path/to/resource                                             |------->|          |
+|         |     | Signature: abc==                                                  |        |          |
++---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
+                |                  created=1700000000;\                             |
+                |                  expires=1700011111;\                             |
+                |                  keyid="ba3e64==";\                               |
+                |                  tag="web-bot-auth"                               |
+                | Signature-Agent: sig="https://signer.example.com"                 |
+                '-------------------------------------------------------------------'
 ~~~
 
 The Agent SHOULD send requests with two headers
@@ -457,8 +459,8 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": "https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent")\
+"signature-agent": sig2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -472,8 +474,8 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: "https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent")\
+Signature-Agent: sig2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -534,8 +536,8 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": "https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent")\
+"signature-agent": sig2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -549,8 +551,8 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: "https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent")\
+Signature-Agent: sig2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
