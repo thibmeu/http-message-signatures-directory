@@ -5,7 +5,7 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                T. Meunier
 Intended status: Informational                                Cloudflare
-Expires: 12 March 2026                                  8 September 2025
+Expires: 11 April 2026                                    8 October 2025
 
 
            Registry and Signature Agent card for Web bot auth
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 March 2026.
+   This Internet-Draft will expire on 11 April 2026.
 
 Copyright Notice
 
@@ -79,27 +79,28 @@ Table of Contents
    3.  Signature Agent Card
      3.1.  Name
      3.2.  Contact
-     3.3.  Logo
-     3.4.  Expected user agent
-     3.5.  robots.txt product token
-     3.6.  robots.txt compliance
-     3.7.  Trigger
-     3.8.  Purpose
-     3.9.  Targeted content
-     3.10. Rate control
-     3.11. Rate expectation
-     3.12. Known URLs
-     3.13. Keys
+     3.3.  About
+     3.4.  Logo
+     3.5.  Expected user agent
+     3.6.  robots.txt product token
+     3.7.  robots.txt compliance
+     3.8.  Trigger
+     3.9.  Purpose
+     3.10. Targeted content
+     3.11. Rate control
+     3.12. Rate expectation
+     3.13. Known URLs
+     3.14. Keys
    4.  Discovery
-     4.1.  Out-of-band communication between client and origin
-       4.1.1.  Public list
-       4.1.2.  Signature-Agent-Card header
+     4.1.  Formal Syntax
+     4.2.  Out-of-band communication between client and origin
+     4.3.  Public list
+     4.4.  Signature-Agent header
    5.  Security Considerations
    6.  Privacy Considerations
    7.  IANA Considerations
-     7.1.  Signature Agent Card Parameters Registry
-       7.1.1.  Registration template
-       7.1.2.  Initial Registry content
+     7.1.  Registration template
+       7.1.1.  Initial Registry content
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -150,6 +151,7 @@ Table of Contents
 {
   "name": "Example Bot",
   "contact": "bot-support@example.com",
+  "about": "https://example.com/bot/about.html",
   "logo": "https://example.com/",
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
@@ -160,7 +162,7 @@ Table of Contents
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
-  "keys": {
+  "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
     "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -168,7 +170,7 @@ Table of Contents
     "use": "sig",
     "nbf": 1712793600,
     "exp": 1715385600
-  }
+  }]
 }
 
    Unless otherwise specified, all parameters in this document are
@@ -195,7 +197,17 @@ Table of Contents
 
    Example * bot-support@example.com * https://example.com/contact
 
-3.3.  Logo
+3.3.  About
+
+   The about parameter provides inline content or a web page describing
+   the bot: e.g. what does it do, how it handles data it fetches.
+
+   Only http, https or data:text/plain are allowed.
+
+   Example * https://example.com/bot/about.html * data:text/plain,The
+   Example bot is about providing an example.
+
+3.4.  Logo
 
    The logo parameter provides an image reference for visual
    identification.
@@ -209,7 +221,7 @@ Table of Contents
 
    *  https://example.com/logo.png
 
-3.4.  Expected user agent
+3.5.  Expected user agent
 
    The expected-user-agent parameter specifies one or more User-Agent
    strings as defined in Section 10.1.5 of [HTTP] or prefix matches.
@@ -219,7 +231,7 @@ Table of Contents
 
    *  Mozilla/5.0 ExampleBot
 
-3.5.  robots.txt product token
+3.6.  robots.txt product token
 
    The rfc9309-product-token parameter specifies the product token used
    for robots.txt directives per Section 2.2.1 of [ROBOTSTXT].
@@ -228,7 +240,7 @@ Table of Contents
 
    *  ExampleBot
 
-3.6.  robots.txt compliance
+3.7.  robots.txt compliance
 
    The rfc9309-compliance parameter lists directives from robots.txt
    that the agent implements.
@@ -239,7 +251,7 @@ Table of Contents
 
    *  ["User-Agent", "Disallow", "CrawlDelay"]
 
-3.7.  Trigger
+3.8.  Trigger
 
    The trigger parameter indicates the operational mode of the agent.
 
@@ -249,7 +261,7 @@ Table of Contents
 
    2.  "crawler" - autonomous scanning
 
-3.8.  Purpose
+3.9.  Purpose
 
    The purpose parameter describes the intended use of collected data.
    Values SHOULD be drawn from a controlled vocabulary, such as
@@ -261,7 +273,7 @@ Table of Contents
 
    *  tdm
 
-3.9.  Targeted content
+3.10.  Targeted content
 
    The targeted-content parameter specifies the type of data the agent
    seeks.  Its format is arbitrary UTF-8 encoded string.
@@ -274,7 +286,7 @@ Table of Contents
 
    *  Ads verification
 
-3.10.  Rate control
+3.11.  Rate control
 
    The rate-control parameter indicates how origins can influence the
    agent’s request rate.
@@ -289,7 +301,7 @@ Table of Contents
 
    *  429 + [RATELIMIT-HEADER]
 
-3.11.  Rate expectation
+3.12.  Rate expectation
 
    The rate-expectation parameter specifies anticipated request volume
    or burstiness.
@@ -302,7 +314,7 @@ Table of Contents
 
    *  Spikes during reindexing
 
-3.12.  Known URLs
+3.13.  Known URLs
 
    The known-urls parameter lists predictable endpoints accessed by the
    agent.
@@ -321,7 +333,7 @@ Table of Contents
 
    *  /index.html
 
-3.13.  Keys
+3.14.  Keys
 
    The keys parameter contains a JWKS as defined in Section 5 of [JWK].
 
@@ -339,38 +351,88 @@ Table of Contents
 
 4.  Discovery
 
-   Discovery is done via a registry.  A registry is a list of URLs, each
-   one pointing to a signature card.
+   A registry is a list of URLs, each refering to a signature agent
+   card.
 
-   URLS can be:
+   The URI scheme MUST be one of:
 
-   *  https
+   *  https (RECOMMENDED): Points to an HTTPS resource serving a
+      signature agent card
 
-   *  http
+   *  http: Points to an HTTP resource serving a signature agent card
 
-   *  data
+   *  data: Contains an inline signature agent card
 
    Example
 
+   # An example list of bots
    https://bot1.example.com/.well-known/signature-agent-card
    https://crawler2.example.com/.well-known/signature-agent-card
+
+   # Now the list of platforms
    https://zerotrust-gateway.example.com/.well-known/signature-agent-card
-   data:application/json;,...
 
-4.1.  Out-of-band communication between client and origin
+   # Below is an inlined card with the data URL scheme
+   data:application/json;,... # Invalid, not defined
 
-   A service submitting their key to an origin, or the origin manually
-   adding a service to their trusted list.
+4.1.  Formal Syntax
 
-4.1.1.  Public list
+   Below is an Augmented Backus-Naur Form (ABNF) description, as
+   described in [ABNF].
 
-   Could be a GitHub repository like the public suffix list.  The issue
-   is the gating of such repositories, and therefore its governance.
+   The below definition imports http-URI and https-URI from [HTTP], and
+   dataurl from [DATAURL].
 
-4.1.2.  Signature-Agent-Card header
+   registry = *(cardendpointline / emptyline)
+   cardendpointline = (
+       http-URI /       ; As defined in Section 4.2.1 of RFC 9110
+       https-URI /      ; As defined in Section 4.2.2 of RFC 9110
+       dataurl          ; As defined in Section 3 of RFC 2397
+   ) EOL
 
-   This allows for backward compatibility with existing header agent
-   filtering, and an upgrade to a cryptographically secured protocol.
+
+   comment = "#" *(UTF8-char-noctl / WS / "#")
+   emptyline = EOL
+   EOL = *WS [comment] NL ; end-of-line may have
+                          ; optional trailing comment
+   NL = %x0D / %x0A / %x0D.0A
+   WS = %x20 / %x09
+
+   ; UTF8 derived from RFC 3629, but excluding control characters
+
+   UTF8-char-noctl = UTF8-1-noctl / UTF8-2 / UTF8-3 / UTF8-4
+   UTF8-1-noctl = %x21 / %x22 / %x24-7F ; excluding control, space, "#"
+   UTF8-2 = %xC2-DF UTF8-tail
+   UTF8-3 = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2UTF8-tail /
+            %xED %x80-9F UTF8-tail / %xEE-EF 2UTF8-tail
+   UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
+            %xF4 %x80-8F 2UTF8-tail
+
+   UTF8-tail = %x80-BF
+
+4.2.  Out-of-band communication between client and origin
+
+   A signature agent MAY submit their signature agent card to an origin,
+   or the origin MAY manually add them to their local registry.
+
+4.3.  Public list
+
+   A registry MAY be provided via a GitHub repository, a public file
+   server, or a dedicated endpoint.
+
+   The registry SHOULD be served over HTTPS.
+
+   A client application SHOULD validate the directory format and reject
+   malformed entries.
+
+4.4.  Signature-Agent header
+
+   Signature Agent Card format defined in Section 3 extends the format
+   of Signature-Agent header as defined in Section 4.1 of [DIRECTORY].
+
+   When used for HTTP Message Signatures, and hosted on a well-known
+   URL, Signature Agent Card MAY be discovered via a Signature-Agent
+   header.
 
 5.  Security Considerations
 
@@ -384,13 +446,7 @@ Table of Contents
 
 7.  IANA Considerations
 
-7.1.  Signature Agent Card Parameters Registry
-
-   IANA is requested to create a new "Signature Agent Card Parameters"
-   registry in a new "Signature Agent Card" page to list metadata for
-   signature agent protocols.
-
-7.1.1.  Registration template
+7.1.  Registration template
 
    New registrations need to list the following attributes:
 
@@ -413,12 +469,12 @@ Table of Contents
    reject registrations on the basis that they do not meet the security
    and privacy requirements defined in TODO.
 
-7.1.2.  Initial Registry content
+7.1.1.  Initial Registry content
 
    This section registers the Signature Agent Card Parameter names
    defined in Section 3 in this registry.
 
-7.1.2.1.  Name Parameter
+7.1.1.1.  Name Parameter
 
    *Parameter Name:*  name
 
@@ -430,7 +486,7 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.2.  Contact Parameter
+7.1.1.2.  Contact Parameter
 
    *Parameter Name:*  contact
 
@@ -443,11 +499,12 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.3.  Logo Parameter
+7.1.1.3.  About Parameter
 
-   *Parameter Name:*  logo
+   *Parameter Name:*  about
 
-   *Parameter Description:*  Image for a quick visual identification
+   *Parameter Description:*  Describes what the bot does inline or with
+      a link to an external resource
 
    *Change Controller:*  IETF
 
@@ -455,11 +512,11 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.4.  Expected User Agent Parameter
+7.1.1.4.  Logo Parameter
 
-   *Parameter Name:*  expected-user-agent
+   *Parameter Name:*  logo
 
-   *Parameter Description:*  String or fragment patterns
+   *Parameter Description:*  Image for a quick visual identification
 
    *Change Controller:*  IETF
 
@@ -467,7 +524,19 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.2.5.  RFC9309 Product Token Parameter
+7.1.1.5.  Expected User Agent Parameter
+
+   *Parameter Name:*  expected-user-agent
+
+   *Parameter Description:*  String or fragment patterns
+
+   *Change Controller:*  IETF
+
+   *Reference:*  Section 3.5
+
+   *Notes:*  N/A
+
+7.1.1.6.  RFC9309 Product Token Parameter
 
    *Parameter Name:*  rfc9309-product-token
 
@@ -476,11 +545,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.5
+   *Reference:*  Section 3.6
 
    *Notes:*  N/A
 
-7.1.2.6.  RFC9309 Compliance Parameter
+7.1.1.7.  RFC9309 Compliance Parameter
 
    *Parameter Name:*  rfc9309-compliance
 
@@ -489,11 +558,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.6
+   *Reference:*  Section 3.7
 
    *Notes:*  N/A
 
-7.1.2.7.  Trigger Parameter
+7.1.1.8.  Trigger Parameter
 
    *Parameter Name:*  trigger
 
@@ -501,11 +570,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.7
+   *Reference:*  Section 3.8
 
    *Notes:*  N/A
 
-7.1.2.8.  Purpose Parameter
+7.1.1.9.  Purpose Parameter
 
    *Parameter Name:*  purpose
 
@@ -513,11 +582,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.8
+   *Reference:*  Section 3.9
 
    *Notes:*  N/A
 
-7.1.2.9.  Targeted Content Parameter
+7.1.1.10.  Targeted Content Parameter
 
    *Parameter Name:*  targeted-content
 
@@ -525,11 +594,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.9
+   *Reference:*  Section 3.10
 
    *Notes:*  N/A
 
-7.1.2.10.  Rate control Parameter
+7.1.1.11.  Rate control Parameter
 
    *Parameter Name:*  rate-control
 
@@ -537,11 +606,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.10
+   *Reference:*  Section 3.11
 
    *Notes:*  N/A
 
-7.1.2.11.  Rate expectation Parameter
+7.1.1.12.  Rate expectation Parameter
 
    *Parameter Name:*  rate-expectation
 
@@ -549,11 +618,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.11
+   *Reference:*  Section 3.12
 
    *Notes:*  N/A
 
-7.1.2.12.  Known URLs Parameter
+7.1.1.13.  Known URLs Parameter
 
    *Parameter Name:*  known-urls
 
@@ -561,11 +630,11 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.12
+   *Reference:*  Section 3.13
 
    *Notes:*  N/A
 
-7.1.2.13.  Keys Parameter
+7.1.1.14.  Keys Parameter
 
    *Parameter Name:*  keys
 
@@ -573,13 +642,18 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.13
+   *Reference:*  Section 3.14
 
    *Notes:*  N/A
 
 8.  References
 
 8.1.  Normative References
+
+   [ABNF]     Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/rfc/rfc5234>.
 
    [AIPREF-VOCAB]
               Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
@@ -646,6 +720,10 @@ Table of Contents
 
 8.2.  Informative References
 
+   [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
+              DOI 10.17487/RFC2397, August 1998,
+              <https://www.rfc-editor.org/rfc/rfc2397>.
+
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
@@ -660,9 +738,9 @@ Table of Contents
    [RATELIMIT-HEADER]
               Polli, R., Ruiz, A. M., and D. Miller, "RateLimit header
               fields for HTTP", Work in Progress, Internet-Draft, draft-
-              ietf-httpapi-ratelimit-headers-09, 17 March 2025,
+              ietf-httpapi-ratelimit-headers-10, 27 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-
-              ratelimit-headers-09>.
+              ratelimit-headers-10>.
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -673,6 +751,10 @@ Table of Contents
               "Robots Exclusion Protocol", RFC 9309,
               DOI 10.17487/RFC9309, September 2022,
               <https://www.rfc-editor.org/rfc/rfc9309>.
+
+   [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
+              2003, <https://www.rfc-editor.org/rfc/rfc3629>.
 
 Appendix A.  Test Vectors
 
