@@ -99,10 +99,16 @@ defined in {{configuration}}.
 ## Header Field Definition
 
 The `Signature-Agent` header field is an Item Structured Header {{STRUCTURED-HEADERS}}. Its value MUST be a
-String containing a {{URI}}. The ABNF is:
+Dictionary which member values are {{URI}}. The ABNF is:
 
 ~~~
-Signature-Agent = sf-string   ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
+Signature-Agent = sf-dictionary   ; Section 3.2 of {{STRUCTURED-HEADERS}}
+
+;;; adapted from Section 3.2 of {{STRUCTURED-HEADERS}}
+sf-dictionary  = dict-member *( OWS "," OWS dict-member )
+dict-member    = member-key ( "=" member-value )
+member-key     = key
+member-value   = sf-string        ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
 ~~~
 
 The URI scheme MUST be one of:
@@ -424,7 +430,7 @@ This extend the examples from {{Appendix B of HTTP-MESSAGE-SIGNATURES}}.
 ~~~
 POST /foo?param=Value&Pet=dog HTTP/1.1
 Host: example.com
-Signature-Agent: https://directory.test
+Signature-Agent: my_test="https://directory.test"
 {"hello": "world"}
 
 HTTP/1.1 200 OK
@@ -440,7 +446,7 @@ In this example, the directory is signed by `example.com`. The CA is self-signed
 ~~~
 POST /foo?param=Value&Pet=dog HTTP/1.1
 Host: example.com
-Signature-Agent: data:application/http-message-signatures-directory;utf8,{"keys":[{"kty":"OKP","crv":"Ed25519","kid":"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw","x":"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs","use":"sig","nbf":1712793600,"exp":1715385600,"x5c":["MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv","MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV"]}]}
+Signature-Agent: my_test="data:application/http-message-signatures-directory;utf8,{\"keys\":[{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"kid\":\"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw\",\"x\":\"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs\",\"use\":\"sig\",\"nbf\":1712793600,\"exp\":1715385600,\"x5c\":[\"MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv\",\"MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV\"]}]}"
 {"hello": "world"}
 
 HTTP/1.1 200 OK
