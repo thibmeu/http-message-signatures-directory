@@ -98,12 +98,9 @@ defined in {{configuration}}.
 
 ## Header Field Definition
 
-The `Signature-Agent` header field is an Dictionary Structured Header {{STRUCTURED-HEADERS}}.
-Its value MUST be a Dictionary which member values are {{URI}}. The ABNF is:
-
-~~~
-Signature-Agent = sf-dictionary   ; Section 3.2 of {{STRUCTURED-HEADERS}}
-~~~
+The `Signature-Agent` header field is an Dictionary Structured Header as defined
+in {{Section 3.2 of STRUCTURED-HEADERS}}.
+Its member values MUST be an String Item which contain a {{URI}}.
 
 The URI scheme MUST be one of:
 
