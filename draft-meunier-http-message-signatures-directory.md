@@ -98,17 +98,11 @@ defined in {{configuration}}.
 
 ## Header Field Definition
 
-The `Signature-Agent` header field is an Item Structured Header {{STRUCTURED-HEADERS}}. Its value MUST be a
-Dictionary which member values are {{URI}}. The ABNF is:
+The `Signature-Agent` header field is an Dictionary Structured Header {{STRUCTURED-HEADERS}}.
+Its value MUST be a Dictionary which member values are {{URI}}. The ABNF is:
 
 ~~~
 Signature-Agent = sf-dictionary   ; Section 3.2 of {{STRUCTURED-HEADERS}}
-
-;;; adapted from Section 3.2 of {{STRUCTURED-HEADERS}}
-sf-dictionary  = dict-member *( OWS "," OWS dict-member )
-dict-member    = member-key ( "=" member-value )
-member-key     = key
-member-value   = sf-string        ; Section 3.3.3 of {{STRUCTURED-HEADERS}}
 ~~~
 
 The URI scheme MUST be one of:
@@ -121,8 +115,8 @@ When using the "data" URI scheme, the media type MUST be
 `application/http-message-signatures-directory+json`. The content MAY be base64 encoded
 as per {{BASE64}}.
 
-Multiple `Signature-Agent` header fields MAY be present in a request. Processors SHOULD
-use the first valid URI that provides a valid key directory.
+If dictonary values are not a valid URI-reference, the entire header field MAY be
+ignored.
 
 # Security Considerations {#security}
 
