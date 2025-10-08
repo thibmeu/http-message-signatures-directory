@@ -1319,30 +1319,26 @@ defined in <a href="#configuration" class="auto internal xref">Section 3</a>.<a 
         <h3 id="name-header-field-definition">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-header-field-definition" class="section-name selfRef">Header Field Definition</a>
         </h3>
-<p id="section-4.1-1">The <code>Signature-Agent</code> header field is an Dictionary Structured Header <span>[<a href="#STRUCTURED-HEADERS" class="cite xref">STRUCTURED-HEADERS</a>]</span>.
-Its value <span class="bcp14">MUST</span> be a Dictionary which member values are <span>[<a href="#URI" class="cite xref">URI</a>]</span>. The ABNF is:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.1-2">
-<pre>
-Signature-Agent = sf-dictionary   ; Section 3.2 of {{STRUCTURED-HEADERS}}
-</pre><a href="#section-4.1-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.1-3">The URI scheme <span class="bcp14">MUST</span> be one of:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">The <code>Signature-Agent</code> header field is an Dictionary Structured Header as defined
+in <span><a href="https://rfc-editor.org/rfc/rfc8941#section-3.2" class="relref">Section 3.2</a> of [<a href="#STRUCTURED-HEADERS" class="cite xref">STRUCTURED-HEADERS</a>]</span>.
+Its member values <span class="bcp14">MUST</span> be an String Item which contain a <span>[<a href="#URI" class="cite xref">URI</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The URI scheme <span class="bcp14">MUST</span> be one of:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-4.1">
-            <p id="section-4.1-4.1.1"><strong>https (<span class="bcp14">RECOMMENDED</span>)</strong>: Points to an HTTPS resource serving the key directory<a href="#section-4.1-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-3.1">
+            <p id="section-4.1-3.1.1"><strong>https (<span class="bcp14">RECOMMENDED</span>)</strong>: Points to an HTTPS resource serving the key directory<a href="#section-4.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-4.2">
-            <p id="section-4.1-4.2.1"><strong>http</strong>: Points to an HTTP resource serving the key directory<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-3.2">
+            <p id="section-4.1-3.2.1"><strong>http</strong>: Points to an HTTP resource serving the key directory<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-4.3">
-            <p id="section-4.1-4.3.1"><strong>data</strong>: Contains an inline key directory<a href="#section-4.1-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-3.3">
+            <p id="section-4.1-3.3.1"><strong>data</strong>: Contains an inline key directory<a href="#section-4.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.1-5">When using the "data" URI scheme, the media type <span class="bcp14">MUST</span> be
+<p id="section-4.1-4">When using the "data" URI scheme, the media type <span class="bcp14">MUST</span> be
 <code>application/http-message-signatures-directory+json</code>. The content <span class="bcp14">MAY</span> be base64 encoded
-as per <span>[<a href="#BASE64" class="cite xref">BASE64</a>]</span>.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1-6">If dictonary values are not a valid URI-reference, the entire header field <span class="bcp14">MAY</span> be
-ignored.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+as per <span>[<a href="#BASE64" class="cite xref">BASE64</a>]</span>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">If dictonary values are not a valid URI-reference, the entire header field <span class="bcp14">MAY</span> be
+ignored.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
