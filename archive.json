@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-07T01:48:49.301914+00:00",
+  "timestamp": "2025-10-09T00:30:22.945928+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1038,7 +1038,7 @@
       ],
       "body": "I ran across [this article](https://chrisleverseo.com/blog/how-to-fix-shopify-crawl-issues-in-screaming-frog-and-sitebulb-using-web-bot-auth/). This might be the first attempt of someone implementing delegation.\n\nShopify [uses](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store) WBA to allow crawlers back to stores hosted by Shopify itself. This doesn't seem to be better than using oldschool API keys, but introduces a lot of unnecessary payload and extra hops to fetch Shopify's own public key (that will not change ever anyway because everyone will hardcode the signatures in the requests of their 3P tools).\n\nI think WBA's goal in a scenario like this should be to identify the crawler (e.g. \"screamingfrog.co.uk\", or \"sitebulb.com\") and not Shopify itself. The user could then select on the Shopify UI which bots to allow, without all the manual copy-pasting and hardcoding signatures. The signatures meant to be short lived and ideally used once. The signatures issued by Shopify have no expiry and no nonce, a leaked signature can be used forever to crawl a store. Even if the user manually rotates the signatures, thinking it's kind of a token, the verification will succeed until the public key is rotated. And the signing key can leak too, so rotating it is required. WBA provides a nice key-publishing mechanism through the .well-known file, but updating that now would mean that Shopify will need to break all the integrations of all their customers. All users would need to go back and manually generate a new signature using the new key and update them at all their 3Ps. The `exp` of [their key](https://www.shopify.com/.well-known/http-message-signatures-directory) is July next year so they might have a breakage around that time.\n\nI think to avoid such misuse the spec should say that the signing agent MUST rotate the keys at least daily, and signatures MUST have an expiry shorter than X \u2013\u00a0e.g. 5 minutes.\n\nIf the goal of Shopify here was to kind of \"approve\" a request sent by someone else, then issuing a certificate for the crawler and then letting the crawler sign the request with their own signing key would be a better approach, but I'm not sure if that's even necessary here.\n\nEdit: There might be some expiry on the signature, I realized it's masked out on the screenshot, and the [docs](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store#:~:text=Set%20signatures%20to%20expire%20after%20a%20specific%20period.%20The%20maximum%20period%20is%203%20months) say \"Set signatures to expire after a specific period. The maximum period is 3 months\". Which is a bit odd because the users will need to manually rotate these signatures. And I think 3 months is too long.",
       "createdAt": "2025-09-24T19:46:19Z",
-      "updatedAt": "2025-10-06T19:44:56Z",
+      "updatedAt": "2025-10-08T18:58:09Z",
       "closedAt": null,
       "comments": [
         {
@@ -1054,6 +1054,20 @@
           "body": "I agree, this seems similar to a webhook auth, but I'd argue it is worse because of the above mentioned reasons. I think it would be great \u2013 both for this specific case and for the delegation story \u2013 to understand what their intent was.\n\nRegarding the actions:\n\n1. Since this is a new protocol I think this is the best time to make it mandatory. Why do you think it might not work? Once people start aligning with a lax requirement it will be impossible to make it more strict. Going the other way is easier. Frequent key rotation can avoid lots of issues, just think of a key you might deploy to your domain today to play with the protocol, then 10 years later with all the other protocols built around web-bot-auth you somehow become liable for something someone did with your key you long forgot about. I would maybe even go so far as to say that verifiers MUST NOT accept keys older than a certain time frame. Obviously a text will not prevent people from misimplementing it but I think the spec should be clear that key rotation is a must.\n2. I'm not sure delegation is really needed here. It would be great to ask Shopify if you talk to them. But otherwise I agree that it would be great to have some guidelines for delegation. I will think more about it.",
           "createdAt": "2025-10-06T19:44:56Z",
           "updatedAt": "2025-10-06T19:44:56Z"
+        },
+        {
+          "author": "madmath",
+          "authorAssociation": "NONE",
+          "body": "Hi, I'm from Shopify and worked on the implementation. Our non-technical end users are using various tools (e.g. automated crawlers, accessibility audit tools) to access their sites hosted on Shopify, and it seemed unreasonable to ask these tools to implement web-bot-auth signing logic (some are native applications with unclear release cycles) and even then, it would have implied that the users possibly input a private key into the software (as we wouldn't want all users of a piece of software to identify as the same party, e.g. `crawling-software.com`). Adding custom headers on the other hand is fairly well supported in this particular software ecosystem (and even down to `curl`). \n\nWe are intending to re-use web-bot-auth verification infrastructure to detect other parties that are hitting Shopify infra (similar to how Cloudflare are verifying requests from AI crawlers). And we may expand this program to identify software partners in the future.\n\nI understand that we are using message signatures / the web-bot-auth extension in a slightly bifurcated way (for users hitting their own sites), but I'm unclear why that is an issue or whether that is less secure than an equivalent solution of expiring API keys. \n\nAs far as our public key expiring eventually, before the deadline we will introduce an additional public key and stop generating signatures with the old one. \n\nThanks",
+          "createdAt": "2025-10-07T19:30:42Z",
+          "updatedAt": "2025-10-07T19:31:36Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Thanks @madmath for chiming in! See my replies below.\n\n> Hi, I'm from Shopify and worked on the implementation. Our non-technical end users are using various tools (e.g. automated crawlers, accessibility audit tools) to access their sites hosted on Shopify, and it seemed unreasonable to ask these tools to implement web-bot-auth signing logic (some are native applications with unclear release cycles) and even then, it would have implied that the users possibly input a private key into the software (as we wouldn't want all users of a piece of software to identify as the same party, e.g. `crawling-software.com`). Adding custom headers on the other hand is fairly well supported in this particular software ecosystem (and even down to `curl`).\n\nIf crawlers want to support multiple tenants, they can issue identities like `[customer].crawling-software.com`, or you could simply mint \"tokens\" or API keys for your users that they would add as a custom header (e.g. `X-Shopify-Crawler-Key`). I see that adding custom headers is simple but you're asking your users to add a header that is used for something different. It's a bit like asking your users to replace the `User-Agent` header with something custom, you can certainly do that but I would advise against it.\n\n> We are intending to re-use web-bot-auth verification infrastructure to detect other parties that are hitting Shopify infra (similar to how Cloudflare are verifying requests from AI crawlers). And we may expand this program to identify software partners in the future.\n\nThe problem is that you might have thousands of users who will manually add `Signature-Agent` (SA) headers with a `Signature` signing over the SA string. That means in the future if `crawling-software.com` would want to integrate with web-bot-auth (the standard way) they will not be able to; your signatures will invalidate each other; or one of you will need to override the other's signature.\nIssue https://github.com/thibmeu/http-message-signatures-directory/issues/70 should address the problem of having multiple SA headers but you will still need to ask _all_ your users to update _all_ their integrations to only sign over a particular value within the SA dictionary. I think this also demonstrates why relying on such a manual rollout is problematic. Also note that the spec is in a draft state so there might be more breaking changes coming in the future.\n\nI would still advise agains using WBA this way but this would address most of my compatibility concerns. The other thing you might want to do is changing the `sig1` key in the `Signature`/`Signature-Input` headers. That key is used by all the examples so there will be a high chance of collision.\n\n> I understand that we are using message signatures / the web-bot-auth extension in a slightly bifurcated way (for users hitting their own sites), but I'm unclear why that is an issue or whether that is less secure than an equivalent solution of expiring API keys.\n\nRight, \"users hitting their own sites\" is why I'm not sure you actually need WBA here. Why does this work better for you than a traditional API key? Now your users need to add 3 weird headers (`Signature`, `Signature-Input`, and `Signature-Agent`), instead of adding a single `X-Shopify-Crawler-Key` header that you do whatever with. Then later if the third-parties (3P) like `crawling-software.com` wants to integrate with WBA then they can just sign requests as the 3P and you'll have a single-click configuration on the merchant's admin UI to grant them access \u2013 without all the header voodoo and manual key rotations.\n\nSecurity I guess depends on your definition of it. People will not want to rotate signatures every day manually so they will likely use the max 3 month TTL. If a signature like that leaks (e.g. by the aforementioned non-technical end users) then whoever has the signature can impersonate Shopify when calling a particular store. I don't know how bad that would be.\n\nThen what if the user actually realizes that their signature leaked? E.g. they see a lot of weird requests scraping their site, what can they do? They can naively go to the admin UI and generate a new signature and update it at their 3Ps, but that would not invalidate the old signatures. The verifier will check the expiry (which is potentially 3 months), and it will verify the signature using the single, centrally-hosted Shopify key. So if the user is a bit more tech-savvy they will call you to rotate the key but that means you'll need to ask _all_ your customers to update _all_ their integrations. I would not want to bother my customers with this.\n\n> As far as our public key expiring eventually, before the deadline we will introduce an additional public key and stop generating signatures with the old one.\n\nHow would you introduce the additional public key? If I got this right then \u2013 if I would be your non-techy user \u2013 I would generate a signature once, set the expiry to 3 months, then some time before the expiry (if I don't forget it) go back, generate a new signature, and update 2 of the 3 headers at all my 3Ps. Is that correct? If that's right, then key expiry would mean that there's another N month cycle (that's likely out of sync with my 3-month signature rotation cycle) that I need to be aware of, plus there might be unscheduled rotations (see above). I'm not sure I would like that as a user.\n\nOne way you could mitigate this _somewhat_ is to \"shard\" your identity per store, similarly to the 3P example above, e.g. `[store].shopify.com` instead of the global `shopify.com` identity. Then you might be able to remove signature expiry and only deal with key expiry. But that would still mean \"Store XYZ calling Store XYZ\", instead of \"Shopify calling Store XYZ\" \u2013 None of them is correct because in reality it should be \"Crawling-Software calling Store XYZ\". Maybe `[3p].[store].shopify.com` would be better but I don't think there's a good reason going down that rabbit hole.\n\n> Thanks\n\nThanks to you again! It is very important in this early stage of the protocol to gather feedback from people trying solve their problems with it, so I appreciate your response. Let me know if I'm missing something, to me it seems that you don't really need WBA for this and it just introduces more problems than it solves. If you want something that scales better and solves the key rotation problems then WBA can be a good option, but then I think the 3Ps need to authenticate with WBA, not Shopify.",
+          "createdAt": "2025-10-08T18:56:21Z",
+          "updatedAt": "2025-10-08T18:58:09Z"
         }
       ]
     },
@@ -1069,9 +1083,38 @@
       "labels": [],
       "body": "Currently `Signature-Agent` is a string so there's no relation of it to the signatures, and you also can't sign `Signature-Agent` if different parties add headers with this name. I propose converting the SA header to a dictionary and linking a particular signature to a specific agent, e.g. like this:\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\nOr maybe something like\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"agent1\");signature-agent=agent1;...\nSignature-Agent: agent1=\"https://example.com\"\n```",
       "createdAt": "2025-10-06T20:26:07Z",
-      "updatedAt": "2025-10-06T20:26:07Z",
+      "updatedAt": "2025-10-08T14:24:28Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I like the idea and there seems to be a clear need for it.\n\nIf we believe the set of keys is going to be small, we could also mandate that `signature-agent` is keyed with the same label as the `signature` and `signature-input`. Example looks similar to your first proposal, as follow\n\n```\nSignature-Input: sig1=(... \"signature-agent\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\n\ncf #32",
+          "createdAt": "2025-10-07T08:37:05Z",
+          "updatedAt": "2025-10-07T08:37:05Z"
+        },
+        {
+          "author": "gcloudflare",
+          "authorAssociation": "NONE",
+          "body": "I like both of these approaches. The key/alias idea is flexible and could support multiple mappings per signature, while the label-keyed dictionary is simpler, fully RFC 9421-compliant, and easier to parse and maintain.",
+          "createdAt": "2025-10-07T12:48:37Z",
+          "updatedAt": "2025-10-07T12:48:37Z"
+        },
+        {
+          "author": "rgnote",
+          "authorAssociation": "NONE",
+          "body": "I've been having a conversation with @thibmeu about this over an email. Commenting here to show my interest in this feature and I +1 the label-key approach.",
+          "createdAt": "2025-10-07T20:50:25Z",
+          "updatedAt": "2025-10-07T20:50:25Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Going through HTTP Message Signatures ([RFC 9421](https://datatracker.ietf.org/doc/html/rfc9421#create-sig-input)) and Structured Fields ([RFC 8941](https://www.rfc-editor.org/rfc/rfc8941.html)), I actually think the first proposal from @sandormajor is the simplest one. The proposal I made does not seem to satisfy them both.\n\nI opened a PR with @sandormajor 's proposal, both for the directory and the architecture. It's in #71",
+          "createdAt": "2025-10-08T14:24:28Z",
+          "updatedAt": "2025-10-08T14:24:28Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -2853,7 +2896,7 @@
       "id": "PR_kwDOOXJyWM6sVGct",
       "title": "Aligning registry draft with oauth dynamic client registration iana registry",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/69",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2864,17 +2907,19 @@
       ],
       "body": "Seems like an easy fix\r\n\r\nLink is https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml#client-metadata\r\n\r\n@punkeel for review\r\n\r\nfyi @ulaskira ",
       "createdAt": "2025-10-06T17:37:56Z",
-      "updatedAt": "2025-10-06T22:24:11Z",
+      "updatedAt": "2025-10-08T12:15:47Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "5d6c78885345c64742871a804c75694a048be4c3",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "align-oauth-registry",
       "headRefOid": "09ced995e1cc029106b53d0e5e2b03de0f77df20",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-08T12:15:44Z",
+      "mergedAt": "2025-10-08T12:15:44Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "f551c920333f3f31705d1a274091ecf3c2b12226"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2888,6 +2933,230 @@
           "body": "Thanks, this is very reasonable.",
           "createdAt": "2025-10-06T22:24:11Z",
           "updatedAt": "2025-10-06T22:24:11Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 71,
+      "id": "PR_kwDOOXJyWM6stuEY",
+      "title": "Change Signature-Agent to a sf-dictionary",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/71",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
+      "createdAt": "2025-10-08T14:24:12Z",
+      "updatedAt": "2025-10-08T15:26:58Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "signature-agent-directory",
+      "headRefOid": "e24c3ab78f442424ec975d5135055ceba7637e49",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7FmGp0",
+          "commit": {
+            "abbreviatedOid": "7b088f0"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T14:27:39Z",
+          "updatedAt": "2025-10-08T14:27:40Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "On the lien above you state the field is an item, which its not when t's a Dictionary :smile: ",
+              "createdAt": "2025-10-08T14:27:40Z",
+              "updatedAt": "2025-10-08T14:27:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FmKSe",
+          "commit": {
+            "abbreviatedOid": "7b088f0"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T14:31:05Z",
+          "updatedAt": "2025-10-08T14:31:05Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "HTTP style recommendation is **not** to use ABNF; see https://httpwg.org/admin/editors/style-guide#structured-fields\r\n\r\nI'd suggest just removing this entirely but keeping the text that he member values type MUST be string, containing a URI. Then also state some guidance on what to do if the value is not a String e.g. you probably want to ignore the entire header field",
+              "createdAt": "2025-10-08T14:31:05Z",
+              "updatedAt": "2025-10-08T14:31:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FmVdX",
+          "commit": {
+            "abbreviatedOid": "7b088f0"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T14:40:05Z",
+          "updatedAt": "2025-10-08T14:40:05Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "thanks for the pointer. [RFC 8941 Section 2](https://www.rfc-editor.org/rfc/rfc8941.html#section-2-12) has an example definition which has ABNF, therefore the addition",
+              "createdAt": "2025-10-08T14:40:05Z",
+              "updatedAt": "2025-10-08T14:40:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FmWWG",
+          "commit": {
+            "abbreviatedOid": "7b088f0"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T14:40:51Z",
+          "updatedAt": "2025-10-08T14:40:52Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "good catch. fixed",
+              "createdAt": "2025-10-08T14:40:52Z",
+              "updatedAt": "2025-10-08T14:40:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FmWnY",
+          "commit": {
+            "abbreviatedOid": "7b088f0"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T14:41:03Z",
+          "updatedAt": "2025-10-08T14:41:03Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "updated",
+              "createdAt": "2025-10-08T14:41:03Z",
+              "updatedAt": "2025-10-08T14:41:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FnAWJ",
+          "commit": {
+            "abbreviatedOid": "1c93efe"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T15:13:24Z",
+          "updatedAt": "2025-10-08T15:13:24Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Still not quite correct. There is no single \"value\" to a dictionary, is a collection of key value pairs. You need to state the requirements on the member value i.e. the member value is an Item that MUST be a String containing a URI.",
+              "createdAt": "2025-10-08T15:13:24Z",
+              "updatedAt": "2025-10-08T15:13:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FnDGv",
+          "commit": {
+            "abbreviatedOid": "1c93efe"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T15:15:48Z",
+          "updatedAt": "2025-10-08T15:15:48Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "Again, using ABNF for defining fields based on Structured Fields is against the HTTP style guide recommendations. It doesn't add any value so best to just remove it.",
+              "createdAt": "2025-10-08T15:15:48Z",
+              "updatedAt": "2025-10-08T15:15:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FnLGp",
+          "commit": {
+            "abbreviatedOid": "1c93efe"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T15:22:15Z",
+          "updatedAt": "2025-10-08T15:22:15Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "removed",
+              "createdAt": "2025-10-08T15:22:15Z",
+              "updatedAt": "2025-10-08T15:22:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FnLje",
+          "commit": {
+            "abbreviatedOid": "1c93efe"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-08T15:22:27Z",
+          "updatedAt": "2025-10-08T15:22:27Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "updated",
+              "createdAt": "2025-10-08T15:22:27Z",
+              "updatedAt": "2025-10-08T15:22:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7FnQ01",
+          "commit": {
+            "abbreviatedOid": "e24c3ab"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": ":shipit: ",
+          "createdAt": "2025-10-08T15:26:58Z",
+          "updatedAt": "2025-10-08T15:26:58Z",
           "comments": []
         }
       ]
