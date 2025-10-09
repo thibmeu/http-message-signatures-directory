@@ -144,7 +144,7 @@ Each key SHOULD be used to provide one signature.
 Directory server SHOULD include:
 
 `@authority`
-: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}
+: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
 
 Directory server SHOULD include the following `@signature-params` as defined in
 {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
