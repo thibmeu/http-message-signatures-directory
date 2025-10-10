@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                          8 October 2025
-Expires: 11 April 2026
+Intended status: Standards Track                         10 October 2025
+Expires: 13 April 2026
 
 
                    HTTP Message Signatures Directory
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2026.
+   This Internet-Draft will expire on 13 April 2026.
 
 Copyright Notice
 
@@ -212,7 +212,9 @@ Table of Contents
 
    Directory server SHOULD include:
 
-   @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES]
+   @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES].
+      req flag defined in Section 2.4 of [HTTP-MESSAGE-SIGNATURES] MUST
+      be set.
 
    Directory server SHOULD include the following @signature-params as
    defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
