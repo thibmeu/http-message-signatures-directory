@@ -149,7 +149,11 @@ validates the signature, and processes the request if the signature is valid.
 
 ## Deployment Models
 
-Signature verification can be performed either directly by origins or delegated to a fronting proxy. Direct verification by origins provides simplicity and control. Proxy verification offloads processing and enables shared caching across multiple origins. The choice depends on traffic volume and operational requirements.
+Signature verification can be performed either directly by origins or delegated
+to a fronting proxy. Direct verification by origins provides simplicity and
+control. Proxy verification offloads processing and enables shared caching across
+multiple origins. The choice depends on traffic volume and operational
+requirements.
 
 ## Generating HTTP Message Signature {#generating-http-message-signature}
 
@@ -357,7 +361,6 @@ the `Signature` and `Signature-Agent` headers before the origin does.
 A proxy SHOULD NOT strip the `Signature` or `Signature-Agent` headers from
 requests.
 
-
 A proxy SHOULD NOT replay signatures against other reverse proxies used by the
 origin, as this allows impersonation of the principal signature agent.
 
@@ -371,6 +374,38 @@ or provide its own nonce in an `Accept-Signature` response to challenge the agen
 Such policies MAY incur additional round-trip between the client and the origin
 to convey `accept-signature` header, or deployment specific exchanges.
 
+### Signature-Agent labeling
+
+An intermediary is allowed to relabel an existing signature when processing the
+message, per {{Section 7.2.5 of HTTP-MESSAGE-SIGNATURES}}.
+
+This MAY apply to `Signature-Agent`, when included in the request as defined in
+{{signature-agent}},
+An intermediary updating the member key MUST update the components of the
+associated signatures accordingly.
+
+For instance, an intermediary updating the `Signature-Agent` from `sig2` to
+`sig3` on the example provided in {{example-signature-agent-included}} would
+result in the following `Signature`, `Signature-Input`, and `Signature-Agent`
+header.
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: sig3="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig3")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
+~~~
+
+`Signature` is unchanged as the base is similar. Both `Signature-Agent` and
+`Signature-Input` reflect the update from `sig2` to `sig3`.
+.
 # Privacy Considerations
 
 ## Public Identity
@@ -448,7 +483,7 @@ Signature-Input: sig1=("@authority")\
 Signature: sig1=:ppXhcGjVp7xaoHGIa7V+hsSxuRgFt8i04K4FWz9ORJtn57t8duD3cyavsnh9grdWWOJHER8ITNBaqe4mKmPq193S+7hSW31IzXSH4/9WfsdrjUBwyJ0fhBU7oNn3UGDqwdhr5TMgVI2/EX8saV5GrOunM09zMEA+d4QWYyKRFJmg+asCs253l2IYPpVp4N55H0uRK7qhb7acng8LNiEPTQZD2s+Kha95LgeciKQSO0jgR/h59fX/dXqLdFIvRMn8Ggs2VUzF/f/MMEXH83gufVnh4SYl/rKMSKWDBsK+OiLpobAVIuIz+HLCVlMnxlkXkhCW2J/Pmo8jht9N5k/y1A==:
 ~~~
 
-### Signature-Agent included present on the request
+### Signature-Agent included present on the request {#example-signature-agent-included}
 
 This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
 a `Signature-Agent` header.
