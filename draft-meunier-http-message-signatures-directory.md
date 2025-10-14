@@ -450,7 +450,14 @@ HTTP/1.1 200 OK
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Marwan Fayed,
+Maxime Guerreiro,
+Jonathan Hoyland,
+Nikhil Kandoi,
+Akshat Mahajan,
+Alex Sandor Major,
+Eugenio Panero,
+Lucas Pardue.
 
 # Changelog
 {:numbered="false"}
