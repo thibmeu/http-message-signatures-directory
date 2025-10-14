@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-12T00:32:30.872157+00:00",
+  "timestamp": "2025-10-14T00:30:27.002391+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1167,6 +1167,22 @@
           "updatedAt": "2025-10-09T17:00:08Z"
         }
       ]
+    },
+    {
+      "number": 74,
+      "id": "I_kwDOOXJyWM7RTGdm",
+      "title": "@authority vs @target-uri",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/74",
+      "state": "OPEN",
+      "author": "sandormajor",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The spec currently says that `@authority` [MUST](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2-3.2.1) be signed. If a user would want to bind the signature to a specific path, they could use `@target-uri` that already contains `@scheme + @authority + @path + @query`.\n\nI suggest changing the relevant part from `@authority` to `@authority OR @target-uri`.",
+      "createdAt": "2025-10-13T20:48:02Z",
+      "updatedAt": "2025-10-13T20:48:02Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -3005,7 +3021,7 @@
       ],
       "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
       "createdAt": "2025-10-08T14:24:12Z",
-      "updatedAt": "2025-10-09T19:25:13Z",
+      "updatedAt": "2025-10-13T20:21:54Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
@@ -3238,6 +3254,32 @@
           "body": ":shipit: ",
           "createdAt": "2025-10-08T15:26:58Z",
           "updatedAt": "2025-10-08T15:26:58Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7GqK_7",
+          "commit": {
+            "abbreviatedOid": "e24c3ab"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-13T20:20:14Z",
+          "updatedAt": "2025-10-13T20:20:31Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7GqL0k",
+          "commit": {
+            "abbreviatedOid": "e24c3ab"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-13T20:21:54Z",
+          "updatedAt": "2025-10-13T20:21:54Z",
           "comments": []
         }
       ]
