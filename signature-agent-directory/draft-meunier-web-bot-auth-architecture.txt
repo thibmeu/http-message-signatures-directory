@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                            8 October 2025
-Expires: 11 April 2026
+Intended status: Informational                           14 October 2025
+Expires: 17 April 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2026.
+   This Internet-Draft will expire on 17 April 2026.
 
 Copyright Notice
 
@@ -94,14 +94,14 @@ Table of Contents
      5.5.  Shared Secrets Considered Harmful
      5.6.  Key Reuse Considered Harmful
      5.7.  Reverse proxy consideration
-   6.  Privacy Considerations
-     6.1.  Public Identity
-     6.2.  No Human Correlation
-     6.3.  Minimizing Tracking Risks
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+       5.7.1.  Signature-Agent labeling
+     5.8.  Public Identity
+     5.9.  No Human Correlation
+     5.10. Minimizing Tracking Risks
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  RSASSA-PSS Using SHA-512
        A.1.1.  Signature-Agent absent from the request
@@ -511,9 +511,37 @@ Table of Contents
    the origin to convey accept-signature header, or deployment specific
    exchanges.
 
-6.  Privacy Considerations
+5.7.1.  Signature-Agent labeling
 
-6.1.  Public Identity
+   An intermediary is allowed to relabel an existing signature when
+   processing the message, per Section 7.2.5 of
+   [HTTP-MESSAGE-SIGNATURES].
+
+   This MAY apply to Signature-Agent, when included in the request as
+   defined in Section 4.2.1, An intermediary updating the member key
+   MUST update the components of the associated signatures accordingly.
+
+   For instance, an intermediary updating the Signature-Agent from sig2
+   to sig3 on the example provided in Appendix A.1.2 would result in the
+   following Signature, Signature-Input, and Signature-Agent header.
+
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: sig3="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig3")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
+
+   Signature is unchanged as the base is similar.  Both Signature-Agent
+   and Signature-Input reflect the update from sig2 to sig3. . # Privacy
+   Considerations
+
+5.8.  Public Identity
 
    This architecture assumes that automated clients identify themselves
    explicitly using digital signatures.  The identity associated with a
@@ -522,7 +550,7 @@ Table of Contents
    requests with specific agents.  If an agent wishes not to identify
    itself, this is not the right choice of protocol for it.
 
-6.2.  No Human Correlation
+5.9.  No Human Correlation
 
    The key used for signing MUST NOT be tied to a specific human
    individual.  Keys SHOULD represent a role, company, or automation
@@ -530,7 +558,7 @@ Table of Contents
    avoids accidental exposure of personally identifiable information and
    prevents the misuse of keys for user tracking or profiling.
 
-6.3.  Minimizing Tracking Risks
+5.10.  Minimizing Tracking Risks
 
    To limit tracking risks, implementations SHOULD avoid long-lived,
    globally unique key identifiers unless strictly necessary.  Key
@@ -538,13 +566,13 @@ Table of Contents
    signing information that could be used to correlate activity across
    contexts, especially where sensitive user data is involved.
 
-7.  IANA Considerations
+6.  IANA Considerations
 
    This document has no IANA actions.
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
@@ -593,7 +621,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
