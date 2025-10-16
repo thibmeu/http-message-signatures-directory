@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-14T00:30:27.002391+00:00",
+  "timestamp": "2025-10-16T00:31:57.206321+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1176,13 +1176,32 @@
       "state": "OPEN",
       "author": "sandormajor",
       "authorAssociation": "NONE",
-      "assignees": [],
-      "labels": [],
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
       "body": "The spec currently says that `@authority` [MUST](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2-3.2.1) be signed. If a user would want to bind the signature to a specific path, they could use `@target-uri` that already contains `@scheme + @authority + @path + @query`.\n\nI suggest changing the relevant part from `@authority` to `@authority OR @target-uri`.",
       "createdAt": "2025-10-13T20:48:02Z",
-      "updatedAt": "2025-10-13T20:48:02Z",
+      "updatedAt": "2025-10-15T07:53:53Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "that's definitely a consideration we had initially.\nthere are deployment that would be going with signing `@target-uri` as well. adding the flexibility seems to be relevant.\n\nI'd like to ensure that `@authority` is favored as it allows for more replayability.\n\nWdyt?",
+          "createdAt": "2025-10-15T07:28:26Z",
+          "updatedAt": "2025-10-15T07:28:26Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "suggestion\n\n```\nAgents MUST include one following components:\n\n* @authority as defined in Section 2.2.3 of HTTP-MESSAGE-SIGNATURES\n* @target-uri as defined in Section 2.2.2 of HTTP-MESSAGE-SIGNATURES\n```",
+          "createdAt": "2025-10-15T07:53:53Z",
+          "updatedAt": "2025-10-15T07:53:53Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -3021,13 +3040,13 @@
       ],
       "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
       "createdAt": "2025-10-08T14:24:12Z",
-      "updatedAt": "2025-10-13T20:21:54Z",
+      "updatedAt": "2025-10-15T07:42:19Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "signature-agent-directory",
-      "headRefOid": "e24c3ab78f442424ec975d5135055ceba7637e49",
+      "headRefOid": "120a046825a3676279091939d74528e10b674a98",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -3060,6 +3079,20 @@
           "body": "Yes, probably option 1 is good enough. The WBA spec could also be more restrictive maybe. I.e. if people are using HTTP message sig for web-bot-auth then proxies must not change the labels.\r\n\r\nOne more thing I added as a comment to the issue is that maybe the `sf` label is needed, I'm not sure about that. See under https://github.com/thibmeu/http-message-signatures-directory/issues/70#issuecomment-3386880377",
           "createdAt": "2025-10-09T19:25:13Z",
           "updatedAt": "2025-10-09T19:25:13Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Adding one consideration in the architecture draft to address re-keying of `Signature-Agent` by an intermediary",
+          "createdAt": "2025-10-14T16:13:08Z",
+          "updatedAt": "2025-10-14T16:13:08Z"
+        },
+        {
+          "author": "kandoin",
+          "authorAssociation": "NONE",
+          "body": "LGTM. Thanks, @thibmeu.",
+          "createdAt": "2025-10-14T16:14:54Z",
+          "updatedAt": "2025-10-14T16:14:54Z"
         }
       ],
       "reviews": [
@@ -3281,6 +3314,46 @@
           "createdAt": "2025-10-13T20:21:54Z",
           "updatedAt": "2025-10-13T20:21:54Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7G5VTr",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-14T18:18:54Z",
+          "updatedAt": "2025-10-14T18:18:54Z",
+          "comments": [
+            {
+              "originalPosition": 99,
+              "body": "To me the question here is then how do the verifier know which agent to use for which signature? Technically the signature could cover multiple signature-agent headers but I'd expect the labels of all the relevant signature-related headers to match, in order to find what belongs to where.",
+              "createdAt": "2025-10-14T18:18:54Z",
+              "updatedAt": "2025-10-14T18:18:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7HAwfa",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-15T07:42:18Z",
+          "updatedAt": "2025-10-15T07:42:19Z",
+          "comments": [
+            {
+              "originalPosition": 99,
+              "body": "that's covered by HTTP Message Signature [RFC 9421 in section 2.1](https://datatracker.ietf.org/doc/html/rfc9421#section-2.1-3)\r\n\r\n> Unless overridden by additional parameters and rules, HTTP field values MUST be combined into a single value as defined in [Section 5.2](https://rfc-editor.org/rfc/rfc9110#section-5.2) of [[HTTP](https://datatracker.ietf.org/doc/html/rfc9110)] to create the component value. Specifically, HTTP fields sent as multiple fields MUST be combined by concatenating the values using a single comma and a single space as a separator (\",\" + \" \").\r\n\r\nThis implies that even though there are mulitple Signature-Agent, they should be combined into one.\r\n\r\nSignature header labels do not have to match the one of the signasture agent (even though that's probably a best practice). What has to match is within `signature-input`: `(\"signature-agent\";key=\"SHOULD_MATCH_SIGNATURE_AGENT_KEY\")`",
+              "createdAt": "2025-10-15T07:42:18Z",
+              "updatedAt": "2025-10-15T07:42:19Z"
+            }
+          ]
         }
       ]
     },
