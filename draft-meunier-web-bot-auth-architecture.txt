@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                           14 October 2025
-Expires: 17 April 2026
+Intended status: Informational                           17 October 2025
+Expires: 20 April 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 April 2026.
+   This Internet-Draft will expire on 20 April 2026.
 
 Copyright Notice
 
@@ -756,8 +756,8 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
 
 Appendix B.  Implementations
 
-   This draft has a couple of implementations.  A demonstration server
-   has been deployed to https://http-message-signatures-
+   This draft has a couple of public implementations.  A demonstration
+   server has been deployed to https://http-message-signatures-
    example.research.cloudflare.com/ (https://http-message-signatures-
    example.research.cloudflare.com/).
 
@@ -772,10 +772,25 @@ B.1.  Clients
    *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
       (TypeScript)
 
+   *  Puppeteer script (https://github.com/stytchauth/web-bot-auth-
+      example) (JavaScript)
+
    *  Guzzle middleware (https://github.com/olipayne/guzzle-web-bot-
       auth-middleware) (PHP)
 
    *  Python script (https://zenn.dev/oymk/articles/944069e5eddc27)
+      (Python)
+
+   *  Bot-Authentication (https://github.com/cyberstormdotmu/bot-
+      authentication) (Python)
+
+   *  HTPie plugin (https://github.com/cloudflare/web-bot-auth) (Python)
+
+   *  Web scrapers (scrapy/crawl4ai)
+      (https://github.com/cyberstormdotmu/bot-authentication) (Python)
+
+   *  HUMAN Verified AI Agents (https://github.com/HumanSecurity/human-
+      verified-ai-agent) (Python)
 
    *  Linzer
       (https://github.com/nomadium/linzer/blob/master/spec/integration/
@@ -789,6 +804,9 @@ B.2.  Servers
 
    *  Cloudflare Workers (https://github.com/cloudflare/web-bot-auth)
       (TypeScript)
+
+   *  Apache module (https://github.com/garyillyes/web-bot-auth-apache)
+      (C)
 
 B.3.  Test vectors
 
