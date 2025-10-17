@@ -159,10 +159,13 @@ requirements.
 
 {{HTTP-MESSAGE-SIGNATURES}} defines components to be signed.
 
-Agents MUST include the following component:
+Agents MUST include at least one of the following components:
 
 `@authority`
 : as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`@target-uri`
+: as defined in {{Section 2.2.2 of HTTP-MESSAGE-SIGNATURES}}
 
 Agents MUST include the following `@signature-params` as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
 
