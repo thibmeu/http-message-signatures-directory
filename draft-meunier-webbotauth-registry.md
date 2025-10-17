@@ -27,6 +27,10 @@ author:
     organization: Cloudflare
     email: maxime.guerreiro@gmail.com
  -
+    fullname: Ulas Kirazci
+    organization: Amazon
+    email: ulaskira@amazon.com
+ -
     fullname: Thibault Meunier
     organization: Cloudflare
     email: ot-ietf@thibault.uk
