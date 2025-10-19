@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-16T00:31:57.206321+00:00",
+  "timestamp": "2025-10-19T00:35:03.912151+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -2953,7 +2953,7 @@
       "id": "PR_kwDOOXJyWM6oqdDS",
       "title": "Add new implementations of architecture drafts",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/66",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -2964,17 +2964,19 @@
       ],
       "body": "Adding implementation of cyberdomu and HUMAN\r\nBoth in Python",
       "createdAt": "2025-09-15T15:24:03Z",
-      "updatedAt": "2025-09-29T12:29:30Z",
+      "updatedAt": "2025-10-17T07:55:58Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f0a4b5e146e156d070afab909598944a7736106e",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-new-implementations",
       "headRefOid": "b88adacd7732179a646d978a2b9fc4f1db90b40a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-17T07:55:56Z",
+      "mergedAt": "2025-10-17T07:55:56Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f"
+      },
       "comments": [],
       "reviews": []
     },
@@ -3040,7 +3042,7 @@
       ],
       "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
       "createdAt": "2025-10-08T14:24:12Z",
-      "updatedAt": "2025-10-15T07:42:19Z",
+      "updatedAt": "2025-10-16T07:45:39Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
@@ -3354,6 +3356,26 @@
               "updatedAt": "2025-10-15T07:42:19Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7HSYic",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-16T07:45:39Z",
+          "updatedAt": "2025-10-16T07:45:39Z",
+          "comments": [
+            {
+              "originalPosition": 99,
+              "body": "ok to resolve @sandormajor? (i'd like to close by the eow to cut a new draft)",
+              "createdAt": "2025-10-16T07:45:39Z",
+              "updatedAt": "2025-10-16T07:45:39Z"
+            }
+          ]
         }
       ]
     },
@@ -3402,6 +3424,74 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 75,
+      "id": "PR_kwDOOXJyWM6uV8D2",
+      "title": "Add @ulaskira as a co-author for registry draft",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/75",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "@ulaskira if you're ok with the affiliation and the email being corporate and not personal",
+      "createdAt": "2025-10-17T16:19:26Z",
+      "updatedAt": "2025-10-17T16:20:01Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-ulaskira-registry",
+      "headRefOid": "1db1f51437432ce470826d2e0ae6fd7ac4aa51dd",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "fyi @punkeel",
+          "createdAt": "2025-10-17T16:20:00Z",
+          "updatedAt": "2025-10-17T16:20:00Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 76,
+      "id": "PR_kwDOOXJyWM6uV8Pr",
+      "title": "Web bot auth should sign either `@target-uri` or `@authority`",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/76",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "@sandormajor for review\r\n\r\nClose #74",
+      "createdAt": "2025-10-17T16:19:40Z",
+      "updatedAt": "2025-10-17T16:19:40Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "add-target-uri",
+      "headRefOid": "c21abcadd5ccbdaf27b9f4c0fc5b6cc7c0165c55",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
