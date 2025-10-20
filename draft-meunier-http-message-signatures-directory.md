@@ -459,6 +459,12 @@ Lucas Pardue.
 # Changelog
 {:numbered="false"}
 
+v04
+
+- Change `Signature-Agent` to a `sf-dictionary`
+- Add `req` flag on directory response
+- Add more contributors
+
 v03
 
 - Remove "purpose" field from web-bot-auth
