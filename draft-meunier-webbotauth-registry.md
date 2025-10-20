@@ -683,6 +683,15 @@ The editor would also like to thank the following individuals (listed in alphabe
 # Changelog
 {:numbered="false"}
 
+v01
+
+- Add contributors
+- Aligning registry draft with oauth dynamic client registration iana registry
+- Add an about-url field
+- Add ABNF for discovery of signature-agent card (registry)
+- Add precisions about known URLs
+- Add placeholder for image size
+
 v00
 
 - Initial draft
