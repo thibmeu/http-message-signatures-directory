@@ -1322,7 +1322,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-signature-agent-card">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-signature-agent-card" class="section-name selfRef">Signature Agent Card</a>
       </h2>
-<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
+<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
 This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-2">
 <pre>
@@ -1719,7 +1719,7 @@ entries.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
         </h3>
 <p id="section-4.4-1">Signature Agent Card format defined in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> extends the
-format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
 Agent Card <span class="bcp14">MAY</span> be discovered via a <code>Signature-Agent</code> header.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
@@ -2301,7 +2301,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <dd class="break"></dd>
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
-<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-03</span>, <time datetime="2025-09-05" class="refDate">5 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-04</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -2415,10 +2415,31 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v00<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">v01<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Initial draft<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Add contributors<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.2">
+          <p id="appendix-D-2.2.1">Aligning registry draft with oauth dynamic client registration iana registry<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.3">
+          <p id="appendix-D-2.3.1">Add an about-url field<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.4">
+          <p id="appendix-D-2.4.1">Add ABNF for discovery of signature-agent card (registry)<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.5">
+          <p id="appendix-D-2.5.1">Add precisions about known URLs<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.6">
+          <p id="appendix-D-2.6.1">Add placeholder for image size<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-3">v00<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-4.1">
+          <p id="appendix-D-4.1.1">Initial draft<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>

@@ -185,9 +185,9 @@ DQUOTE = "\""
 
    [BOT-AUTH] Meunier, T., "HTTP Message Signatures for automated
               traffic Architecture", Work in Progress, Internet-Draft,
-              draft-meunier-web-bot-auth-architecture-03, 29 August
+              draft-meunier-web-bot-auth-architecture-04, 20 October
               2025, <https://datatracker.ietf.org/doc/html/draft-
-              meunier-web-bot-auth-architecture-03>.
+              meunier-web-bot-auth-architecture-04>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -211,9 +211,9 @@ DQUOTE = "\""
    [SIGNATURE-DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-03, 5 September 2025,
+              signatures-directory-04, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-03>.
+              message-signatures-directory-04>.
 
 Appendix A.  Examples
 
