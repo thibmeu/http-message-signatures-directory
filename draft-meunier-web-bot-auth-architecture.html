@@ -1509,11 +1509,16 @@ requirements.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-generating-http-message-sig" class="section-name selfRef">Generating HTTP Message Signature</a>
         </h3>
 <p id="section-4.2-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> defines components to be signed.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">Agents <span class="bcp14">MUST</span> include the following component:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">Agents <span class="bcp14">MUST</span> include at least one of the following components:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-4.2-3">
           <dt id="section-4.2-3.1"><code>@authority</code></dt>
           <dd style="margin-left: 1.5em" id="section-4.2-3.2">
             <p id="section-4.2-3.2.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.3" class="relref">Section 2.2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-4.2-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-3.3"><code>@target-uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-3.4">
+            <p id="section-4.2-3.4.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.2" class="relref">Section 2.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-4.2-3.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
