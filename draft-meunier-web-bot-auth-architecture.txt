@@ -4,8 +4,8 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                           17 October 2025
-Expires: 20 April 2026
+Intended status: Informational                           20 October 2025
+Expires: 23 April 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2026.
+   This Internet-Draft will expire on 23 April 2026.
 
 Copyright Notice
 

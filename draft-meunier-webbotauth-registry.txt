@@ -3,9 +3,12 @@
 
 
 Web Bot Auth                                                M. Guerreiro
-Internet-Draft                                                T. Meunier
-Intended status: Informational                                Cloudflare
-Expires: 20 April 2026                                   17 October 2025
+Internet-Draft                                                Cloudflare
+Intended status: Informational                                U. Kirazci
+Expires: 23 April 2026                                            Amazon
+                                                              T. Meunier
+                                                              Cloudflare
+                                                         20 October 2025
 
 
            Registry and Signature Agent card for Web bot auth
@@ -56,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2026.
+   This Internet-Draft will expire on 23 April 2026.
 
 Copyright Notice
 
@@ -791,6 +794,11 @@ Authors' Addresses
    Maxime Guerreiro
    Cloudflare
    Email: maxime.guerreiro@gmail.com
+
+
+   Ulas Kirazci
+   Amazon
+   Email: ulaskira@amazon.com
 
 
    Thibault Meunier
