@@ -662,6 +662,21 @@ Tanya Verma.
 # Changelog
 {:numbered="false"}
 
+v04
+
+- Change Signature-Agent to a sf-dictionary
+- Add security consideration around intermediary re-keying Signature-Agent
+- Add `target-uri` as a valid replacement for `@authority`
+- Add more contributors
+- Add new implementations of architecture drafts
+- Remove "purpose" field from web-bot-auth architecture example
+
+v03
+
+- Update linzer example url
+- Fix section and name of status code 429
+- Fix typos
+
 v02
 
 - Add response status code
