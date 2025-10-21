@@ -302,11 +302,11 @@ Example
 
 ~~~txt
 # An example list of bots
-https://bot1.example.com/.well-known/signature-agent-card
-https://crawler2.example.com/.well-known/signature-agent-card
+https://bot1.example.com/.well-known/http-message-signatures-directory
+https://crawler2.example.com/.well-known/http-message-signatures-directory
 
 # Now the list of platforms
-https://zerotrust-gateway.example.com/.well-known/signature-agent-card
+https://zerotrust-gateway.example.com/v1/signature-agent-card
 
 # Below is an inlined card with the data URL scheme
 data:application/json;,... # Invalid, not defined
