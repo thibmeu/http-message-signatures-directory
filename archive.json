@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-19T00:35:03.912151+00:00",
+  "timestamp": "2025-10-21T00:31:59.290102+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1076,15 +1076,15 @@
       "id": "I_kwDOOXJyWM7P9VoL",
       "title": "Change `Signature-Agent` to a sf-dictionary",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/70",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sandormajor",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Currently `Signature-Agent` is a string so there's no relation of it to the signatures, and you also can't sign `Signature-Agent` if different parties add headers with this name. I propose converting the SA header to a dictionary and linking a particular signature to a specific agent, e.g. like this:\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\nOr maybe something like\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"agent1\");signature-agent=agent1;...\nSignature-Agent: agent1=\"https://example.com\"\n```",
       "createdAt": "2025-10-06T20:26:07Z",
-      "updatedAt": "2025-10-10T11:13:54Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-20T11:40:12Z",
+      "closedAt": "2025-10-20T11:40:12Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -1173,7 +1173,7 @@
       "id": "I_kwDOOXJyWM7RTGdm",
       "title": "@authority vs @target-uri",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/74",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sandormajor",
       "authorAssociation": "NONE",
       "assignees": [
@@ -1184,8 +1184,8 @@
       ],
       "body": "The spec currently says that `@authority` [MUST](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2-3.2.1) be signed. If a user would want to bind the signature to a specific path, they could use `@target-uri` that already contains `@scheme + @authority + @path + @query`.\n\nI suggest changing the relevant part from `@authority` to `@authority OR @target-uri`.",
       "createdAt": "2025-10-13T20:48:02Z",
-      "updatedAt": "2025-10-15T07:53:53Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-20T11:40:31Z",
+      "closedAt": "2025-10-20T11:40:31Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -3031,7 +3031,7 @@
       "id": "PR_kwDOOXJyWM6stuEY",
       "title": "Change Signature-Agent to a sf-dictionary",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/71",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -3042,17 +3042,19 @@
       ],
       "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
       "createdAt": "2025-10-08T14:24:12Z",
-      "updatedAt": "2025-10-16T07:45:39Z",
+      "updatedAt": "2025-10-20T11:40:13Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "signature-agent-directory",
       "headRefOid": "120a046825a3676279091939d74528e10b674a98",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-20T11:40:11Z",
+      "mergedAt": "2025-10-20T11:40:11Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "9a877f6f65ae3be8d47fd4745846d68b9c95f2f8"
+      },
       "comments": [
         {
           "author": "kandoin",
@@ -3095,6 +3097,13 @@
           "body": "LGTM. Thanks, @thibmeu.",
           "createdAt": "2025-10-14T16:14:54Z",
           "updatedAt": "2025-10-14T16:14:54Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "merging to cut a new draft ahead of IETF 124, which cut-off deadline is today.\r\nthe topic has been brought up with the list https://mailarchive.ietf.org/arch/msg/web-bot-auth/-eseMgN2uEyNPPsz3OVHsW0wADQ/\r\n\r\nIf there are changes to be made following discussion/adoption of the draft by the group, that'll be a follow up PR",
+          "createdAt": "2025-10-20T11:40:08Z",
+          "updatedAt": "2025-10-20T11:40:08Z"
         }
       ],
       "reviews": [
@@ -3430,7 +3439,7 @@
       "id": "PR_kwDOOXJyWM6uV8D2",
       "title": "Add @ulaskira as a co-author for registry draft",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/75",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -3441,17 +3450,19 @@
       ],
       "body": "@ulaskira if you're ok with the affiliation and the email being corporate and not personal",
       "createdAt": "2025-10-17T16:19:26Z",
-      "updatedAt": "2025-10-17T16:20:01Z",
+      "updatedAt": "2025-10-20T11:38:19Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-ulaskira-registry",
       "headRefOid": "1db1f51437432ce470826d2e0ae6fd7ac4aa51dd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-20T11:38:16Z",
+      "mergedAt": "2025-10-20T11:38:16Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "401ec972e21d4ceea6a686cf7a455c5d3522d6a2"
+      },
       "comments": [
         {
           "author": "thibmeu",
@@ -3461,14 +3472,28 @@
           "updatedAt": "2025-10-17T16:20:00Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7H9AIF",
+          "commit": {
+            "abbreviatedOid": "1db1f51"
+          },
+          "author": "ulaskira",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks",
+          "createdAt": "2025-10-19T20:17:09Z",
+          "updatedAt": "2025-10-19T20:17:09Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 76,
       "id": "PR_kwDOOXJyWM6uV8Pr",
       "title": "Web bot auth should sign either `@target-uri` or `@authority`",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/76",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -3479,18 +3504,28 @@
       ],
       "body": "@sandormajor for review\r\n\r\nClose #74",
       "createdAt": "2025-10-17T16:19:40Z",
-      "updatedAt": "2025-10-17T16:19:40Z",
+      "updatedAt": "2025-10-20T11:40:33Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-target-uri",
       "headRefOid": "c21abcadd5ccbdaf27b9f4c0fc5b6cc7c0165c55",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2025-10-20T11:40:30Z",
+      "mergedAt": "2025-10-20T11:40:30Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "1de7c57022d7c8d39e15b01977d87cfdcafa8b71"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Merging ahead of IETF 124 draft cutoff.",
+          "createdAt": "2025-10-20T11:40:27Z",
+          "updatedAt": "2025-10-20T11:40:27Z"
+        }
+      ],
       "reviews": []
     }
   ]
