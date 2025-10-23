@@ -4,8 +4,9 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                         21 October 2025
-Expires: 24 April 2026
+Intended status: Standards Track                                S. Major
+Expires: 26 April 2026                                            Google
+                                                         23 October 2025
 
 
                    HTTP Message Signatures Directory
@@ -53,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 April 2026.
+   This Internet-Draft will expire on 26 April 2026.
 
 Copyright Notice
 
@@ -103,7 +104,7 @@ Table of Contents
      A.4.  Request with data URI Signature-Agent
    Acknowledgments
    Changelog
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -542,7 +543,7 @@ HTTP/1.1 200 OK
 Acknowledgments
 
    Marwan Fayed, Maxime Guerreiro, Jonathan Hoyland, Nikhil Kandoi,
-   Akshat Mahajan, Alex Sandor Major, Eugenio Panero, Lucas Pardue.
+   Akshat Mahajan, Eugenio Panero, Lucas Pardue.
 
 Changelog
 
@@ -585,8 +586,13 @@ Changelog
 
    *  Well-known and content-type
 
-Author's Address
+Authors' Addresses
 
    Thibault Meunier
    Cloudflare
    Email: ot-ietf@thibault.uk
+
+
+   Sandor Major
+   Google
+   Email: ietf@sandormajor.com

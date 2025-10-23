@@ -4,8 +4,9 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Informational                           21 October 2025
-Expires: 24 April 2026
+Intended status: Informational                                  S. Major
+Expires: 26 April 2026                                            Google
+                                                         23 October 2025
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -51,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 April 2026.
+   This Internet-Draft will expire on 26 April 2026.
 
 Copyright Notice
 
@@ -115,7 +116,7 @@ Table of Contents
      B.3.  Test vectors
    Acknowledgments
    Changelog
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -851,8 +852,8 @@ Acknowledgments
    The editor would also like to thank the following individuals (listed
    in alphabetical order) for feedback, insight, and implementation of
    this document - Marwan Fayed, Maxime Guerreiro, Scott Hendrickson,
-   Jonathan Hoyland, Alex Sandor Major, Mark Nottingham, Eugenio Panero,
-   Lucas Pardue, Malte Ubl, Loganaden Velvindron, Tanya Verma.
+   Jonathan Hoyland, Mark Nottingham, Eugenio Panero, Lucas Pardue,
+   Malte Ubl, Loganaden Velvindron, Tanya Verma.
 
 Changelog
 
@@ -931,8 +932,13 @@ Changelog
 
    *  High level Security and Privacy considerations
 
-Author's Address
+Authors' Addresses
 
    Thibault Meunier
    Cloudflare
    Email: ot-ietf@thibault.uk
+
+
+   Sandor Major
+   Google
+   Email: ietf@sandormajor.com
