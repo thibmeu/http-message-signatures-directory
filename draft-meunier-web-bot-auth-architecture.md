@@ -26,6 +26,10 @@ author:
     fullname: Thibault Meunier
     organization: Cloudflare
     email: ot-ietf@thibault.uk
+ -
+    fullname: Sandor Major
+    organization: Google
+    email: ietf@sandormajor.com
 
 normative:
   DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
@@ -651,7 +655,6 @@ Marwan Fayed,
 Maxime Guerreiro,
 Scott Hendrickson,
 Jonathan Hoyland,
-Alex Sandor Major,
 Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,

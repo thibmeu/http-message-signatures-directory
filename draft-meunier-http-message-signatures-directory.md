@@ -26,6 +26,10 @@ author:
     fullname: Thibault Meunier
     organization: Cloudflare
     email: ot-ietf@thibault.uk
+ -
+    fullname: Sandor Major
+    organization: Google
+    email: ietf@sandormajor.com
 
 normative:
   HTTP: RFC9110
@@ -381,8 +385,6 @@ X509v3 extensions:
     CA Issuers - URI:https://example.com/.well-known/http-message-signatures-directory.crt
 ~~~
 
-<!-- Words from @sandormajor. TODO: add acknowledgement -->
-
 The verifier should validate the signature with the public key in the Signature-Agent,
 match the public key with the leaf cert, then fetch the root cert from the AIA URI and verify the leaf cert with it.
 
@@ -452,7 +454,6 @@ Maxime Guerreiro,
 Jonathan Hoyland,
 Nikhil Kandoi,
 Akshat Mahajan,
-Alex Sandor Major,
 Eugenio Panero,
 Lucas Pardue.
 
