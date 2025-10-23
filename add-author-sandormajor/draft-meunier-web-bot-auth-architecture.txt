@@ -941,4 +941,4 @@ Authors' Addresses
 
    Sandor Major
    Google
-   Email: sandormajor@chromium.org
+   Email: ietf@sandormajor.com
