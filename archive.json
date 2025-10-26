@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-23T00:31:22.414539+00:00",
+  "timestamp": "2025-10-26T00:34:02.770641+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1083,7 +1083,7 @@
       "labels": [],
       "body": "Currently `Signature-Agent` is a string so there's no relation of it to the signatures, and you also can't sign `Signature-Agent` if different parties add headers with this name. I propose converting the SA header to a dictionary and linking a particular signature to a specific agent, e.g. like this:\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\nOr maybe something like\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"agent1\");signature-agent=agent1;...\nSignature-Agent: agent1=\"https://example.com\"\n```",
       "createdAt": "2025-10-06T20:26:07Z",
-      "updatedAt": "2025-10-20T11:40:12Z",
+      "updatedAt": "2025-10-24T07:07:36Z",
       "closedAt": "2025-10-20T11:40:12Z",
       "comments": [
         {
@@ -1134,6 +1134,20 @@
           "body": "`sf` indicates that the component is to be serialised with strict serialisation. I don't think it's a requirement here, and it is likely simpler to not add complexity here by not having sf. Maybe we can say `sf MAY be included`, but that's repeating what https://www.rfc-editor.org/rfc/rfc9421#section-2.1.1 is saying",
           "createdAt": "2025-10-10T11:13:54Z",
           "updatedAt": "2025-10-10T11:13:54Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Crossposting from the PR, @thibmeu can you reopen this ticket to follow up on https://github.com/thibmeu/http-message-signatures-directory/pull/71#discussion_r2431466338? github doesn't allow me to reopen",
+          "createdAt": "2025-10-23T17:20:28Z",
+          "updatedAt": "2025-10-23T17:20:28Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Cross posting as well\n\nThere's def more discussion we can have.\nThis seems to have been pointed by @rgnote as well.\n\nI'm opening a dedicated issue https://github.com/thibmeu/http-message-signatures-directory/issues/78",
+          "createdAt": "2025-10-24T07:07:36Z",
+          "updatedAt": "2025-10-24T07:07:36Z"
         }
       ]
     },
@@ -1184,7 +1198,7 @@
       ],
       "body": "The spec currently says that `@authority` [MUST](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2-3.2.1) be signed. If a user would want to bind the signature to a specific path, they could use `@target-uri` that already contains `@scheme + @authority + @path + @query`.\n\nI suggest changing the relevant part from `@authority` to `@authority OR @target-uri`.",
       "createdAt": "2025-10-13T20:48:02Z",
-      "updatedAt": "2025-10-20T11:40:31Z",
+      "updatedAt": "2025-10-24T07:13:40Z",
       "closedAt": "2025-10-20T11:40:31Z",
       "comments": [
         {
@@ -1200,8 +1214,40 @@
           "body": "suggestion\n\n```\nAgents MUST include one following components:\n\n* @authority as defined in Section 2.2.3 of HTTP-MESSAGE-SIGNATURES\n* @target-uri as defined in Section 2.2.2 of HTTP-MESSAGE-SIGNATURES\n```",
           "createdAt": "2025-10-15T07:53:53Z",
           "updatedAt": "2025-10-15T07:53:53Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "@thibmeu I like the new wording. regarding favoring the `@authority` for replayability: that goes against the recommendation of using a nonce in [4.2.2.](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2.2). Technically one could reuse a nonce but they probably shouldn't",
+          "createdAt": "2025-10-23T17:26:24Z",
+          "updatedAt": "2025-10-23T17:26:24Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I think the two are different, but the two recommendations may create a conflict indeed. Would your recommendation be to not use a nonce if you replay your signatures?\n\nThe nonce is a discussion we could have with the group. The proposal [draft-hoypat-httpbis-message-signatures-ekm](https://datatracker.ietf.org/doc/draft-hoypat-httpbis-message-signatures-ekm/) from @cjpatton and @jhoyla improves the security model for deployment that don't want replayability for instance.",
+          "createdAt": "2025-10-24T07:13:40Z",
+          "updatedAt": "2025-10-24T07:13:40Z"
         }
       ]
+    },
+    {
+      "number": 78,
+      "id": "I_kwDOOXJyWM7TeYNu",
+      "title": "Relabelling proxy MAY break signature-agent signatures",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/78",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "bug"
+      ],
+      "body": "[Section 5.7.1 or -architecture-04](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-04.html#section-5.7.1) mentions that relabelling can be done by intermediating proxy. This would, however, break the signature-base as the `key` parameter is part of the base.\n\nThe text should be corrected, possibly removed, and have a dedicated section about intermediating proxy behaviour.\n\nThere has been some discussion on https://github.com/thibmeu/http-message-signatures-directory/pull/71#discussion_r2456224438 and https://github.com/thibmeu/http-message-signatures-directory/pull/71#discussion_r2449178915\n\nReusing the example,\n\ngoing from\n\n```\nSignature-Agent: agent1=\"https://signature-agent.test\"\nSignature-Input: sig1=(\"signature-agent\";key=\"agent1\")\nSignature: sig1=:base64==:\n```\n\nto \n\n```\nSignature-Agent: SHOULD_MATCH_SIGNATURE_AGENT_KEY=\"https://signature-agent.test\"\nSignature-Input: sig1=(\"signature-agent\";key=\"SHOULD_MATCH_SIGNATURE_AGENT_KEY\")\nSignature: sig1=:base64==:\n```\n\n`SHOULD_MATCH_SIGNATURE_AGENT_KEY` relabeling is going to break `sig1` signature\n\n",
+      "createdAt": "2025-10-24T07:05:26Z",
+      "updatedAt": "2025-10-24T07:05:34Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -3042,7 +3088,7 @@
       ],
       "body": "both for directory and architecture\r\n\r\nUsing @sandormajor proposal\r\n\r\n```\r\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\r\nSignature: sig1=:3ase6A==:\r\n\r\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\r\nSignature: sig2=:3ase6A==:\r\n\r\nSignature-Agent: sig1=\"https://example.com\"\r\nSignature-Agent: sig2=\"https://agent.example\"\r\n```\r\n\r\nclose #70",
       "createdAt": "2025-10-08T14:24:12Z",
-      "updatedAt": "2025-10-21T17:41:22Z",
+      "updatedAt": "2025-10-24T07:06:26Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "f551c920333f3f31705d1a274091ecf3c2b12226",
@@ -3405,6 +3451,66 @@
               "updatedAt": "2025-10-21T17:41:22Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7I80oC",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-23T17:19:38Z",
+          "updatedAt": "2025-10-23T17:19:38Z",
+          "comments": [
+            {
+              "originalPosition": 99,
+              "body": "sorry I missed some notifications here @thibmeu. sounds good to have it in the cut but let's reopen https://github.com/thibmeu/http-message-signatures-directory/issues/70 to make sure this doesn't get lost. I think if someone relabels the `Signature-Agent`, they'll need to update the `SHOULD_MATCH_SIGNATURE_AGENT_KEY`, and that will invalidate the signature",
+              "createdAt": "2025-10-23T17:19:38Z",
+              "updatedAt": "2025-10-23T17:19:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7JJ5Gp",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-24T07:05:47Z",
+          "updatedAt": "2025-10-24T07:05:47Z",
+          "comments": [
+            {
+              "originalPosition": 99,
+              "body": "There's def more discussion we can have.\r\nThis seems to have been pointed by @rgnote as well.\r\n\r\nI'm opening a dedicated issue #78",
+              "createdAt": "2025-10-24T07:05:47Z",
+              "updatedAt": "2025-10-24T07:05:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7JJ5f5",
+          "commit": {
+            "abbreviatedOid": "120a046"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-24T07:06:26Z",
+          "updatedAt": "2025-10-24T07:06:26Z",
+          "comments": [
+            {
+              "originalPosition": 110,
+              "body": "indeed, this is an oversight. I've opened #78 to get this addressed",
+              "createdAt": "2025-10-24T07:06:26Z",
+              "updatedAt": "2025-10-24T07:06:26Z"
+            }
+          ]
         }
       ]
     },
@@ -3524,7 +3630,7 @@
       ],
       "body": "@sandormajor for review\r\n\r\nClose #74",
       "createdAt": "2025-10-17T16:19:40Z",
-      "updatedAt": "2025-10-20T11:40:33Z",
+      "updatedAt": "2025-10-23T17:23:13Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "efa416af3f75dcdc8d7af9ac6f204c83cdadfd5f",
@@ -3544,16 +3650,37 @@
           "body": "Merging ahead of IETF 124 draft cutoff.",
           "createdAt": "2025-10-20T11:40:27Z",
           "updatedAt": "2025-10-20T11:40:27Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "looks good, thank you!",
+          "createdAt": "2025-10-23T17:23:13Z",
+          "updatedAt": "2025-10-23T17:23:13Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7I86gJ",
+          "commit": {
+            "abbreviatedOid": "c21abca"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-23T17:22:50Z",
+          "updatedAt": "2025-10-23T17:22:50Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 77,
       "id": "PR_kwDOOXJyWM6vA4bQ",
       "title": "Add @sandormajor as author",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/77",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -3564,30 +3691,73 @@
       ],
       "body": "move from acknowledgement to authorship",
       "createdAt": "2025-10-22T08:58:57Z",
-      "updatedAt": "2025-10-22T09:04:24Z",
+      "updatedAt": "2025-10-23T15:09:21Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "6ff66c1cd5ec68d90d43e8ac0cca0610109a1dc6",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "add-author-sandormajor",
-      "headRefOid": "92b4bda6c98385e17913446fb99a04bae30d397a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "e048404150d6976fcc5f97cb30987a999a2f4820",
+      "closedAt": "2025-10-23T15:09:04Z",
+      "mergedAt": "2025-10-23T15:09:04Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "4e11f4be5264e65cb5801bf46ab635e2d9dc1c06"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "to be published when the datatracker allows for it",
+          "createdAt": "2025-10-23T15:09:21Z",
+          "updatedAt": "2025-10-23T15:09:21Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOOXJyWM7Iiiay",
           "commit": {
-            "abbreviatedOid": "92b4bda"
+            "abbreviatedOid": "da78254"
           },
           "author": "punkeel",
           "authorAssociation": "NONE",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2025-10-22T09:04:24Z",
-          "updatedAt": "2025-10-22T09:04:24Z",
+          "updatedAt": "2025-10-23T07:41:34Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7IwGV4",
+          "commit": {
+            "abbreviatedOid": "92b4bda"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-10-23T02:25:26Z",
+          "updatedAt": "2025-10-23T02:25:41Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I realized that it's common to use personal addresses so can you please update this to ietf@sandormajor.com here and below?",
+              "createdAt": "2025-10-23T02:25:26Z",
+              "updatedAt": "2025-10-23T02:25:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM7I4LNB",
+          "commit": {
+            "abbreviatedOid": "e048404"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Thank you!",
+          "createdAt": "2025-10-23T14:10:48Z",
+          "updatedAt": "2025-10-23T14:10:48Z",
           "comments": []
         }
       ]
