@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-26T00:34:02.770641+00:00",
+  "timestamp": "2025-10-30T00:33:00.243598+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1083,7 +1083,7 @@
       "labels": [],
       "body": "Currently `Signature-Agent` is a string so there's no relation of it to the signatures, and you also can't sign `Signature-Agent` if different parties add headers with this name. I propose converting the SA header to a dictionary and linking a particular signature to a specific agent, e.g. like this:\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"sig1\");...\nSignature: sig1=:3ase6A==:\n\nSignature-Input: sig2=(... \"signature-agent\";key=\"sig2\");...\nSignature: sig2=:3ase6A==:\n\nSignature-Agent: sig1=\"https://example.com\"\nSignature-Agent: sig2=\"https://agent.example\"\n```\n\nOr maybe something like\n```\nSignature-Input: sig1=(... \"signature-agent\";key=\"agent1\");signature-agent=agent1;...\nSignature-Agent: agent1=\"https://example.com\"\n```",
       "createdAt": "2025-10-06T20:26:07Z",
-      "updatedAt": "2025-10-24T07:07:36Z",
+      "updatedAt": "2025-10-29T16:00:28Z",
       "closedAt": "2025-10-20T11:40:12Z",
       "comments": [
         {
@@ -1148,6 +1148,13 @@
           "body": "Cross posting as well\n\nThere's def more discussion we can have.\nThis seems to have been pointed by @rgnote as well.\n\nI'm opening a dedicated issue https://github.com/thibmeu/http-message-signatures-directory/issues/78",
           "createdAt": "2025-10-24T07:07:36Z",
           "updatedAt": "2025-10-24T07:07:36Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "thank you",
+          "createdAt": "2025-10-29T16:00:28Z",
+          "updatedAt": "2025-10-29T16:00:28Z"
         }
       ]
     },
@@ -1198,7 +1205,7 @@
       ],
       "body": "The spec currently says that `@authority` [MUST](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#section-4.2-3.2.1) be signed. If a user would want to bind the signature to a specific path, they could use `@target-uri` that already contains `@scheme + @authority + @path + @query`.\n\nI suggest changing the relevant part from `@authority` to `@authority OR @target-uri`.",
       "createdAt": "2025-10-13T20:48:02Z",
-      "updatedAt": "2025-10-24T07:13:40Z",
+      "updatedAt": "2025-10-29T15:59:49Z",
       "closedAt": "2025-10-20T11:40:31Z",
       "comments": [
         {
@@ -1228,6 +1235,13 @@
           "body": "I think the two are different, but the two recommendations may create a conflict indeed. Would your recommendation be to not use a nonce if you replay your signatures?\n\nThe nonce is a discussion we could have with the group. The proposal [draft-hoypat-httpbis-message-signatures-ekm](https://datatracker.ietf.org/doc/draft-hoypat-httpbis-message-signatures-ekm/) from @cjpatton and @jhoyla improves the security model for deployment that don't want replayability for instance.",
           "createdAt": "2025-10-24T07:13:40Z",
           "updatedAt": "2025-10-24T07:13:40Z"
+        },
+        {
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "body": "Yes I think reusing the nonce is not correct and it might break some implementations that expect a nonce to be seen only once, even if they would otherwise allow replays in the absence of a nonce.\n\nThe TLS binding sounds interesting but that would introduce some of the same problems as a purely TLS-based authentication would have. E.g. proxies terminating TLS would prevent the origin to validate the signature. The proposal mentions\n>    If they do not share a direct TLS connection, it is possible to\n   architect a system such that the verifier does not directly call the\n   exporter interface, but is simply provided its output on a trusted\n   channel.  This behaviour works, but requires the verifier and caller\n   to trust each other.\n\nIf the verifier and caller trust each other then the same system could be used with mTLS  without HTTP signatures",
+          "createdAt": "2025-10-29T15:59:49Z",
+          "updatedAt": "2025-10-29T15:59:49Z"
         }
       ]
     },
