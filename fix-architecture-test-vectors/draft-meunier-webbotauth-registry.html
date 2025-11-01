@@ -6,6 +6,7 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>Registry and Signature Agent card for Web bot auth</title>
 <meta content="Maxime Guerreiro" name="author">
+<meta content="Ulas Kirazci" name="author">
 <meta content="Thibault Meunier" name="author">
 <meta content='
        This document describes a JSON based format for clients using  
@@ -15,23 +16,22 @@ and cryptographic keys. It also establishes an IANA registry for Signature Agent
 Card parameters, enabling extensible and interoperable discovery of agent
 information. 
     ' name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="not-yet" name="keyword">
 <meta content="draft-meunier-webbotauth-registry-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.4.0
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.5
-    setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-meunier-webbotauth-registry.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Registry and Signature Agent card for We</td>
-<td class="right">September 2025</td>
+<td class="right">November 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Guerreiro &amp; Meunier</td>
-<td class="center">Expires 2 April 2026</td>
+<td class="left">Guerreiro, et al.</td>
+<td class="center">Expires 5 May 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,17 +1067,21 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-webbotauth-registry-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-29" class="published">29 September 2025</time>
+<time datetime="2025-11-01" class="published">1 November 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-02">2 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-05-05">5 May 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">M. Guerreiro</div>
 <div class="org">Cloudflare</div>
+</div>
+<div class="author">
+      <div class="author-name">U. Kirazci</div>
+<div class="org">Amazon</div>
 </div>
 <div class="author">
       <div class="author-name">T. Meunier</div>
@@ -1131,7 +1135,7 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1170,43 +1174,46 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-signature-agent-card" class="internal xref">Signature Agent Card</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-name" class="internal xref">Name</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-client-name" class="internal xref">Client Name</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-contact" class="internal xref">Contact</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-client-uri" class="internal xref">Client URI</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-logo" class="internal xref">Logo</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-contacts" class="internal xref">Contacts</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-expected-user-agent" class="internal xref">Expected user agent</a></p>
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-logo-uri" class="internal xref">Logo URI</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-robotstxt-product-token" class="internal xref">robots.txt product token</a></p>
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-expected-user-agent" class="internal xref">Expected user agent</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-robotstxt-compliance" class="internal xref">robots.txt compliance</a></p>
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-robotstxt-product-token" class="internal xref">robots.txt product token</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
-                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-trigger" class="internal xref">Trigger</a></p>
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-robotstxt-compliance" class="internal xref">robots.txt compliance</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
-                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-purpose" class="internal xref">Purpose</a></p>
+                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-trigger" class="internal xref">Trigger</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.9">
-                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-targeted-content" class="internal xref">Targeted content</a></p>
+                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-purpose" class="internal xref">Purpose</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.10">
-                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="auto internal xref">3.10</a>. <a href="#name-rate-control" class="internal xref">Rate control</a></p>
+                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="auto internal xref">3.10</a>. <a href="#name-targeted-content" class="internal xref">Targeted content</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.11">
-                <p id="section-toc.1-1.3.2.11.1"><a href="#section-3.11" class="auto internal xref">3.11</a>. <a href="#name-rate-expectation" class="internal xref">Rate expectation</a></p>
+                <p id="section-toc.1-1.3.2.11.1"><a href="#section-3.11" class="auto internal xref">3.11</a>. <a href="#name-rate-control" class="internal xref">Rate control</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.12">
-                <p id="section-toc.1-1.3.2.12.1"><a href="#section-3.12" class="auto internal xref">3.12</a>. <a href="#name-known-urls" class="internal xref">Known URLs</a></p>
+                <p id="section-toc.1-1.3.2.12.1"><a href="#section-3.12" class="auto internal xref">3.12</a>. <a href="#name-rate-expectation" class="internal xref">Rate expectation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.13">
-                <p id="section-toc.1-1.3.2.13.1"><a href="#section-3.13" class="auto internal xref">3.13</a>. <a href="#name-keys" class="internal xref">Keys</a></p>
+                <p id="section-toc.1-1.3.2.13.1"><a href="#section-3.13" class="auto internal xref">3.13</a>. <a href="#name-known-urls" class="internal xref">Known URLs</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.14">
+                <p id="section-toc.1-1.3.2.14.1"><a href="#section-3.14" class="auto internal xref">3.14</a>. <a href="#name-keys" class="internal xref">Keys</a></p>
 </li>
             </ul>
 </li>
@@ -1315,14 +1322,15 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-signature-agent-card">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-signature-agent-card" class="section-name selfRef">Signature Agent Card</a>
       </h2>
-<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
+<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
 This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-2">
 <pre>
 {
-  "name": "Example Bot",
-  "contact": "bot-support@example.com",
-  "logo": "https://example.com/",
+  "client_name": "Example Bot",
+  "client_uri": "https://example.com/bot/about.html",
+  "logo_uri": "https://example.com/",
+  "contacts": ["mailto:bot-support@example.com"],
   "expected-user-agent": "Mozilla/5.0 ExampleBot",
   "rfc9309-product-token": "ExampleBot",
   "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
@@ -1332,7 +1340,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
-  "keys": {
+  "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
     "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -1340,7 +1348,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
     "use": "sig",
     "nbf": 1712793600,
     "exp": 1715385600
-  }
+  }]
 }
 </pre><a href="#section-3-2" class="pilcrow">¶</a>
 </div>
@@ -1350,238 +1358,262 @@ There <span class="bcp14">MUST</span> be at least one parameter set.<a href="#se
 All string values are UTF-8.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <div id="signature-agent-parameter-name">
 <section id="section-3.1">
-        <h3 id="name-name">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-name" class="section-name selfRef">Name</a>
+        <h3 id="name-client-name">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-client-name" class="section-name selfRef">Client Name</a>
         </h3>
-<p id="section-3.1-1">The <code>name</code> parameter provides a friendly identifier for the Signature Agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The <code>client_name</code> parameter provides a friendly identifier for the Signature Agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">Example<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1">ExampleBot<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1"><code>ExampleBot</code><a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.2">
-            <p id="section-3.1-3.2.1">My remote browser company<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.2.1"><code>My remote browser company</code><a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-about">
+<section id="section-3.2">
+        <h3 id="name-client-uri">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-client-uri" class="section-name selfRef">Client URI</a>
+        </h3>
+<p id="section-3.2-1">The <code>client_uri</code> parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Only http, https or data:text/plain are allowed.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Example<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-4.1">
+            <p id="section-3.2-4.1.1"><code>https://example.com/bot/about.html</code><a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-4.2">
+            <p id="section-3.2-4.2.1"><code>data:text/plain,The Example bot is about providing an example.</code><a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-contact">
-<section id="section-3.2">
-        <h3 id="name-contact">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-contact" class="section-name selfRef">Contact</a>
+<section id="section-3.3">
+        <h3 id="name-contacts">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-contacts" class="section-name selfRef">Contacts</a>
         </h3>
-<p id="section-3.2-1">The <code>contact</code> parameter provides an email address or reliable communication
-channel.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Example
-* bot-support@example.com
-* https://example.com/contact<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">The <code>contacts</code> parameter provides reliable communication channels in URI forms.
+Typically, this is an email address.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">Example<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-3.1">
+            <p id="section-3.3-3.1.1"><code>["mailto:bot-support@example.com"]</code><a href="#section-3.3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-3.2">
+            <p id="section-3.3-3.2.1"><code>["https://example.com/contact"]</code><a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-logo">
-<section id="section-3.3">
-        <h3 id="name-logo">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-logo" class="section-name selfRef">Logo</a>
+<section id="section-3.4">
+        <h3 id="name-logo-uri">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-logo-uri" class="section-name selfRef">Logo URI</a>
         </h3>
-<p id="section-3.3-1">The <code>logo</code> parameter provides an image reference for visual identification.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">Example<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">The <code>logo_uri</code> parameter provides an image reference for visual identification.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">Example<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.3-4.1">
-            <p id="section-3.3-4.1.1">data:image/svg+xml;base64,deadbeef<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-4.1">
+            <p id="section-3.4-4.1.1"><code>data:image/svg+xml;base64,deadbeef</code><a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.3-4.2">
-            <p id="section-3.3-4.2.1">https://example.com/logo.png<a href="#section-3.3-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-4.2">
+            <p id="section-3.4-4.2.1"><code>https://example.com/logo.png</code><a href="#section-3.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-user-agent">
-<section id="section-3.4">
+<section id="section-3.5">
         <h3 id="name-expected-user-agent">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-expected-user-agent" class="section-name selfRef">Expected user agent</a>
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-expected-user-agent" class="section-name selfRef">Expected user agent</a>
         </h3>
-<p id="section-3.4-1">The <code>expected-user-agent</code> parameter specifies one or more <code>User-Agent</code> strings as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>
-or prefix matches. Prefixes <span class="bcp14">MAY</span> use <code>*</code> as a wildcard.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">Example<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The <code>expected-user-agent</code> parameter specifies one or more <code>User-Agent</code> strings as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>
+or prefix matches. Prefixes <span class="bcp14">MAY</span> use <code>*</code> as a wildcard.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-2">Example<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-3.1">
-            <p id="section-3.4-3.1.1">Mozilla/5.0 ExampleBot<a href="#section-3.4-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.5-3.1">
+            <p id="section-3.5-3.1.1"><code>Mozilla/5.0 ExampleBot</code><a href="#section-3.5-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-robotstxt-token">
-<section id="section-3.5">
+<section id="section-3.6">
         <h3 id="name-robotstxt-product-token">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-robotstxt-product-token" class="section-name selfRef">robots.txt product token</a>
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-robotstxt-product-token" class="section-name selfRef">robots.txt product token</a>
         </h3>
-<p id="section-3.5-1">The <code>rfc9309-product-token</code> parameter specifies the product token used for
-<code>robots.txt</code> directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">Example<a href="#section-3.5-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-1">The <code>rfc9309-product-token</code> parameter specifies the product token used for
+<code>robots.txt</code> directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">Example<a href="#section-3.6-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.5-3.1">
-            <p id="section-3.5-3.1.1">ExampleBot<a href="#section-3.5-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.6-3.1">
+            <p id="section-3.6-3.1.1"><code>ExampleBot</code><a href="#section-3.6-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-robotstxt-compliance">
-<section id="section-3.6">
+<section id="section-3.7">
         <h3 id="name-robotstxt-compliance">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-robotstxt-compliance" class="section-name selfRef">robots.txt compliance</a>
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-robotstxt-compliance" class="section-name selfRef">robots.txt compliance</a>
         </h3>
-<p id="section-3.6-1">The <code>rfc9309-compliance</code> parameter lists directives from <code>robots.txt</code> that the
-agent implements.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">Example<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.7-1">The <code>rfc9309-compliance</code> parameter lists directives from <code>robots.txt</code> that the
+agent implements.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-2">Example<a href="#section-3.7-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-3.1">
-            <p id="section-3.6-3.1.1"><code>["User-Agent", "Disallow"]</code><a href="#section-3.6-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.7-3.1">
+            <p id="section-3.7-3.1.1"><code>["User-Agent", "Disallow"]</code><a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-3.2">
-            <p id="section-3.6-3.2.1"><code>["User-Agent", "Disallow", "CrawlDelay"]</code><a href="#section-3.6-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-3.2">
+            <p id="section-3.7-3.2.1"><code>["User-Agent", "Disallow", "CrawlDelay"]</code><a href="#section-3.7-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-trigger">
-<section id="section-3.7">
+<section id="section-3.8">
         <h3 id="name-trigger">
-<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-trigger" class="section-name selfRef">Trigger</a>
+<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-trigger" class="section-name selfRef">Trigger</a>
         </h3>
-<p id="section-3.7-1">The <code>trigger</code> parameter indicates the operational mode of the agent.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
-<p id="section-3.7-2">Valid values:<a href="#section-3.7-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.7-3">
-<li id="section-3.7-3.1">
-            <p id="section-3.7-3.1.1">"fetcher" - request initiated by the user<a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-3.8-1">The <code>trigger</code> parameter indicates the operational mode of the agent.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.8-2">Valid values:<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.8-3">
+<li id="section-3.8-3.1">
+            <p id="section-3.8-3.1.1"><code>fetcher</code> - request initiated by the user<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-3.7-3.2">
-            <p id="section-3.7-3.2.1">"crawler" - autonomous scanning<a href="#section-3.7-3.2.1" class="pilcrow">¶</a></p>
+          <li id="section-3.8-3.2">
+            <p id="section-3.8-3.2.1"><code>crawler</code> - autonomous scanning<a href="#section-3.8-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 </section>
 </div>
 <div id="signature-agent-parameter-purpose">
-<section id="section-3.8">
+<section id="section-3.9">
         <h3 id="name-purpose">
-<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-purpose" class="section-name selfRef">Purpose</a>
+<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-purpose" class="section-name selfRef">Purpose</a>
         </h3>
-<p id="section-3.8-1">The <code>purpose</code> parameter describes the intended use of collected data. Values
-<span class="bcp14">SHOULD</span> be drawn from a controlled vocabulary, such as <span>[<a href="#AIPREF-VOCAB" class="cite xref">AIPREF-VOCAB</a>]</span>.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2">Example<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+<p id="section-3.9-1">The <code>purpose</code> parameter describes the intended use of collected data. Values
+<span class="bcp14">SHOULD</span> be drawn from a controlled vocabulary, such as <span>[<a href="#AIPREF-VOCAB" class="cite xref">AIPREF-VOCAB</a>]</span>.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
+<p id="section-3.9-2">Example<a href="#section-3.9-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.8-3.1">
-            <p id="section-3.8-3.1.1">search<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.9-3.1">
+            <p id="section-3.9-3.1.1"><code>search</code><a href="#section-3.9-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.8-3.2">
-            <p id="section-3.8-3.2.1">tdm<a href="#section-3.8-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.9-3.2">
+            <p id="section-3.9-3.2.1"><code>tdm</code><a href="#section-3.9-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-targeted-content">
-<section id="section-3.9">
+<section id="section-3.10">
         <h3 id="name-targeted-content">
-<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-targeted-content" class="section-name selfRef">Targeted content</a>
+<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-targeted-content" class="section-name selfRef">Targeted content</a>
         </h3>
-<p id="section-3.9-1">The <code>targeted-content</code> parameter specifies the type of data the agent seeks.
-Its format is arbitrary UTF-8 encoded string.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
-<p id="section-3.9-2">Example<a href="#section-3.9-2" class="pilcrow">¶</a></p>
+<p id="section-3.10-1">The <code>targeted-content</code> parameter specifies the type of data the agent seeks.
+Its format is arbitrary UTF-8 encoded string.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
+<p id="section-3.10-2">Example<a href="#section-3.10-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.9-3.1">
-            <p id="section-3.9-3.1.1">SEO analysis<a href="#section-3.9-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.10-3.1">
+            <p id="section-3.10-3.1.1"><code>SEO analysis</code><a href="#section-3.10-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.9-3.2">
-            <p id="section-3.9-3.2.1">Vulnerability scanning<a href="#section-3.9-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.10-3.2">
+            <p id="section-3.10-3.2.1"><code>Vulnerability scanning</code><a href="#section-3.10-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.9-3.3">
-            <p id="section-3.9-3.3.1">Ads verification<a href="#section-3.9-3.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.10-3.3">
+            <p id="section-3.10-3.3.1"><code>Ads verification</code><a href="#section-3.10-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-rate-control">
-<section id="section-3.10">
+<section id="section-3.11">
         <h3 id="name-rate-control">
-<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-rate-control" class="section-name selfRef">Rate control</a>
+<a href="#section-3.11" class="section-number selfRef">3.11. </a><a href="#name-rate-control" class="section-name selfRef">Rate control</a>
         </h3>
-<p id="section-3.10-1">The <code>rate-control</code> parameter indicates how origins can influence the agent’s
-request rate.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
-<p id="section-3.10-2">TODO: specify a format<a href="#section-3.10-2" class="pilcrow">¶</a></p>
-<p id="section-3.10-3">Example<a href="#section-3.10-3" class="pilcrow">¶</a></p>
+<p id="section-3.11-1">The <code>rate-control</code> parameter indicates how origins can influence the agent’s
+request rate.<a href="#section-3.11-1" class="pilcrow">¶</a></p>
+<p id="section-3.11-2">TODO: specify a format<a href="#section-3.11-2" class="pilcrow">¶</a></p>
+<p id="section-3.11-3">Example<a href="#section-3.11-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.10-4.1">
-            <p id="section-3.10-4.1.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.10-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.11-4.1">
+            <p id="section-3.11-4.1.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.11-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.10-4.2">
-            <p id="section-3.10-4.2.1">Custom tool<a href="#section-3.10-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.11-4.2">
+            <p id="section-3.11-4.2.1">Custom tool<a href="#section-3.11-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.10-4.3">
-            <p id="section-3.10-4.3.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.10-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.11-4.3">
+            <p id="section-3.11-4.3.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.11-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-rate-expectation">
-<section id="section-3.11">
+<section id="section-3.12">
         <h3 id="name-rate-expectation">
-<a href="#section-3.11" class="section-number selfRef">3.11. </a><a href="#name-rate-expectation" class="section-name selfRef">Rate expectation</a>
+<a href="#section-3.12" class="section-number selfRef">3.12. </a><a href="#name-rate-expectation" class="section-name selfRef">Rate expectation</a>
         </h3>
-<p id="section-3.11-1">The <code>rate-expectation</code> parameter specifies anticipated request volume or
-burstiness.<a href="#section-3.11-1" class="pilcrow">¶</a></p>
-<p id="section-3.11-2">TODO: consider a format such as <code>avg=10rps;max=100rps</code><a href="#section-3.11-2" class="pilcrow">¶</a></p>
-<p id="section-3.11-3">Example<a href="#section-3.11-3" class="pilcrow">¶</a></p>
+<p id="section-3.12-1">The <code>rate-expectation</code> parameter specifies anticipated request volume or
+burstiness.<a href="#section-3.12-1" class="pilcrow">¶</a></p>
+<p id="section-3.12-2">TODO: consider a format such as <code>avg=10rps;max=100rps</code><a href="#section-3.12-2" class="pilcrow">¶</a></p>
+<p id="section-3.12-3">Example<a href="#section-3.12-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.11-4.1">
-            <p id="section-3.11-4.1.1">500 rps<a href="#section-3.11-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.12-4.1">
+            <p id="section-3.12-4.1.1">500 rps<a href="#section-3.12-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.11-4.2">
-            <p id="section-3.11-4.2.1">Spikes during reindexing<a href="#section-3.11-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.12-4.2">
+            <p id="section-3.12-4.2.1">Spikes during reindexing<a href="#section-3.12-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-known-urls">
-<section id="section-3.12">
+<section id="section-3.13">
         <h3 id="name-known-urls">
-<a href="#section-3.12" class="section-number selfRef">3.12. </a><a href="#name-known-urls" class="section-name selfRef">Known URLs</a>
+<a href="#section-3.13" class="section-number selfRef">3.13. </a><a href="#name-known-urls" class="section-name selfRef">Known URLs</a>
         </h3>
-<p id="section-3.12-1">The <code>known-urls</code> parameter lists predictable endpoints accessed by the agent.<a href="#section-3.12-1" class="pilcrow">¶</a></p>
-<p id="section-3.12-2">These URLs may be absolute URLs like <code>https://example.com/index.html</code>.
+<p id="section-3.13-1">The <code>known-urls</code> parameter lists predictable endpoints accessed by the agent.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
+<p id="section-3.13-2">These URLs may be absolute URLs like <code>https://example.com/index.html</code>.
 They could be relative path like <code>/ads.txt</code>.
-Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#section-3.12-2" class="pilcrow">¶</a></p>
-<p id="section-3.12-3">Example<a href="#section-3.12-3" class="pilcrow">¶</a></p>
+Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#section-3.13-2" class="pilcrow">¶</a></p>
+<p id="section-3.13-3">Example<a href="#section-3.13-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.12-4.1">
-            <p id="section-3.12-4.1.1">/<a href="#section-3.12-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.13-4.1">
+            <p id="section-3.13-4.1.1"><code>["/"]</code><a href="#section-3.13-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.12-4.2">
-            <p id="section-3.12-4.2.1">/ads.txt<a href="#section-3.12-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.13-4.2">
+            <p id="section-3.13-4.2.1"><code>["/ads.txt"]</code><a href="#section-3.13-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.12-4.3">
-            <p id="section-3.12-4.3.1">/favicon.ico<a href="#section-3.12-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.13-4.3">
+            <p id="section-3.13-4.3.1"><code>["/favicon.ico"]</code><a href="#section-3.13-4.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.12-4.4">
-            <p id="section-3.12-4.4.1">/index.html<a href="#section-3.12-4.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.13-4.4">
+            <p id="section-3.13-4.4.1"><code>["/index.html"]</code><a href="#section-3.13-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-keys">
-<section id="section-3.13">
+<section id="section-3.14">
         <h3 id="name-keys">
-<a href="#section-3.13" class="section-number selfRef">3.13. </a><a href="#name-keys" class="section-name selfRef">Keys</a>
+<a href="#section-3.14" class="section-number selfRef">3.14. </a><a href="#name-keys" class="section-name selfRef">Keys</a>
         </h3>
-<p id="section-3.13-1">The <code>keys</code> parameter contains a JWKS as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
-<p id="section-3.13-2">If <code>keys</code> is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-<code>Content-Digest</code> header <span class="bcp14">MUST</span> be included in the covered components.<a href="#section-3.13-2" class="pilcrow">¶</a></p>
-<p id="section-3.13-3">TODO: describe signature, CWS keys.<a href="#section-3.13-3" class="pilcrow">¶</a></p>
-<p id="section-3.13-4">Example<a href="#section-3.13-4" class="pilcrow">¶</a></p>
+<p id="section-3.14-1">The <code>keys</code> parameter contains a JWKS as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>.<a href="#section-3.14-1" class="pilcrow">¶</a></p>
+<p id="section-3.14-2">If <code>keys</code> is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<code>Content-Digest</code> header <span class="bcp14">MUST</span> be included in the covered components.<a href="#section-3.14-2" class="pilcrow">¶</a></p>
+<p id="section-3.14-3">TODO: describe signature, CWS keys.<a href="#section-3.14-3" class="pilcrow">¶</a></p>
+<p id="section-3.14-4">Example<a href="#section-3.14-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.13-5.1">
-            <p id="section-3.13-5.1.1">https://example.com/.well-known/http-message-signatures-directory<a href="#section-3.13-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.14-5.1">
+            <p id="section-3.14-5.1.1">https://example.com/.well-known/http-message-signatures-directory<a href="#section-3.14-5.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.13-5.2">
-            <p id="section-3.13-5.2.1">JWKS-directory<a href="#section-3.13-5.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.14-5.2">
+            <p id="section-3.14-5.2.1">JWKS-directory<a href="#section-3.14-5.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1610,11 +1642,11 @@ Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#
 <div class="lang-txt sourcecode" id="section-4-5">
 <pre>
 # An example list of bots
-https://bot1.example.com/.well-known/signature-agent-card
-https://crawler2.example.com/.well-known/signature-agent-card
+https://bot1.example.com/.well-known/http-message-signatures-directory
+https://crawler2.example.com/.well-known/http-message-signatures-directory
 
 # Now the list of platforms
-https://zerotrust-gateway.example.com/.well-known/signature-agent-card
+https://zerotrust-gateway.example.com/v1/signature-agent-card
 
 # Below is an inlined card with the data URL scheme
 data:application/json;,... # Invalid, not defined
@@ -1687,7 +1719,7 @@ entries.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
         </h3>
 <p id="section-4.4-1">Signature Agent Card format defined in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> extends the
-format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
 Agent Card <span class="bcp14">MAY</span> be discovered via a <code>Signature-Agent</code> header.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
@@ -1766,15 +1798,15 @@ that they do not meet the security and privacy requirements defined in TODO.<a h
           </h4>
 <p id="section-7.1.1-1">This section registers the Signature Agent Card Parameter names defined
 in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in this registry.<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
-<div id="name-parameter">
+<div id="client-name-parameter">
 <section id="section-7.1.1.1">
-            <h5 id="name-name-parameter">
-<a href="#section-7.1.1.1" class="section-number selfRef">7.1.1.1. </a><a href="#name-name-parameter" class="section-name selfRef">Name Parameter</a>
+            <h5 id="name-client-name-parameter">
+<a href="#section-7.1.1.1" class="section-number selfRef">7.1.1.1. </a><a href="#name-client-name-parameter" class="section-name selfRef">Client Name Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.1-1">
               <dt id="section-7.1.1.1-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.2">
-                <p id="section-7.1.1.1-1.2.1">name<a href="#section-7.1.1.1-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.1-1.2.1">client_name<a href="#section-7.1.1.1-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.1-1.3"><strong>Parameter Description:</strong></dt>
@@ -1800,20 +1832,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="contact-parameter">
+<div id="client-uri-parameter">
 <section id="section-7.1.1.2">
-            <h5 id="name-contact-parameter">
-<a href="#section-7.1.1.2" class="section-number selfRef">7.1.1.2. </a><a href="#name-contact-parameter" class="section-name selfRef">Contact Parameter</a>
+            <h5 id="name-client-uri-parameter">
+<a href="#section-7.1.1.2" class="section-number selfRef">7.1.1.2. </a><a href="#name-client-uri-parameter" class="section-name selfRef">Client URI Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.2-1">
               <dt id="section-7.1.1.2-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.2">
-                <p id="section-7.1.1.2-1.2.1">contact<a href="#section-7.1.1.2-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.2-1.2.1">client_uri<a href="#section-7.1.1.2-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.2-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.4">
-                <p id="section-7.1.1.2-1.4.1">Email or any other reliable communication channel<a href="#section-7.1.1.2-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.2-1.4.1">Describes what the bot does inline with data URI or with an HTTP link to an external resource<a href="#section-7.1.1.2-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.2-1.5"><strong>Change Controller:</strong></dt>
@@ -1823,7 +1855,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.2-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.8">
-                <p id="section-7.1.1.2-1.8.1"><a href="#signature-agent-parameter-contact" class="auto internal xref">Section 3.2</a><a href="#section-7.1.1.2-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.2-1.8.1"><a href="#signature-agent-parameter-about" class="auto internal xref">Section 3.2</a><a href="#section-7.1.1.2-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.2-1.9"><strong>Notes:</strong></dt>
@@ -1834,15 +1866,15 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="logo-parameter">
+<div id="logo-uri-parameter">
 <section id="section-7.1.1.3">
-            <h5 id="name-logo-parameter">
-<a href="#section-7.1.1.3" class="section-number selfRef">7.1.1.3. </a><a href="#name-logo-parameter" class="section-name selfRef">Logo Parameter</a>
+            <h5 id="name-logo-uri-parameter">
+<a href="#section-7.1.1.3" class="section-number selfRef">7.1.1.3. </a><a href="#name-logo-uri-parameter" class="section-name selfRef">Logo URI Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.3-1">
               <dt id="section-7.1.1.3-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.2">
-                <p id="section-7.1.1.3-1.2.1">logo<a href="#section-7.1.1.3-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.3-1.2.1">logo_uri<a href="#section-7.1.1.3-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.3-1.3"><strong>Parameter Description:</strong></dt>
@@ -1857,7 +1889,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.3-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.8">
-                <p id="section-7.1.1.3-1.8.1"><a href="#signature-agent-parameter-logo" class="auto internal xref">Section 3.3</a><a href="#section-7.1.1.3-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.3-1.8.1"><a href="#signature-agent-parameter-logo" class="auto internal xref">Section 3.4</a><a href="#section-7.1.1.3-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.3-1.9"><strong>Notes:</strong></dt>
@@ -1868,20 +1900,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="expected-user-agent-parameter">
+<div id="contacts-parameter">
 <section id="section-7.1.1.4">
-            <h5 id="name-expected-user-agent-paramet">
-<a href="#section-7.1.1.4" class="section-number selfRef">7.1.1.4. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
+            <h5 id="name-contacts-parameter">
+<a href="#section-7.1.1.4" class="section-number selfRef">7.1.1.4. </a><a href="#name-contacts-parameter" class="section-name selfRef">Contacts Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.4-1">
               <dt id="section-7.1.1.4-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.2">
-                <p id="section-7.1.1.4-1.2.1">expected-user-agent<a href="#section-7.1.1.4-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.4-1.2.1">contacts<a href="#section-7.1.1.4-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.4-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.4">
-                <p id="section-7.1.1.4-1.4.1">String or fragment patterns<a href="#section-7.1.1.4-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.4-1.4.1">An array of URI with a reliable communication channel; typically email addresses<a href="#section-7.1.1.4-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.4-1.5"><strong>Change Controller:</strong></dt>
@@ -1891,7 +1923,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.4-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.8">
-                <p id="section-7.1.1.4-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.4</a><a href="#section-7.1.1.4-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.4-1.8.1"><a href="#signature-agent-parameter-contact" class="auto internal xref">Section 3.3</a><a href="#section-7.1.1.4-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.4-1.9"><strong>Notes:</strong></dt>
@@ -1902,20 +1934,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="rfc9309-product-token-parameter">
+<div id="expected-user-agent-parameter">
 <section id="section-7.1.1.5">
-            <h5 id="name-rfc9309-product-token-param">
-<a href="#section-7.1.1.5" class="section-number selfRef">7.1.1.5. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
+            <h5 id="name-expected-user-agent-paramet">
+<a href="#section-7.1.1.5" class="section-number selfRef">7.1.1.5. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.5-1">
               <dt id="section-7.1.1.5-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.2">
-                <p id="section-7.1.1.5-1.2.1">rfc9309-product-token<a href="#section-7.1.1.5-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.5-1.2.1">expected-user-agent<a href="#section-7.1.1.5-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.5-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.4">
-                <p id="section-7.1.1.5-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.1.1.5-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.5-1.4.1">String or fragment patterns<a href="#section-7.1.1.5-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.5-1.5"><strong>Change Controller:</strong></dt>
@@ -1925,7 +1957,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.5-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.8">
-                <p id="section-7.1.1.5-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.5</a><a href="#section-7.1.1.5-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.5-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.5</a><a href="#section-7.1.1.5-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.5-1.9"><strong>Notes:</strong></dt>
@@ -1936,20 +1968,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="rfc9309-compliance-parameter">
+<div id="rfc9309-product-token-parameter">
 <section id="section-7.1.1.6">
-            <h5 id="name-rfc9309-compliance-paramete">
-<a href="#section-7.1.1.6" class="section-number selfRef">7.1.1.6. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
+            <h5 id="name-rfc9309-product-token-param">
+<a href="#section-7.1.1.6" class="section-number selfRef">7.1.1.6. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.6-1">
               <dt id="section-7.1.1.6-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.2">
-                <p id="section-7.1.1.6-1.2.1">rfc9309-compliance<a href="#section-7.1.1.6-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.6-1.2.1">rfc9309-product-token<a href="#section-7.1.1.6-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.6-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.4">
-                <p id="section-7.1.1.6-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.1.1.6-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.6-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.1.1.6-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.6-1.5"><strong>Change Controller:</strong></dt>
@@ -1959,7 +1991,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.6-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.8">
-                <p id="section-7.1.1.6-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.6</a><a href="#section-7.1.1.6-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.6-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.6</a><a href="#section-7.1.1.6-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.6-1.9"><strong>Notes:</strong></dt>
@@ -1970,20 +2002,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="trigger-parameter">
+<div id="rfc9309-compliance-parameter">
 <section id="section-7.1.1.7">
-            <h5 id="name-trigger-parameter">
-<a href="#section-7.1.1.7" class="section-number selfRef">7.1.1.7. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
+            <h5 id="name-rfc9309-compliance-paramete">
+<a href="#section-7.1.1.7" class="section-number selfRef">7.1.1.7. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.7-1">
               <dt id="section-7.1.1.7-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.2">
-                <p id="section-7.1.1.7-1.2.1">trigger<a href="#section-7.1.1.7-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.7-1.2.1">rfc9309-compliance<a href="#section-7.1.1.7-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.7-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.4">
-                <p id="section-7.1.1.7-1.4.1">Fetcher/Crawler<a href="#section-7.1.1.7-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.7-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.1.1.7-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.7-1.5"><strong>Change Controller:</strong></dt>
@@ -1993,7 +2025,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.7-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.8">
-                <p id="section-7.1.1.7-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.7</a><a href="#section-7.1.1.7-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.7-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.7</a><a href="#section-7.1.1.7-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.7-1.9"><strong>Notes:</strong></dt>
@@ -2004,20 +2036,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="purpose-parameter">
+<div id="trigger-parameter">
 <section id="section-7.1.1.8">
-            <h5 id="name-purpose-parameter">
-<a href="#section-7.1.1.8" class="section-number selfRef">7.1.1.8. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
+            <h5 id="name-trigger-parameter">
+<a href="#section-7.1.1.8" class="section-number selfRef">7.1.1.8. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.8-1">
               <dt id="section-7.1.1.8-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.2">
-                <p id="section-7.1.1.8-1.2.1">purpose<a href="#section-7.1.1.8-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.8-1.2.1">trigger<a href="#section-7.1.1.8-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.8-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.4">
-                <p id="section-7.1.1.8-1.4.1">Intended use for the collected data<a href="#section-7.1.1.8-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.8-1.4.1">Fetcher/Crawler<a href="#section-7.1.1.8-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.8-1.5"><strong>Change Controller:</strong></dt>
@@ -2027,7 +2059,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.8-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.8">
-                <p id="section-7.1.1.8-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.8</a><a href="#section-7.1.1.8-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.8-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.8</a><a href="#section-7.1.1.8-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.8-1.9"><strong>Notes:</strong></dt>
@@ -2038,20 +2070,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="targeted-content-parameter">
+<div id="purpose-parameter">
 <section id="section-7.1.1.9">
-            <h5 id="name-targeted-content-parameter">
-<a href="#section-7.1.1.9" class="section-number selfRef">7.1.1.9. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
+            <h5 id="name-purpose-parameter">
+<a href="#section-7.1.1.9" class="section-number selfRef">7.1.1.9. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.9-1">
               <dt id="section-7.1.1.9-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.2">
-                <p id="section-7.1.1.9-1.2.1">targeted-content<a href="#section-7.1.1.9-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.9-1.2.1">purpose<a href="#section-7.1.1.9-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.9-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.4">
-                <p id="section-7.1.1.9-1.4.1">Type of data your agent seeks<a href="#section-7.1.1.9-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.9-1.4.1">Intended use for the collected data<a href="#section-7.1.1.9-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.9-1.5"><strong>Change Controller:</strong></dt>
@@ -2061,7 +2093,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.9-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.8">
-                <p id="section-7.1.1.9-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.9</a><a href="#section-7.1.1.9-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.9-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.9</a><a href="#section-7.1.1.9-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.9-1.9"><strong>Notes:</strong></dt>
@@ -2072,20 +2104,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="rate-control-parameter">
+<div id="targeted-content-parameter">
 <section id="section-7.1.1.10">
-            <h5 id="name-rate-control-parameter">
-<a href="#section-7.1.1.10" class="section-number selfRef">7.1.1.10. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
+            <h5 id="name-targeted-content-parameter">
+<a href="#section-7.1.1.10" class="section-number selfRef">7.1.1.10. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.10-1">
               <dt id="section-7.1.1.10-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.2">
-                <p id="section-7.1.1.10-1.2.1">rate-control<a href="#section-7.1.1.10-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.10-1.2.1">targeted-content<a href="#section-7.1.1.10-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.10-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.4">
-                <p id="section-7.1.1.10-1.4.1">How can an origin control your crawl rate<a href="#section-7.1.1.10-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.10-1.4.1">Type of data your agent seeks<a href="#section-7.1.1.10-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.10-1.5"><strong>Change Controller:</strong></dt>
@@ -2095,7 +2127,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.10-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.8">
-                <p id="section-7.1.1.10-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.10</a><a href="#section-7.1.1.10-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.10-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.10</a><a href="#section-7.1.1.10-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.10-1.9"><strong>Notes:</strong></dt>
@@ -2106,20 +2138,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="rate-expectation-parameter">
+<div id="rate-control-parameter">
 <section id="section-7.1.1.11">
-            <h5 id="name-rate-expectation-parameter">
-<a href="#section-7.1.1.11" class="section-number selfRef">7.1.1.11. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
+            <h5 id="name-rate-control-parameter">
+<a href="#section-7.1.1.11" class="section-number selfRef">7.1.1.11. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.11-1">
               <dt id="section-7.1.1.11-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.2">
-                <p id="section-7.1.1.11-1.2.1">rate-expectation<a href="#section-7.1.1.11-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.11-1.2.1">rate-control<a href="#section-7.1.1.11-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.11-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.4">
-                <p id="section-7.1.1.11-1.4.1">Expected traffic and intensity<a href="#section-7.1.1.11-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.11-1.4.1">How can an origin control your crawl rate<a href="#section-7.1.1.11-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.11-1.5"><strong>Change Controller:</strong></dt>
@@ -2129,7 +2161,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.11-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.8">
-                <p id="section-7.1.1.11-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.11</a><a href="#section-7.1.1.11-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.11-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.11</a><a href="#section-7.1.1.11-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.11-1.9"><strong>Notes:</strong></dt>
@@ -2140,20 +2172,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="known-urls-parameter">
+<div id="rate-expectation-parameter">
 <section id="section-7.1.1.12">
-            <h5 id="name-known-urls-parameter">
-<a href="#section-7.1.1.12" class="section-number selfRef">7.1.1.12. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
+            <h5 id="name-rate-expectation-parameter">
+<a href="#section-7.1.1.12" class="section-number selfRef">7.1.1.12. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.12-1">
               <dt id="section-7.1.1.12-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.2">
-                <p id="section-7.1.1.12-1.2.1">known-urls<a href="#section-7.1.1.12-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.12-1.2.1">rate-expectation<a href="#section-7.1.1.12-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.12-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.4">
-                <p id="section-7.1.1.12-1.4.1">Predictable endpoint accessed<a href="#section-7.1.1.12-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.12-1.4.1">Expected traffic and intensity<a href="#section-7.1.1.12-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.12-1.5"><strong>Change Controller:</strong></dt>
@@ -2163,7 +2195,7 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.12-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.8">
-                <p id="section-7.1.1.12-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.12</a><a href="#section-7.1.1.12-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.12-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.12</a><a href="#section-7.1.1.12-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.12-1.9"><strong>Notes:</strong></dt>
@@ -2174,20 +2206,20 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 </dl>
 </section>
 </div>
-<div id="keys-parameter">
+<div id="known-urls-parameter">
 <section id="section-7.1.1.13">
-            <h5 id="name-keys-parameter">
-<a href="#section-7.1.1.13" class="section-number selfRef">7.1.1.13. </a><a href="#name-keys-parameter" class="section-name selfRef">Keys Parameter</a>
+            <h5 id="name-known-urls-parameter">
+<a href="#section-7.1.1.13" class="section-number selfRef">7.1.1.13. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
             </h5>
 <span class="break"></span><dl class="dlParallel" id="section-7.1.1.13-1">
               <dt id="section-7.1.1.13-1.1"><strong>Parameter Name:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.2">
-                <p id="section-7.1.1.13-1.2.1">keys<a href="#section-7.1.1.13-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.13-1.2.1">known-urls<a href="#section-7.1.1.13-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.13-1.3"><strong>Parameter Description:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.4">
-                <p id="section-7.1.1.13-1.4.1">JWKS Endpoint<a href="#section-7.1.1.13-1.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.13-1.4.1">Predictable endpoint accessed<a href="#section-7.1.1.13-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.13-1.5"><strong>Change Controller:</strong></dt>
@@ -2197,12 +2229,46 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
               <dd class="break"></dd>
 <dt id="section-7.1.1.13-1.7"><strong>Reference:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.8">
-                <p id="section-7.1.1.13-1.8.1"><a href="#signature-agent-parameter-keys" class="auto internal xref">Section 3.13</a><a href="#section-7.1.1.13-1.8.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1.1.13-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.13</a><a href="#section-7.1.1.13-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-7.1.1.13-1.9"><strong>Notes:</strong></dt>
               <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.10">
                 <p id="section-7.1.1.13-1.10.1">N/A<a href="#section-7.1.1.13-1.10.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="keys-parameter">
+<section id="section-7.1.1.14">
+            <h5 id="name-keys-parameter">
+<a href="#section-7.1.1.14" class="section-number selfRef">7.1.1.14. </a><a href="#name-keys-parameter" class="section-name selfRef">Keys Parameter</a>
+            </h5>
+<span class="break"></span><dl class="dlParallel" id="section-7.1.1.14-1">
+              <dt id="section-7.1.1.14-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.2">
+                <p id="section-7.1.1.14-1.2.1">keys<a href="#section-7.1.1.14-1.2.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-7.1.1.14-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.4">
+                <p id="section-7.1.1.14-1.4.1">JWKS Endpoint<a href="#section-7.1.1.14-1.4.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-7.1.1.14-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.6">
+                <p id="section-7.1.1.14-1.6.1">IETF<a href="#section-7.1.1.14-1.6.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-7.1.1.14-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.8">
+                <p id="section-7.1.1.14-1.8.1"><a href="#signature-agent-parameter-keys" class="auto internal xref">Section 3.14</a><a href="#section-7.1.1.14-1.8.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-7.1.1.14-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.10">
+                <p id="section-7.1.1.14-1.10.1">N/A<a href="#section-7.1.1.14-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2231,11 +2297,11 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <dd class="break"></dd>
 <dt id="AIPREF-VOCAB">[AIPREF-VOCAB]</dt>
         <dd>
-<span class="refAuthor">Keller, P.</span> and <span class="refAuthor">M. Thomson</span>, <span class="refTitle">"A Vocabulary For Expressing AI Usage Preferences"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-aipref-vocab-03</span>, <time datetime="2025-09-04" class="refDate">4 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-03">https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Keller, P.</span> and <span class="refAuthor">M. Thomson</span>, <span class="refTitle">"A Vocabulary For Expressing AI Usage Preferences"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-aipref-vocab-04</span>, <time datetime="2025-10-28" class="refDate">28 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-04">https://datatracker.ietf.org/doc/html/draft-ietf-aipref-vocab-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
-<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-03</span>, <time datetime="2025-09-05" class="refDate">5 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-04</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -2349,10 +2415,31 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v00<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">v01<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Initial draft<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Add contributors<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.2">
+          <p id="appendix-D-2.2.1">Aligning registry draft with oauth dynamic client registration iana registry<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.3">
+          <p id="appendix-D-2.3.1">Add an about-url field<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.4">
+          <p id="appendix-D-2.4.1">Add ABNF for discovery of signature-agent card (registry)<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.5">
+          <p id="appendix-D-2.5.1">Add precisions about known URLs<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.6">
+          <p id="appendix-D-2.6.1">Add placeholder for image size<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-3">v00<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-4.1">
+          <p id="appendix-D-4.1.1">Initial draft<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -2368,6 +2455,14 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <div class="email">
 <span>Email:</span>
 <a href="mailto:maxime.guerreiro@gmail.com" class="email">maxime.guerreiro@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ulas Kirazci</span></div>
+<div dir="auto" class="left"><span class="org">Amazon</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ulaskira@amazon.com" class="email">ulaskira@amazon.com</a>
 </div>
 </address>
 <address class="vcard">

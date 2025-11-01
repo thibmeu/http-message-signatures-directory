@@ -4,8 +4,8 @@
 
 HTTP                                                          T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                       29 September 2025
-Expires: 2 April 2026
+Intended status: Standards Track                         1 November 2025
+Expires: 5 May 2026
 
 
     Signature-Agent and Max-Crawl-rate for Robot Exclusion Protocol
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 April 2026.
+   This Internet-Draft will expire on 5 May 2026.
 
 Copyright Notice
 
@@ -185,9 +185,9 @@ DQUOTE = "\""
 
    [BOT-AUTH] Meunier, T., "HTTP Message Signatures for automated
               traffic Architecture", Work in Progress, Internet-Draft,
-              draft-meunier-web-bot-auth-architecture-03, 29 August
+              draft-meunier-web-bot-auth-architecture-04, 20 October
               2025, <https://datatracker.ietf.org/doc/html/draft-
-              meunier-web-bot-auth-architecture-03>.
+              meunier-web-bot-auth-architecture-04>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -211,9 +211,9 @@ DQUOTE = "\""
    [SIGNATURE-DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
               Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-03, 5 September 2025,
+              signatures-directory-04, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-03>.
+              message-signatures-directory-04>.
 
 Appendix A.  Examples
 

@@ -6,29 +6,29 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>HTTP Message Signatures for automated traffic Architecture</title>
 <meta content="Thibault Meunier" name="author">
+<meta content="Sandor Major" name="author">
 <meta content="
        This document describes an architecture for identifying automated
 traffic using  . The goal
 is to allow automated HTTP clients to cryptographically sign outbound
 requests, allowing HTTP servers to verify their identity with confidence. 
     " name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="not-yet" name="keyword">
 <meta content="draft-meunier-web-bot-auth-architecture-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.4.0
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.5
-    setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-meunier-web-bot-auth-architecture.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1047,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Message Signatures for Bots</td>
-<td class="right">September 2025</td>
+<td class="right">November 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Meunier</td>
-<td class="center">Expires 2 April 2026</td>
+<td class="left">Meunier &amp; Major</td>
+<td class="center">Expires 5 May 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,17 +1064,21 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-29" class="published">29 September 2025</time>
+<time datetime="2025-11-01" class="published">1 November 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-02">2 April 2026</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2026-05-05">5 May 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">T. Meunier</div>
 <div class="org">Cloudflare</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Major</div>
+<div class="org">Google</div>
 </div>
 </dd>
 </dl>
@@ -1122,7 +1126,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1233,86 +1237,92 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
                 <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse proxy consideration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7.2.1">
+                    <p id="section-toc.1-1.5.2.7.2.1.1"><a href="#section-5.7.1" class="auto internal xref">5.7.1</a>.  <a href="#name-signature-agent-labeling" class="internal xref">Signature-Agent labeling</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8">
+                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="auto internal xref">5.8</a>.  <a href="#name-public-identity" class="internal xref">Public Identity</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9">
+                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="auto internal xref">5.9</a>.  <a href="#name-no-human-correlation" class="internal xref">No Human Correlation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.10">
+                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="auto internal xref">5.10</a>. <a href="#name-minimizing-tracking-risks" class="internal xref">Minimizing Tracking Risks</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-public-identity" class="internal xref">Public Identity</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-no-human-correlation" class="internal xref">No Human Correlation</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-minimizing-tracking-risks" class="internal xref">Minimizing Tracking Risks</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-rsassa-pss-using-sha-512" class="internal xref">RSASSA-PSS Using SHA-512</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.1">
+                    <p id="section-toc.1-1.8.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-signature-agent-absent-from" class="internal xref">Signature-Agent absent from the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.2">
+                    <p id="section-toc.1-1.8.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.3">
+                    <p id="section-toc.1-1.8.2.1.2.3.1"><a href="#appendix-A.1.3" class="auto internal xref">A.1.3</a>.  <a href="#name-legacy-signature-agent-sf-s" class="internal xref">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-eddsa-using-curve-edwards25" class="internal xref">EdDSA Using Curve edwards25519</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.1">
+                    <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-signature-agent-absent-from-" class="internal xref">Signature-Agent absent from the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.2">
+                    <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent included present on the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.3">
+                    <p id="section-toc.1-1.8.2.2.2.3.1"><a href="#appendix-A.2.3" class="auto internal xref">A.2.3</a>.  <a href="#name-legacy-signature-agent-sf-st" class="internal xref">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-implementations" class="internal xref">Implementations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-rsassa-pss-using-sha-512" class="internal xref">RSASSA-PSS Using SHA-512</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.1">
-                    <p id="section-toc.1-1.9.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-signature-agent-absent-from" class="internal xref">Signature-Agent absent from the request</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.2">
-                    <p id="section-toc.1-1.9.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-clients" class="internal xref">Clients</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-eddsa-using-curve-edwards25" class="internal xref">EdDSA Using Curve edwards25519</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.1">
-                    <p id="section-toc.1-1.9.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-signature-agent-absent-from-" class="internal xref">Signature-Agent absent from the request</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-servers" class="internal xref">Servers</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.2">
-                    <p id="section-toc.1-1.9.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent included present on the request</a></p>
-</li>
-                </ul>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
+                <p id="section-toc.1-1.9.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-test-vectors-2" class="internal xref">Test vectors</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-implementations" class="internal xref">Implementations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-clients" class="internal xref">Clients</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-servers" class="internal xref">Servers</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.3">
-                <p id="section-toc.1-1.10.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-test-vectors-2" class="internal xref">Test vectors</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-changelog" class="internal xref">Changelog</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-changelog" class="internal xref">Changelog</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1497,7 +1507,11 @@ validates the signature, and processes the request if the signature is valid.<a 
         <h3 id="name-deployment-models">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-deployment-models" class="section-name selfRef">Deployment Models</a>
         </h3>
-<p id="section-4.1-1">Signature verification can be performed either directly by origins or delegated to a fronting proxy. Direct verification by origins provides simplicity and control. Proxy verification offloads processing and enables shared caching across multiple origins. The choice depends on traffic volume and operational requirements.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">Signature verification can be performed either directly by origins or delegated
+to a fronting proxy. Direct verification by origins provides simplicity and
+control. Proxy verification offloads processing and enables shared caching across
+multiple origins. The choice depends on traffic volume and operational
+requirements.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="generating-http-message-signature">
@@ -1506,11 +1520,16 @@ validates the signature, and processes the request if the signature is valid.<a 
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-generating-http-message-sig" class="section-name selfRef">Generating HTTP Message Signature</a>
         </h3>
 <p id="section-4.2-1"><span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> defines components to be signed.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">Agents <span class="bcp14">MUST</span> include the following component:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">Agents <span class="bcp14">MUST</span> include at least one of the following components:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-4.2-3">
           <dt id="section-4.2-3.1"><code>@authority</code></dt>
           <dd style="margin-left: 1.5em" id="section-4.2-3.2">
             <p id="section-4.2-3.2.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.3" class="relref">Section 2.2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-4.2-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-3.3"><code>@target-uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-3.4">
+            <p id="section-4.2-3.4.1">as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.2" class="relref">Section 2.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-4.2-3.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1547,13 +1566,14 @@ validates the signature, and processes the request if the signature is valid.<a 
           </h4>
 <p id="section-4.2.1-1"><code>Signature-Agent</code> is an HTTP Method context header defined in Section 4.1 of <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
 It is <span class="bcp14">RECOMMENDED</span> that the Agent sends requests with <code>Signature-Agent</code> header, as described in <a href="#sending-request" class="auto internal xref">Section 4.2.4</a>.
-If the header is to be sent, it <span class="bcp14">MUST</span> be signed as a component as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.1" class="relref">Section 2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+If the header is to be sent, one of its members <span class="bcp14">MUST</span> be signed as a component as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.1" class="relref">Section 2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2">This results in the following components to be signed<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2.1-3">
 <pre>
-("@authority" "signature-agent")
+("@authority" "signature-agent";key="sig1")
 </pre><a href="#section-4.2.1-3" class="pilcrow">¶</a>
 </div>
+<p id="section-4.2.1-4">It is <span class="bcp14">RECOMMENDED</span> that the <code>key</code> matches the signature label.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="anti-replay">
@@ -1595,47 +1615,47 @@ and request a new signature, as described in <a href="#requesting-message-signat
 <p id="section-4.2.4-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
 <div id="section-4.2.4-2">
             <div class="alignLeft art-svg artwork" id="section-4.2.4-2.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="736" viewBox="0 0 736 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="848" viewBox="0 0 848 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                 <path d="M 8,32 L 8,160" fill="none" stroke="black"></path>
                 <path d="M 88,32 L 88,160" fill="none" stroke="black"></path>
                 <path d="M 136,112 L 136,256" fill="none" stroke="black"></path>
-                <path d="M 568,112 L 568,256" fill="none" stroke="black"></path>
-                <path d="M 640,32 L 640,160" fill="none" stroke="black"></path>
-                <path d="M 728,32 L 728,160" fill="none" stroke="black"></path>
+                <path d="M 680,112 L 680,256" fill="none" stroke="black"></path>
+                <path d="M 752,32 L 752,160" fill="none" stroke="black"></path>
+                <path d="M 840,32 L 840,160" fill="none" stroke="black"></path>
                 <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
-                <path d="M 640,32 L 728,32" fill="none" stroke="black"></path>
-                <path d="M 96,62 L 296,62" fill="none" stroke="black"></path>
-                <path d="M 96,66 L 296,66" fill="none" stroke="black"></path>
-                <path d="M 440,62 L 632,62" fill="none" stroke="black"></path>
-                <path d="M 440,66 L 632,66" fill="none" stroke="black"></path>
-                <path d="M 136,112 L 568,112" fill="none" stroke="black"></path>
+                <path d="M 752,32 L 840,32" fill="none" stroke="black"></path>
+                <path d="M 96,62 L 352,62" fill="none" stroke="black"></path>
+                <path d="M 96,66 L 352,66" fill="none" stroke="black"></path>
+                <path d="M 496,62 L 744,62" fill="none" stroke="black"></path>
+                <path d="M 496,66 L 744,66" fill="none" stroke="black"></path>
+                <path d="M 136,112 L 680,112" fill="none" stroke="black"></path>
                 <path d="M 88,128 L 128,128" fill="none" stroke="black"></path>
-                <path d="M 576,128 L 632,128" fill="none" stroke="black"></path>
+                <path d="M 688,128 L 744,128" fill="none" stroke="black"></path>
                 <path d="M 8,160 L 88,160" fill="none" stroke="black"></path>
-                <path d="M 640,160 L 728,160" fill="none" stroke="black"></path>
-                <path d="M 136,256 L 568,256" fill="none" stroke="black"></path>
-                <polygon class="arrowhead" points="640,128 628,122.4 628,133.6" fill="black" transform="rotate(0,632,128)"></polygon>
-                <polygon class="arrowhead" points="640,64 628,58.4 628,69.6" fill="black" transform="rotate(0,632,64)"></polygon>
+                <path d="M 752,160 L 840,160" fill="none" stroke="black"></path>
+                <path d="M 136,256 L 680,256" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="752,128 740,122.4 740,133.6" fill="black" transform="rotate(0,744,128)"></polygon>
+                <polygon class="arrowhead" points="752,64 740,58.4 740,69.6" fill="black" transform="rotate(0,744,64)"></polygon>
                 <polygon class="arrowhead" points="104,64 92,58.4 92,69.6" fill="black" transform="rotate(180,96,64)"></polygon>
                 <g class="text">
-                  <text x="364" y="52">Exchange</text>
-                  <text x="368" y="68">Cryptographic</text>
-                  <text x="364" y="84">material</text>
+                  <text x="420" y="52">Exchange</text>
+                  <text x="424" y="68">Cryptographic</text>
+                  <text x="420" y="84">material</text>
                   <text x="48" y="100">Agent</text>
-                  <text x="684" y="100">Origin</text>
+                  <text x="796" y="100">Origin</text>
                   <text x="160" y="132">GET</text>
                   <text x="248" y="132">/path/to/resource</text>
                   <text x="188" y="148">Signature:</text>
                   <text x="256" y="148">abc==</text>
                   <text x="212" y="164">Signature-Input:</text>
-                  <text x="344" y="164">sig=(@authority</text>
-                  <text x="484" y="164">signature-agent);\</text>
+                  <text x="352" y="164">sig=("@authority"</text>
+                  <text x="548" y="164">"signature-agent";key="sig");\</text>
                   <text x="364" y="180">created=1700000000;\</text>
                   <text x="364" y="196">expires=1700011111;\</text>
                   <text x="356" y="212">keyid="ba3e64==";\</text>
                   <text x="356" y="228">tag="web-bot-auth"</text>
                   <text x="212" y="244">Signature-Agent:</text>
-                  <text x="396" y="244">"https://signer.example.com"</text>
+                  <text x="412" y="244">sig="https://signer.example.com"</text>
                 </g>
               </svg><a href="#section-4.2.4-2.1" class="pilcrow">¶</a>
 </div>
@@ -1830,76 +1850,105 @@ mandate nonce chaining (where each nonce is the hash of the previous one),
 or provide its own nonce in an <code>Accept-Signature</code> response to challenge the agent.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
 <p id="section-5.7-4">Such policies <span class="bcp14">MAY</span> incur additional round-trip between the client and the origin
 to convey <code>accept-signature</code> header, or deployment specific exchanges.<a href="#section-5.7-4" class="pilcrow">¶</a></p>
+<div id="signature-agent-labeling">
+<section id="section-5.7.1">
+          <h4 id="name-signature-agent-labeling">
+<a href="#section-5.7.1" class="section-number selfRef">5.7.1. </a><a href="#name-signature-agent-labeling" class="section-name selfRef">Signature-Agent labeling</a>
+          </h4>
+<p id="section-5.7.1-1">An intermediary is allowed to relabel an existing signature when processing the
+message, per <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.5" class="relref">Section 7.2.5</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-5.7.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.7.1-2">This <span class="bcp14">MAY</span> apply to <code>Signature-Agent</code>, when included in the request as defined in
+<a href="#signature-agent" class="auto internal xref">Section 4.2.1</a>,
+An intermediary updating the member key <span class="bcp14">MUST</span> update the components of the
+associated signatures accordingly.<a href="#section-5.7.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.7.1-3">For instance, an intermediary updating the <code>Signature-Agent</code> from <code>sig2</code> to
+<code>sig3</code> on the example provided in <a href="#example-signature-agent-included" class="auto internal xref">Appendix A.1.2</a> would
+result in the following <code>Signature</code>, <code>Signature-Input</code>, and <code>Signature-Agent</code>
+header.<a href="#section-5.7.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.7.1-4">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: sig3="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig3")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
+</pre><a href="#section-5.7.1-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.7.1-5"><code>Signature</code> is unchanged as the base is similar. Both <code>Signature-Agent</code> and
+<code>Signature-Input</code> reflect the update from <code>sig2</code> to <code>sig3</code>.
+.
+# Privacy Considerations<a href="#section-5.7.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="privacy-considerations">
-<section id="section-6">
-      <h2 id="name-privacy-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
-      </h2>
 <div id="public-identity">
-<section id="section-6.1">
+<section id="section-5.8">
         <h3 id="name-public-identity">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-public-identity" class="section-name selfRef">Public Identity</a>
+<a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-public-identity" class="section-name selfRef">Public Identity</a>
         </h3>
-<p id="section-6.1-1">This architecture assumes that automated clients identify themselves
+<p id="section-5.8-1">This architecture assumes that automated clients identify themselves
 explicitly using digital signatures. The identity associated with a signing
 key is expected to be publicly discoverable for verification purposes. This
 reduces anonymity and allows receivers to associate requests with specific
 agents. If an agent wishes not to identify itself, this is not the right
-choice of protocol for it.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+choice of protocol for it.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="no-human-correlation">
-<section id="section-6.2">
+<section id="section-5.9">
         <h3 id="name-no-human-correlation">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-no-human-correlation" class="section-name selfRef">No Human Correlation</a>
+<a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-no-human-correlation" class="section-name selfRef">No Human Correlation</a>
         </h3>
-<p id="section-6.2-1">The key used for signing <span class="bcp14">MUST NOT</span> be tied to a specific human individual.
+<p id="section-5.9-1">The key used for signing <span class="bcp14">MUST NOT</span> be tied to a specific human individual.
 Keys <span class="bcp14">SHOULD</span> represent a role, company, or automation identity (e.g., "news-aggregator-
 bot", "example-crawler-v1"). This avoids accidental exposure of personally
 identifiable information and prevents the misuse of keys for user tracking or
-profiling.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+profiling.<a href="#section-5.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="minimizing-tracking-risks">
-<section id="section-6.3">
+<section id="section-5.10">
         <h3 id="name-minimizing-tracking-risks">
-<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-minimizing-tracking-risks" class="section-name selfRef">Minimizing Tracking Risks</a>
+<a href="#section-5.10" class="section-number selfRef">5.10. </a><a href="#name-minimizing-tracking-risks" class="section-name selfRef">Minimizing Tracking Risks</a>
         </h3>
-<p id="section-6.3-1">To limit tracking risks, implementations <span class="bcp14">SHOULD</span> avoid long-lived, globally
+<p id="section-5.10-1">To limit tracking risks, implementations <span class="bcp14">SHOULD</span> avoid long-lived, globally
 unique key identifiers unless strictly necessary. Key rotation <span class="bcp14">SHOULD</span> be
 supported, and clients <span class="bcp14">SHOULD</span> take care to avoid signing information that
 could be used to correlate activity across contexts, especially where
-sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+sensitive user data is involved.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-7">
+<section id="section-6">
       <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">This document has no IANA actions.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-combined-references">
-<section id="section-8">
+<section id="section-7">
       <h2 id="name-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-8.1">
+<section id="section-7.1">
         <h3 id="name-normative-references">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
-<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-03</span>, <time datetime="2025-09-05" class="refDate">5 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-04</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -1937,9 +1986,9 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-8.2">
+<section id="section-7.2">
         <h3 id="name-informative-references">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="OAUTH-BEARER">[OAUTH-BEARER]</dt>
@@ -1984,8 +2033,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="PrkjZp0RmPFBjPagCHYU1xJXR4ZjgR+yaYYkLBykA05VKhqMK3Gr5gfSszYz99joYyhZjWBVjwMULRsgX9LjuA=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.1.1-3" class="pilcrow">¶</a>
 </div>
@@ -1998,15 +2047,15 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="PrkjZp0RmPFBjPagCHYU1xJXR4ZjgR+yaYYkLBykA05VKhqMK3Gr5gfSszYz99joYyhZjWBVjwMULRsgX9LjuA=="\
  ;tag="web-bot-auth"
-Signature: sig1=:ppXhcGjVp7xaoHGIa7V+hsSxuRgFt8i04K4FWz9ORJtn57t8duD3cyavsnh9grdWWOJHER8ITNBaqe4mKmPq193S+7hSW31IzXSH4/9WfsdrjUBwyJ0fhBU7oNn3UGDqwdhr5TMgVI2/EX8saV5GrOunM09zMEA+d4QWYyKRFJmg+asCs253l2IYPpVp4N55H0uRK7qhb7acng8LNiEPTQZD2s+Kha95LgeciKQSO0jgR/h59fX/dXqLdFIvRMn8Ggs2VUzF/f/MMEXH83gufVnh4SYl/rKMSKWDBsK+OiLpobAVIuIz+HLCVlMnxlkXkhCW2J/Pmo8jht9N5k/y1A==:
+Signature: sig1=:KW2kHcYp3+yhoZZ+8iKm/WNJS1ksDP8YaTZi+/0d7ywvgBOO2Xh29WNh7jWtFe/N6guKxxDqPx2+TyHNkpCcXkC535Js/0tgdVfESQP0M7gPOwQ4hHQpQC2labpjTPXQyqvMtYq5q2niVH5NjUSk2iPwvL9ChVQUvE14UBzUL/hqsw+JRo3ZKF59aaohzqNlNB+Lt9EIf7x58P6pE0/3opk5AEf6GMqwhW9fog3VpsVFqSzAa5KwHQR9oXH4WFYK/pKELAQ82+I15Oride53dalM49WLdPAASTFNKGiQRQnpNwEESVrcjvFj1HNZLP3UGrpG8AleeGrf8jSFebZBPw==:
 </pre><a href="#appendix-A.1.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="signature-agent-included-present-on-the-request">
+<div id="example-signature-agent-included">
 <section id="appendix-A.1.2">
           <h4 id="name-signature-agent-included-pr">
 <a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent included present on the request</a>
@@ -2019,13 +2068,13 @@ a <code>Signature-Agent</code> header.<a href="#appendix-A.1.2-1" class="pilcrow
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": "https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent")\
+"signature-agent": agent2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;expires=4889289600\
+ ;nonce="/9d/NmHz1rAF/Ox2PKHu220ivrawZaqWqPyBCxwmbpbYdfCJUiIbBY3tap1NrFxSlTiFHAW/abGob7Pv2MKXtg=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.1.2-3" class="pilcrow">¶</a>
 </div>
@@ -2034,8 +2083,50 @@ NOTE: '\' line wrapping per RFC 8792
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: "https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent")\
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="/9d/NmHz1rAF/Ox2PKHu220ivrawZaqWqPyBCxwmbpbYdfCJUiIbBY3tap1NrFxSlTiFHAW/abGob7Pv2MKXtg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:UERYmGxKWzgHxWnnvcojvJ/WTx3W4QKz7MRG7chcnWFKuRFXc8ck2oovtY/L3RqKtZk/T//aCX4Bc1zprL5VyU2VkQbRFQsUnFrg9bJgmeowE2aDMc/gGbJtzoIy5+qINjpmotpmKTGpnytEtrhI0lgNzJOEfHQsLAMT4MOOtSVYC7FMNj7dDSNyitcALAEhw6LeT73mQGhlBKX4GdUz4PS5O+4HJGpDRcDGebmi7aIVa/9cwbmAzw1foGhiusljmkvIy+NTqA5TusbiSuTGZ2FsZ6oUqQX7KfZc83r3t7Iz2ufixrb0X+qKuePbJBUzOT6cBaKTZld2/RzyganfMw==:
+</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="legacy-signature-agent-sf-string-instead-of-sf-dictionary-included-present-on-the-request">
+<section id="appendix-A.1.3">
+          <h4 id="name-legacy-signature-agent-sf-s">
+<a href="#appendix-A.1.3" class="section-number selfRef">A.1.3. </a><a href="#name-legacy-signature-agent-sf-s" class="section-name selfRef">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a>
+          </h4>
+<p id="appendix-A.1.3-1">THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.<a href="#appendix-A.1.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.3-2">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.1.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.3-3">The corresponding signature base is:<a href="#appendix-A.1.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.3-4">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": sig2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="sig2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.3-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.1.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.3-6">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: sig2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -2043,7 +2134,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
  ;tag="web-bot-auth"
 Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
-</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1.3-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2073,8 +2164,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="KQ2eaMLTxgHJHWanTlfSIKqbdWa8U+uGvpT7twl3+4QBRZCZmuHEmAEHqeJRKrzs5qxssG0c+KZFxXJn7BiW6A=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.2.1-3" class="pilcrow">¶</a>
 </div>
@@ -2087,15 +2178,15 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="KQ2eaMLTxgHJHWanTlfSIKqbdWa8U+uGvpT7twl3+4QBRZCZmuHEmAEHqeJRKrzs5qxssG0c+KZFxXJn7BiW6A=="\
  ;tag="web-bot-auth"
-Signature: sig1=:+NA/cssf4Y2bQTMTkyvTGRCaVzp9quyUevdwwMtMOWhhOOZ2T1subBj0BtvdnrpDEuwSAbiTeElXDzHL3WWKCw==:
+Signature: sig1=:IfW1qh4h5viJt9rHZrNFxZ2jxYMgKaOMm5nZ6lCYOR6pnMDMQjgsi53xmd/i+EdLVoy1dnghkZkzuk5vWxJwAA==:
 </pre><a href="#appendix-A.2.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="signature-agent-included-present-on-the-request-1">
+<div id="signature-agent-included-present-on-the-request">
 <section id="appendix-A.2.2">
           <h4 id="name-signature-agent-included-pre">
 <a href="#appendix-A.2.2" class="section-number selfRef">A.2.2. </a><a href="#name-signature-agent-included-pre" class="section-name selfRef">Signature-Agent included present on the request</a>
@@ -2108,13 +2199,13 @@ a <code>Signature-Agent</code> header.<a href="#appendix-A.2.2-1" class="pilcrow
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": "https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent")\
+"signature-agent": agent2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
+ ;expires=4889289600\
+ ;nonce="9zm17UUtAv5PQomUin2Qme0Anu+QMAJqUwvdh+0BesiBZVbfUkadt+dIj8CoYaKHy07H+uLxYgTyaHkmtVD59Q=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.2.2-3" class="pilcrow">¶</a>
 </div>
@@ -2123,8 +2214,50 @@ NOTE: '\' line wrapping per RFC 8792
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: "https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent")\
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="9zm17UUtAv5PQomUin2Qme0Anu+QMAJqUwvdh+0BesiBZVbfUkadt+dIj8CoYaKHy07H+uLxYgTyaHkmtVD59Q=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:dap0jq7R41a0fW6WCh+oLj9O/z1Q7P1CaRKQBVMUYGulyKRA2zjD1/Ux/tiXOV9Avxv1iQkQ79x23vXtMHIaAw==:
+</pre><a href="#appendix-A.2.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="legacy-signature-agent-sf-string-instead-of-sf-dictionary-included-present-on-the-request-1">
+<section id="appendix-A.2.3">
+          <h4 id="name-legacy-signature-agent-sf-st">
+<a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-legacy-signature-agent-sf-st" class="section-name selfRef">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a>
+          </h4>
+<p id="appendix-A.2.3-1">THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.<a href="#appendix-A.2.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.3-2">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.2.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.3-3">The corresponding signature base is:<a href="#appendix-A.2.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.3-4">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": sig2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="sig2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.2.3-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.2.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.2.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.3-6">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: sig2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -2132,7 +2265,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
  ;tag="web-bot-auth"
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
-</pre><a href="#appendix-A.2.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.3-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2214,7 +2347,7 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">In <a href="https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v1.json">JSON format</a><a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.3-1.1.1">In <a href="https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v2.json">JSON format</a><a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2244,90 +2377,123 @@ Tanya Verma.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v02<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">v04<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Add response status code<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Change Signature-Agent to a sf-dictionary<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.2">
-          <p id="appendix-D-2.2.1">Add a few reference to improve readability<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.2.1">Add security consideration around intermediary re-keying Signature-Agent<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.3">
-          <p id="appendix-D-2.3.1">Add consideration to sign additional headers<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.3.1">Add <code>target-uri</code> as a valid replacement for <code>@authority</code><a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.4">
-          <p id="appendix-D-2.4.1">Add use of TLS in security considerations<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.4.1">Add more contributors<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.5">
-          <p id="appendix-D-2.5.1">Add RSASSA-PSS example<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.5.1">Add new implementations of architecture drafts<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.6">
-          <p id="appendix-D-2.6.1">Update acknowledgement section<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-2.7">
-          <p id="appendix-D-2.7.1">Reference new implementations: PHP, Python, Ruby, Rust<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-2.8">
-          <p id="appendix-D-2.8.1">Fix signature-agent in the arch diagram to use structured fields<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-2.9">
-          <p id="appendix-D-2.9.1">Fix test vectors to use signature-agent with structured fields<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-2.10">
-          <p id="appendix-D-2.10.1">Fix some typos<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.6.1">Remove "purpose" field from web-bot-auth architecture example<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-3">v01<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-3">v03<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-4.1">
-          <p id="appendix-D-4.1.1">Add mandatory signing of Signature-Agent by clients if present<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.1.1">Update linzer example url<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.2">
-          <p id="appendix-D-4.2.1">Add test vectors for request with and without Signature-Agent<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.2.1">Fix section and name of status code 429<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.3">
-          <p id="appendix-D-4.3.1">Update example diagram to be correct<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-4.4">
-          <p id="appendix-D-4.4.1">Add security consideration about reverse proxy<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-4.5">
-          <p id="appendix-D-4.5.1">Update why origin may request a new signature<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-4.6">
-          <p id="appendix-D-4.6.1">Update nonce validation wording and global uniqueness<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-D-4.7">
-          <p id="appendix-D-4.7.1">Acknowledgements<a href="#appendix-D-4.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.3.1">Fix typos<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-5">v00<a href="#appendix-D-5" class="pilcrow">¶</a></p>
+<p id="appendix-D-5">v02<a href="#appendix-D-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-6.1">
-          <p id="appendix-D-6.1.1">Initial draft<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.1.1">Add response status code<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.2">
-          <p id="appendix-D-6.2.1">How to leverage HTTP Message Signature to sign request<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.2.1">Add a few reference to improve readability<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.3">
-          <p id="appendix-D-6.3.1">How to verify these Signature<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.3.1">Add consideration to sign additional headers<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.4">
-          <p id="appendix-D-6.4.1">Define web-bot-auth tag to scope this signature<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.4.1">Add use of TLS in security considerations<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.5">
-          <p id="appendix-D-6.5.1">Derive keyid using JWK Thumbprint<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.5.1">Add RSASSA-PSS example<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.6">
-          <p id="appendix-D-6.6.1">High level Security and Privacy considerations<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.6.1">Update acknowledgement section<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.7">
+          <p id="appendix-D-6.7.1">Reference new implementations: PHP, Python, Ruby, Rust<a href="#appendix-D-6.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.8">
+          <p id="appendix-D-6.8.1">Fix signature-agent in the arch diagram to use structured fields<a href="#appendix-D-6.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.9">
+          <p id="appendix-D-6.9.1">Fix test vectors to use signature-agent with structured fields<a href="#appendix-D-6.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.10">
+          <p id="appendix-D-6.10.1">Fix some typos<a href="#appendix-D-6.10.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-7">v01<a href="#appendix-D-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-8.1">
+          <p id="appendix-D-8.1.1">Add mandatory signing of Signature-Agent by clients if present<a href="#appendix-D-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.2">
+          <p id="appendix-D-8.2.1">Add test vectors for request with and without Signature-Agent<a href="#appendix-D-8.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.3">
+          <p id="appendix-D-8.3.1">Update example diagram to be correct<a href="#appendix-D-8.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.4">
+          <p id="appendix-D-8.4.1">Add security consideration about reverse proxy<a href="#appendix-D-8.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.5">
+          <p id="appendix-D-8.5.1">Update why origin may request a new signature<a href="#appendix-D-8.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.6">
+          <p id="appendix-D-8.6.1">Update nonce validation wording and global uniqueness<a href="#appendix-D-8.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-8.7">
+          <p id="appendix-D-8.7.1">Acknowledgements<a href="#appendix-D-8.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-9">v00<a href="#appendix-D-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-10.1">
+          <p id="appendix-D-10.1.1">Initial draft<a href="#appendix-D-10.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-10.2">
+          <p id="appendix-D-10.2.1">How to leverage HTTP Message Signature to sign request<a href="#appendix-D-10.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-10.3">
+          <p id="appendix-D-10.3.1">How to verify these Signature<a href="#appendix-D-10.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-10.4">
+          <p id="appendix-D-10.4.1">Define web-bot-auth tag to scope this signature<a href="#appendix-D-10.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-10.5">
+          <p id="appendix-D-10.5.1">Derive keyid using JWK Thumbprint<a href="#appendix-D-10.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-10.6">
+          <p id="appendix-D-10.6.1">High level Security and Privacy considerations<a href="#appendix-D-10.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
 </div>
 <div id="authors-addresses">
 <section id="appendix-E">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Thibault Meunier</span></div>
@@ -2335,6 +2501,14 @@ Tanya Verma.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:ot-ietf@thibault.uk" class="email">ot-ietf@thibault.uk</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Sandor Major</span></div>
+<div dir="auto" class="left"><span class="org">Google</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ietf@sandormajor.com" class="email">ietf@sandormajor.com</a>
 </div>
 </address>
 </section>
