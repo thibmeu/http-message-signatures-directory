@@ -470,8 +470,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="PrkjZp0RmPFBjPagCHYU1xJXR4ZjgR+yaYYkLBykA05VKhqMK3Gr5gfSszYz99joYyhZjWBVjwMULRsgX9LjuA=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -484,13 +484,52 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="PrkjZp0RmPFBjPagCHYU1xJXR4ZjgR+yaYYkLBykA05VKhqMK3Gr5gfSszYz99joYyhZjWBVjwMULRsgX9LjuA=="\
  ;tag="web-bot-auth"
-Signature: sig1=:ppXhcGjVp7xaoHGIa7V+hsSxuRgFt8i04K4FWz9ORJtn57t8duD3cyavsnh9grdWWOJHER8ITNBaqe4mKmPq193S+7hSW31IzXSH4/9WfsdrjUBwyJ0fhBU7oNn3UGDqwdhr5TMgVI2/EX8saV5GrOunM09zMEA+d4QWYyKRFJmg+asCs253l2IYPpVp4N55H0uRK7qhb7acng8LNiEPTQZD2s+Kha95LgeciKQSO0jgR/h59fX/dXqLdFIvRMn8Ggs2VUzF/f/MMEXH83gufVnh4SYl/rKMSKWDBsK+OiLpobAVIuIz+HLCVlMnxlkXkhCW2J/Pmo8jht9N5k/y1A==:
+Signature: sig1=:KW2kHcYp3+yhoZZ+8iKm/WNJS1ksDP8YaTZi+/0d7ywvgBOO2Xh29WNh7jWtFe/N6guKxxDqPx2+TyHNkpCcXkC535Js/0tgdVfESQP0M7gPOwQ4hHQpQC2labpjTPXQyqvMtYq5q2niVH5NjUSk2iPwvL9ChVQUvE14UBzUL/hqsw+JRo3ZKF59aaohzqNlNB+Lt9EIf7x58P6pE0/3opk5AEf6GMqwhW9fog3VpsVFqSzAa5KwHQR9oXH4WFYK/pKELAQ82+I15Oride53dalM49WLdPAASTFNKGiQRQnpNwEESVrcjvFj1HNZLP3UGrpG8AleeGrf8jSFebZBPw==:
 ~~~
 
 ### Signature-Agent included present on the request {#example-signature-agent-included}
+
+This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": agent2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="/9d/NmHz1rAF/Ox2PKHu220ivrawZaqWqPyBCxwmbpbYdfCJUiIbBY3tap1NrFxSlTiFHAW/abGob7Pv2MKXtg=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="/9d/NmHz1rAF/Ox2PKHu220ivrawZaqWqPyBCxwmbpbYdfCJUiIbBY3tap1NrFxSlTiFHAW/abGob7Pv2MKXtg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:UERYmGxKWzgHxWnnvcojvJ/WTx3W4QKz7MRG7chcnWFKuRFXc8ck2oovtY/L3RqKtZk/T//aCX4Bc1zprL5VyU2VkQbRFQsUnFrg9bJgmeowE2aDMc/gGbJtzoIy5+qINjpmotpmKTGpnytEtrhI0lgNzJOEfHQsLAMT4MOOtSVYC7FMNj7dDSNyitcALAEhw6LeT73mQGhlBKX4GdUz4PS5O+4HJGpDRcDGebmi7aIVa/9cwbmAzw1foGhiusljmkvIy+NTqA5TusbiSuTGZ2FsZ6oUqQX7KfZc83r3t7Iz2ufixrb0X+qKuePbJBUzOT6cBaKTZld2/RzyganfMw==:
+~~~
+
+### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+
+THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
 
 This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -547,8 +586,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="KQ2eaMLTxgHJHWanTlfSIKqbdWa8U+uGvpT7twl3+4QBRZCZmuHEmAEHqeJRKrzs5qxssG0c+KZFxXJn7BiW6A=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -561,13 +600,52 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="KQ2eaMLTxgHJHWanTlfSIKqbdWa8U+uGvpT7twl3+4QBRZCZmuHEmAEHqeJRKrzs5qxssG0c+KZFxXJn7BiW6A=="\
  ;tag="web-bot-auth"
-Signature: sig1=:+NA/cssf4Y2bQTMTkyvTGRCaVzp9quyUevdwwMtMOWhhOOZ2T1subBj0BtvdnrpDEuwSAbiTeElXDzHL3WWKCw==:
+Signature: sig1=:IfW1qh4h5viJt9rHZrNFxZ2jxYMgKaOMm5nZ6lCYOR6pnMDMQjgsi53xmd/i+EdLVoy1dnghkZkzuk5vWxJwAA==:
 ~~~
 
 ### Signature-Agent included present on the request
+
+This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": agent2="https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="9zm17UUtAv5PQomUin2Qme0Anu+QMAJqUwvdh+0BesiBZVbfUkadt+dIj8CoYaKHy07H+uLxYgTyaHkmtVD59Q=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="9zm17UUtAv5PQomUin2Qme0Anu+QMAJqUwvdh+0BesiBZVbfUkadt+dIj8CoYaKHy07H+uLxYgTyaHkmtVD59Q=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:dap0jq7R41a0fW6WCh+oLj9O/z1Q7P1CaRKQBVMUYGulyKRA2zjD1/Ux/tiXOV9Avxv1iQkQ79x23vXtMHIaAw==:
+~~~
+
+### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+
+THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
 
 This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -644,7 +722,7 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 ## Test vectors
 
-* In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v1.json)
+* In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v2.json)
 
 
 # Acknowledgments
