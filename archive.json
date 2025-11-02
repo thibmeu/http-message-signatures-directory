@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-30T00:33:00.243598+00:00",
+  "timestamp": "2025-11-02T00:34:30.129412+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -3775,6 +3775,36 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 79,
+      "id": "PR_kwDOOXJyWM6xA_MW",
+      "title": "Fix architecture test vectors for signature-agent as a structured field directory",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/79",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Keep one old test to ensure there is backward compatibility Note that the new test have a signature valid for until 2125\r\n\r\n@sandormajor",
+      "createdAt": "2025-11-01T23:17:20Z",
+      "updatedAt": "2025-11-01T23:17:20Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "4e11f4be5264e65cb5801bf46ab635e2d9dc1c06",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "fix-architecture-test-vectors",
+      "headRefOid": "4ed12389673f6f368cd416e37eb1dc555f45de73",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
