@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 5 May 2026                                               Google
-                                                         1 November 2025
+Expires: 8 May 2026                                               Google
+                                                         4 November 2025
 
 
                    HTTP Message Signatures Directory
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 May 2026.
+   This Internet-Draft will expire on 8 May 2026.
 
 Copyright Notice
 
