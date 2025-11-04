@@ -470,8 +470,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -484,10 +484,10 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
  ;tag="web-bot-auth"
-Signature: sig1=:ppXhcGjVp7xaoHGIa7V+hsSxuRgFt8i04K4FWz9ORJtn57t8duD3cyavsnh9grdWWOJHER8ITNBaqe4mKmPq193S+7hSW31IzXSH4/9WfsdrjUBwyJ0fhBU7oNn3UGDqwdhr5TMgVI2/EX8saV5GrOunM09zMEA+d4QWYyKRFJmg+asCs253l2IYPpVp4N55H0uRK7qhb7acng8LNiEPTQZD2s+Kha95LgeciKQSO0jgR/h59fX/dXqLdFIvRMn8Ggs2VUzF/f/MMEXH83gufVnh4SYl/rKMSKWDBsK+OiLpobAVIuIz+HLCVlMnxlkXkhCW2J/Pmo8jht9N5k/y1A==:
+Signature: sig1=:Bqj+UQfJNSRx0Dz/K/4/+Bo1l8UUH5Ps1zYzX6H6nKCyZJ88Hry/KZF2JishxI1h9+LJTmRmDmw2HxbUeZkoUUgmLbg168GWiYFBK0IQRKQvvbnzrONutKNmanvIXNvrN2ZB2h+w9ekSol3XJRncErrwcU2PWltBR+An4H2kIiRBfnBRi85eCVF+s6SYRxoAJvRo6avTCvCZe9Gvw8Ezbj8QnHU37uvTN72+MBDEsFN94ozfAT8MTB4wAwqXYLMf9mnl0mpK2UbnXrzgffRxOhEHVvHNIN8aB7ThM1p4JzaTN1HuXQFPYOWgCojOCv2IovGOygai/j3p4PzMJUp4Lw==:
 ~~~
 
 ### Signature-Agent included present on the request {#example-signature-agent-included}
@@ -501,8 +501,47 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent";key="agent2": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:ngb8Yuk2zY/O5nyApob/uwIRWNE1md5xrzYSpPfVCWMHMjdQhj8HTPY8lrE8jHDHRtpqUy7jvYM8LzaHb1NGyxPemVMEOoZpBWXxboqSbp1LTAb2o5qbETmSuDM7UZE4WuSDQoIG5GF5AZ8b8lFEWDP1pw0XV1zsZMn8EPU/DbTkFtGgVPdGehjywJRqnXCXEX0wRCGg4+nTJwWs736JqgbBCuafQPCdwITQucMyGA12QOmMc8eQUdjcS/uqzkDxj1+iI3PDCYnscUTHcGuNv6rWxIx0D+rqWhOoLeYwzDPUm3qs2utVCATIgK0ktLWSfGcPK6p3IwJIUj7cSkbVRg==:
+~~~
+
+### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+
+THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
+
+This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -516,8 +555,8 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -547,8 +586,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
  ;tag="web-bot-auth"
 ~~~
 
@@ -561,10 +600,10 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
  ;tag="web-bot-auth"
-Signature: sig1=:+NA/cssf4Y2bQTMTkyvTGRCaVzp9quyUevdwwMtMOWhhOOZ2T1subBj0BtvdnrpDEuwSAbiTeElXDzHL3WWKCw==:
+Signature: sig1=:FFASViSdcgsyaqqYiCnkHreeZzbNKcTzDvZC5uVlP/dn9IbWj8j0o4wKFTH3rBnUiSUBduwm1Gp5VlIPCp01Ag==:
 ~~~
 
 ### Signature-Agent included present on the request
@@ -578,8 +617,47 @@ The corresponding signature base is:
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent";key="agent2": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
+ ;tag="web-bot-auth"
+~~~
+
+This results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:
+~~~
+
+### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+
+THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
+
+This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a `Signature-Agent` header.
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -593,8 +671,8 @@ This results in the following Signature-Input and Signature header fields being 
 ~~~
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -644,7 +722,7 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 ## Test vectors
 
-* In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v1.json)
+* In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v2.json)
 
 
 # Acknowledgments
