@@ -732,8 +732,8 @@ A.1.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -746,8 +746,8 @@ NOTE: '\' line wrapping per RFC 8792
 
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -844,8 +844,8 @@ A.2.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -858,8 +858,8 @@ NOTE: '\' line wrapping per RFC 8792
 
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
