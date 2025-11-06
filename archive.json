@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-02T00:34:30.129412+00:00",
+  "timestamp": "2025-11-06T00:32:28.775464+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1260,6 +1260,86 @@
       "body": "[Section 5.7.1 or -architecture-04](https://www.ietf.org/archive/id/draft-meunier-web-bot-auth-architecture-04.html#section-5.7.1) mentions that relabelling can be done by intermediating proxy. This would, however, break the signature-base as the `key` parameter is part of the base.\n\nThe text should be corrected, possibly removed, and have a dedicated section about intermediating proxy behaviour.\n\nThere has been some discussion on https://github.com/thibmeu/http-message-signatures-directory/pull/71#discussion_r2456224438 and https://github.com/thibmeu/http-message-signatures-directory/pull/71#discussion_r2449178915\n\nReusing the example,\n\ngoing from\n\n```\nSignature-Agent: agent1=\"https://signature-agent.test\"\nSignature-Input: sig1=(\"signature-agent\";key=\"agent1\")\nSignature: sig1=:base64==:\n```\n\nto \n\n```\nSignature-Agent: SHOULD_MATCH_SIGNATURE_AGENT_KEY=\"https://signature-agent.test\"\nSignature-Input: sig1=(\"signature-agent\";key=\"SHOULD_MATCH_SIGNATURE_AGENT_KEY\")\nSignature: sig1=:base64==:\n```\n\n`SHOULD_MATCH_SIGNATURE_AGENT_KEY` relabeling is going to break `sig1` signature\n\n",
       "createdAt": "2025-10-24T07:05:26Z",
       "updatedAt": "2025-10-24T07:05:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 80,
+      "id": "I_kwDOOXJyWM7V2_5n",
+      "title": "Signature base errors in test vectors",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/80",
+      "state": "OPEN",
+      "author": "jricher",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "bug"
+      ],
+      "body": "Per Section [2.1.2 of RFC9421](https://www.rfc-editor.org/rfc/rfc9421.html#name-dictionary-structured-field), when indicating a single key of a dictionary type field, the component identifier includes the key as a parameter to the string, and the value of the component is the key value alone. \n\nCurrently the example signature bases in A and B are of the form:\n\n```\n...\n\"signature-agent\": sig2=\"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nHowever, to sign the `sig2` key of the `signature-agent` field, it should instead be:\n\n```\n...\n\"signature-agent\";key=\"sig2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nThis same error is repeated in every test vector that uses the `key` modifier for the signed dictionary.",
+      "createdAt": "2025-11-04T19:47:50Z",
+      "updatedAt": "2025-11-04T23:08:57Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This is a good catch. While the generation of the test vector has been updated, the text format was not modified to reflect the change.\n\nI've updated the test vector PR #79 to reflect that. For instance, this is the current ed25519 test vectors\n\n```\nThis example presents a minimal signature using the ed25519 algorithm over test-request. The request contains\na `Signature-Agent` header.\n\nThe corresponding signature base is:\n\n~~~\nNOTE: '\\' line wrapping per RFC 8792\n\n\"@authority\": example.com\n\"signature-agent\";key=\"agent2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"agent2\")\\\n ;created=1735689600\\\n ;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\"\\\n ;alg=\"ed25519\"\\\n ;expires=4889289600\\\n ;nonce=\"XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg==\"\\\n ;tag=\"web-bot-auth\"\n~~~\n\nThis results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:\n\n~~~\nNOTE: '\\' line wrapping per RFC 8792\n\nSignature-Agent: agent2=\"https://signature-agent.test\"\nSignature-Input: sig2=(\"@authority\" \"signature-agent\";key=\"agent2\")\\\n ;created=1735689600\\\n ;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\"\\\n ;alg=\"ed25519\"\\\n ;expires=4889289600\\\n ;nonce=\"XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg==\"\\\n ;tag=\"web-bot-auth\"\nSignature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:\n~~~\n```",
+          "createdAt": "2025-11-04T23:08:57Z",
+          "updatedAt": "2025-11-04T23:08:57Z"
+        }
+      ]
+    },
+    {
+      "number": 81,
+      "id": "I_kwDOOXJyWM7V4jxU",
+      "title": "Consolidates directory, architecture, and possibly registry into one document",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/81",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "A comment we received is that there are too many documents. Consolidating existing ones into one single document would help to preserve context, and possibly reduce text.\n\nThat new document also SHOULD have a name which is neither archictecture or directory. Maybe protocol or presentation.",
+      "createdAt": "2025-11-04T22:54:09Z",
+      "updatedAt": "2025-11-04T22:54:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 82,
+      "id": "I_kwDOOXJyWM7V4kKV",
+      "title": "Use more authoritative wording",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/82",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "The existing document favor MAY. They likely should be more authoritative by using SHOULD/MUST.",
+      "createdAt": "2025-11-04T22:54:56Z",
+      "updatedAt": "2025-11-04T22:54:56Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 83,
+      "id": "I_kwDOOXJyWM7V4kmm",
+      "title": "Remove `http` protocol from the authorized schemes in Signature-Agent",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/83",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "enhancement"
+      ],
+      "body": "Have a clearer statement about extension, but only allow for `https` and `data` initially",
+      "createdAt": "2025-11-04T22:55:52Z",
+      "updatedAt": "2025-11-04T22:55:52Z",
       "closedAt": null,
       "comments": []
     }
@@ -3792,19 +3872,33 @@
       ],
       "body": "Keep one old test to ensure there is backward compatibility Note that the new test have a signature valid for until 2125\r\n\r\n@sandormajor",
       "createdAt": "2025-11-01T23:17:20Z",
-      "updatedAt": "2025-11-01T23:17:20Z",
+      "updatedAt": "2025-11-04T23:08:21Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "4e11f4be5264e65cb5801bf46ab635e2d9dc1c06",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-architecture-test-vectors",
-      "headRefOid": "4ed12389673f6f368cd416e37eb1dc555f45de73",
+      "headRefOid": "161fb11a15ca6ac40fc90f2f65c595e269a8eebe",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM7Lewlx",
+          "commit": {
+            "abbreviatedOid": "4ed1238"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-04T03:26:14Z",
+          "updatedAt": "2025-11-04T03:26:14Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
