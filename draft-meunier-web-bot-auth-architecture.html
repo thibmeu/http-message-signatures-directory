@@ -1047,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Message Signatures for Bots</td>
-<td class="right">October 2025</td>
+<td class="right">November 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 26 April 2026</td>
+<td class="center">Expires 21 May 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-23" class="published">23 October 2025</time>
+<time datetime="2025-11-17" class="published">17 November 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-26">26 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-05-21">21 May 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1126,7 +1126,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1280,6 +1280,9 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.2">
                     <p id="section-toc.1-1.8.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.3">
+                    <p id="section-toc.1-1.8.2.1.2.3.1"><a href="#appendix-A.1.3" class="auto internal xref">A.1.3</a>.  <a href="#name-legacy-signature-agent-sf-s" class="internal xref">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a></p>
+</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
@@ -1290,6 +1293,9 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.2">
                     <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent included present on the request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.3">
+                    <p id="section-toc.1-1.8.2.2.2.3.1"><a href="#appendix-A.2.3" class="auto internal xref">A.2.3</a>.  <a href="#name-legacy-signature-agent-sf-st" class="internal xref">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a></p>
 </li>
                 </ul>
 </li>
@@ -2027,8 +2033,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.1.1-3" class="pilcrow">¶</a>
 </div>
@@ -2041,10 +2047,10 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="yT+sZR1glKOTemVLbmPDFwPScbB1Zj/sMNPEFZcjwJW5jK/taa7HviOXovVwiZOfrrLHS2SbLFUQBxPYZChf7g=="\
+ ;expires=4889289600\
+ ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
  ;tag="web-bot-auth"
-Signature: sig1=:ppXhcGjVp7xaoHGIa7V+hsSxuRgFt8i04K4FWz9ORJtn57t8duD3cyavsnh9grdWWOJHER8ITNBaqe4mKmPq193S+7hSW31IzXSH4/9WfsdrjUBwyJ0fhBU7oNn3UGDqwdhr5TMgVI2/EX8saV5GrOunM09zMEA+d4QWYyKRFJmg+asCs253l2IYPpVp4N55H0uRK7qhb7acng8LNiEPTQZD2s+Kha95LgeciKQSO0jgR/h59fX/dXqLdFIvRMn8Ggs2VUzF/f/MMEXH83gufVnh4SYl/rKMSKWDBsK+OiLpobAVIuIz+HLCVlMnxlkXkhCW2J/Pmo8jht9N5k/y1A==:
+Signature: sig1=:Bqj+UQfJNSRx0Dz/K/4/+Bo1l8UUH5Ps1zYzX6H6nKCyZJ88Hry/KZF2JishxI1h9+LJTmRmDmw2HxbUeZkoUUgmLbg168GWiYFBK0IQRKQvvbnzrONutKNmanvIXNvrN2ZB2h+w9ekSol3XJRncErrwcU2PWltBR+An4H2kIiRBfnBRi85eCVF+s6SYRxoAJvRo6avTCvCZe9Gvw8Ezbj8QnHU37uvTN72+MBDEsFN94ozfAT8MTB4wAwqXYLMf9mnl0mpK2UbnXrzgffRxOhEHVvHNIN8aB7ThM1p4JzaTN1HuXQFPYOWgCojOCv2IovGOygai/j3p4PzMJUp4Lw==:
 </pre><a href="#appendix-A.1.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2062,13 +2068,13 @@ a <code>Signature-Agent</code> header.<a href="#appendix-A.1.2-1" class="pilcrow
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent";key="agent2": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;expires=4889289600\
+ ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.1.2-3" class="pilcrow">¶</a>
 </div>
@@ -2077,8 +2083,50 @@ NOTE: '\' line wrapping per RFC 8792
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=4889289600\
+ ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:ngb8Yuk2zY/O5nyApob/uwIRWNE1md5xrzYSpPfVCWMHMjdQhj8HTPY8lrE8jHDHRtpqUy7jvYM8LzaHb1NGyxPemVMEOoZpBWXxboqSbp1LTAb2o5qbETmSuDM7UZE4WuSDQoIG5GF5AZ8b8lFEWDP1pw0XV1zsZMn8EPU/DbTkFtGgVPdGehjywJRqnXCXEX0wRCGg4+nTJwWs736JqgbBCuafQPCdwITQucMyGA12QOmMc8eQUdjcS/uqzkDxj1+iI3PDCYnscUTHcGuNv6rWxIx0D+rqWhOoLeYwzDPUm3qs2utVCATIgK0ktLWSfGcPK6p3IwJIUj7cSkbVRg==:
+</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="legacy-signature-agent-sf-string-instead-of-sf-dictionary-included-present-on-the-request">
+<section id="appendix-A.1.3">
+          <h4 id="name-legacy-signature-agent-sf-s">
+<a href="#appendix-A.1.3" class="section-number selfRef">A.1.3. </a><a href="#name-legacy-signature-agent-sf-s" class="section-name selfRef">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a>
+          </h4>
+<p id="appendix-A.1.3-1">THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.<a href="#appendix-A.1.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.3-2">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.1.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.3-3">The corresponding signature base is:<a href="#appendix-A.1.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.3-4">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;alg="rsa-pss-sha512"\
+ ;expires=1735693200\
+ ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.1.3-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.1.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1.3-6">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
@@ -2086,7 +2134,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
  ;tag="web-bot-auth"
 Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
-</pre><a href="#appendix-A.1.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1.3-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2116,8 +2164,8 @@ NOTE: '\' line wrapping per RFC 8792
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.2.1-3" class="pilcrow">¶</a>
 </div>
@@ -2130,10 +2178,10 @@ Signature-Input: sig1=("@authority")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="mYotfW3CUjI68sbGw6oKd7kyXqPjZEtU8xFPGWFrqOAf5qC6MDe3pys3SWWCudB0MvwslHy32WXUpkR7u0lt/w=="\
+ ;expires=4889289600\
+ ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
  ;tag="web-bot-auth"
-Signature: sig1=:+NA/cssf4Y2bQTMTkyvTGRCaVzp9quyUevdwwMtMOWhhOOZ2T1subBj0BtvdnrpDEuwSAbiTeElXDzHL3WWKCw==:
+Signature: sig1=:FFASViSdcgsyaqqYiCnkHreeZzbNKcTzDvZC5uVlP/dn9IbWj8j0o4wKFTH3rBnUiSUBduwm1Gp5VlIPCp01Ag==:
 </pre><a href="#appendix-A.2.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2151,13 +2199,13 @@ a <code>Signature-Agent</code> header.<a href="#appendix-A.2.2-1" class="pilcrow
 NOTE: '\' line wrapping per RFC 8792
 
 "@authority": example.com
-"signature-agent": sig2="https://signature-agent.test"
-"@signature-params": ("@authority" "signature-agent";key="sig2")\
+"signature-agent";key="agent2": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent";key="agent2")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
- ;expires=1735693200\
- ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
+ ;expires=4889289600\
+ ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
  ;tag="web-bot-auth"
 </pre><a href="#appendix-A.2.2-3" class="pilcrow">¶</a>
 </div>
@@ -2166,8 +2214,50 @@ NOTE: '\' line wrapping per RFC 8792
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig2="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
+Signature-Agent: agent2="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=4889289600\
+ ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
+ ;tag="web-bot-auth"
+Signature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:
+</pre><a href="#appendix-A.2.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="legacy-signature-agent-sf-string-instead-of-sf-dictionary-included-present-on-the-request-1">
+<section id="appendix-A.2.3">
+          <h4 id="name-legacy-signature-agent-sf-st">
+<a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-legacy-signature-agent-sf-st" class="section-name selfRef">Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request</a>
+          </h4>
+<p id="appendix-A.2.3-1">THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.<a href="#appendix-A.2.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.3-2">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-A.2.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.2.3-3">The corresponding signature base is:<a href="#appendix-A.2.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.3-4">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority": example.com
+"signature-agent": "https://signature-agent.test"
+"@signature-params": ("@authority" "signature-agent")\
+ ;created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;alg="ed25519"\
+ ;expires=1735693200\
+ ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
+ ;tag="web-bot-auth"
+</pre><a href="#appendix-A.2.3-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.2.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-A.2.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2.3-6">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Signature-Agent: "https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent")\
  ;created=1735689600\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
@@ -2175,7 +2265,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="sig2")\
  ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
  ;tag="web-bot-auth"
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
-</pre><a href="#appendix-A.2.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2.3-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2257,7 +2347,7 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">In <a href="https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v1.json">JSON format</a><a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.3-1.1.1">In <a href="https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v2.json">JSON format</a><a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

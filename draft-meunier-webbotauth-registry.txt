@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 26 April 2026                                            Amazon
+Expires: 21 May 2026                                              Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                         23 October 2025
+                                                        17 November 2025
 
 
            Registry and Signature Agent card for Web bot auth
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 April 2026.
+   This Internet-Draft will expire on 21 May 2026.
 
 Copyright Notice
 
@@ -669,9 +669,9 @@ Table of Contents
    [AIPREF-VOCAB]
               Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
               Usage Preferences", Work in Progress, Internet-Draft,
-              draft-ietf-aipref-vocab-03, 4 September 2025,
+              draft-ietf-aipref-vocab-04, 28 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
-              vocab-03>.
+              vocab-04>.
 
    [DIRECTORY]
               Meunier, T., "HTTP Message Signatures Directory", Work in
