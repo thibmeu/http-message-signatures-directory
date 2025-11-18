@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-06T00:32:28.775464+00:00",
+  "timestamp": "2025-11-18T00:32:43.918255+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1277,7 +1277,7 @@
       ],
       "body": "Per Section [2.1.2 of RFC9421](https://www.rfc-editor.org/rfc/rfc9421.html#name-dictionary-structured-field), when indicating a single key of a dictionary type field, the component identifier includes the key as a parameter to the string, and the value of the component is the key value alone. \n\nCurrently the example signature bases in A and B are of the form:\n\n```\n...\n\"signature-agent\": sig2=\"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nHowever, to sign the `sig2` key of the `signature-agent` field, it should instead be:\n\n```\n...\n\"signature-agent\";key=\"sig2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nThis same error is repeated in every test vector that uses the `key` modifier for the signed dictionary.",
       "createdAt": "2025-11-04T19:47:50Z",
-      "updatedAt": "2025-11-04T23:08:57Z",
+      "updatedAt": "2025-11-17T16:33:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -1286,6 +1286,20 @@
           "body": "This is a good catch. While the generation of the test vector has been updated, the text format was not modified to reflect the change.\n\nI've updated the test vector PR #79 to reflect that. For instance, this is the current ed25519 test vectors\n\n```\nThis example presents a minimal signature using the ed25519 algorithm over test-request. The request contains\na `Signature-Agent` header.\n\nThe corresponding signature base is:\n\n~~~\nNOTE: '\\' line wrapping per RFC 8792\n\n\"@authority\": example.com\n\"signature-agent\";key=\"agent2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"agent2\")\\\n ;created=1735689600\\\n ;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\"\\\n ;alg=\"ed25519\"\\\n ;expires=4889289600\\\n ;nonce=\"XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg==\"\\\n ;tag=\"web-bot-auth\"\n~~~\n\nThis results in the following Signature-Input and Signature header fields being added to the message under the label `sig2`:\n\n~~~\nNOTE: '\\' line wrapping per RFC 8792\n\nSignature-Agent: agent2=\"https://signature-agent.test\"\nSignature-Input: sig2=(\"@authority\" \"signature-agent\";key=\"agent2\")\\\n ;created=1735689600\\\n ;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\"\\\n ;alg=\"ed25519\"\\\n ;expires=4889289600\\\n ;nonce=\"XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg==\"\\\n ;tag=\"web-bot-auth\"\nSignature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:\n~~~\n```",
           "createdAt": "2025-11-04T23:08:57Z",
           "updatedAt": "2025-11-04T23:08:57Z"
+        },
+        {
+          "author": "positiveblue",
+          "authorAssociation": "NONE",
+          "body": "[Related](https://github.com/cloudflare/web-bot-auth/issues/64#issue-3633948208)\n\n>  While the generation of the test vector has been updated, the text format was not modified to reflect the change.\n\nI am implementing the spec in Go but did not find the latest test vector file anywhere. ",
+          "createdAt": "2025-11-17T16:25:45Z",
+          "updatedAt": "2025-11-17T16:25:45Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "@positiveblue i've integrated them in JavaScript https://github.com/cloudflare/web-bot-auth/pull/63",
+          "createdAt": "2025-11-17T16:33:43Z",
+          "updatedAt": "2025-11-17T16:33:43Z"
         }
       ]
     },
@@ -3861,7 +3875,7 @@
       "id": "PR_kwDOOXJyWM6xA_MW",
       "title": "Fix architecture test vectors for signature-agent as a structured field directory",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/79",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -3872,17 +3886,19 @@
       ],
       "body": "Keep one old test to ensure there is backward compatibility Note that the new test have a signature valid for until 2125\r\n\r\n@sandormajor",
       "createdAt": "2025-11-01T23:17:20Z",
-      "updatedAt": "2025-11-04T23:08:21Z",
+      "updatedAt": "2025-11-17T14:04:08Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "4e11f4be5264e65cb5801bf46ab635e2d9dc1c06",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "fix-architecture-test-vectors",
       "headRefOid": "161fb11a15ca6ac40fc90f2f65c595e269a8eebe",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-11-17T14:04:05Z",
+      "mergedAt": "2025-11-17T14:04:05Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "d3d0413474f0f7b2038f7f2f9562e56bc43ffe82"
+      },
       "comments": [],
       "reviews": [
         {
