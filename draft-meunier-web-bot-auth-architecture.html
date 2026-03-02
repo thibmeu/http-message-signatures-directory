@@ -21,14 +21,14 @@ requests, allowing HTTP servers to verify their identity with confidence.
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.5.0
+    lxml 6.0.2
+    platformdirs 4.5.1
     pycountry 24.6.1
-    PyYAML 6.0.2
+    PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-meunier-web-bot-auth-architecture.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -169,7 +169,7 @@ requests, allowing HTTP servers to verify their identity with confidence.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -177,7 +177,8 @@ requests, allowing HTTP servers to verify their identity with confidence.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -569,6 +570,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -639,7 +641,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1047,11 +1049,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Message Signatures for Bots</td>
-<td class="right">November 2025</td>
+<td class="right">March 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 21 May 2026</td>
+<td class="center">Expires 3 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-11-17" class="published">17 November 2025</time>
+<time datetime="2026-03-02" class="published">2 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-05-21">21 May 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-03">3 September 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1126,7 +1128,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1135,7 +1137,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1211,6 +1213,9 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
                     <p id="section-toc.1-1.4.2.5.2.3.1"><a href="#section-4.5.3" class="auto internal xref">4.5.3</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent header</a></p>
 </li>
                 </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-session-protocol-considerat" class="internal xref">Session Protocol Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1761,6 +1766,16 @@ See <a href="#signature-agent" class="auto internal xref">Section 4.2.1</a> for 
 </div>
 </section>
 </div>
+<div id="session-protocol-considerations">
+<section id="section-4.6">
+        <h3 id="name-session-protocol-considerat">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-session-protocol-considerat" class="section-name selfRef">Session Protocol Considerations</a>
+        </h3>
+<p id="section-4.6-1">Per-request signature generation and verification may incur computational overhead from cryptographic operations and key discovery. For high-frequency interactions, origins might establish sessions to reduce repeated verification.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-2">One approach: after successful signature verification, an origin issues a session credential (e.g., an HTTP cookie) that subsequent requests present in lieu of a full signature. This trades cryptographic verification costs for the security properties of bearer tokens, including susceptibility to credential theft and replay within the session lifetime.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
+<p id="section-4.6-3">The design of session protocols, including appropriate session lifetimes and binding mechanisms, is out of scope for this document.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="security-considerations">
@@ -1948,7 +1963,7 @@ sensitive user data is involved.<a href="#section-5.10-1" class="pilcrow">¶</a>
 <dl class="references">
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
-<span class="refAuthor">Meunier, T.</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-04</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Meunier, T.</span> and <span class="refAuthor">S. Major</span>, <span class="refTitle">"HTTP Message Signatures Directory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-meunier-http-message-signatures-directory-05</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05">https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>

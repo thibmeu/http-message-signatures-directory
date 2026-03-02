@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 21 May 2026                                              Amazon
+Expires: 3 September 2026                                         Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                        17 November 2025
+                                                            2 March 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -59,11 +59,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 May 2026.
+   This Internet-Draft will expire on 3 September 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -669,16 +669,16 @@ Table of Contents
    [AIPREF-VOCAB]
               Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
               Usage Preferences", Work in Progress, Internet-Draft,
-              draft-ietf-aipref-vocab-04, 28 October 2025,
+              draft-ietf-aipref-vocab-05, 1 December 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
-              vocab-04>.
+              vocab-05>.
 
    [DIRECTORY]
-              Meunier, T., "HTTP Message Signatures Directory", Work in
-              Progress, Internet-Draft, draft-meunier-http-message-
-              signatures-directory-04, 20 October 2025,
-              <https://datatracker.ietf.org/doc/html/draft-meunier-http-
-              message-signatures-directory-04>.
+              Meunier, T. and S. Major, "HTTP Message Signatures
+              Directory", Work in Progress, Internet-Draft, draft-
+              meunier-http-message-signatures-directory-05, 2 March
+              2026, <https://datatracker.ietf.org/doc/html/draft-
+              meunier-http-message-signatures-directory-05>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
