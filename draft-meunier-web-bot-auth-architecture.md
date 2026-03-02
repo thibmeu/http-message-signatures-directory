@@ -315,6 +315,14 @@ Could be a GitHub repository like the public suffix list. The issue is the gatin
 This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
 See {{signature-agent}} for more details.
 
+## Session Protocol Considerations
+
+Per-request signature generation and verification may incur computational overhead from cryptographic operations and key discovery. For high-frequency interactions, origins might establish sessions to reduce repeated verification.
+
+One approach: after successful signature verification, an origin issues a session credential (e.g., an HTTP cookie) that subsequent requests present in lieu of a full signature. This trades cryptographic verification costs for the security properties of bearer tokens, including susceptibility to credential theft and replay within the session lifetime.
+
+The design of session protocols, including appropriate session lifetimes and binding mechanisms, is out of scope for this document.
+
 # Security Considerations
 
 ## Use of TLS
