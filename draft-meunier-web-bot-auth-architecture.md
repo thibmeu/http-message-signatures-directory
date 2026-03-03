@@ -284,7 +284,7 @@ Origin MAY require the `nonce` to satisfy certain constraint: be globally unique
 
 This section describes the discovery mechanism for the agent directory.
 
-The reference for discovery is an HTTPS URL whose host component is a FQDN. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
+The reference for discovery is a URL. It SHOULD be an HTTPS URL. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
 
 Example:
 
