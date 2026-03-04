@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 3 September 2026                                         Google
-                                                            2 March 2026
+Expires: 5 September 2026                                         Google
+                                                            4 March 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 September 2026.
+   This Internet-Draft will expire on 5 September 2026.
 
 Copyright Notice
 
@@ -401,8 +401,9 @@ Table of Contents
    This section describes the discovery mechanism for the agent
    directory.
 
-   The reference for discovery is a FQDN.  It SHOULD provide a directory
-   hosted on the well known registered in Section 4 of [DIRECTORY].
+   The reference for discovery is a URL.  It SHOULD be an HTTPS URL.  It
+   SHOULD provide a directory hosted on the well known registered in
+   Section 4 of [DIRECTORY].
 
    Example:
 
