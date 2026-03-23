@@ -46,6 +46,7 @@ normative:
   JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
+  WEB-LINKING: RFC8288
 
 
 informative:
@@ -353,15 +354,43 @@ UTF8-tail = %x80-BF
 A signature agent MAY submit their signature agent card to an origin, or the
 origin MAY manually add them to their local registry.
 
-## Public list
+## Registry Endpoint {#registry-endpoint}
 
 A registry MAY be provided via a GitHub repository, a public file server, or a
 dedicated endpoint.
 
 The registry SHOULD be served over HTTPS.
 
-A client application SHOULD validate the directory format and reject malformed
+A client application SHOULD validate the registry format and reject malformed
 entries.
+
+### Authentication {#registry-authentication}
+
+A registry endpoint MAY require authentication to restrict access to authorized
+consumers. This enables platforms to expose per-customer registries without
+revealing their customer list publicly.
+
+No specific authentication mechanism is mandated. Implementations MAY use
+pre-shared keys, bearer tokens as defined in {{OAUTH-BEARER}}, or HTTP Message
+Signatures as defined in {{HTTP-MESSAGE-SIGNATURES}}. HTTP Message Signatures
+are RECOMMENDED when key rotation without out-of-band coordination is desired.
+
+### Efficient Polling with Conditional Requests {#registry-conditional-requests}
+
+Registry servers SHOULD include `ETag` and `Last-Modified` response header
+fields as defined in {{Section 8.8 of HTTP}}.
+
+Consumers SHOULD send `If-None-Match` or `If-Modified-Since` precondition
+header fields as defined in {{Section 13.1 of HTTP}} on subsequent requests.
+A server SHOULD respond with `304 (Not Modified)` when the registry has not
+changed, avoiding redundant data transfer.
+
+### Caching {#registry-caching}
+
+Registry servers SHOULD include a `Cache-Control` response header field as
+defined in {{HTTP-CACHE}} to communicate the intended freshness lifetime of the
+registry content. Consumers SHOULD respect these cache directives and SHOULD NOT
+poll more frequently than indicated.
 
 ## Signature-Agent header {#signature-agent-header}
 
@@ -376,9 +405,36 @@ Agent Card MAY be discovered via a `Signature-Agent` header.
 Malicious actors may put properties which are not theirs in the registry. If signatures are present, clients MUST verify them.
 Clients SHOULD reject cards with invalid signatures.
 
+## Registry Integrity
+
+When a registry is served over HTTPS, TLS provides channel integrity between
+the server and the consumer. To additionally bind the registry contents to the
+platform's cryptographic identity, registry servers SHOULD sign their HTTP
+responses using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
+platform's own signature agent card. Consumers SHOULD verify such signatures
+when present.
+
+## Private Registries
+
+Registry endpoints that require authentication as described in
+{{registry-authentication}} limit exposure of a platform's customer list to
+authorized consumers only. Platforms SHOULD use authenticated registry
+endpoints when the enumeration of their customers is sensitive.
+
 # Privacy Considerations
 
-TODO
+## Customer List Exposure
+
+A publicly accessible registry reveals the set of customers registered with a
+platform. Platforms whose customer list is sensitive SHOULD restrict access to
+their registry endpoint as described in {{registry-authentication}}.
+
+## Access Patterns
+
+Registry servers SHOULD avoid logging personally identifiable information from
+consumer requests. Consumers accessing a registry reveal their interest in the
+platform's registered agents; registry servers SHOULD treat access logs as
+sensitive.
 
 
 # IANA Considerations {#iana}
@@ -682,6 +738,16 @@ The editor would also like to thank the following individuals (listed in alphabe
 
 # Changelog
 {:numbered="false"}
+
+v02
+
+- Rename "Public list" to "Registry Endpoint" for clarity
+- Add authentication guidance for private registry endpoints
+- Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling
+- Add caching guidance referencing HTTP-CACHE
+- Expand Security Considerations: registry integrity via HTTP Message Signatures, private registry guidance
+- Expand Privacy Considerations: customer list exposure, access patterns
+- Add normative reference to RFC 8288 (Web Linking)
 
 v01
 
