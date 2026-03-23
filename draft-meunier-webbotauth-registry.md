@@ -400,6 +400,73 @@ format of `Signature-Agent` header as defined in {{Section 4.1 of DIRECTORY}}.
 When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
 Agent Card MAY be discovered via a `Signature-Agent` header.
 
+## Change Notification {#change-notification}
+
+Pull-based consumption with conditional requests is sufficient for most
+deployments. When lower notification latency is required (e.g., to promptly
+act on platform relationship termination), a platform MAY implement a
+push-based change notification mechanism.
+
+### Advertising the Notification Endpoint {#notification-advertisement}
+
+A platform that supports change notifications SHOULD advertise its notification
+endpoint in the registry HTTP response using a `Link` header field as defined
+in {{WEB-LINKING}}:
+
+~~~
+Link: <https://platform.example/.well-known/registry-changes>; rel="registry-changes"
+~~~
+
+The `registry-changes` link relation identifies an endpoint to which consumers
+may register callbacks out of band.
+
+### Callback Registration {#notification-registration}
+
+Registration of a consumer callback URL with the platform is performed out of
+band. No specific registration protocol is defined by this document.
+
+### Notification Requests {#notification-requests}
+
+When an entry is added to or removed from its registry, the platform MUST send
+an HTTP request to each registered callback URL. The request:
+
+- MUST use `PUT` when an entry is added to the registry
+- MUST use `DELETE` when an entry is removed from the registry
+- MUST carry a body consisting of one or more registry lines in the format
+  defined in {{registry-endpoint}}, each identifying an affected
+  `signature_agent` URL
+- MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
+  platform's own signature agent card
+
+Example notification for an added entry:
+
+~~~
+PUT /registry-callback HTTP/1.1
+Host: waf.example
+Content-Type: text/plain
+Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
+  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
+Signature: sig1=:base64signature:
+Content-Digest: sha-256=:base64hash:
+
+https://abc123.platform.example/.well-known/signature-agent-card
+~~~
+
+### Notification Processing {#notification-processing}
+
+Upon receiving a notification, the consumer MUST verify the HTTP Message
+Signature against the platform's key, discovered via the platform's
+`signature_agent` card. Notifications with missing or invalid signatures
+MUST be rejected.
+
+A notification is advisory only. The registry endpoint remains the authoritative
+source of truth. After verifying a notification, consumers SHOULD re-fetch the
+affected signature agent card to obtain current metadata.
+
+Platforms SHOULD retry delivery of failed notifications with exponential
+backoff. Consumers that miss notifications will recover on their next
+conditional pull from the registry endpoint.
+
 # Security Considerations
 
 Malicious actors may put properties which are not theirs in the registry. If signatures are present, clients MUST verify them.
@@ -745,6 +812,7 @@ v02
 - Add authentication guidance for private registry endpoints
 - Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling
 - Add caching guidance referencing HTTP-CACHE
+- Add change notification section: PUT/DELETE webhook signed with HTTP Message Signatures, OOB callback registration, pull as source of truth
 - Expand Security Considerations: registry integrity via HTTP Message Signatures, private registry guidance
 - Expand Privacy Considerations: customer list exposure, access patterns
 - Add normative reference to RFC 8288 (Web Linking)
