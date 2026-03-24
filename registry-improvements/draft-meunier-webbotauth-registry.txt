@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 24 September 2026                                        Amazon
+Expires: 25 September 2026                                        Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                           23 March 2026
+                                                           24 March 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 September 2026.
+   This Internet-Draft will expire on 25 September 2026.
 
 Copyright Notice
 
@@ -455,10 +455,10 @@ Table of Contents
    registries without revealing their customer list publicly.
 
    No specific authentication mechanism is mandated.  Implementations
-   MAY use pre-shared keys, bearer tokens as defined in [OAUTH-BEARER],
-   or HTTP Message Signatures as defined in [HTTP-MESSAGE-SIGNATURES].
-   HTTP Message Signatures are RECOMMENDED when key rotation without
-   out-of-band coordination is desired.
+   MAY use pre-shared keys as mentioned in [PSK-TLS], bearer tokens as
+   defined in [OAUTH-BEARER], or HTTP Message Signatures as defined in
+   [HTTP-MESSAGE-SIGNATURES].  HTTP Message Signatures are RECOMMENDED
+   when key rotation without out-of-band coordination is desired.
 
 4.3.2.  Efficient Polling with Conditional Requests
 
@@ -499,7 +499,7 @@ Table of Contents
    notification endpoint in the registry HTTP response using a Link
    header field as defined in [WEB-LINKING]:
 
-Link: <https://platform.example/.well-known/registry-changes>; rel="registry-changes"
+Link: <https://platform.example/v1/registry-changes>; rel="registry-changes"
 
    The registry-changes link relation identifies an endpoint to which
    consumers may register callbacks out of band.
@@ -513,19 +513,29 @@ Link: <https://platform.example/.well-known/registry-changes>; rel="registry-cha
 4.5.3.  Notification Requests
 
    When an entry is added to or removed from its registry, the platform
-   MUST send an HTTP request to each registered callback URL.  The
-   request:
+   MUST send an HTTP request to each registered callback URL.
 
-   *  MUST use PUT when an entry is added to the registry
+   The format in [CDDL] is as follow
 
-   *  MUST use DELETE when an entry is removed from the registry
+   Action = "put" / "delete"
 
-   *  MUST carry a body consisting of one or more registry lines in the
-      format defined in Section 4.3, each identifying an affected
-      signature_agent URL
+   Notification = {
+     action: Action,
+     signature-agent: tstr
+   }
 
-   *  MUST be signed using [HTTP-MESSAGE-SIGNATURES] with a key present
-      in the platform's own signature agent card
+   TODO: should we use application/json, a new media-type, permit binary
+   encoding?  TODO: should signature agent be an array?
+
+   action denote the operation performed by the platform registry.  The
+   registry sends: 1. put when there is a new entry in the registry, 2.
+   delete when an entry has been removed.
+
+   The request MUST use POST to notify registered callback listeners.
+   It MUST be signed using [HTTP-MESSAGE-SIGNATURES] with a key present
+   in the platform's own signature agent card
+
+   Media-Type SHOULD be "application/json".
 
    Example notification for an added entry:
 
@@ -543,7 +553,7 @@ https://abc123.platform.example/.well-known/signature-agent-card
 
    Upon receiving a notification, the consumer MUST verify the HTTP
    Message Signature against the platform's key, discovered via the
-   platform's signature_agent card.  Notifications with missing or
+   platform's signature-agent card.  Notifications with missing or
    invalid signatures MUST be rejected.
 
    A notification is advisory only.  The registry endpoint remains the
@@ -876,6 +886,12 @@ https://abc123.platform.example/.well-known/signature-agent-card
 
 8.2.  Informative References
 
+   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
    [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
               DOI 10.17487/RFC2397, August 1998,
               <https://www.rfc-editor.org/rfc/rfc2397>.
@@ -890,6 +906,11 @@ https://abc123.platform.example/.well-known/signature-agent-card
               "OpenID Connect Discovery 1.0", n.d.,
               <https://openid.net/specs/openid-connect-discovery-
               1_0.html>.
+
+   [PSK-TLS]  Housley, R., Hoyland, J., Sethi, M., and C. A. Wood,
+              "Guidance for External Pre-Shared Key (PSK) Usage in TLS",
+              RFC 9257, DOI 10.17487/RFC9257, July 2022,
+              <https://www.rfc-editor.org/rfc/rfc9257>.
 
    [RATELIMIT-HEADER]
               Polli, R., Ruiz, A. M., and D. Miller, "RateLimit header
