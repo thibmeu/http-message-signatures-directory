@@ -50,11 +50,13 @@ normative:
 
 
 informative:
+  CDDL: RFC8610
   DATAURL: RFC2397
   OAUTH-BEARER: RFC6750
   OPENID-CONNECT-DISCOVERY:
     title: OpenID Connect Discovery 1.0
     target: https://openid.net/specs/openid-connect-discovery-1_0.html
+  PSK-TLS: RFC9257
   RATELIMIT-HEADER: I-D.draft-ietf-httpapi-ratelimit-headers
   RFC8446:
   ROBOTSTXT: RFC9309
@@ -371,7 +373,7 @@ consumers. This enables platforms to expose per-customer registries without
 revealing their customer list publicly.
 
 No specific authentication mechanism is mandated. Implementations MAY use
-pre-shared keys, bearer tokens as defined in {{OAUTH-BEARER}}, or HTTP Message
+pre-shared keys as mentioned in {{PSK-TLS}}, bearer tokens as defined in {{OAUTH-BEARER}}, or HTTP Message
 Signatures as defined in {{HTTP-MESSAGE-SIGNATURES}}. HTTP Message Signatures
 are RECOMMENDED when key rotation without out-of-band coordination is desired.
 
@@ -414,7 +416,7 @@ endpoint in the registry HTTP response using a `Link` header field as defined
 in {{WEB-LINKING}}:
 
 ~~~
-Link: <https://platform.example/.well-known/registry-changes>; rel="registry-changes"
+Link: <https://platform.example/v1/registry-changes>; rel="registry-changes"
 ~~~
 
 The `registry-changes` link relation identifies an endpoint to which consumers
@@ -428,35 +430,53 @@ band. No specific registration protocol is defined by this document.
 ### Notification Requests {#notification-requests}
 
 When an entry is added to or removed from its registry, the platform MUST send
-an HTTP request to each registered callback URL. The request:
+an HTTP request to each registered callback URL.
 
-- MUST use `PUT` when an entry is added to the registry
-- MUST use `DELETE` when an entry is removed from the registry
-- MUST carry a body consisting of one or more registry lines in the format
-  defined in {{registry-endpoint}}, each identifying an affected
-  `signature_agent` URL
-- MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
-  platform's own signature agent card
+The format in {{CDDL}} is as follow
+
+~~~cddl
+Action = "put" / "delete"
+
+Notification = {
+  action: Action,
+  signature-agent: tstr
+}
+~~~
+
+TODO: should we use application/json, a new media-type, permit binary encoding?
+TODO: should signature agent be an array?
+
+`action` denote the operation performed by the platform registry. The registry sends:
+1. `put` when there is a new entry in the registry,
+2. `delete` when an entry has been removed.
+
+The request MUST use `POST` to notify registered callback listeners.
+It MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the platform's own signature agent card
+
+Media-Type SHOULD be "application/json".
 
 Example notification for an added entry:
 
 ~~~
-PUT /registry-callback HTTP/1.1
+POST /registry-callback HTTP/1.1
 Host: waf.example
-Content-Type: text/plain
+Content-Type: application/json
 Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
   created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
 Signature: sig1=:base64signature:
 Content-Digest: sha-256=:base64hash:
 
-https://abc123.platform.example/.well-known/signature-agent-card
+{
+  "action": "put",
+  "signature-agent": "https://abc123.platform.example/.well-known/signature-agent-card"
+}
 ~~~
 
 ### Notification Processing {#notification-processing}
 
 Upon receiving a notification, the consumer MUST verify the HTTP Message
 Signature against the platform's key, discovered via the platform's
-`signature_agent` card. Notifications with missing or invalid signatures
+`signature-agent` card. Notifications with missing or invalid signatures
 MUST be rejected.
 
 A notification is advisory only. The registry endpoint remains the authoritative
@@ -490,11 +510,7 @@ endpoints when the enumeration of their customers is sensitive.
 
 # Privacy Considerations
 
-## Customer List Exposure
-
-A publicly accessible registry reveals the set of customers registered with a
-platform. Platforms whose customer list is sensitive SHOULD restrict access to
-their registry endpoint as described in {{registry-authentication}}.
+TODO
 
 ## Access Patterns
 
