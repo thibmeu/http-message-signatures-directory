@@ -369,8 +369,8 @@ entries.
 ### Authentication {#registry-authentication}
 
 A registry endpoint MAY require authentication to restrict access to authorized
-consumers. This enables platforms to expose per-customer registries without
-revealing their customer list publicly.
+clients. This allows a registry operator to expose registries without revealing
+their contents publicly.
 
 No specific authentication mechanism is mandated. Implementations MAY use
 pre-shared keys as mentioned in {{PSK-TLS}}, bearer tokens as defined in {{OAUTH-BEARER}}, or HTTP Message
@@ -382,7 +382,7 @@ are RECOMMENDED when key rotation without out-of-band coordination is desired.
 Registry servers SHOULD include `ETag` and `Last-Modified` response header
 fields as defined in {{Section 8.8 of HTTP}}.
 
-Consumers SHOULD send `If-None-Match` or `If-Modified-Since` precondition
+Clients SHOULD send `If-None-Match` or `If-Modified-Since` precondition
 header fields as defined in {{Section 13.1 of HTTP}} on subsequent requests.
 A server SHOULD respond with `304 (Not Modified)` when the registry has not
 changed, avoiding redundant data transfer.
@@ -391,7 +391,7 @@ changed, avoiding redundant data transfer.
 
 Registry servers SHOULD include a `Cache-Control` response header field as
 defined in {{HTTP-CACHE}} to communicate the intended freshness lifetime of the
-registry content. Consumers SHOULD respect these cache directives and SHOULD NOT
+registry content. Clients SHOULD respect these cache directives and SHOULD NOT
 poll more frequently than indicated.
 
 ## Signature-Agent header {#signature-agent-header}
@@ -406,33 +406,33 @@ Agent Card MAY be discovered via a `Signature-Agent` header.
 
 Pull-based consumption with conditional requests is sufficient for most
 deployments. When lower notification latency is required (e.g., to promptly
-act on platform relationship termination), a platform MAY implement a
-push-based change notification mechanism.
+act on entry removal), a registry operator MAY implement a push-based change
+notification mechanism.
 
 ### Advertising the Notification Endpoint {#notification-advertisement}
 
-A platform that supports change notifications SHOULD advertise its notification
-endpoint in the registry HTTP response using a `Link` header field as defined
-in {{WEB-LINKING}}:
+A registry operator that supports change notifications SHOULD advertise its
+notification endpoint in the registry HTTP response using a `Link` header field
+as defined in {{WEB-LINKING}}:
 
 ~~~
-Link: <https://platform.example/v1/registry-changes>; rel="registry-changes"
+Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
 ~~~
 
-The `registry-changes` link relation identifies an endpoint to which consumers
+The `registry-changes` link relation identifies an endpoint to which clients
 may register callbacks out of band.
 
 ### Callback Registration {#notification-registration}
 
-Registration of a consumer callback URL with the platform is performed out of
-band. No specific registration protocol is defined by this document.
+Registration of a client callback URL with the registry operator is performed
+out of band. No specific registration protocol is defined by this document.
 
 ### Notification Requests {#notification-requests}
 
-When an entry is added to or removed from its registry, the platform MUST send
-an HTTP request to each registered callback URL.
+When an entry is added to or removed from the registry, the registry operator
+MUST send an HTTP request to each registered callback URL.
 
-The format in {{CDDL}} is as follow
+The format in {{CDDL}} is as follows:
 
 ~~~cddl
 Action = "put" / "delete"
@@ -444,22 +444,23 @@ Notification = {
 ~~~
 
 TODO: should we use application/json, a new media-type, permit binary encoding?
-TODO: should signature agent be an array?
+TODO: should signature-agent be an array?
 
-`action` denote the operation performed by the platform registry. The registry sends:
-1. `put` when there is a new entry in the registry,
+`action` denotes the operation performed on the registry:
+1. `put` when a new entry has been added,
 2. `delete` when an entry has been removed.
 
-The request MUST use `POST` to notify registered callback listeners.
-It MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the platform's own signature agent card
+The request MUST use `POST`.
+It MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
+registry operator's own signature agent card.
 
-Media-Type SHOULD be "application/json".
+The `Content-Type` SHOULD be `application/json`.
 
 Example notification for an added entry:
 
 ~~~
 POST /registry-callback HTTP/1.1
-Host: waf.example
+Host: origin.example
 Content-Type: application/json
 Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
   created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
@@ -468,23 +469,23 @@ Content-Digest: sha-256=:base64hash:
 
 {
   "action": "put",
-  "signature-agent": "https://abc123.platform.example/.well-known/signature-agent-card"
+  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
 }
 ~~~
 
 ### Notification Processing {#notification-processing}
 
-Upon receiving a notification, the consumer MUST verify the HTTP Message
-Signature against the platform's key, discovered via the platform's
-`signature-agent` card. Notifications with missing or invalid signatures
-MUST be rejected.
+Upon receiving a notification, the client MUST verify the HTTP Message
+Signature against the registry operator's key, discovered via the registry
+operator's signature-agent card. Notifications with missing or invalid
+signatures MUST be rejected.
 
 A notification is advisory only. The registry endpoint remains the authoritative
-source of truth. After verifying a notification, consumers SHOULD re-fetch the
+source of truth. After verifying a notification, clients SHOULD re-fetch the
 affected signature agent card to obtain current metadata.
 
-Platforms SHOULD retry delivery of failed notifications with exponential
-backoff. Consumers that miss notifications will recover on their next
+Registry operators SHOULD retry delivery of failed notifications with
+exponential backoff. Clients that miss notifications will recover on their next
 conditional pull from the registry endpoint.
 
 # Security Considerations
@@ -495,18 +496,18 @@ Clients SHOULD reject cards with invalid signatures.
 ## Registry Integrity
 
 When a registry is served over HTTPS, TLS provides channel integrity between
-the server and the consumer. To additionally bind the registry contents to the
-platform's cryptographic identity, registry servers SHOULD sign their HTTP
-responses using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
-platform's own signature agent card. Consumers SHOULD verify such signatures
-when present.
+the server and the client. To additionally bind the registry contents to the
+registry operator's cryptographic identity, registry servers SHOULD sign their
+HTTP responses using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
+registry operator's own signature agent card. Clients SHOULD verify such
+signatures when present.
 
 ## Private Registries
 
 Registry endpoints that require authentication as described in
-{{registry-authentication}} limit exposure of a platform's customer list to
-authorized consumers only. Platforms SHOULD use authenticated registry
-endpoints when the enumeration of their customers is sensitive.
+{{registry-authentication}} limit exposure of registry entries to authorized
+clients only. Registry operators SHOULD use authenticated endpoints when the
+enumeration of their registry entries is sensitive.
 
 # Privacy Considerations
 
@@ -515,9 +516,8 @@ TODO
 ## Access Patterns
 
 Registry servers SHOULD avoid logging personally identifiable information from
-consumer requests. Consumers accessing a registry reveal their interest in the
-platform's registered agents; registry servers SHOULD treat access logs as
-sensitive.
+client requests. Clients fetching a registry reveal their interest in its
+entries; registry servers SHOULD treat access logs as sensitive.
 
 
 # IANA Considerations {#iana}
