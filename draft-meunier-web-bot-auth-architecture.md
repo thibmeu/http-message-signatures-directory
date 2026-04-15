@@ -69,7 +69,7 @@ themselves to origins for several reasons:
 Current identification methods such as IP allowlisting, User-Agent strings, or shared API keys have
 significant limitations in security, scalability, and manageability. This document defines an
 architecture enabling agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
-It proposes that every request from bots to be signed by a private key owned by its provider.
+It proposes that every request from bots be signed by a private key owned by its provider.
 This way, every origin can validate the service identity.
 
 # Motivation
@@ -93,7 +93,7 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
     history that needs to be carefully inspected and managed before purchase and
     use.
  3. An agent may go to every website on the Internet and share a secret with
-    them like a Bearer from  {{OAUTH-BEARER}}. This is impractical to scale for any
+    them like a Bearer from {{OAUTH-BEARER}}. This is impractical to scale for any
     agent beyond select partnerships, and insecure, as key rotation is challenging
     and becomes less secure as the consumers scale.
 
@@ -146,8 +146,7 @@ The following terms are used throughout this document:
 A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}
-along with the `Signature-Agent` header for discovery for its
-verification key.
+along with the `Signature-Agent` header for discovery of its verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.
 
@@ -277,8 +276,7 @@ Additional requirements are placed on this validation:
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
 - During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
 
-Origin MAY require the `nonce` to satisfy certain constraint: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or not constraint at all.
-
+Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
 ## Key Distribution and Discovery
 
@@ -304,6 +302,7 @@ Example:
 
 
 ### Out-of-band communication between client and origin
+
 A service submitting their key to an origin, or the origin manually adding a service to their trusted list.
 
 ### Public list
@@ -420,7 +419,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 
 `Signature` is unchanged as the base is similar. Both `Signature-Agent` and
 `Signature-Input` reflect the update from `sig2` to `sig3`.
-.
+
 # Privacy Considerations
 
 ## Public Identity
@@ -750,6 +749,10 @@ Tanya Verma.
 
 # Changelog
 {:numbered="false"}
+
+v05
+
+- Fix some typos
 
 v04
 
