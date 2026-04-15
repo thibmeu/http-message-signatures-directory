@@ -44,6 +44,9 @@ normative:
 informative:
   OAUTH-BEARER: RFC6750
   RFC8446:
+  OWASP-SSRF:
+    title: OWASP Server-Side Request Forgery Prevention Cheat Sheet
+    target: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
 
 --- abstract
 
@@ -214,7 +217,7 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 `nonce`
 : base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
 
-Client MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
+Agent MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
 
 ### Additional headers
 
@@ -278,7 +281,7 @@ Additional requirements are placed on this validation:
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
-## Key Distribution and Discovery
+## Key Distribution and Discovery {#key-distribution-and-discovery}
 
 This section describes the discovery mechanism for the agent directory.
 
@@ -342,7 +345,7 @@ Origins should account for the overhead of signature verification in their opera
 
 ## Nonce validation {#nonce-validation}
 
-Clients are the one controlling the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
+The client controls the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
 
 Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.
 
@@ -419,6 +422,39 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 
 `Signature` is unchanged as the base is similar. Both `Signature-Agent` and
 `Signature-Input` reflect the update from `sig2` to `sig3`.
+
+## Server-Side Request Forgery (SSRF)
+
+As described in {{key-distribution-and-discovery}}, verifiers may fetch key directories based on
+the URL value conveyed in `Signature-Agent` when included in a request. Since
+clients control the `Signature-Agent` header value, this introduces a risk of
+server-side request forgery (SSRF) attacks by malicious clients.
+
+Verifiers SHOULD take appropriate precautions as follows:
+
+`Response size`
+: a directory can be arbitrarily large. Verifiers SHOULD reject responses
+  exceeding a defined byte limit after content decoding.
+
+`Key count`
+: a JWKS with many keys forces O(n) key search. Verifiers SHOULD enforce
+  a maximum key count.
+
+`Fetch latency`
+: no timeout allows slowloris-style exhaustion. Verifiers SHOULD apply
+  a wall-clock timeout to directory fetches.
+
+`Redirect chains`
+: unbounded HTTP redirects can be used to amplify requests. Verifiers
+  SHOULD limit redirect depth.
+
+`Network address ranges`
+: no address filtering can target internal services. Verifiers SHOULD
+  prevent directory fetches to private, loopback, and link-local
+  address ranges.
+
+Further recommendations can be found in the Open Worldwide Application
+Security Project (OWASP) SSRF Prevention Cheat Sheet {{OWASP-SSRF}}.
 
 # Privacy Considerations
 
@@ -753,6 +789,7 @@ Tanya Verma.
 v05
 
 - Fix some typos
+- Add security considerations of Signature-Agent by origins if present
 
 v04
 
