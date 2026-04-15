@@ -217,7 +217,7 @@ Agents SHOULD extend `@signature-parameters` defined in {{generating-http-messag
 `nonce`
 : base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
 
-Agent MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
+Client MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
 
 ### Additional headers
 
@@ -345,7 +345,7 @@ Origins should account for the overhead of signature verification in their opera
 
 ## Nonce validation {#nonce-validation}
 
-The client controls the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
+Clients control the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
 
 Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.
 
@@ -788,8 +788,8 @@ Tanya Verma.
 
 v05
 
+- Add SSRF security considerations for Signature-Agent directory fetches
 - Fix some typos
-- Add security considerations of Signature-Agent by origins if present
 
 v04
 
