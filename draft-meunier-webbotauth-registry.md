@@ -544,7 +544,7 @@ entries; registry servers SHOULD treat access logs as sensitive.
 
 # IANA Considerations {#iana}
 
-### Registration template
+## Registration template
 
 New registrations need to list the following attributes:
 
