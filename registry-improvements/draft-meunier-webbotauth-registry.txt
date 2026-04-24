@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 25 September 2026                                        Amazon
+Expires: 26 October 2026                                          Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                           24 March 2026
+                                                           24 April 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 September 2026.
+   This Internet-Draft will expire on 26 October 2026.
 
 Copyright Notice
 
@@ -93,7 +93,8 @@ Table of Contents
      3.11. Rate control
      3.12. Rate expectation
      3.13. Known URLs
-     3.14. Keys
+     3.14. JWKS URI
+     3.15. Keys
    4.  Discovery
      4.1.  Formal Syntax
      4.2.  Out-of-band communication between client and origin
@@ -176,6 +177,7 @@ Table of Contents
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
+  "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
   "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
@@ -355,7 +357,30 @@ Table of Contents
 
    *  ["/index.html"]
 
-3.14.  Keys
+3.14.  JWKS URI
+
+   The jwks_uri parameter provides the URL of the signature agent's JWKS
+   keys as defined in Section 5 of [JWK].  This covers HTTP Message
+   Signatures Directory as defined in [DIRECTORY].
+
+   When present, this parameter separates key material discovery from
+   metadata discovery.  Clients that need key material SHOULD fetch the
+   directory at the given URL rather than relying on the keys parameter.
+   This separation allows registry operators to host metadata and key
+   material on different endpoints, supporting deployment scenarios
+   where the registry endpoint itself contains signature agent card
+   metadata but the key directory is hosted elsewhere.
+
+   If both jwks_uri and keys are present, the jwks_uri takes precedence
+   for key discovery.
+
+   The URI scheme MUST be https.
+
+   Example
+
+   *  https://example.com/.well-known/http-message-signatures-directory
+
+3.15.  Keys
 
    The keys parameter contains a JWKS as defined in Section 5 of [JWK].
 
@@ -395,7 +420,7 @@ Table of Contents
    https://zerotrust-gateway.example.com/v1/signature-agent-card
 
    # Below is an inlined card with the data URL scheme
-   data:application/json;,... # Invalid, not defined
+   data:application/json,{"client_name":"Inline Bot","jwks_uri":"https://inline.example.com/.well-known/http-message-signatures-directory"}
 
 4.1.  Formal Syntax
 
@@ -790,7 +815,20 @@ Content-Digest: sha-256=:base64hash:
 
    *Notes:*  N/A
 
-7.1.1.14.  Keys Parameter
+7.1.1.14.  JWKS URI Parameter
+
+   *Parameter Name:*  jwks_uri
+
+   *Parameter Description:*  URL of the signature agent's key set.  This
+      can be an HTTP Message Signatures Directory for key discovery
+
+   *Change Controller:*  IETF
+
+   *Reference:*  Section 3.14
+
+   *Notes:*  N/A
+
+7.1.1.15.  Keys Parameter
 
    *Parameter Name:*  keys
 
@@ -798,7 +836,7 @@ Content-Digest: sha-256=:base64hash:
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.14
+   *Reference:*  Section 3.15
 
    *Notes:*  N/A
 
@@ -947,6 +985,12 @@ Acknowledgments
 Changelog
 
    v02
+
+   *  Add optional jwks_uri parameter to separate key material from
+      metadata
+
+   *  Fix inline data URL example in registry to use valid signature
+      agent card
 
    *  Rename "Public list" to "Registry Endpoint" for clarity
 
