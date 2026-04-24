@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 5 September 2026                                         Google
-                                                            4 March 2026
+Expires: 26 October 2026                                          Google
+                                                           24 April 2026
 
 
                    HTTP Message Signatures Directory
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2026.
+   This Internet-Draft will expire on 26 October 2026.
 
 Copyright Notice
 
@@ -298,8 +298,8 @@ Table of Contents
                             Deprecated alias names for this type:  N/A
                             File extension(s):  N/A
                             Macintosh file type code(s):  N/A
-   Person and email address to contact for further information:  see Aut
-      hors' Addresses section
+   Person and email address to contact for further information:  see
+      Authors' Addresses section
    Intended usage:  COMMON
    Restrictions on usage:  N/A
    Author:  see Authors' Addresses section

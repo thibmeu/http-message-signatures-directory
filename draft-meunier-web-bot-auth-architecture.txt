@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 5 September 2026                                         Google
-                                                            4 March 2026
+Expires: 26 October 2026                                          Google
+                                                           24 April 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2026.
+   This Internet-Draft will expire on 26 October 2026.
 
 Copyright Notice
 
@@ -97,13 +97,15 @@ Table of Contents
      5.6.  Key Reuse Considered Harmful
      5.7.  Reverse proxy consideration
        5.7.1.  Signature-Agent labeling
-     5.8.  Public Identity
-     5.9.  No Human Correlation
-     5.10. Minimizing Tracking Risks
-   6.  IANA Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+     5.8.  Server-Side Request Forgery (SSRF)
+   6.  Privacy Considerations
+     6.1.  Public Identity
+     6.2.  No Human Correlation
+     6.3.  Minimizing Tracking Risks
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  RSASSA-PSS Using SHA-512
        A.1.1.  Signature-Agent absent from the request
@@ -143,7 +145,7 @@ Table of Contents
    scalability, and manageability.  This document defines an
    architecture enabling agents to cryptographically identify themselves
    using [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from
-   bots to be signed by a private key owned by its provider.  This way,
+   bots be signed by a private key owned by its provider.  This way,
    every origin can validate the service identity.
 
 2.  Motivation
@@ -234,7 +236,7 @@ Table of Contents
    request.  The Agent constructs the request, generates a signature
    using its signing key, and includes it in the request as defined in
    Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along with the Signature-
-   Agent header for discovery for its verification key.  Upon receiving
+   Agent header for discovery of its verification key.  Upon receiving
    the request, the Origin ensures it has the verification key for the
    Agent, validates the signature, and processes the request if the
    signature is valid.
@@ -391,10 +393,9 @@ Table of Contents
       fetch the provider directory as indicated by Signature-Agent
       header defined in Section 4 of [DIRECTORY].
 
-   Origin MAY require the nonce to satisfy certain constraint: be
+   Origin MAY require the nonce to satisfy certain constraints: be
    globally unique using a global nonce store, be unique to a specific
-   location or time window using a local cache, or not constraint at
-   all.
+   location or time window using a local cache, or no constraint at all.
 
 4.5.  Key Distribution and Discovery
 
@@ -479,9 +480,9 @@ Table of Contents
 
 5.3.  Nonce validation
 
-   Clients are the one controlling the nonce.  While Section 4.2.2
-   mandates that clients MUST provide a globally unique nonce, it is the
-   origin's responsibility to enforce it.
+   Clients control the nonce.  While Section 4.2.2 mandates that clients
+   MUST provide a globally unique nonce, it is the origin's
+   responsibility to enforce it.
 
    Different validation policies have different performance and
    operational considerations.  Global uniqueness requires a global
@@ -564,10 +565,42 @@ Signature-Input: sig2=("@authority" "signature-agent";key="sig3")\
 Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
 
    Signature is unchanged as the base is similar.  Both Signature-Agent
-   and Signature-Input reflect the update from sig2 to sig3. . # Privacy
-   Considerations
+   and Signature-Input reflect the update from sig2 to sig3.
 
-5.8.  Public Identity
+5.8.  Server-Side Request Forgery (SSRF)
+
+   As described in Section 4.5, verifiers may fetch key directories
+   based on the URL value conveyed in Signature-Agent when included in a
+   request.  Since clients control the Signature-Agent header value,
+   this introduces a risk of server-side request forgery (SSRF) attacks
+   by malicious clients.
+
+   Verifiers SHOULD take appropriate precautions as follows:
+
+   Response size  a directory can be arbitrarily large.  Verifiers
+      SHOULD reject responses exceeding a defined byte limit after
+      content decoding.
+
+   Key count  a JWKS with many keys forces O(n) key search.  Verifiers
+      SHOULD enforce a maximum key count.
+
+   Fetch latency  no timeout allows slowloris-style exhaustion.
+      Verifiers SHOULD apply a wall-clock timeout to directory fetches.
+
+   Redirect chains  unbounded HTTP redirects can be used to amplify
+      requests.  Verifiers SHOULD limit redirect depth.
+
+   Network address ranges  no address filtering can target internal
+      services.  Verifiers SHOULD prevent directory fetches to private,
+      loopback, and link-local address ranges.
+
+   Further recommendations can be found in the Open Worldwide
+   Application Security Project (OWASP) SSRF Prevention Cheat Sheet
+   [OWASP-SSRF].
+
+6.  Privacy Considerations
+
+6.1.  Public Identity
 
    This architecture assumes that automated clients identify themselves
    explicitly using digital signatures.  The identity associated with a
@@ -576,7 +609,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
    requests with specific agents.  If an agent wishes not to identify
    itself, this is not the right choice of protocol for it.
 
-5.9.  No Human Correlation
+6.2.  No Human Correlation
 
    The key used for signing MUST NOT be tied to a specific human
    individual.  Keys SHOULD represent a role, company, or automation
@@ -584,7 +617,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
    avoids accidental exposure of personally identifiable information and
    prevents the misuse of keys for user tracking or profiling.
 
-5.10.  Minimizing Tracking Risks
+6.3.  Minimizing Tracking Risks
 
    To limit tracking risks, implementations SHOULD avoid long-lived,
    globally unique key identifiers unless strictly necessary.  Key
@@ -592,13 +625,13 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
    signing information that could be used to correlate activity across
    contexts, especially where sensitive user data is involved.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [DIRECTORY]
               Meunier, T. and S. Major, "HTTP Message Signatures
@@ -647,13 +680,19 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
               DOI 10.17487/RFC6750, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6750>.
+
+   [OWASP-SSRF]
+              "OWASP Server-Side Request Forgery Prevention Cheat
+              Sheet", n.d.,
+              <https://cheatsheetseries.owasp.org/cheatsheets/
+              Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html>.
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -956,6 +995,13 @@ Acknowledgments
    Malte Ubl, Loganaden Velvindron, Tanya Verma.
 
 Changelog
+
+   v05
+
+   *  Add SSRF security considerations for Signature-Agent directory
+      fetches
+
+   *  Fix some typos
 
    v04
 
