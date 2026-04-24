@@ -426,7 +426,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 ## Server-Side Request Forgery (SSRF)
 
 As described in {{key-distribution-and-discovery}}, verifiers may fetch key directories based on
-the URL value conveyed in `Signature-Agent` when included in a request. Since
+the value conveyed in `Signature-Agent` when included in a request. Since
 clients control the `Signature-Agent` header value, this introduces a risk of
 server-side request forgery (SSRF) attacks by malicious clients.
 
