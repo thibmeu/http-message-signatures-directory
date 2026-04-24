@@ -93,14 +93,26 @@ Table of Contents
      3.11. Rate control
      3.12. Rate expectation
      3.13. Known URLs
-     3.14. Keys
+     3.14. JWKS URI
+     3.15. Keys
    4.  Discovery
      4.1.  Formal Syntax
      4.2.  Out-of-band communication between client and origin
-     4.3.  Public list
+     4.3.  Registry Endpoint
+       4.3.1.  Authentication
+       4.3.2.  Efficient Polling with Conditional Requests
+       4.3.3.  Caching
      4.4.  Signature-Agent header
+     4.5.  Change Notification
+       4.5.1.  Advertising the Notification Endpoint
+       4.5.2.  Callback Registration
+       4.5.3.  Notification Requests
+       4.5.4.  Notification Processing
    5.  Security Considerations
+     5.1.  Registry Integrity
+     5.2.  Private Registries
    6.  Privacy Considerations
+     6.1.  Access Patterns
    7.  IANA Considerations
      7.1.  Registration template
        7.1.1.  Initial Registry content
@@ -165,6 +177,7 @@ Table of Contents
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
+  "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
   "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
@@ -344,7 +357,30 @@ Table of Contents
 
    *  ["/index.html"]
 
-3.14.  Keys
+3.14.  JWKS URI
+
+   The jwks_uri parameter provides the URL of the signature agent's JWKS
+   keys as defined in Section 5 of [JWK].  This covers HTTP Message
+   Signatures Directory as defined in [DIRECTORY].
+
+   When present, this parameter separates key material discovery from
+   metadata discovery.  Clients that need key material SHOULD fetch the
+   directory at the given URL rather than relying on the keys parameter.
+   This separation allows registry operators to host metadata and key
+   material on different endpoints, supporting deployment scenarios
+   where the registry endpoint itself contains signature agent card
+   metadata but the key directory is hosted elsewhere.
+
+   If both jwks_uri and keys are present, the jwks_uri takes precedence
+   for key discovery.
+
+   The URI scheme MUST be https.
+
+   Example
+
+   *  https://example.com/.well-known/http-message-signatures-directory
+
+3.15.  Keys
 
    The keys parameter contains a JWKS as defined in Section 5 of [JWK].
 
@@ -384,7 +420,7 @@ Table of Contents
    https://zerotrust-gateway.example.com/v1/signature-agent-card
 
    # Below is an inlined card with the data URL scheme
-   data:application/json;,... # Invalid, not defined
+   data:application/json,{"client_name":"Inline Bot","jwks_uri":"https://inline.example.com/.well-known/http-message-signatures-directory"}
 
 4.1.  Formal Syntax
 
@@ -426,15 +462,44 @@ Table of Contents
    A signature agent MAY submit their signature agent card to an origin,
    or the origin MAY manually add them to their local registry.
 
-4.3.  Public list
+4.3.  Registry Endpoint
 
    A registry MAY be provided via a GitHub repository, a public file
    server, or a dedicated endpoint.
 
    The registry SHOULD be served over HTTPS.
 
-   A client application SHOULD validate the directory format and reject
+   A client application SHOULD validate the registry format and reject
    malformed entries.
+
+4.3.1.  Authentication
+
+   A registry endpoint MAY require authentication to restrict access to
+   authorized clients.  This allows a registry operator to expose
+   registries without revealing their contents publicly.
+
+   No specific authentication mechanism is mandated.  Implementations
+   MAY use pre-shared keys as mentioned in [PSK-TLS], bearer tokens as
+   defined in [OAUTH-BEARER], or HTTP Message Signatures as defined in
+   [HTTP-MESSAGE-SIGNATURES].  HTTP Message Signatures are RECOMMENDED
+   when key rotation without out-of-band coordination is desired.
+
+4.3.2.  Efficient Polling with Conditional Requests
+
+   Registry servers SHOULD include ETag and Last-Modified response
+   header fields as defined in Section 8.8 of [HTTP].
+
+   Clients SHOULD send If-None-Match or If-Modified-Since precondition
+   header fields as defined in Section 13.1 of [HTTP] on subsequent
+   requests.  A server SHOULD respond with 304 (Not Modified) when the
+   registry has not changed, avoiding redundant data transfer.
+
+4.3.3.  Caching
+
+   Registry servers SHOULD include a Cache-Control response header field
+   as defined in [HTTP-CACHE] to communicate the intended freshness
+   lifetime of the registry content.  Clients SHOULD respect these cache
+   directives and SHOULD NOT poll more frequently than indicated.
 
 4.4.  Signature-Agent header
 
@@ -445,15 +510,120 @@ Table of Contents
    URL, Signature Agent Card MAY be discovered via a Signature-Agent
    header.
 
+4.5.  Change Notification
+
+   Pull-based consumption with conditional requests is sufficient for
+   most deployments.  When lower notification latency is required (e.g.,
+   to promptly act on entry removal), a registry operator MAY implement
+   a push-based change notification mechanism.
+
+4.5.1.  Advertising the Notification Endpoint
+
+   A registry operator that supports change notifications SHOULD
+   advertise its notification endpoint in the registry HTTP response
+   using a Link header field as defined in [WEB-LINKING]:
+
+Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
+
+   The registry-changes link relation identifies an endpoint to which
+   clients may register callbacks out of band.
+
+4.5.2.  Callback Registration
+
+   Registration of a client callback URL with the registry operator is
+   performed out of band.  No specific registration protocol is defined
+   by this document.
+
+4.5.3.  Notification Requests
+
+   When an entry is added to or removed from the registry, the registry
+   operator MUST send an HTTP request to each registered callback URL.
+
+   The format in [CDDL] is as follows:
+
+   Action = "put" / "delete"
+
+   Notification = {
+     action: Action,
+     signature-agent: tstr
+   }
+
+   TODO: should we use application/json, a new media-type, permit binary
+   encoding?  TODO: should signature-agent be an array?
+
+   action denotes the operation performed on the registry: 1. put when a
+   new entry has been added, 2. delete when an entry has been removed.
+
+   The request MUST use POST.  It MUST be signed using
+   [HTTP-MESSAGE-SIGNATURES] with a key present in the registry
+   operator's own signature agent card.
+
+   The Content-Type SHOULD be application/json.
+
+   Example notification for an added entry:
+
+POST /registry-callback HTTP/1.1
+Host: origin.example
+Content-Type: application/json
+Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
+  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
+Signature: sig1=:base64signature:
+Content-Digest: sha-256=:base64hash:
+
+{
+  "action": "put",
+  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
+}
+
+4.5.4.  Notification Processing
+
+   Upon receiving a notification, the client MUST verify the HTTP
+   Message Signature against the registry operator's key, discovered via
+   the registry operator's signature-agent card.  Notifications with
+   missing or invalid signatures MUST be rejected.
+
+   A notification is advisory only.  The registry endpoint remains the
+   authoritative source of truth.  After verifying a notification,
+   clients SHOULD re-fetch the affected signature agent card to obtain
+   current metadata.
+
+   Registry operators SHOULD retry delivery of failed notifications with
+   exponential backoff.  Clients that miss notifications will recover on
+   their next conditional pull from the registry endpoint.
+
 5.  Security Considerations
 
    Malicious actors may put properties which are not theirs in the
    registry.  If signatures are present, clients MUST verify them.
    Clients SHOULD reject cards with invalid signatures.
 
+5.1.  Registry Integrity
+
+   When a registry is served over HTTPS, TLS provides channel integrity
+   between the server and the client.  To additionally bind the registry
+   contents to the registry operator's cryptographic identity, registry
+   servers SHOULD sign their HTTP responses using
+   [HTTP-MESSAGE-SIGNATURES] with a key present in the registry
+   operator's own signature agent card.  Clients SHOULD verify such
+   signatures when present.
+
+5.2.  Private Registries
+
+   Registry endpoints that require authentication as described in
+   Section 4.3.1 limit exposure of registry entries to authorized
+   clients only.  Registry operators SHOULD use authenticated endpoints
+   when the enumeration of their registry entries is sensitive.
+
 6.  Privacy Considerations
 
    TODO
+
+6.1.  Access Patterns
+
+   Registry servers SHOULD avoid logging personally identifiable
+   information from client requests.  Clients fetching a registry reveal
+   their interest in its entries; registry servers SHOULD treat access
+   logs as sensitive.
 
 7.  IANA Considerations
 
@@ -645,7 +815,20 @@ Table of Contents
 
    *Notes:*  N/A
 
-7.1.1.14.  Keys Parameter
+7.1.1.14.  JWKS URI Parameter
+
+   *Parameter Name:*  jwks_uri
+
+   *Parameter Description:*  URL of the signature agent's key set.  This
+      can be an HTTP Message Signatures Directory for key discovery
+
+   *Change Controller:*  IETF
+
+   *Reference:*  Section 3.14
+
+   *Notes:*  N/A
+
+7.1.1.15.  Keys Parameter
 
    *Parameter Name:*  keys
 
@@ -653,7 +836,7 @@ Table of Contents
 
    *Change Controller:*  IETF
 
-   *Reference:*  Section 3.14
+   *Reference:*  Section 3.15
 
    *Notes:*  N/A
 
@@ -729,7 +912,18 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+   [WEB-LINKING]
+              Nottingham, M., "Web Linking", RFC 8288,
+              DOI 10.17487/RFC8288, October 2017,
+              <https://www.rfc-editor.org/rfc/rfc8288>.
+
 8.2.  Informative References
+
+   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
    [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
               DOI 10.17487/RFC2397, August 1998,
@@ -745,6 +939,11 @@ Table of Contents
               "OpenID Connect Discovery 1.0", n.d.,
               <https://openid.net/specs/openid-connect-discovery-
               1_0.html>.
+
+   [PSK-TLS]  Housley, R., Hoyland, J., Sethi, M., and C. A. Wood,
+              "Guidance for External Pre-Shared Key (PSK) Usage in TLS",
+              RFC 9257, DOI 10.17487/RFC9257, July 2022,
+              <https://www.rfc-editor.org/rfc/rfc9257>.
 
    [RATELIMIT-HEADER]
               Polli, R., Ruiz, A. M., and D. Miller, "RateLimit header
@@ -784,6 +983,35 @@ Acknowledgments
    this document -
 
 Changelog
+
+   v02
+
+   *  Add optional jwks_uri parameter to separate key material from
+      metadata
+
+   *  Fix inline data URL example in registry to use valid signature
+      agent card
+
+   *  Rename "Public list" to "Registry Endpoint" for clarity
+
+   *  Add authentication guidance for private registry endpoints
+
+   *  Add conditional GET (ETag/If-Modified-Since) guidance for
+      efficient polling
+
+   *  Add caching guidance referencing HTTP-CACHE
+
+   *  Add change notification section: PUT/DELETE webhook signed with
+      HTTP Message Signatures, OOB callback registration, pull as source
+      of truth
+
+   *  Expand Security Considerations: registry integrity via HTTP
+      Message Signatures, private registry guidance
+
+   *  Expand Privacy Considerations: customer list exposure, access
+      patterns
+
+   *  Add normative reference to RFC 8288 (Web Linking)
 
    v01
 
