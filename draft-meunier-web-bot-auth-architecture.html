@@ -1914,7 +1914,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 <a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-server-side-request-forgery" class="section-name selfRef">Server-Side Request Forgery (SSRF)</a>
         </h3>
 <p id="section-5.8-1">As described in <a href="#key-distribution-and-discovery" class="auto internal xref">Section 4.5</a>, verifiers may fetch key directories based on
-the URL value conveyed in <code>Signature-Agent</code> when included in a request. Since
+the value conveyed in <code>Signature-Agent</code> when included in a request. Since
 clients control the <code>Signature-Agent</code> header value, this introduces a risk of
 server-side request forgery (SSRF) attacks by malicious clients.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
 <p id="section-5.8-2">Verifiers <span class="bcp14">SHOULD</span> take appropriate precautions as follows:<a href="#section-5.8-2" class="pilcrow">¶</a></p>
