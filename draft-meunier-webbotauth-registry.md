@@ -119,7 +119,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
   "rate-control": "429",
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
-  "signature_directory_url": "https://example.com/.well-known/http-message-signatures-directory",
+  "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
   "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
@@ -278,9 +278,10 @@ Example
 * `["/favicon.ico"]`
 * `["/index.html"]`
 
-## Signature Directory URL {#signature-agent-parameter-signature-directory-url}
+## JWKS URI {#signature-agent-parameter-jwks-uri}
 
-The `signature_directory_url` parameter provides the URL of the signature agent's
+The `jwks_uri` parameter provides the URL of the signature agent's
+JWKS keys as defined in {{Section 5 of JWK}}. This covers
 HTTP Message Signatures Directory as defined in {{DIRECTORY}}.
 
 When present, this parameter separates key material discovery from metadata
@@ -290,8 +291,8 @@ registry operators to host metadata and key material on different endpoints,
 supporting deployment scenarios where the registry endpoint itself contains
 signature agent card metadata but the key directory is hosted elsewhere.
 
-If both `signature_directory_url` and `keys` are present, the
-`signature_directory_url` takes precedence for key discovery.
+If both `jwks_uri` and `keys` are present, the
+`jwks_uri` takes precedence for key discovery.
 
 The URI scheme MUST be `https`.
 
@@ -334,7 +335,7 @@ https://crawler2.example.com/.well-known/http-message-signatures-directory
 https://zerotrust-gateway.example.com/v1/signature-agent-card
 
 # Below is an inlined card with the data URL scheme
-data:application/json,{"client_name":"Inline Bot","signature_directory_url":"https://inline.example.com/.well-known/http-message-signatures-directory"}
+data:application/json,{"client_name":"Inline Bot","jwks_uri":"https://inline.example.com/.well-known/http-message-signatures-directory"}
 ~~~
 
 ## Formal Syntax
@@ -802,19 +803,19 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
-#### Signature Directory URL Parameter
+#### JWKS URI Parameter
 
 **Parameter Name:**
-: signature_directory_url
+: jwks_uri
 
 **Parameter Description:**
-: URL of the signature agent's HTTP Message Signatures Directory for key discovery
+: URL of the signature agent's key set. This can be an HTTP Message Signatures Directory for key discovery
 
 **Change Controller:**
 : IETF
 
 **Reference:**
-: {{signature-agent-parameter-signature-directory-url}}
+: {{signature-agent-parameter-jwks-uri}}
 
 **Notes:**
 : N/A
@@ -861,13 +862,10 @@ The editor would also like to thank the following individuals (listed in alphabe
 # Changelog
 {:numbered="false"}
 
-v03
-
-- Add optional `signature_directory_url` parameter to separate key material from metadata
-- Fix inline data URL example in registry to use valid signature agent card
-
 v02
 
+- Add optional `jwks_uri` parameter to separate key material from metadata
+- Fix inline data URL example in registry to use valid signature agent card
 - Rename "Public list" to "Registry Endpoint" for clarity
 - Add authentication guidance for private registry endpoints
 - Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling
