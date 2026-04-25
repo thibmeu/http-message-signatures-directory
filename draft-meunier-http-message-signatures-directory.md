@@ -193,7 +193,7 @@ following values.
 
 | URI Suffix  | Change Controller  | Reference | Status | Related information |
 |:------------|:-------------------|:----------|:-------|:--------------------|
-| http-message-signatures-directory | IETF | [this document] | permanent | None |
+| http-message-signatures-directory | IETF | this document | permanent | None |
 {: #wellknownuri-values title="'http-message-signatures-directory' Well-Known URI"}
 
 ## Media Types
