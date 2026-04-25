@@ -43,6 +43,7 @@ normative:
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
   HTTP-MORE-STATUS-CODE: RFC6585
+  JAFAR: I-D.draft-illyes-webbotauth-jafar
   JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
@@ -50,6 +51,7 @@ normative:
 
 
 informative:
+  CBCP: I-D.draft-illyes-webbotauth-cbcp
   CDDL: RFC8610
   DATAURL: RFC2397
   OAUTH-BEARER: RFC6750
@@ -83,7 +85,7 @@ need to identify themselves, and establish
 trust with origin servers.
 
 Today, the mechanisms for doing so are inconsistent: some rely on User-Agent
-strings (e.g. `MyCompanyBot/1.0`), others on IP address lists hosted on file servers (e.g. `badbots.com`), and still others on out-of-band
+strings (e.g. `MyCompanyBot/1.0`), others on IP address lists hosted on file servers (e.g. `https://curated-bots.com/ips.json`), and still others on out-of-band
 definitions (e.g. documentation on docs.example.com/mybot). This diversity makes it difficult for operators and origin servers
 to reliably discover and share a Signature Agent’s purpose, contact information, or rate
 expectations.
@@ -120,6 +122,7 @@ This section describes Signature Agent Card, a JSON object containing parameters
   "rate-expectation": "avg=10rps;max=100rps",
   "known-urls": ["/", "/robots.txt", "*.png"],
   "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
+  "ips_uri": "https://example.com/ips.json",
   "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
@@ -266,7 +269,6 @@ Example
 
 The `known-urls` parameter lists predictable endpoints accessed by the agent.
 
-
 These URLs may be absolute URLs like `https://example.com/index.html`.
 They could be relative path like `/ads.txt`.
 Or they can use `*` as wildcard such as `*.png`.
@@ -299,6 +301,17 @@ The URI scheme MUST be `https`.
 Example
 
 * `https://example.com/.well-known/http-message-signatures-directory`
+
+## IP Address List URI {#signature-agent-parameter-ips-uri}
+
+The `ips_uri` parameter provides the URL of the signature agent's
+IP address list as defined in {{JAFAR}}.
+
+The URI scheme MUST be `https`.
+
+Example
+
+* `https://example.com/ips.json`
 
 ## Keys {#signature-agent-parameter-keys}
 
@@ -820,6 +833,23 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
+#### IP Address List URI Parameter
+
+**Parameter Name:**
+: ips_uri
+
+**Parameter Description:**
+: URL of the signature agent's IP address list in {{JAFAR}} format.
+
+**Change Controller:**
+: IETF
+
+**Reference:**
+: {{signature-agent-parameter-ips-uri}}
+
+**Notes:**
+: N/A
+
 #### Keys Parameter
 
 **Parameter Name:**
@@ -852,9 +882,6 @@ TODO
 {:numbered="false"}
 
 TODO
-<!--
-Ulas Kirazci.
--->
 
 The editor would also like to thank the following individuals (listed in alphabetical order) for feedback, insight, and implementation of this document -
 
@@ -864,6 +891,7 @@ The editor would also like to thank the following individuals (listed in alphabe
 
 v02
 
+- Add `ips_uri` parameter so client can expose IP addresses
 - Add optional `jwks_uri` parameter to separate key material from metadata
 - Fix inline data URL example in registry to use valid signature agent card
 - Rename "Public list" to "Registry Endpoint" for clarity
