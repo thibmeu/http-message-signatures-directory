@@ -38,6 +38,7 @@ author:
 normative:
   ABNF: RFC5234
   AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
+  CDDL: RFC8610
   DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
@@ -52,7 +53,6 @@ normative:
 
 informative:
   CBCP: I-D.draft-illyes-webbotauth-cbcp
-  CDDL: RFC8610
   DATAURL: RFC2397
   OAUTH-BEARER: RFC6750
   OPENID-CONNECT-DISCOVERY:
@@ -458,10 +458,14 @@ Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
 The `registry-changes` link relation identifies an endpoint to which clients
 may register callbacks out of band.
 
+TODO: Register the `registry-changes` link relation with IANA, or replace it
+with an extension relation URI.
+
 ### Callback Registration {#notification-registration}
 
 Registration of a client callback URL with the registry operator is performed
 out of band. No specific registration protocol is defined by this document.
+An unsubscribe mechanism SHOULD be considered, and MAY also be out of band.
 
 ### Notification Requests {#notification-requests}
 
@@ -488,7 +492,9 @@ TODO: should signature-agent be an array?
 
 The request MUST use `POST`.
 It MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
-registry operator's own signature agent card.
+registry operator's existing signature agent card. This is the signature agent
+card associated with the registry operator during out-of-band callback
+registration.
 
 The `Content-Type` SHOULD be `application/json`.
 
@@ -517,8 +523,12 @@ operator's signature-agent card. Notifications with missing or invalid
 signatures MUST be rejected.
 
 A notification is advisory only. The registry endpoint remains the authoritative
-source of truth. After verifying a notification, clients SHOULD re-fetch the
-affected signature agent card to obtain current metadata.
+source of truth. After verifying a `put` notification, clients SHOULD re-fetch
+the affected signature agent card to obtain current metadata.
+
+For `delete` notifications, clients SHOULD confirm the removal by re-fetching
+the full registry. This confirmation does not need to happen synchronously with
+notification processing.
 
 Registry operators SHOULD retry delivery of failed notifications with
 exponential backoff. Clients that miss notifications will recover on their next
@@ -537,6 +547,24 @@ registry operator's cryptographic identity, registry servers SHOULD sign their
 HTTP responses using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
 registry operator's own signature agent card. Clients SHOULD verify such
 signatures when present.
+
+## Binding Delegated Keys to the Directory Authority
+
+When a signature agent card delegates key discovery using `jwks_uri`, clients
+SHOULD validate the referenced directory response to ensure the authenticity
+and integrity of the delegated key material.
+
+When a directory server provides key material over HTTP or HTTPS, it is
+RECOMMENDED that it include one HTTP Message Signature per key in the response,
+with each key used to provide one signature. The signature SHOULD cover
+`@authority` with the `req` flag set, and SHOULD include the `created`,
+`expires`, `keyid`, and `tag` signature parameters. The `tag` value MUST be
+`http-message-signatures-directory`.
+
+Clients SHOULD validate these signatures using the keys provided by the
+directory. Clients SHOULD ignore keys from a directory response that do not have
+a corresponding valid signature binding the key material to the directory
+authority.
 
 ## Private Registries
 
