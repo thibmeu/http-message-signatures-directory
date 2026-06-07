@@ -39,6 +39,8 @@ normative:
   ABNF: RFC5234
   AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
   CDDL: RFC8610
+  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
+  DCR: RFC7591
   DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
@@ -62,17 +64,18 @@ informative:
   RATELIMIT-HEADER: I-D.draft-ietf-httpapi-ratelimit-headers
   RFC8446:
   ROBOTSTXT: RFC9309
+  SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
   UTF8: RFC3629
 
 --- abstract
 
-This document describes a JSON based format for clients using {{DIRECTORY}}
-to advertise information about themselves.
-
-This document describes a JSON-based "Signature Agent Card" format for signature agent using {{DIRECTORY}} to advertise metadata about themselve. This includes identity, purpose, rate expectations,
-and cryptographic keys. It also establishes an IANA registry for Signature Agent
-Card parameters, enabling extensible and interoperable discovery of agent
-information.
+This document defines the "Signature Agent Card", a JSON metadata document that a
+signature agent using {{DIRECTORY}} publishes to describe itself: its identity,
+purpose, rate expectations, and cryptographic keys. Its parameters are drawn from
+the OAuth Dynamic Client Registration Metadata registry {{DCR}}, the same
+namespace used by {{CIMD}}, extended with a single `web_bot_auth` object. This
+document registers that object with IANA and establishes a registry for its
+members.
 
 --- middle
 
@@ -89,13 +92,14 @@ strings (e.g. `MyCompanyBot/1.0`), others on IP address lists hosted on file ser
 definitions (e.g. documentation on docs.example.com/mybot). This diversity makes it difficult for operators and origin servers
 to reliably discover and share a Signature Agent’s purpose, contact information, or rate
 expectations.
-Existing discovery mechanisms, such as {{OPENID-CONNECT-DISCOVERY}}, do not have the necessary
-granularity, and pursue different goals.
 
-This document introduces a JSON-based "Signature Agent Card" format for Signature
-Agents, to be published in registries and discovered by servers. It also
-creates a new IANA registry of "Signature Agent Card Parameters" to ensure
-extensibility and consistency of future attributes.
+The OAuth Client ID Metadata Document {{CIMD}} already defines a resolvable
+identity: a `client_id` that is an HTTPS URL dereferencing to a JSON metadata
+document. This document reuses it.
+A Signature Agent Card takes the client metadata parameters that {{CIMD}} draws
+from {{DCR}}, and adds bot-specific information in a single `web_bot_auth`
+object. An existing Client ID Metadata Document is therefore a valid Signature
+Agent Card.
 
 # Conventions and Definitions
 
@@ -103,86 +107,148 @@ extensibility and consistency of future attributes.
 
 # Signature Agent Card {#signature-agent-card}
 
-Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}}.
-This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.
+A Signature Agent Card is a JSON object describing a Signature Agent. Its
+parameters are drawn from the OAuth Dynamic Client Registration Metadata registry
+{{DCR}}, the same parameter namespace used by {{CIMD}}. Web bot auth-specific
+information is carried in a single `web_bot_auth` object,
+defined in {{web-bot-auth-extension}}.
+
+Because the card reuses the {{CIMD}} parameter namespace, an existing Client ID
+Metadata Document is a valid Signature Agent Card. A client that does not
+understand the `web_bot_auth` object ignores it.
+
+The Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}} and may
+reference a Signature Agent Card, as described in {{cimd-discovery}}.
 
 ~~~
 {
+  "client_id": "https://example.com/bot",
   "client_name": "Example Bot",
   "client_uri": "https://example.com/bot/about.html",
-  "logo_uri": "https://example.com/",
+  "logo_uri": "https://example.com/logo.png",
   "contacts": ["mailto:bot-support@example.com"],
-  "expected-user-agent": "Mozilla/5.0 ExampleBot",
-  "rfc9309-product-token": "ExampleBot",
-  "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
-  "trigger": "fetcher",
-  "purpose": "tdm",
-  "targeted-content": "Cat pictures",
-  "rate-control": "429",
-  "rate-expectation": "avg=10rps;max=100rps",
-  "known-urls": ["/", "/robots.txt", "*.png"],
   "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
-  "ips_uri": "https://example.com/ips.json",
-  "keys": [{
-    "kty": "OKP",
-    "crv": "Ed25519",
-    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
-    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
-    "use": "sig",
-    "nbf": 1712793600,
-    "exp": 1715385600
-  }]
+  "web_bot_auth": {
+    "expected-user-agent": "Mozilla/5.0 ExampleBot",
+    "rfc9309-product-token": "ExampleBot",
+    "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
+    "trigger": "fetcher",
+    "purpose": "tdm",
+    "targeted-content": "Cat pictures",
+    "rate-control": "429",
+    "rate-expectation": "avg=10rps;max=100rps",
+    "known-urls": ["/", "/robots.txt", "*.png"]
+  }
 }
 ~~~
 
-Unless otherwise specified, all parameters in this document are OPTIONAL.
-There MUST be at least one parameter set.
+Unless otherwise specified, all parameters in this document are OPTIONAL, except
+that a card resolved through its `client_id` MUST carry `client_id` (see
+{{signature-agent-parameter-client-id}}). There MUST be at least one parameter
+set.
 
 Parameters for which the value is unknown MUST be ignored.
 All string values are UTF-8.
 
-## Client Name {#signature-agent-parameter-name}
+## Client Metadata Parameters {#client-metadata-parameters}
 
-The `client_name` parameter provides a friendly identifier for the Signature Agent.
+The following parameters are OAuth client metadata parameters defined in {{DCR}}
+and used as in {{CIMD}}. They keep the semantics defined there; this section only
+notes how they are used by a Signature Agent.
+
+`client_id`
+: A resolvable identifier for the Signature Agent. See
+{{signature-agent-parameter-client-id}}.
+
+`client_name`
+: A friendly name for the Signature Agent, e.g. `ExampleBot`.
+
+`client_uri`
+: A URL of a web page describing the Signature Agent: what it does, and how it
+handles the data it fetches, e.g. `https://example.com/bot/about.html`.
+
+`logo_uri`
+: A URL referencing a logo for the Signature Agent, for quick visual
+identification, e.g. `https://example.com/logo.png`.
+
+`contacts`
+: An array of URIs providing reliable communication channels, typically email
+addresses, e.g. `["mailto:bot-support@example.com"]`.
+
+`jwks_uri`
+: See {{signature-agent-parameter-jwks-uri}}.
+
+`jwks`
+: A JWK Set as defined in {{Section 5 of JWK}}. See
+{{signature-agent-parameter-jwks}}.
+
+### Client ID {#signature-agent-parameter-client-id}
+
+The `client_id` parameter is the resolvable identity of the Signature Agent, as
+defined in {{CIMD}}. It is an HTTPS URL that, when dereferenced, returns the
+Signature Agent Card. A card retrieved through its `client_id` MUST include the
+`client_id` parameter.
+
+A client retrieving a card from a URL MUST use the `GET` method, MUST treat any
+status code other than `200 (OK)` as an error, and MUST NOT follow HTTP redirects.
+The `client_id` value in the returned document MUST be identical to the URL used
+to retrieve it, compared as described in {{Section 6.2.1 of !RFC3986}} (simple
+string comparison).
 
 Example
 
-* `ExampleBot`
-* `My remote browser company`
+* `https://example.com/bot`
 
-## Client URI {#signature-agent-parameter-about}
+### JWKS URI {#signature-agent-parameter-jwks-uri}
 
-The `client_uri` parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.
+The `jwks_uri` parameter provides the URL of a JWK Set as defined in
+{{Section 5 of JWK}}, following the {{DCR}} semantics. The HTTP Message Signatures
+Directory defined in {{DIRECTORY}} is such a JWK Set, so a consumer that
+dereferences `jwks_uri` reads the agent's keys whether or not it understands the
+directory media type. {{DCR}} does not mandate a media type for the resource at
+`jwks_uri`.
 
-Only http, https or data:text/plain are allowed.
+When present, this parameter separates key material discovery from metadata
+discovery. Clients that need key material SHOULD fetch the directory at the
+given URL rather than relying on the `jwks` parameter. This separation allows
+registry operators to host metadata and key material on different endpoints,
+supporting deployment scenarios where the registry endpoint itself contains
+signature agent card metadata but the key directory is hosted elsewhere.
 
-Example
+If both `jwks_uri` and `jwks` are present, the
+`jwks_uri` takes precedence for key discovery.
 
-* `https://example.com/bot/about.html`
-* `data:text/plain,The Example bot is about providing an example.`
+The resource at `jwks_uri` SHOULD be signed using {{HTTP-MESSAGE-SIGNATURES}}, as
+a directory is in {{DIRECTORY}}. Clients SHOULD validate the signature and ignore
+keys that do not carry a corresponding valid signature.
 
-## Contacts {#signature-agent-parameter-contact}
-
-The `contacts` parameter provides reliable communication channels in URI forms.
-Typically, this is an email address.
-
-Example
-
-* `["mailto:bot-support@example.com"]`
-* `["https://example.com/contact"]`
-
-## Logo URI {#signature-agent-parameter-logo}
-
-The `logo_uri` parameter provides an image reference for visual identification.
-
-TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.
+The URI scheme MUST be `https`.
 
 Example
 
-* `data:image/svg+xml;base64,deadbeef`
-* `https://example.com/logo.png`
+* `https://example.com/.well-known/http-message-signatures-directory`
 
-## Expected user agent {#signature-agent-parameter-user-agent}
+### JWKS {#signature-agent-parameter-jwks}
+
+The `jwks` parameter contains a JWK Set as defined in {{Section 5 of JWK}}. It is
+the inline client metadata parameter defined in {{DCR}}.
+
+If `jwks` is present, it is RECOMMENDED that the card is signed using {{HTTP-MESSAGE-SIGNATURES}}.
+`Content-Digest` header MUST be included in the covered components.
+
+TODO: describe signature, CWS keys.
+
+## Web Bot Auth Extension {#web-bot-auth-extension}
+
+The `web_bot_auth` parameter is a JSON object carrying bot-specific metadata. It
+is registered in the OAuth Dynamic Client Registration Metadata registry {{DCR}}
+(see {{iana}}), so that it may appear in any Client ID Metadata Document {{CIMD}}.
+Its members are governed by the "Web Bot Auth Metadata Parameters" registry
+defined in {{iana}}. Members for which the value is unknown MUST be ignored.
+
+The members defined by this document are below.
+
+### Expected user agent {#signature-agent-parameter-user-agent}
 
 The `expected-user-agent` parameter specifies one or more `User-Agent` strings as defined in {{Section 10.1.5 of HTTP}}
 or prefix matches. Prefixes MAY use `*` as a wildcard.
@@ -191,7 +257,7 @@ Example
 
 * `Mozilla/5.0 ExampleBot`
 
-## robots.txt product token {#signature-agent-parameter-robotstxt-token}
+### robots.txt product token {#signature-agent-parameter-robotstxt-token}
 
 The `rfc9309-product-token` parameter specifies the product token used for
 `robots.txt` directives per {{Section 2.2.1 of ROBOTSTXT}}.
@@ -200,7 +266,7 @@ Example
 
 * `ExampleBot`
 
-## robots.txt compliance {#signature-agent-parameter-robotstxt-compliance}
+### robots.txt compliance {#signature-agent-parameter-robotstxt-compliance}
 
 The `rfc9309-compliance` parameter lists directives from `robots.txt` that the
 agent implements.
@@ -210,7 +276,7 @@ Example
 * `["User-Agent", "Disallow"]`
 * `["User-Agent", "Disallow", "CrawlDelay"]`
 
-## Trigger {#signature-agent-parameter-trigger}
+### Trigger {#signature-agent-parameter-trigger}
 
 The `trigger` parameter indicates the operational mode of the agent.
 
@@ -219,7 +285,7 @@ Valid values:
 1. `fetcher` - request initiated by the user
 2. `crawler` - autonomous scanning
 
-## Purpose {#signature-agent-parameter-purpose}
+### Purpose {#signature-agent-parameter-purpose}
 
 The `purpose` parameter describes the intended use of collected data. Values
 SHOULD be drawn from a controlled vocabulary, such as {{AIPREF-VOCAB}}.
@@ -229,7 +295,7 @@ Example
 * `search`
 * `tdm`
 
-## Targeted content {#signature-agent-parameter-targeted-content}
+### Targeted content {#signature-agent-parameter-targeted-content}
 
 The `targeted-content` parameter specifies the type of data the agent seeks.
 Its format is arbitrary UTF-8 encoded string.
@@ -240,7 +306,7 @@ Example
 * `Vulnerability scanning`
 * `Ads verification`
 
-## Rate control {#signature-agent-parameter-rate-control}
+### Rate control {#signature-agent-parameter-rate-control}
 
 The `rate-control` parameter indicates how origins can influence the agent’s
 request rate.
@@ -253,7 +319,7 @@ Example
 * Custom tool
 * 429 + {{RATELIMIT-HEADER}}
 
-## Rate expectation {#signature-agent-parameter-rate-expectation}
+### Rate expectation {#signature-agent-parameter-rate-expectation}
 
 The `rate-expectation` parameter specifies anticipated request volume or
 burstiness.
@@ -265,7 +331,7 @@ Example
 * 500 rps
 * Spikes during reindexing
 
-## Known URLs {#signature-agent-parameter-known-urls}
+### Known URLs {#signature-agent-parameter-known-urls}
 
 The `known-urls` parameter lists predictable endpoints accessed by the agent.
 
@@ -280,62 +346,57 @@ Example
 * `["/favicon.ico"]`
 * `["/index.html"]`
 
-## JWKS URI {#signature-agent-parameter-jwks-uri}
-
-The `jwks_uri` parameter provides the URL of the signature agent's
-JWKS keys as defined in {{Section 5 of JWK}}. This covers
-HTTP Message Signatures Directory as defined in {{DIRECTORY}}.
-
-When present, this parameter separates key material discovery from metadata
-discovery. Clients that need key material SHOULD fetch the directory at the
-given URL rather than relying on the `keys` parameter. This separation allows
-registry operators to host metadata and key material on different endpoints,
-supporting deployment scenarios where the registry endpoint itself contains
-signature agent card metadata but the key directory is hosted elsewhere.
-
-If both `jwks_uri` and `keys` are present, the
-`jwks_uri` takes precedence for key discovery.
-
-The URI scheme MUST be `https`.
-
-Example
-
-* `https://example.com/.well-known/http-message-signatures-directory`
-
-## IP Address List URI {#signature-agent-parameter-ips-uri}
-
-The `ips_uri` parameter provides the URL of the signature agent's
-IP address list as defined in {{JAFAR}}.
-
-The URI scheme MUST be `https`.
-
-Example
-
-* `https://example.com/ips.json`
-
-## Keys {#signature-agent-parameter-keys}
-
-The `keys` parameter contains a JWKS as defined in {{Section 5 of JWK}}.
-
-If `keys` is present, it is RECOMMENDED that the card is signed using {{HTTP-MESSAGE-SIGNATURES}}.
-`Content-Digest` header MUST be included in the covered components.
-
-TODO: describe signature, CWS keys.
-
-Example
-
-* https://example.com/.well-known/http-message-signatures-directory
-* JWKS-directory
-
 # Discovery
 
-A registry is a list of URLs, each refering to a signature agent card.
+A Signature Agent Card is discovered by dereferencing its `client_id`, as
+described in {{cimd-discovery}}, or from a registry.
+
+A registry is a list of URLs, each refering to a signature agent card. An entry
+MAY be the `client_id` of a Signature Agent Card.
 
 The URI scheme MUST be one of:
 
-* https (RECOMMENDED): Points to an HTTPS resource serving a signature agent card
-* http: Points to an HTTP resource serving a signature agent card
+* https: Points to an HTTPS resource serving a signature agent card
 * data: Contains an inline signature agent card
+
+## CIMD-based discovery {#cimd-discovery}
+
+A Signature Agent advertises its identity through a resolvable `client_id` URL,
+as defined in {{CIMD}}. A consumer discovers the agent's metadata and keys as
+follows:
+
+1. Obtain a `client_id` URL, from a `Signature-Agent` header
+   ({{signature-agent-header}}), a registry entry, or out of band.
+2. Dereference the `client_id` with a `GET` request. The response MUST be
+   `200 (OK)`, redirects MUST NOT be followed, and the returned `client_id` MUST
+   match the requested URL (see {{signature-agent-parameter-client-id}}). The
+   response is the Signature Agent Card.
+3. Obtain key material. If the card has a `jwks_uri`, fetch the HTTP Message
+   Signatures Directory at that URL as defined in {{DIRECTORY}}; otherwise use the
+   inline `jwks` parameter.
+
+The metadata document and the key directory are distinct resources reached at
+different hops, so no content negotiation between them is required: the directory
+is served with its own media type as defined in {{DIRECTORY}}, while the metadata
+document carries no mandated media type.
+
+~~~
+GET /bot HTTP/1.1
+Host: example.com
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "client_id": "https://example.com/bot",
+  "client_name": "Example Bot",
+  "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
+  "web_bot_auth": {
+    "trigger": "fetcher",
+    "purpose": "tdm"
+  }
+}
+~~~
 
 Example
 
@@ -355,13 +416,12 @@ data:application/json,{"client_name":"Inline Bot","jwks_uri":"https://inline.exa
 
 Below is an Augmented Backus-Naur Form (ABNF) description, as described in {{ABNF}}.
 
-The below definition imports `http-URI` and `https-URI` from {{HTTP}}, and
-`dataurl` from {{DATAURL}}.
+The below definition imports `https-URI` from {{HTTP}}, and `dataurl` from
+{{DATAURL}}.
 
 ~~~
 registry = *(cardendpointline / emptyline)
 cardendpointline = (
-    http-URI /       ; As defined in Section 4.2.1 of RFC 9110
     https-URI /      ; As defined in Section 4.2.2 of RFC 9110
     dataurl          ; As defined in Section 3 of RFC 2397
 ) EOL
@@ -435,8 +495,28 @@ poll more frequently than indicated.
 Signature Agent Card format defined in {{signature-agent-card}} extends the
 format of `Signature-Agent` header as defined in {{Section 4.1 of DIRECTORY}}.
 
-When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
-Agent Card MAY be discovered via a `Signature-Agent` header.
+When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
+via a `Signature-Agent` header. The URI carried in the header MAY reference
+either an HTTP Message Signatures Directory as defined in {{DIRECTORY}}, or the
+`client_id` of a Signature Agent Card resolved as described in
+{{cimd-discovery}}.
+
+TODO: a verifier needs a rule to tell the two apart from a single URI. One option
+is to disambiguate on the well-known directory path: a URI at the
+HTTP Message Signatures Directory well-known location {{DIRECTORY}} is fetched
+directly as a directory, and any other URI is treated as a `client_id` and
+resolved as a Signature Agent Card per {{cimd-discovery}}. This still requires
+parsing the response to confirm which resource was returned, and is under
+discussion.
+
+## Composable discovery with Signature-Key {#signature-key}
+
+The discovery in this document is anchored on the `client_id` URL and is
+independent of the header that carries it. {{SIGNATURE-KEY}} defines a composable
+`Signature-Key` header with an extensible registry of key-distribution schemes.
+A future scheme could carry a `client_id` URL, letting a verifier resolve a
+Signature Agent Card per-signature alongside the keying material. This document
+does not define such a scheme; it is noted as a possible composable carrier.
 
 ## Change Notification {#change-notification}
 
@@ -586,18 +666,47 @@ entries; registry servers SHOULD treat access logs as sensitive.
 
 # IANA Considerations {#iana}
 
-## Registration template
+## OAuth Dynamic Client Registration Metadata Registration
+
+IANA is requested to register the following parameter in the "OAuth Dynamic
+Client Registration Metadata" registry established by {{DCR}}.
+
+**Client Metadata Name:**
+: web_bot_auth
+
+**Client Metadata Description:**
+: A JSON object carrying bot-specific metadata for a Signature Agent. Its members
+are registered in the "Web Bot Auth Metadata Parameters" registry.
+
+**Change Controller:**
+: IETF
+
+**Reference:**
+: {{web-bot-auth-extension}}
+
+The remaining parameters used by a Signature Agent Card (`client_id`,
+`client_name`, `client_uri`, `logo_uri`, `contacts`, `jwks_uri`, `jwks`) are
+already registered OAuth client metadata parameters and are not registered by
+this document.
+
+## Web Bot Auth Metadata Parameters Registry
+
+IANA is requested to create the "Web Bot Auth Metadata Parameters" registry. This
+registry governs the members of the `web_bot_auth` object defined in
+{{web-bot-auth-extension}}.
+
+### Registration template
 
 New registrations need to list the following attributes:
 
 **Parameter Name:**
-: The name requested (e.g. "useragent"). This name is
+: The name requested (e.g. "purpose"). This name is
 case sensitive.  Names may not match other registered names in a
 case-insensitive manner unless the Designated Experts state that
 there is a compelling reason to allow an exception
 
 **Parameter Description:**
-: Brief description of the Header Parameter
+: Brief description of the parameter
 
 **Change Controller:**
 : For Standards Track RFCs, list the "IESG".  For others, give the
@@ -613,83 +722,14 @@ address, email address, home page URI) may also be included.
 
 
 New entries in this registry are subject to the Specification Required
-registration policy ({{!RFC8126, Section 4.6}}). Designated experts need to
-ensure that the token type is defined to be used for both token issuance and
-redemption. Additionally, the experts can reject registrations on the basis
-that they do not meet the security and privacy requirements defined in TODO.
+registration policy ({{!RFC8126, Section 4.6}}). Designated experts can reject
+registrations on the basis that they do not meet the security and privacy
+requirements defined in TODO.
 
 ### Initial Registry content
 
-This section registers the Signature Agent Card Parameter names defined
-in {{signature-agent-card}} in this registry.
-
-#### Client Name Parameter
-
-**Parameter Name:**
-: client_name
-
-**Parameter Description:**
-: A friendly name for your signature agent.
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-name}}
-
-**Notes:**
-: N/A
-
-#### Client URI Parameter
-
-**Parameter Name:**
-: client_uri
-
-**Parameter Description:**
-: Describes what the bot does inline with data URI or with an HTTP link to an external resource
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-about}}
-
-**Notes:**
-: N/A
-
-#### Logo URI Parameter
-
-**Parameter Name:**
-: logo_uri
-
-**Parameter Description:**
-: Image for a quick visual identification
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-logo}}
-
-**Notes:**
-: N/A
-
-#### Contacts Parameter
-
-**Parameter Name:**
-: contacts
-
-**Parameter Description:**
-: An array of URI with a reliable communication channel; typically email addresses
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-contact}}
-
-**Notes:**
-: N/A
+This section registers the `web_bot_auth` member names defined
+in {{web-bot-auth-extension}} in this registry.
 
 #### Expected User Agent Parameter
 
@@ -844,57 +884,6 @@ in {{signature-agent-card}} in this registry.
 **Notes:**
 : N/A
 
-#### JWKS URI Parameter
-
-**Parameter Name:**
-: jwks_uri
-
-**Parameter Description:**
-: URL of the signature agent's key set. This can be an HTTP Message Signatures Directory for key discovery
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-jwks-uri}}
-
-**Notes:**
-: N/A
-
-#### IP Address List URI Parameter
-
-**Parameter Name:**
-: ips_uri
-
-**Parameter Description:**
-: URL of the signature agent's IP address list in {{JAFAR}} format.
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-ips-uri}}
-
-**Notes:**
-: N/A
-
-#### Keys Parameter
-
-**Parameter Name:**
-: keys
-
-**Parameter Description:**
-: JWKS Endpoint
-
-**Change Controller:**
-: IETF
-
-**Reference:**
-: {{signature-agent-parameter-keys}}
-
-**Notes:**
-: N/A
-
 --- back
 
 # Test Vectors
@@ -916,6 +905,19 @@ The editor would also like to thank the following individuals (listed in alphabe
 
 # Changelog
 {:numbered="false"}
+
+v03
+
+- Reframe Signature Agent Card as an OAuth client metadata document ({{DCR}}/{{CIMD}} namespace) extended with a single `web_bot_auth` object
+- Add resolvable `client_id` parameter and CIMD-based discovery (GET, 200 OK, no redirects, client_id match)
+- Allow `Signature-Agent` header and registry entries to reference a `client_id` URL
+- Register `web_bot_auth` in the OAuth Dynamic Client Registration Metadata registry; move bot-specific parameters into a new "Web Bot Auth Metadata Parameters" registry
+- Stop redefining shared client metadata fields (client_name, client_uri, logo_uri, contacts); reference RFC 7591 instead, and drop the non-standard data:text/plain restriction on `client_uri`
+- Rename the inline key parameter from `keys` to `jwks` to match the {{DCR}} namespace, and state that the `jwks_uri` resource is a JWK Set (no mandated media type) so generic consumers can read directory keys
+- Require `client_id` in a card resolved through its `client_id`
+- Restrict registry entries and resolvable cards to `https` (drop `http`)
+- Mirror the directory signing requirement: the `jwks_uri` resource SHOULD be signed using HTTP Message Signatures
+- Note Signature-Key as a possible composable carrier (informative)
 
 v02
 
