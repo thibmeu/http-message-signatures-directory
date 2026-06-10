@@ -42,11 +42,13 @@ normative:
 
 
 informative:
+  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   OAUTH-BEARER: RFC6750
   RFC8446:
   OWASP-SSRF:
     title: OWASP Server-Side Request Forgery Prevention Cheat Sheet
     target: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
+  SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
 
 --- abstract
 
@@ -198,6 +200,9 @@ It is RECOMMENDED the expiry to be no more than 24 hours.
 `Signature-Agent` is an HTTP Method context header defined in Section 4.1 of {{DIRECTORY}}.
 It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
 If the header is to be sent, one of its members MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
+The `Signature-Agent` member identifies where candidate key material can be found.
+The key used to verify the signature is selected by the `keyid` parameter of the
+corresponding `Signature-Input` member.
 
 This results in the following components to be signed
 
@@ -263,9 +268,9 @@ An Agent SHOULD send a request with the signature generated above. Updating the 
 +---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
                 |                  created=1700000000;\                             |
                 |                  expires=1700011111;\                             |
-                |                  keyid="ba3e64==";\                               |
+                |                  keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U";\ |
                 |                  tag="web-bot-auth"                               |
-                | Signature-Agent: sig="https://signer.example.com"                 |
+                | Signature-Agent: sig="https://signer.example.com";type=directory  |
                 '-------------------------------------------------------------------'
 ~~~
 
@@ -295,21 +300,45 @@ Additional requirements are placed on this validation:
 - During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-- During step 5, if the keyid is unknown to the origin, they MAY fetch the provider directory as indicated by `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
+- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
 ## Key Distribution and Discovery {#key-distribution-and-discovery}
 
-This section describes the discovery mechanism for the agent directory.
+This section describes key discovery for the agent.
 
-The reference for discovery is a URL. It SHOULD be an HTTPS URL. It SHOULD provide a directory hosted on the well known registered in Section 4 of {{DIRECTORY}}.
+The reference for discovery is a URL. It SHOULD be an HTTPS URL. The
+`Signature-Agent` header defines typed discovery. This architecture uses these
+types:
+
+`directory`
+: Resolve the HTTP Message Signatures Directory at the well-known URI registered
+in {{DIRECTORY}}. This is the default when no `type` parameter is present.
+
+`jwks_uri`
+: Resolve the member value as a direct JWK Set URI.
+
+`cimd`
+: Resolve the member value as a Client ID Metadata Document {{CIMD}} URI. The
+document then provides key material through `jwks` or `jwks_uri`.
+
+For all types, the key is selected using the `keyid` parameter in
+`Signature-Input`.
+
+Examples:
+
+~~~
+Signature-Agent: sig="https://signer.example.com";type=directory
+Signature-Agent: sig="https://signer.example.com/keys.json";type=jwks_uri
+Signature-Agent: sig="https://signer.example.com/bot";type=cimd
+~~~
 
 Example:
 
 ~~~json
 {
-  "keys": {
+  "keys": [{
     "kty": "OKP",
     "crv": "Ed25519",
     "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -317,7 +346,7 @@ Example:
     "use": "sig",
     "nbf": 1712793600,
     "exp": 1715385600
-  }
+  }]
 }
 ~~~
 
@@ -334,6 +363,12 @@ Could be a GitHub repository like the public suffix list. The issue is the gatin
 
 This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
 See {{signature-agent}} for more details.
+
+### Signature-Key header
+
+{{SIGNATURE-KEY}} defines a separate key discovery header for HTTP Message
+Signatures. Deployments MAY use it when they need that model. This architecture
+uses `Signature-Agent` as its default discovery mechanism.
 
 ## Session Protocol Considerations
 
@@ -846,6 +881,9 @@ v05
 
 - Add SSRF security considerations for Signature-Agent directory fetches
 - Add guidance and an example for multiple Web Bot Auth signatures
+- Add typed Signature-Agent discovery examples for `directory`, `jwks_uri`, and `cimd`
+- Clarify that `Signature-Input` `keyid` selects the key and `Signature-Agent` locates candidate key material
+- Note Signature-Key as an optional alternative discovery header
 - Fix some typos
 
 v04
