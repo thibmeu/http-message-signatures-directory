@@ -1635,8 +1635,7 @@ and request a new signature, as described in <a href="#requesting-message-signat
                 <path d="M 8,32 L 8,160" fill="none" stroke="black"></path>
                 <path d="M 88,32 L 88,160" fill="none" stroke="black"></path>
                 <path d="M 136,112 L 136,256" fill="none" stroke="black"></path>
-                <path d="M 680,112 L 680,192" fill="none" stroke="black"></path>
-                <path d="M 680,224 L 680,256" fill="none" stroke="black"></path>
+                <path d="M 680,112 L 680,256" fill="none" stroke="black"></path>
                 <path d="M 752,32 L 752,160" fill="none" stroke="black"></path>
                 <path d="M 840,32 L 840,160" fill="none" stroke="black"></path>
                 <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
@@ -1663,17 +1662,16 @@ and request a new signature, as described in <a href="#requesting-message-signat
                   <text x="160" y="132">GET</text>
                   <text x="248" y="132">/path/to/resource</text>
                   <text x="188" y="148">Signature:</text>
-                  <text x="256" y="148">abc==</text>
+                  <text x="272" y="148">sig=abc==</text>
                   <text x="212" y="164">Signature-Input:</text>
                   <text x="352" y="164">sig=("@authority"</text>
                   <text x="548" y="164">"signature-agent";key="sig");\</text>
                   <text x="364" y="180">created=1700000000;\</text>
                   <text x="364" y="196">expires=1700011111;\</text>
-                  <text x="496" y="212">keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U";\</text>
-                  <text x="720" y="212">|</text>
+                  <text x="356" y="212">keyid="ba3e64==";\</text>
                   <text x="356" y="228">tag="web-bot-auth"</text>
                   <text x="212" y="244">Signature-Agent:</text>
-                  <text x="472" y="244">sig="https://signer.example.com";type=directory</text>
+                  <text x="412" y="244">sig="https://signer.example.com"</text>
                 </g>
               </svg><a href="#section-4.2.4-2.1" class="pilcrow">¶</a>
 </div>
@@ -1762,9 +1760,9 @@ document then provides key material through <code>jwks</code> or <code>jwks_uri<
 <p id="section-4.5-5">Examples:<a href="#section-4.5-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.5-6">
 <pre>
-Signature-Agent: sig="https://signer.example.com";type=directory
-Signature-Agent: sig="https://signer.example.com/keys.json";type=jwks_uri
-Signature-Agent: sig="https://signer.example.com/bot";type=cimd
+Signature-Agent: sig1="https://signer.example.com"
+Signature-Agent: sig2="https://signer.example.com/.well-known/jwks.json";type=jwks_uri
+Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
 </pre><a href="#section-4.5-6" class="pilcrow">¶</a>
 </div>
 <p id="section-4.5-7">Example:<a href="#section-4.5-7" class="pilcrow">¶</a></p>
