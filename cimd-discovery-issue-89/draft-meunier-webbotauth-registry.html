@@ -1055,7 +1055,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Guerreiro, et al.</td>
-<td class="center">Expires 9 December 2026</td>
+<td class="center">Expires 12 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg {
 <dd class="internet-draft">draft-meunier-webbotauth-registry-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-07" class="published">7 June 2026</time>
+<time datetime="2026-06-10" class="published">10 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-09">9 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-12">12 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1137,7 +1137,7 @@ members.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1390,8 +1390,9 @@ defined in <a href="#web-bot-auth-extension" class="auto internal xref">Section 
 <p id="section-3-2">Because the card reuses the <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> parameter namespace, an existing Client ID
 Metadata Document is a valid Signature Agent Card. A client that does not
 understand the <code>web_bot_auth</code> object ignores it.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">The Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> and may
-reference a Signature Agent Card, as described in <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">The Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>. A
+Signature Agent Card can be referenced from that header using <code>type=cimd</code>, as
+described in <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-4">
 <pre>
 {
@@ -1499,22 +1500,19 @@ string comparison).<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 <a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-jwks-uri" class="section-name selfRef">JWKS URI</a>
           </h4>
 <p id="section-3.1.2-1">The <code>jwks_uri</code> parameter provides the URL of a JWK Set as defined in
-<span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>, following the <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> semantics. The HTTP Message Signatures
-Directory defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> is such a JWK Set, so a consumer that
-dereferences <code>jwks_uri</code> reads the agent's keys whether or not it understands the
-directory media type. <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> does not mandate a media type for the resource at
-<code>jwks_uri</code>.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>, following the <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> semantics. <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> does not mandate
+a media type for the resource at <code>jwks_uri</code>.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-2">When present, this parameter separates key material discovery from metadata
-discovery. Clients that need key material <span class="bcp14">SHOULD</span> fetch the directory at the
+discovery. Clients that need key material <span class="bcp14">SHOULD</span> fetch the key set at the
 given URL rather than relying on the <code>jwks</code> parameter. This separation allows
 registry operators to host metadata and key material on different endpoints,
 supporting deployment scenarios where the registry endpoint itself contains
-signature agent card metadata but the key directory is hosted elsewhere.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-3">If both <code>jwks_uri</code> and <code>jwks</code> are present, the
-<code>jwks_uri</code> takes precedence for key discovery.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-4">The resource at <code>jwks_uri</code> <span class="bcp14">SHOULD</span> be signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>, as
-a directory is in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>. Clients <span class="bcp14">SHOULD</span> validate the signature and ignore
-keys that do not carry a corresponding valid signature.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
+signature agent card metadata but key material is hosted elsewhere.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-3">A Signature Agent Card <span class="bcp14">MUST NOT</span> contain both <code>jwks_uri</code> and <code>jwks</code>. Clients
+<span class="bcp14">SHOULD</span> reject a card that contains both parameters.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-4">The resource at <code>jwks_uri</code> <span class="bcp14">SHOULD</span> be signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+Clients <span class="bcp14">SHOULD</span> validate the signature and ignore keys that do not carry a
+corresponding valid signature.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-5">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-3.1.2-5" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-6">Example<a href="#section-3.1.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1752,7 +1750,7 @@ as defined in <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. A consu
 follows:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-2">
 <li id="section-4.1-2.1">
-            <p id="section-4.1-2.1.1">Obtain a <code>client_id</code> URL, from a <code>Signature-Agent</code> header
+            <p id="section-4.1-2.1.1">Obtain a <code>client_id</code> URL, from a <code>Signature-Agent</code> header with <code>type=cimd</code>
 (<a href="#signature-agent-header" class="auto internal xref">Section 4.5</a>), a registry entry, or out of band.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.1-2.2">
@@ -1762,15 +1760,12 @@ match the requested URL (see <a href="#signature-agent-parameter-client-id" clas
 response is the Signature Agent Card.<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.1-2.3">
-            <p id="section-4.1-2.3.1">Obtain key material. If the card has a <code>jwks_uri</code>, fetch the HTTP Message
-Signatures Directory at that URL as defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>; otherwise use the
-inline <code>jwks</code> parameter.<a href="#section-4.1-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.3.1">Obtain key material. If the card has a <code>jwks_uri</code>, fetch the JWK Set at that
+URL; otherwise use the inline <code>jwks</code> parameter.<a href="#section-4.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-4.1-3">The metadata document and the key directory are distinct resources reached at
-different hops, so no content negotiation between them is required: the directory
-is served with its own media type as defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>, while the metadata
-document carries no mandated media type.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">The metadata document and the key set are distinct resources reached at different
+hops, so no content negotiation between them is required.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1-4">
 <pre>
 GET /bot HTTP/1.1
@@ -1909,20 +1904,10 @@ poll more frequently than indicated.<a href="#section-4.4.3-1" class="pilcrow">�
         <h3 id="name-signature-agent-header">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
         </h3>
-<p id="section-4.5-1">Signature Agent Card format defined in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> extends the
-format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.5-2">When used for HTTP Message Signatures, a Signature Agent Card <span class="bcp14">MAY</span> be discovered
-via a <code>Signature-Agent</code> header. The URI carried in the header <span class="bcp14">MAY</span> reference
-either an HTTP Message Signatures Directory as defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>, or the
-<code>client_id</code> of a Signature Agent Card resolved as described in
-<a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
-<p id="section-4.5-3">TODO: a verifier needs a rule to tell the two apart from a single URI. One option
-is to disambiguate on the well-known directory path: a URI at the
-HTTP Message Signatures Directory well-known location <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> is fetched
-directly as a directory, and any other URI is treated as a <code>client_id</code> and
-resolved as a Signature Agent Card per <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>. This still requires
-parsing the response to confirm which resource was returned, and is under
-discussion.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">When used for HTTP Message Signatures, a Signature Agent Card <span class="bcp14">MAY</span> be discovered
+via a <code>Signature-Agent</code> header member with <code>type=cimd</code>. The URI carried in that
+member is the <code>client_id</code> of a Signature Agent Card resolved as described in
+<a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="signature-key">
@@ -2675,7 +2660,7 @@ in <a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a> 
           <p id="appendix-D-2.2.1">Add resolvable <code>client_id</code> parameter and CIMD-based discovery (GET, 200 OK, no redirects, client_id match)<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.3">
-          <p id="appendix-D-2.3.1">Allow <code>Signature-Agent</code> header and registry entries to reference a <code>client_id</code> URL<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.3.1">Allow <code>Signature-Agent</code> header members with <code>type=cimd</code> and registry entries to reference a <code>client_id</code> URL<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.4">
           <p id="appendix-D-2.4.1">Register <code>web_bot_auth</code> in the OAuth Dynamic Client Registration Metadata registry; move bot-specific parameters into a new "Web Bot Auth Metadata Parameters" registry<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
@@ -2690,13 +2675,16 @@ in <a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a> 
           <p id="appendix-D-2.7.1">Require <code>client_id</code> in a card resolved through its <code>client_id</code><a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.8">
-          <p id="appendix-D-2.8.1">Restrict registry entries and resolvable cards to <code>https</code> (drop <code>http</code>)<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.8.1">Require <code>jwks</code> and <code>jwks_uri</code> to be mutually exclusive<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.9">
-          <p id="appendix-D-2.9.1">Mirror the directory signing requirement: the <code>jwks_uri</code> resource <span class="bcp14">SHOULD</span> be signed using HTTP Message Signatures<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.9.1">Restrict registry entries and resolvable cards to <code>https</code> (drop <code>http</code>)<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.10">
-          <p id="appendix-D-2.10.1">Note Signature-Key as a possible composable carrier (informative)<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.10.1">Mirror the directory signing requirement: the <code>jwks_uri</code> resource <span class="bcp14">SHOULD</span> be signed using HTTP Message Signatures<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.11">
+          <p id="appendix-D-2.11.1">Note Signature-Key as a possible composable carrier (informative)<a href="#appendix-D-2.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-D-3">v02<a href="#appendix-D-3" class="pilcrow">¶</a></p>
