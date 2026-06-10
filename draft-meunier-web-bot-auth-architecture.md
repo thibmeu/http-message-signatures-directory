@@ -207,6 +207,24 @@ This results in the following components to be signed
 
 It is RECOMMENDED that the `key` matches the signature label.
 
+### Multiple signatures {#multiple-signatures}
+
+A request MAY contain more than one Web Bot Auth signature. Each signature is
+identified by its HTTP Message Signatures label. When `Signature-Agent` is
+present, each signer SHOULD provide a `Signature-Agent` member for its label.
+
+A signer MAY cover selected members from another signature label, including
+`"signature";key=...`, `"signature-input";key=...`, and
+`"signature-agent";key=...`. This lets a signer preserve evidence that another
+signer contributed to the request.
+
+This records which parties signed which fields. It does not, by itself, express
+authorization, delegation, or consent. Those meanings are deployment policy or
+are carried in separately signed fields. The delegation examples in
+{{DIRECTORY}} cover a different problem: how key material can show delegation.
+Multiple signatures only show which signatures were present and what they
+covered.
+
 ### Anti-replay {#anti-replay}
 
 Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
@@ -490,6 +508,44 @@ This document has no IANA actions.
 
 
 --- back
+
+# Examples
+
+## Multiple signatures with a remote browser {#example-multiple-signatures}
+
+This example shows Alice's agent using a remote browser to fetch a resource. The
+agent signs selected request fields. The remote browser signs the request it
+sends to the origin and also covers the agent's signature fields. The signature
+values are illustrative; this is not a test vector.
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+GET /resource HTTP/1.1
+Host: origin.example
+Signature-Agent: agent="https://agent.alice.example",\
+ browser="https://browser.example"
+Signature-Input: agent=("@method" "@authority" "@path"\
+ "signature-agent";key="agent");created=1735689600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="web-bot-auth",\
+ browser=("@method" "@authority" "@path"\
+ "signature-agent";key="browser"\
+ "signature-agent";key="agent"\
+ "signature-input";key="agent"\
+ "signature";key="agent");created=1735689601\
+ ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+ ;tag="web-bot-auth"
+Signature: agent=:YWdlbnQtc2lnbmF0dXJl:,\
+ browser=:YnJvd3Nlci1zaWduYXR1cmU=:
+~~~
+
+The origin can verify both signatures. The `agent` signature covers the fields
+selected by Alice's agent. The `browser` signature covers the request sent by the
+remote browser, its own `Signature-Agent` member, and the `agent` signature
+fields. This records that the remote browser forwarded a request carrying the
+agent's signature. It does not say that Alice's agent authorized the remote
+browser to act for it.
 
 # Test Vectors
 
@@ -789,6 +845,7 @@ Tanya Verma.
 v05
 
 - Add SSRF security considerations for Signature-Agent directory fetches
+- Add guidance and an example for multiple Web Bot Auth signatures
 - Fix some typos
 
 v04
