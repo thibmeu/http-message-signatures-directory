@@ -286,8 +286,8 @@ Table of Contents
    | URI Suffix    | Change     | Reference | Status    | Related     |
    |               | Controller |           |           | information |
    +===============+============+===========+===========+=============+
-   | http-message- | IETF       | [this     | permanent | None        |
-   | signatures-   |            | document] |           |             |
+   | http-message- | IETF       | this      | permanent | None        |
+   | signatures-   |            | document  |           |             |
    | directory     |            |           |           |             |
    +---------------+------------+-----------+-----------+-------------+
 

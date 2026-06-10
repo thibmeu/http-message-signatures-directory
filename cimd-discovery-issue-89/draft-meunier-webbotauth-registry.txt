@@ -93,6 +93,7 @@ Table of Contents
        3.2.7.  Rate control
        3.2.8.  Rate expectation
        3.2.9.  Known URLs
+       3.2.10. IP Address List URI
    4.  Discovery
      4.1.  CIMD-based discovery
      4.2.  Formal Syntax
@@ -110,7 +111,8 @@ Table of Contents
        4.7.4.  Notification Processing
    5.  Security Considerations
      5.1.  Registry Integrity
-     5.2.  Private Registries
+     5.2.  Binding Delegated Keys to the Directory Authority
+     5.3.  Private Registries
    6.  Privacy Considerations
      6.1.  Access Patterns
    7.  IANA Considerations
@@ -137,11 +139,12 @@ Table of Contents
 
    Today, the mechanisms for doing so are inconsistent: some rely on
    User-Agent strings (e.g. MyCompanyBot/1.0), others on IP address
-   lists hosted on file servers (e.g. badbots.com), and still others on
-   out-of-band definitions (e.g. documentation on docs.example.com/
-   mybot).  This diversity makes it difficult for operators and origin
-   servers to reliably discover and share a Signature Agent’s purpose,
-   contact information, or rate expectations.
+   lists hosted on file servers (e.g. https://curated-bots.com/
+   ips.json), and still others on out-of-band definitions (e.g.
+   documentation on docs.example.com/mybot).  This diversity makes it
+   difficult for operators and origin servers to reliably discover and
+   share a Signature Agent’s purpose, contact information, or rate
+   expectations.
 
    The OAuth Client ID Metadata Document [CIMD] already defines a
    resolvable identity: a client_id that is an HTTPS URL dereferencing
@@ -191,7 +194,8 @@ Table of Contents
     "targeted-content": "Cat pictures",
     "rate-control": "429",
     "rate-expectation": "avg=10rps;max=100rps",
-    "known-urls": ["/", "/robots.txt", "*.png"]
+    "known-urls": ["/", "/robots.txt", "*.png"],
+    "ips_uri": "https://example.com/ips.json"
   }
 }
 
@@ -409,6 +413,17 @@ Table of Contents
 
    *  ["/index.html"]
 
+3.2.10.  IP Address List URI
+
+   The ips_uri parameter provides the URL of the signature agent's IP
+   address list as defined in [JAFAR].
+
+   The URI scheme MUST be https.
+
+   Example
+
+   *  https://example.com/ips.json
+
 4.  Discovery
 
    A Signature Agent Card is discovered by dereferencing its client_id,
@@ -585,11 +600,15 @@ Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
    The registry-changes link relation identifies an endpoint to which
    clients may register callbacks out of band.
 
+   TODO: Register the registry-changes link relation with IANA, or
+   replace it with an extension relation URI.
+
 4.7.2.  Callback Registration
 
    Registration of a client callback URL with the registry operator is
    performed out of band.  No specific registration protocol is defined
-   by this document.
+   by this document.  An unsubscribe mechanism SHOULD be considered, and
+   MAY also be out of band.
 
 4.7.3.  Notification Requests
 
@@ -613,7 +632,9 @@ Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
 
    The request MUST use POST.  It MUST be signed using
    [HTTP-MESSAGE-SIGNATURES] with a key present in the registry
-   operator's own signature agent card.
+   operator's existing signature agent card.  This is the signature
+   agent card associated with the registry operator during out-of-band
+   callback registration.
 
    The Content-Type SHOULD be application/json.
 
@@ -640,9 +661,13 @@ Content-Digest: sha-256=:base64hash:
    missing or invalid signatures MUST be rejected.
 
    A notification is advisory only.  The registry endpoint remains the
-   authoritative source of truth.  After verifying a notification,
+   authoritative source of truth.  After verifying a put notification,
    clients SHOULD re-fetch the affected signature agent card to obtain
    current metadata.
+
+   For delete notifications, clients SHOULD confirm the removal by re-
+   fetching the full registry.  This confirmation does not need to
+   happen synchronously with notification processing.
 
    Registry operators SHOULD retry delivery of failed notifications with
    exponential backoff.  Clients that miss notifications will recover on
@@ -664,7 +689,25 @@ Content-Digest: sha-256=:base64hash:
    operator's own signature agent card.  Clients SHOULD verify such
    signatures when present.
 
-5.2.  Private Registries
+5.2.  Binding Delegated Keys to the Directory Authority
+
+   When a signature agent card delegates key discovery using jwks_uri,
+   clients SHOULD validate the referenced directory response to ensure
+   the authenticity and integrity of the delegated key material.
+
+   When a directory server provides key material over HTTP or HTTPS, it
+   is RECOMMENDED that it include one HTTP Message Signature per key in
+   the response, with each key used to provide one signature.  The
+   signature SHOULD cover @authority with the req flag set, and SHOULD
+   include the created, expires, keyid, and tag signature parameters.
+   The tag value MUST be http-message-signatures-directory.
+
+   Clients SHOULD validate these signatures using the keys provided by
+   the directory.  Clients SHOULD ignore keys from a directory response
+   that do not have a corresponding valid signature binding the key
+   material to the directory authority.
+
+5.3.  Private Registries
 
    Registry endpoints that require authentication as described in
    Section 4.4.1 limit exposure of registry entries to authorized
@@ -846,6 +889,19 @@ Content-Digest: sha-256=:base64hash:
 
    *Notes:*  N/A
 
+7.2.2.10.  IP Address List URI Parameter
+
+   *Parameter Name:*  ips_uri
+
+   *Parameter Description:*  URL of the signature agent's IP address
+      list in [JAFAR] format.
+
+   *Change Controller:*  IETF
+
+   *Reference:*  Section 3.2.10
+
+   *Notes:*  N/A
+
 8.  References
 
 8.1.  Normative References
@@ -861,6 +917,12 @@ Content-Digest: sha-256=:base64hash:
               draft-ietf-aipref-vocab-06, 27 April 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
               vocab-06>.
+
+   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
    [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
               Document", Work in Progress, Internet-Draft, draft-ietf-
@@ -900,6 +962,12 @@ Content-Digest: sha-256=:base64hash:
               Nottingham, M. and R. Fielding, "Additional HTTP Status
               Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
               <https://www.rfc-editor.org/rfc/rfc6585>.
+
+   [JAFAR]    Illyes, G., "A JSON-Based Format for Publishing IP Ranges
+              of Automated HTTP Clients", Work in Progress, Internet-
+              Draft, draft-illyes-webbotauth-jafar-00, 21 April 2026,
+              <https://datatracker.ietf.org/doc/html/draft-illyes-
+              webbotauth-jafar-00>.
 
    [JWK]      Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015,
@@ -941,11 +1009,11 @@ Content-Digest: sha-256=:base64hash:
 
 8.2.  Informative References
 
-   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
-              Definition Language (CDDL): A Notational Convention to
-              Express Concise Binary Object Representation (CBOR) and
-              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
-              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+   [CBCP]     Illyes, G., Kühlewind, M., and K. Aj, "Crawler best
+              practices", Work in Progress, Internet-Draft, draft-
+              illyes-webbotauth-cbcp-00, 21 April 2026,
+              <https://datatracker.ietf.org/doc/html/draft-illyes-
+              webbotauth-cbcp-00>.
 
    [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
               DOI 10.17487/RFC2397, August 1998,
@@ -1051,6 +1119,8 @@ Changelog
    *  Note Signature-Key as a possible composable carrier (informative)
 
    v02
+
+   *  Add ips_uri parameter so client can expose IP addresses
 
    *  Add optional jwks_uri parameter to separate key material from
       metadata
