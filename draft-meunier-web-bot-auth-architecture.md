@@ -264,13 +264,13 @@ An Agent SHOULD send a request with the signature generated above. Updating the 
 |  Agent  |                                                                                  |  Origin  |
 |         |     .-------------------------------------------------------------------.        |          |
 |         +-----| GET /path/to/resource                                             |------->|          |
-|         |     | Signature: abc==                                                  |        |          |
+|         |     | Signature: sig=abc==                                              |        |          |
 +---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
                 |                  created=1700000000;\                             |
                 |                  expires=1700011111;\                             |
-                |                  keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U";\ |
+                |                  keyid="ba3e64==";\                               |
                 |                  tag="web-bot-auth"                               |
-                | Signature-Agent: sig="https://signer.example.com";type=directory  |
+                | Signature-Agent: sig="https://signer.example.com"                 |
                 '-------------------------------------------------------------------'
 ~~~
 
@@ -329,9 +329,9 @@ For all types, the key is selected using the `keyid` parameter in
 Examples:
 
 ~~~
-Signature-Agent: sig="https://signer.example.com";type=directory
-Signature-Agent: sig="https://signer.example.com/keys.json";type=jwks_uri
-Signature-Agent: sig="https://signer.example.com/bot";type=cimd
+Signature-Agent: sig1="https://signer.example.com"
+Signature-Agent: sig2="https://signer.example.com/.well-known/jwks.json";type=jwks_uri
+Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
 ~~~
 
 Example:
