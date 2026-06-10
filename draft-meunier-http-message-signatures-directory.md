@@ -32,6 +32,8 @@ author:
     email: ietf@sandormajor.com
 
 normative:
+  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
+  DIGEST-FIELDS: RFC9530
   HTTP: RFC9110
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP-MESSAGE-SIGNATURES-IANA:
@@ -58,7 +60,7 @@ This document describes a method for clients using {{HTTP-MESSAGE-SIGNATURES}}
 to advertise their signing keys.
 
 It defines a key directory format based on JWKS as defined in {{Section 5 of JWK}},
-as well as new HTTP Method Context to allow for in-band key discovery.
+as well as a new HTTP Method Context for in-band key discovery.
 
 
 --- middle
@@ -74,7 +76,7 @@ This document defines:
 
 1. A standardized key directory format based on JWKS for publishing HTTP Message Signatures keys,
 2. A well-known URI location for discovering these key directories,
-3. A new HTTP header field enabling in-band key directory location discovery.
+3. A new HTTP header field enabling in-band key material discovery.
 
 Together, these mechanisms enable key distribution and discovery for HTTP Message Signatures cryptographic material.
 
@@ -96,27 +98,48 @@ A client application SHOULD validate the directory format and reject malformed e
 # HTTP Method Context `Signature-Agent`
 
 A service sending signed requests as defined in {{HTTP-MESSAGE-SIGNATURES}} MAY include a
-`Signature-Agent` header field to communicate its signing key directory. This header
-field contains a URI allowing retrieval of an HTTP Message Signatures Directory as
-defined in {{configuration}}.
+`Signature-Agent` header field to communicate where its verification key material can be found.
+This header field contains a URI and a `type` parameter that identifies the discovery mechanism.
 
 ## Header Field Definition
 
-The `Signature-Agent` header field is an Dictionary Structured Header as defined
+The `Signature-Agent` header field is a Dictionary Structured Header as defined
 in {{Section 3.2 of STRUCTURED-HEADERS}}.
-Its member values MUST be an String Item which contain a {{URI}}.
+Its member values MUST be String Items that contain a {{URI}}.
+
+The `type` parameter is a Token Item as defined in {{Section 3.3.4 of
+STRUCTURED-HEADERS}}. If the `type` parameter is absent, its value is `directory`.
+
+The following `type` values are defined:
+
+`directory`
+: The member value identifies an origin. For `http` and `https` URI values, a
+client resolves the HTTP Message Signatures Directory using the well-known URI
+registered in {{wkuri-reg}} at that origin. For `data` URI values, the member
+value contains an inline HTTP Message Signatures Directory.
+
+`jwks_uri`
+: The member value identifies a JWK Set URI.
+
+`cimd`
+: The member value identifies a Client ID Metadata Document {{CIMD}} URI.
+
+A client that does not support a `type` value MUST ignore that member.
+A client MUST NOT infer the discovery mechanism from the URI path, media type,
+or response body.
 
 The URI scheme MUST be one of:
 
-- **https (RECOMMENDED)**: Points to an HTTPS resource serving the key directory
-- **http**: Points to an HTTP resource serving the key directory
-- **data**: Contains an inline key directory
+- **https (RECOMMENDED)**: Points to an HTTPS resource
+- **http**: Points to an HTTP resource
+- **data**: Contains inline key material
 
-When using the "data" URI scheme, the media type MUST be
+When using the `data` URI scheme with `type=directory`, the media type MUST be
 `application/http-message-signatures-directory+json`. The content MAY be base64 encoded
 as per {{BASE64}}.
+The `data` URI scheme MUST NOT be used with other `type` values.
 
-If dictonary values are not a valid URI-reference, the entire header field MAY be
+If dictionary values are not valid URI-references, the entire header field MAY be
 ignored.
 
 # Security Considerations {#security}
@@ -142,10 +165,13 @@ RECOMMENDED that it constructs and includes one HTTP Message Signatures per keys
 with the response, as defined in {{HTTP-MESSAGE-SIGNATURES}}.
 Each key SHOULD be used to provide one signature.
 
-Directory server SHOULD include:
+Directory server SHOULD include the following covered components:
 
 `@authority`
 : as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
+
+`content-digest`
+: as defined in {{DIGEST-FIELDS}}.
 
 Directory server SHOULD include the following `@signature-params` as defined in
 {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
@@ -163,9 +189,10 @@ Directory server SHOULD include the following `@signature-params` as defined in
 : MUST be `http-message-signatures-directory`
 
 Clients SHOULD validate these signatures using the keys provided by the
-directory. Clients SHOULD ignore keys from a directory response that do not have
-a corresponding valid signature. This validation ensures the integrity of the
-key set and its association with the intended directory.
+directory. Clients SHOULD validate the `Content-Digest` field against the
+response body. Clients SHOULD ignore keys from a directory response that do not
+have a corresponding valid signature. This validation checks the integrity of the
+key set and binds it to the intended authority.
 
 # Privacy Considerations
 
@@ -423,7 +450,7 @@ This extend the examples from {{Appendix B of HTTP-MESSAGE-SIGNATURES}}.
 ~~~
 POST /foo?param=Value&Pet=dog HTTP/1.1
 Host: example.com
-Signature-Agent: my_test="https://directory.test"
+Signature-Agent: my_test="https://directory.test";type=directory
 {"hello": "world"}
 
 HTTP/1.1 200 OK
@@ -463,7 +490,9 @@ Lucas Pardue.
 v04
 
 - Change `Signature-Agent` to a `sf-dictionary`
+- Add `type` parameter to `Signature-Agent` with `directory`, `jwks_uri`, and `cimd` values; default to `directory`
 - Add `req` flag on directory response
+- Add `Content-Digest` to directory response validation
 - Add more contributors
 
 v03

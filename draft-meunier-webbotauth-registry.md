@@ -117,8 +117,9 @@ Because the card reuses the {{CIMD}} parameter namespace, an existing Client ID
 Metadata Document is a valid Signature Agent Card. A client that does not
 understand the `web_bot_auth` object ignores it.
 
-The Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}} and may
-reference a Signature Agent Card, as described in {{cimd-discovery}}.
+The Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}}. A
+Signature Agent Card can be referenced from that header using `type=cimd`, as
+described in {{cimd-discovery}}.
 
 ~~~
 {
@@ -202,25 +203,22 @@ Example
 ### JWKS URI {#signature-agent-parameter-jwks-uri}
 
 The `jwks_uri` parameter provides the URL of a JWK Set as defined in
-{{Section 5 of JWK}}, following the {{DCR}} semantics. The HTTP Message Signatures
-Directory defined in {{DIRECTORY}} is such a JWK Set, so a consumer that
-dereferences `jwks_uri` reads the agent's keys whether or not it understands the
-directory media type. {{DCR}} does not mandate a media type for the resource at
-`jwks_uri`.
+{{Section 5 of JWK}}, following the {{DCR}} semantics. {{DCR}} does not mandate
+a media type for the resource at `jwks_uri`.
 
 When present, this parameter separates key material discovery from metadata
-discovery. Clients that need key material SHOULD fetch the directory at the
+discovery. Clients that need key material SHOULD fetch the key set at the
 given URL rather than relying on the `jwks` parameter. This separation allows
 registry operators to host metadata and key material on different endpoints,
 supporting deployment scenarios where the registry endpoint itself contains
-signature agent card metadata but the key directory is hosted elsewhere.
+signature agent card metadata but key material is hosted elsewhere.
 
-If both `jwks_uri` and `jwks` are present, the
-`jwks_uri` takes precedence for key discovery.
+A Signature Agent Card MUST NOT contain both `jwks_uri` and `jwks`. Clients
+SHOULD reject a card that contains both parameters.
 
-The resource at `jwks_uri` SHOULD be signed using {{HTTP-MESSAGE-SIGNATURES}}, as
-a directory is in {{DIRECTORY}}. Clients SHOULD validate the signature and ignore
-keys that do not carry a corresponding valid signature.
+The resource at `jwks_uri` SHOULD be signed using {{HTTP-MESSAGE-SIGNATURES}}.
+Clients SHOULD validate the signature and ignore keys that do not carry a
+corresponding valid signature.
 
 The URI scheme MUST be `https`.
 
@@ -365,20 +363,17 @@ A Signature Agent advertises its identity through a resolvable `client_id` URL,
 as defined in {{CIMD}}. A consumer discovers the agent's metadata and keys as
 follows:
 
-1. Obtain a `client_id` URL, from a `Signature-Agent` header
+1. Obtain a `client_id` URL, from a `Signature-Agent` header with `type=cimd`
    ({{signature-agent-header}}), a registry entry, or out of band.
 2. Dereference the `client_id` with a `GET` request. The response MUST be
    `200 (OK)`, redirects MUST NOT be followed, and the returned `client_id` MUST
    match the requested URL (see {{signature-agent-parameter-client-id}}). The
    response is the Signature Agent Card.
-3. Obtain key material. If the card has a `jwks_uri`, fetch the HTTP Message
-   Signatures Directory at that URL as defined in {{DIRECTORY}}; otherwise use the
-   inline `jwks` parameter.
+3. Obtain key material. If the card has a `jwks_uri`, fetch the JWK Set at that
+   URL; otherwise use the inline `jwks` parameter.
 
-The metadata document and the key directory are distinct resources reached at
-different hops, so no content negotiation between them is required: the directory
-is served with its own media type as defined in {{DIRECTORY}}, while the metadata
-document carries no mandated media type.
+The metadata document and the key set are distinct resources reached at different
+hops, so no content negotiation between them is required.
 
 ~~~
 GET /bot HTTP/1.1
@@ -492,22 +487,10 @@ poll more frequently than indicated.
 
 ## Signature-Agent header {#signature-agent-header}
 
-Signature Agent Card format defined in {{signature-agent-card}} extends the
-format of `Signature-Agent` header as defined in {{Section 4.1 of DIRECTORY}}.
-
 When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
-via a `Signature-Agent` header. The URI carried in the header MAY reference
-either an HTTP Message Signatures Directory as defined in {{DIRECTORY}}, or the
-`client_id` of a Signature Agent Card resolved as described in
+via a `Signature-Agent` header member with `type=cimd`. The URI carried in that
+member is the `client_id` of a Signature Agent Card resolved as described in
 {{cimd-discovery}}.
-
-TODO: a verifier needs a rule to tell the two apart from a single URI. One option
-is to disambiguate on the well-known directory path: a URI at the
-HTTP Message Signatures Directory well-known location {{DIRECTORY}} is fetched
-directly as a directory, and any other URI is treated as a `client_id` and
-resolved as a Signature Agent Card per {{cimd-discovery}}. This still requires
-parsing the response to confirm which resource was returned, and is under
-discussion.
 
 ## Composable discovery with Signature-Key {#signature-key}
 
@@ -910,11 +893,12 @@ v03
 
 - Reframe Signature Agent Card as an OAuth client metadata document ({{DCR}}/{{CIMD}} namespace) extended with a single `web_bot_auth` object
 - Add resolvable `client_id` parameter and CIMD-based discovery (GET, 200 OK, no redirects, client_id match)
-- Allow `Signature-Agent` header and registry entries to reference a `client_id` URL
+- Allow `Signature-Agent` header members with `type=cimd` and registry entries to reference a `client_id` URL
 - Register `web_bot_auth` in the OAuth Dynamic Client Registration Metadata registry; move bot-specific parameters into a new "Web Bot Auth Metadata Parameters" registry
 - Stop redefining shared client metadata fields (client_name, client_uri, logo_uri, contacts); reference RFC 7591 instead, and drop the non-standard data:text/plain restriction on `client_uri`
 - Rename the inline key parameter from `keys` to `jwks` to match the {{DCR}} namespace, and state that the `jwks_uri` resource is a JWK Set (no mandated media type) so generic consumers can read directory keys
 - Require `client_id` in a card resolved through its `client_id`
+- Require `jwks` and `jwks_uri` to be mutually exclusive
 - Restrict registry entries and resolvable cards to `https` (drop `http`)
 - Mirror the directory signing requirement: the `jwks_uri` resource SHOULD be signed using HTTP Message Signatures
 - Note Signature-Key as a possible composable carrier (informative)
