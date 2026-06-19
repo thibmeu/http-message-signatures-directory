@@ -88,6 +88,7 @@ Table of Contents
        4.5.1.  Out-of-band communication between client and origin
        4.5.2.  Public list
        4.5.3.  Signature-Agent header
+       4.5.4.  Signature-Key header
      4.6.  Session Protocol Considerations
    5.  Security Considerations
      5.1.  Use of TLS
@@ -291,6 +292,9 @@ Table of Contents
    requests with Signature-Agent header, as described in Section 4.2.5.
    If the header is to be sent, one of its members MUST be signed as a
    component as defined in Section 2.1 of [HTTP-MESSAGE-SIGNATURES].
+   The Signature-Agent member identifies where candidate key material
+   can be found.  The key used to verify the signature is selected by
+   the keyid parameter of the corresponding Signature-Input member.
 
    This results in the following components to be signed
 
@@ -357,7 +361,7 @@ Table of Contents
 |  Agent  |                                                                                  |  Origin  |
 |         |     .-------------------------------------------------------------------.        |          |
 |         +-----| GET /path/to/resource                                             |------->|          |
-|         |     | Signature: abc==                                                  |        |          |
+|         |     | Signature: sig=abc==                                              |        |          |
 +---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
                 |                  created=1700000000;\                             |
                 |                  expires=1700011111;\                             |
@@ -412,8 +416,8 @@ Table of Contents
       not know the keyid.
 
    *  During step 5, if the keyid is unknown to the origin, they MAY
-      fetch the provider directory as indicated by Signature-Agent
-      header defined in Section 4 of [DIRECTORY].
+      fetch key material as indicated by the Signature-Agent header
+      defined in Section 4 of [DIRECTORY].
 
    Origin MAY require the nonce to satisfy certain constraints: be
    globally unique using a global nonce store, be unique to a specific
@@ -421,17 +425,35 @@ Table of Contents
 
 4.5.  Key Distribution and Discovery
 
-   This section describes the discovery mechanism for the agent
-   directory.
+   This section describes key discovery for the agent.
 
-   The reference for discovery is a URL.  It SHOULD be an HTTPS URL.  It
-   SHOULD provide a directory hosted on the well known registered in
-   Section 4 of [DIRECTORY].
+   The reference for discovery is a URL.  It SHOULD be an HTTPS URL.
+   The Signature-Agent header defines typed discovery.  This
+   architecture uses these types:
+
+   directory  Resolve the HTTP Message Signatures Directory at the well-
+      known URI registered in [DIRECTORY].  This is the default when no
+      type parameter is present.
+
+   jwks_uri  Resolve the member value as a direct JWK Set URI.
+
+   cimd  Resolve the member value as a Client ID Metadata Document
+      [CIMD] URI.  The document then provides key material through jwks
+      or jwks_uri.
+
+   For all types, the key is selected using the keyid parameter in
+   Signature-Input.
+
+   Examples:
+
+Signature-Agent: sig1="https://signer.example.com"
+Signature-Agent: sig2="https://signer.example.com/.well-known/jwks.json";type=jwks_uri
+Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
 
    Example:
 
    {
-     "keys": {
+     "keys": [{
        "kty": "OKP",
        "crv": "Ed25519",
        "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
@@ -439,7 +461,7 @@ Table of Contents
        "use": "sig",
        "nbf": 1712793600,
        "exp": 1715385600
-     }
+     }]
    }
 
 4.5.1.  Out-of-band communication between client and origin
@@ -457,6 +479,13 @@ Table of Contents
    This allows for backward compatibility with existing header agent
    filtering, and an upgrade to a cryptographically secured protocol.
    See Section 4.2.1 for more details.
+
+4.5.4.  Signature-Key header
+
+   [SIGNATURE-KEY] defines a separate key discovery header for HTTP
+   Message Signatures.  Deployments MAY use it when they need that
+   model.  This architecture uses Signature-Agent as its default
+   discovery mechanism.
 
 4.6.  Session Protocol Considerations
 
@@ -704,6 +733,12 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 
 8.2.  Informative References
 
+   [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
+              Document", Work in Progress, Internet-Draft, draft-ietf-
+              oauth-client-id-metadata-document-01, 1 March 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
+              client-id-metadata-document-01>.
+
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
@@ -719,6 +754,13 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [SIGNATURE-KEY]
+              Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
+              Progress, Internet-Draft, draft-hardt-httpbis-signature-
+              key-05, 17 June 2026,
+              <https://datatracker.ietf.org/doc/html/draft-hardt-
+              httpbis-signature-key-05>.
 
 Appendix A.  Examples
 
@@ -1062,6 +1104,14 @@ Changelog
       fetches
 
    *  Add guidance and an example for multiple Web Bot Auth signatures
+
+   *  Add typed Signature-Agent discovery examples for directory,
+      jwks_uri, and cimd
+
+   *  Clarify that Signature-Input keyid selects the key and Signature-
+      Agent locates candidate key material
+
+   *  Note Signature-Key as an optional alternative discovery header
 
    *  Fix some typos
 

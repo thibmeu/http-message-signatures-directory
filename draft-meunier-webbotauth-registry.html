@@ -9,12 +9,13 @@
 <meta content="Ulas Kirazci" name="author">
 <meta content="Thibault Meunier" name="author">
 <meta content='
-       This document describes a JSON based format for clients using  
-to advertise information about themselves. 
-       This document describes a JSON-based "Signature Agent Card" format for signature agent using   to advertise metadata about themselve. This includes identity, purpose, rate expectations,
-and cryptographic keys. It also establishes an IANA registry for Signature Agent
-Card parameters, enabling extensible and interoperable discovery of agent
-information. 
+       This document defines the "Signature Agent Card", a JSON metadata document that a
+signature agent using   publishes to describe itself: its identity,
+purpose, rate expectations, and cryptographic keys. Its parameters are drawn from
+the OAuth Dynamic Client Registration Metadata registry  , the same
+namespace used by  , extended with a single  web_bot_auth  object. This
+document registers that object with IANA and establishes a registry for its
+members. 
     ' name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="not-yet" name="keyword">
@@ -1094,12 +1095,13 @@ svg {
 <h1 id="title">Registry and Signature Agent card for Web bot auth</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes a JSON based format for clients using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>
-to advertise information about themselves.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document describes a JSON-based "Signature Agent Card" format for signature agent using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> to advertise metadata about themselve. This includes identity, purpose, rate expectations,
-and cryptographic keys. It also establishes an IANA registry for Signature Agent
-Card parameters, enabling extensible and interoperable discovery of agent
-information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines the "Signature Agent Card", a JSON metadata document that a
+signature agent using <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span> publishes to describe itself: its identity,
+purpose, rate expectations, and cryptographic keys. Its parameters are drawn from
+the OAuth Dynamic Client Registration Metadata registry <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>, the same
+namespace used by <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>, extended with a single <code>web_bot_auth</code> object. This
+document registers that object with IANA and establishes a registry for its
+members.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1175,52 +1177,53 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-signature-agent-card" class="internal xref">Signature Agent Card</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-client-name" class="internal xref">Client Name</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-client-metadata-parameters" class="internal xref">Client Metadata Parameters</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
+                    <p id="section-toc.1-1.3.2.1.2.1.1" class="keepWithNext"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-client-id" class="internal xref">Client ID</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
+                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-jwks-uri" class="internal xref">JWKS URI</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.3">
+                    <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="auto internal xref">3.1.3</a>.  <a href="#name-jwks" class="internal xref">JWKS</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-client-uri" class="internal xref">Client URI</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-web-bot-auth-extension" class="internal xref">Web Bot Auth Extension</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-expected-user-agent" class="internal xref">Expected user agent</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-contacts" class="internal xref">Contacts</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-robotstxt-product-token" class="internal xref">robots.txt product token</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-logo-uri" class="internal xref">Logo URI</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="auto internal xref">3.2.3</a>.  <a href="#name-robotstxt-compliance" class="internal xref">robots.txt compliance</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-expected-user-agent" class="internal xref">Expected user agent</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.4">
+                    <p id="section-toc.1-1.3.2.2.2.4.1"><a href="#section-3.2.4" class="auto internal xref">3.2.4</a>.  <a href="#name-trigger" class="internal xref">Trigger</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-robotstxt-product-token" class="internal xref">robots.txt product token</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.5">
+                    <p id="section-toc.1-1.3.2.2.2.5.1"><a href="#section-3.2.5" class="auto internal xref">3.2.5</a>.  <a href="#name-purpose" class="internal xref">Purpose</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
-                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-robotstxt-compliance" class="internal xref">robots.txt compliance</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.6">
+                    <p id="section-toc.1-1.3.2.2.2.6.1"><a href="#section-3.2.6" class="auto internal xref">3.2.6</a>.  <a href="#name-targeted-content" class="internal xref">Targeted content</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
-                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-trigger" class="internal xref">Trigger</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.7">
+                    <p id="section-toc.1-1.3.2.2.2.7.1"><a href="#section-3.2.7" class="auto internal xref">3.2.7</a>.  <a href="#name-rate-control" class="internal xref">Rate control</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.9">
-                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-purpose" class="internal xref">Purpose</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.8">
+                    <p id="section-toc.1-1.3.2.2.2.8.1"><a href="#section-3.2.8" class="auto internal xref">3.2.8</a>.  <a href="#name-rate-expectation" class="internal xref">Rate expectation</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.10">
-                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="auto internal xref">3.10</a>. <a href="#name-targeted-content" class="internal xref">Targeted content</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.9">
+                    <p id="section-toc.1-1.3.2.2.2.9.1"><a href="#section-3.2.9" class="auto internal xref">3.2.9</a>.  <a href="#name-known-urls" class="internal xref">Known URLs</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.11">
-                <p id="section-toc.1-1.3.2.11.1"><a href="#section-3.11" class="auto internal xref">3.11</a>. <a href="#name-rate-control" class="internal xref">Rate control</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.10">
+                    <p id="section-toc.1-1.3.2.2.2.10.1"><a href="#section-3.2.10" class="auto internal xref">3.2.10</a>. <a href="#name-ip-address-list-uri" class="internal xref">IP Address List URI</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.12">
-                <p id="section-toc.1-1.3.2.12.1"><a href="#section-3.12" class="auto internal xref">3.12</a>. <a href="#name-rate-expectation" class="internal xref">Rate expectation</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.13">
-                <p id="section-toc.1-1.3.2.13.1"><a href="#section-3.13" class="auto internal xref">3.13</a>. <a href="#name-known-urls" class="internal xref">Known URLs</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.14">
-                <p id="section-toc.1-1.3.2.14.1"><a href="#section-3.14" class="auto internal xref">3.14</a>. <a href="#name-jwks-uri" class="internal xref">JWKS URI</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.15">
-                <p id="section-toc.1-1.3.2.15.1"><a href="#section-3.15" class="auto internal xref">3.15</a>. <a href="#name-ip-address-list-uri" class="internal xref">IP Address List URI</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.16">
-                <p id="section-toc.1-1.3.2.16.1"><a href="#section-3.16" class="auto internal xref">3.16</a>. <a href="#name-keys" class="internal xref">Keys</a></p>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1228,42 +1231,48 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-discovery" class="internal xref">Discovery</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-formal-syntax" class="internal xref">Formal Syntax</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-cimd-based-discovery" class="internal xref">CIMD-based discovery</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-formal-syntax" class="internal xref">Formal Syntax</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-registry-endpoint" class="internal xref">Registry Endpoint</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-out-of-band-communication-b" class="internal xref">Out-of-band communication between client and origin</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-registry-endpoint" class="internal xref">Registry Endpoint</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1">
-                    <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="auto internal xref">4.3.1</a>.  <a href="#name-authentication" class="internal xref">Authentication</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.1">
+                    <p id="section-toc.1-1.4.2.4.2.1.1"><a href="#section-4.4.1" class="auto internal xref">4.4.1</a>.  <a href="#name-authentication" class="internal xref">Authentication</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2">
-                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-efficient-polling-with-cond" class="internal xref">Efficient Polling with Conditional Requests</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.2">
+                    <p id="section-toc.1-1.4.2.4.2.2.1"><a href="#section-4.4.2" class="auto internal xref">4.4.2</a>.  <a href="#name-efficient-polling-with-cond" class="internal xref">Efficient Polling with Conditional Requests</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3">
-                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-caching" class="internal xref">Caching</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.3">
+                    <p id="section-toc.1-1.4.2.4.2.3.1"><a href="#section-4.4.3" class="auto internal xref">4.4.3</a>.  <a href="#name-caching" class="internal xref">Caching</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent header</a></p>
-</li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-change-notification" class="internal xref">Change Notification</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent header</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-composable-discovery-with-s" class="internal xref">Composable discovery with Signature-Key</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-change-notification" class="internal xref">Change Notification</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5.2.1">
-                    <p id="section-toc.1-1.4.2.5.2.1.1"><a href="#section-4.5.1" class="auto internal xref">4.5.1</a>.  <a href="#name-advertising-the-notificatio" class="internal xref">Advertising the Notification Endpoint</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7.2.1">
+                    <p id="section-toc.1-1.4.2.7.2.1.1"><a href="#section-4.7.1" class="auto internal xref">4.7.1</a>.  <a href="#name-advertising-the-notificatio" class="internal xref">Advertising the Notification Endpoint</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5.2.2">
-                    <p id="section-toc.1-1.4.2.5.2.2.1"><a href="#section-4.5.2" class="auto internal xref">4.5.2</a>.  <a href="#name-callback-registration" class="internal xref">Callback Registration</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7.2.2">
+                    <p id="section-toc.1-1.4.2.7.2.2.1"><a href="#section-4.7.2" class="auto internal xref">4.7.2</a>.  <a href="#name-callback-registration" class="internal xref">Callback Registration</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5.2.3">
-                    <p id="section-toc.1-1.4.2.5.2.3.1"><a href="#section-4.5.3" class="auto internal xref">4.5.3</a>.  <a href="#name-notification-requests" class="internal xref">Notification Requests</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7.2.3">
+                    <p id="section-toc.1-1.4.2.7.2.3.1"><a href="#section-4.7.3" class="auto internal xref">4.7.3</a>.  <a href="#name-notification-requests" class="internal xref">Notification Requests</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5.2.4">
-                    <p id="section-toc.1-1.4.2.5.2.4.1"><a href="#section-4.5.4" class="auto internal xref">4.5.4</a>.  <a href="#name-notification-processing" class="internal xref">Notification Processing</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7.2.4">
+                    <p id="section-toc.1-1.4.2.7.2.4.1"><a href="#section-4.7.4" class="auto internal xref">4.7.4</a>.  <a href="#name-notification-processing" class="internal xref">Notification Processing</a></p>
 </li>
                 </ul>
 </li>
@@ -1295,10 +1304,16 @@ information.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-registration-template" class="internal xref">Registration template</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-oauth-dynamic-client-regist" class="internal xref">OAuth Dynamic Client Registration Metadata Registration</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-web-bot-auth-metadata-param" class="internal xref">Web Bot Auth Metadata Parameters Registry</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
-                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-initial-registry-content" class="internal xref">Initial Registry content</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-registration-template" class="internal xref">Registration template</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
+                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="auto internal xref">7.2.2</a>.  <a href="#name-initial-registry-content" class="internal xref">Initial Registry content</a></p>
 </li>
                 </ul>
 </li>
@@ -1348,13 +1363,14 @@ trust with origin servers.<a href="#section-1-1" class="pilcrow">¶</a></p>
 strings (e.g. <code>MyCompanyBot/1.0</code>), others on IP address lists hosted on file servers (e.g. <code>https://curated-bots.com/ips.json</code>), and still others on out-of-band
 definitions (e.g. documentation on docs.example.com/mybot). This diversity makes it difficult for operators and origin servers
 to reliably discover and share a Signature Agent’s purpose, contact information, or rate
-expectations.
-Existing discovery mechanisms, such as <span>[<a href="#OPENID-CONNECT-DISCOVERY" class="cite xref">OPENID-CONNECT-DISCOVERY</a>]</span>, do not have the necessary
-granularity, and pursue different goals.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">This document introduces a JSON-based "Signature Agent Card" format for Signature
-Agents, to be published in registries and discovered by servers. It also
-creates a new IANA registry of "Signature Agent Card Parameters" to ensure
-extensibility and consistency of future attributes.<a href="#section-1-3" class="pilcrow">¶</a></p>
+expectations.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">The OAuth Client ID Metadata Document <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> already defines a resolvable
+identity: a <code>client_id</code> that is an HTTPS URL dereferencing to a JSON metadata
+document. This document reuses it.
+A Signature Agent Card takes the client metadata parameters that <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> draws
+from <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>, and adds bot-specific information in a single <code>web_bot_auth</code>
+object. An existing Client ID Metadata Document is therefore a valid Signature
+Agent Card.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1373,343 +1389,359 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-signature-agent-card">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-signature-agent-card" class="section-name selfRef">Signature Agent Card</a>
       </h2>
-<p id="section-3-1">Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.
-This section describes Signature Agent Card, a JSON object containing parameters describing the Signature Agent.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-2">
+<p id="section-3-1">A Signature Agent Card is a JSON object describing a Signature Agent. Its
+parameters are drawn from the OAuth Dynamic Client Registration Metadata registry
+<span>[<a href="#DCR" class="cite xref">DCR</a>]</span>, the same parameter namespace used by <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. Web bot auth-specific
+information is carried in a single <code>web_bot_auth</code> object,
+defined in <a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Because the card reuses the <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> parameter namespace, an existing Client ID
+Metadata Document is a valid Signature Agent Card. A client that does not
+understand the <code>web_bot_auth</code> object ignores it.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">The Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>. A
+Signature Agent Card can be referenced from that header using <code>type=cimd</code>, as
+described in <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-4">
 <pre>
 {
+  "client_id": "https://example.com/bot",
   "client_name": "Example Bot",
   "client_uri": "https://example.com/bot/about.html",
-  "logo_uri": "https://example.com/",
+  "logo_uri": "https://example.com/logo.png",
   "contacts": ["mailto:bot-support@example.com"],
-  "expected-user-agent": "Mozilla/5.0 ExampleBot",
-  "rfc9309-product-token": "ExampleBot",
-  "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
-  "trigger": "fetcher",
-  "purpose": "tdm",
-  "targeted-content": "Cat pictures",
-  "rate-control": "429",
-  "rate-expectation": "avg=10rps;max=100rps",
-  "known-urls": ["/", "/robots.txt", "*.png"],
   "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
-  "ips_uri": "https://example.com/ips.json",
-  "keys": [{
-    "kty": "OKP",
-    "crv": "Ed25519",
-    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
-    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
-    "use": "sig",
-    "nbf": 1712793600,
-    "exp": 1715385600
-  }]
+  "web_bot_auth": {
+    "expected-user-agent": "Mozilla/5.0 ExampleBot",
+    "rfc9309-product-token": "ExampleBot",
+    "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
+    "trigger": "fetcher",
+    "purpose": "tdm",
+    "targeted-content": "Cat pictures",
+    "rate-control": "429",
+    "rate-expectation": "avg=10rps;max=100rps",
+    "known-urls": ["/", "/robots.txt", "*.png"],
+    "ips_uri": "https://example.com/ips.json"
+  }
 }
-</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</pre><a href="#section-3-4" class="pilcrow">¶</a>
 </div>
-<p id="section-3-3">Unless otherwise specified, all parameters in this document are <span class="bcp14">OPTIONAL</span>.
-There <span class="bcp14">MUST</span> be at least one parameter set.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">Parameters for which the value is unknown <span class="bcp14">MUST</span> be ignored.
-All string values are UTF-8.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<div id="signature-agent-parameter-name">
+<p id="section-3-5">Unless otherwise specified, all parameters in this document are <span class="bcp14">OPTIONAL</span>, except
+that a card resolved through its <code>client_id</code> <span class="bcp14">MUST</span> carry <code>client_id</code> (see
+<a href="#signature-agent-parameter-client-id" class="auto internal xref">Section 3.1.1</a>). There <span class="bcp14">MUST</span> be at least one parameter
+set.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Parameters for which the value is unknown <span class="bcp14">MUST</span> be ignored.
+All string values are UTF-8.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<div id="client-metadata-parameters">
 <section id="section-3.1">
-        <h3 id="name-client-name">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-client-name" class="section-name selfRef">Client Name</a>
+        <h3 id="name-client-metadata-parameters">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-client-metadata-parameters" class="section-name selfRef">Client Metadata Parameters</a>
         </h3>
-<p id="section-3.1-1">The <code>client_name</code> parameter provides a friendly identifier for the Signature Agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Example<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The following parameters are OAuth client metadata parameters defined in <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>
+and used as in <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. They keep the semantics defined there; this section only
+notes how they are used by a Signature Agent.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-3.1-2">
+          <dt id="section-3.1-2.1"><code>client_id</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.2">
+            <p id="section-3.1-2.2.1">A resolvable identifier for the Signature Agent. See
+<a href="#signature-agent-parameter-client-id" class="auto internal xref">Section 3.1.1</a>.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.3"><code>client_name</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.4">
+            <p id="section-3.1-2.4.1">A friendly name for the Signature Agent, e.g. <code>ExampleBot</code>.<a href="#section-3.1-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.5"><code>client_uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.6">
+            <p id="section-3.1-2.6.1">A URL of a web page describing the Signature Agent: what it does, and how it
+handles the data it fetches, e.g. <code>https://example.com/bot/about.html</code>.<a href="#section-3.1-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.7"><code>logo_uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.8">
+            <p id="section-3.1-2.8.1">A URL referencing a logo for the Signature Agent, for quick visual
+identification, e.g. <code>https://example.com/logo.png</code>.<a href="#section-3.1-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.9"><code>contacts</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.10">
+            <p id="section-3.1-2.10.1">An array of URIs providing reliable communication channels, typically email
+addresses, e.g. <code>["mailto:bot-support@example.com"]</code>.<a href="#section-3.1-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.11"><code>jwks_uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.12">
+            <p id="section-3.1-2.12.1">See <a href="#signature-agent-parameter-jwks-uri" class="auto internal xref">Section 3.1.2</a>.<a href="#section-3.1-2.12.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-2.13"><code>jwks</code></dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.14">
+            <p id="section-3.1-2.14.1">A JWK Set as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>. See
+<a href="#signature-agent-parameter-jwks" class="auto internal xref">Section 3.1.3</a>.<a href="#section-3.1-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<div id="signature-agent-parameter-client-id">
+<section id="section-3.1.1">
+          <h4 id="name-client-id">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-client-id" class="section-name selfRef">Client ID</a>
+          </h4>
+<p id="section-3.1.1-1">The <code>client_id</code> parameter is the resolvable identity of the Signature Agent, as
+defined in <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. It is an HTTPS URL that, when dereferenced, returns the
+Signature Agent Card. A card retrieved through its <code>client_id</code> <span class="bcp14">MUST</span> include the
+<code>client_id</code> parameter.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-2">A client retrieving a card from a URL <span class="bcp14">MUST</span> use the <code>GET</code> method, <span class="bcp14">MUST</span> treat any
+status code other than <code>200 (OK)</code> as an error, and <span class="bcp14">MUST NOT</span> follow HTTP redirects.
+The <code>client_id</code> value in the returned document <span class="bcp14">MUST</span> be identical to the URL used
+to retrieve it, compared as described in <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.1" class="relref">Section 6.2.1</a> of [<a href="#RFC3986" class="cite xref">RFC3986</a>]</span> (simple
+string comparison).<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-3">Example<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1"><code>ExampleBot</code><a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1.1-4.1">
+              <p id="section-3.1.1-4.1.1"><code>https://example.com/bot</code><a href="#section-3.1.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.2">
-            <p id="section-3.1-3.2.1"><code>My remote browser company</code><a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-about">
-<section id="section-3.2">
-        <h3 id="name-client-uri">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-client-uri" class="section-name selfRef">Client URI</a>
-        </h3>
-<p id="section-3.2-1">The <code>client_uri</code> parameter provides inline content or a web page describing the bot: e.g. what does it do, how it handles data it fetches.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Only http, https or data:text/plain are allowed.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3">Example<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.2-4.1">
-            <p id="section-3.2-4.1.1"><code>https://example.com/bot/about.html</code><a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-4.2">
-            <p id="section-3.2-4.2.1"><code>data:text/plain,The Example bot is about providing an example.</code><a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-contact">
-<section id="section-3.3">
-        <h3 id="name-contacts">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-contacts" class="section-name selfRef">Contacts</a>
-        </h3>
-<p id="section-3.3-1">The <code>contacts</code> parameter provides reliable communication channels in URI forms.
-Typically, this is an email address.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">Example<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3-3.1">
-            <p id="section-3.3-3.1.1"><code>["mailto:bot-support@example.com"]</code><a href="#section-3.3-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.3-3.2">
-            <p id="section-3.3-3.2.1"><code>["https://example.com/contact"]</code><a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-logo">
-<section id="section-3.4">
-        <h3 id="name-logo-uri">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-logo-uri" class="section-name selfRef">Logo URI</a>
-        </h3>
-<p id="section-3.4-1">The <code>logo_uri</code> parameter provides an image reference for visual identification.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">TODO: Recommendation for size and format, if there is a clear consensus or reference we can point to.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">Example<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.4-4.1">
-            <p id="section-3.4-4.1.1"><code>data:image/svg+xml;base64,deadbeef</code><a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-4.2">
-            <p id="section-3.4-4.2.1"><code>https://example.com/logo.png</code><a href="#section-3.4-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-user-agent">
-<section id="section-3.5">
-        <h3 id="name-expected-user-agent">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-expected-user-agent" class="section-name selfRef">Expected user agent</a>
-        </h3>
-<p id="section-3.5-1">The <code>expected-user-agent</code> parameter specifies one or more <code>User-Agent</code> strings as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>
-or prefix matches. Prefixes <span class="bcp14">MAY</span> use <code>*</code> as a wildcard.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">Example<a href="#section-3.5-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.5-3.1">
-            <p id="section-3.5-3.1.1"><code>Mozilla/5.0 ExampleBot</code><a href="#section-3.5-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-robotstxt-token">
-<section id="section-3.6">
-        <h3 id="name-robotstxt-product-token">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-robotstxt-product-token" class="section-name selfRef">robots.txt product token</a>
-        </h3>
-<p id="section-3.6-1">The <code>rfc9309-product-token</code> parameter specifies the product token used for
-<code>robots.txt</code> directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">Example<a href="#section-3.6-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.6-3.1">
-            <p id="section-3.6-3.1.1"><code>ExampleBot</code><a href="#section-3.6-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-robotstxt-compliance">
-<section id="section-3.7">
-        <h3 id="name-robotstxt-compliance">
-<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-robotstxt-compliance" class="section-name selfRef">robots.txt compliance</a>
-        </h3>
-<p id="section-3.7-1">The <code>rfc9309-compliance</code> parameter lists directives from <code>robots.txt</code> that the
-agent implements.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
-<p id="section-3.7-2">Example<a href="#section-3.7-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.7-3.1">
-            <p id="section-3.7-3.1.1"><code>["User-Agent", "Disallow"]</code><a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.7-3.2">
-            <p id="section-3.7-3.2.1"><code>["User-Agent", "Disallow", "CrawlDelay"]</code><a href="#section-3.7-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-trigger">
-<section id="section-3.8">
-        <h3 id="name-trigger">
-<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-trigger" class="section-name selfRef">Trigger</a>
-        </h3>
-<p id="section-3.8-1">The <code>trigger</code> parameter indicates the operational mode of the agent.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2">Valid values:<a href="#section-3.8-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.8-3">
-<li id="section-3.8-3.1">
-            <p id="section-3.8-3.1.1"><code>fetcher</code> - request initiated by the user<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li id="section-3.8-3.2">
-            <p id="section-3.8-3.2.1"><code>crawler</code> - autonomous scanning<a href="#section-3.8-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ol>
-</section>
-</div>
-<div id="signature-agent-parameter-purpose">
-<section id="section-3.9">
-        <h3 id="name-purpose">
-<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-purpose" class="section-name selfRef">Purpose</a>
-        </h3>
-<p id="section-3.9-1">The <code>purpose</code> parameter describes the intended use of collected data. Values
-<span class="bcp14">SHOULD</span> be drawn from a controlled vocabulary, such as <span>[<a href="#AIPREF-VOCAB" class="cite xref">AIPREF-VOCAB</a>]</span>.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
-<p id="section-3.9-2">Example<a href="#section-3.9-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.9-3.1">
-            <p id="section-3.9-3.1.1"><code>search</code><a href="#section-3.9-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.9-3.2">
-            <p id="section-3.9-3.2.1"><code>tdm</code><a href="#section-3.9-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-targeted-content">
-<section id="section-3.10">
-        <h3 id="name-targeted-content">
-<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-targeted-content" class="section-name selfRef">Targeted content</a>
-        </h3>
-<p id="section-3.10-1">The <code>targeted-content</code> parameter specifies the type of data the agent seeks.
-Its format is arbitrary UTF-8 encoded string.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
-<p id="section-3.10-2">Example<a href="#section-3.10-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.10-3.1">
-            <p id="section-3.10-3.1.1"><code>SEO analysis</code><a href="#section-3.10-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.10-3.2">
-            <p id="section-3.10-3.2.1"><code>Vulnerability scanning</code><a href="#section-3.10-3.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.10-3.3">
-            <p id="section-3.10-3.3.1"><code>Ads verification</code><a href="#section-3.10-3.3.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-rate-control">
-<section id="section-3.11">
-        <h3 id="name-rate-control">
-<a href="#section-3.11" class="section-number selfRef">3.11. </a><a href="#name-rate-control" class="section-name selfRef">Rate control</a>
-        </h3>
-<p id="section-3.11-1">The <code>rate-control</code> parameter indicates how origins can influence the agent’s
-request rate.<a href="#section-3.11-1" class="pilcrow">¶</a></p>
-<p id="section-3.11-2">TODO: specify a format<a href="#section-3.11-2" class="pilcrow">¶</a></p>
-<p id="section-3.11-3">Example<a href="#section-3.11-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.11-4.1">
-            <p id="section-3.11-4.1.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.11-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.11-4.2">
-            <p id="section-3.11-4.2.1">Custom tool<a href="#section-3.11-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.11-4.3">
-            <p id="section-3.11-4.3.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.11-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-rate-expectation">
-<section id="section-3.12">
-        <h3 id="name-rate-expectation">
-<a href="#section-3.12" class="section-number selfRef">3.12. </a><a href="#name-rate-expectation" class="section-name selfRef">Rate expectation</a>
-        </h3>
-<p id="section-3.12-1">The <code>rate-expectation</code> parameter specifies anticipated request volume or
-burstiness.<a href="#section-3.12-1" class="pilcrow">¶</a></p>
-<p id="section-3.12-2">TODO: consider a format such as <code>avg=10rps;max=100rps</code><a href="#section-3.12-2" class="pilcrow">¶</a></p>
-<p id="section-3.12-3">Example<a href="#section-3.12-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.12-4.1">
-            <p id="section-3.12-4.1.1">500 rps<a href="#section-3.12-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.12-4.2">
-            <p id="section-3.12-4.2.1">Spikes during reindexing<a href="#section-3.12-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="signature-agent-parameter-known-urls">
-<section id="section-3.13">
-        <h3 id="name-known-urls">
-<a href="#section-3.13" class="section-number selfRef">3.13. </a><a href="#name-known-urls" class="section-name selfRef">Known URLs</a>
-        </h3>
-<p id="section-3.13-1">The <code>known-urls</code> parameter lists predictable endpoints accessed by the agent.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
-<p id="section-3.13-2">These URLs may be absolute URLs like <code>https://example.com/index.html</code>.
-They could be relative path like <code>/ads.txt</code>.
-Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#section-3.13-2" class="pilcrow">¶</a></p>
-<p id="section-3.13-3">Example<a href="#section-3.13-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.13-4.1">
-            <p id="section-3.13-4.1.1"><code>["/"]</code><a href="#section-3.13-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.13-4.2">
-            <p id="section-3.13-4.2.1"><code>["/ads.txt"]</code><a href="#section-3.13-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.13-4.3">
-            <p id="section-3.13-4.3.1"><code>["/favicon.ico"]</code><a href="#section-3.13-4.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.13-4.4">
-            <p id="section-3.13-4.4.1"><code>["/index.html"]</code><a href="#section-3.13-4.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
+          </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-jwks-uri">
-<section id="section-3.14">
-        <h3 id="name-jwks-uri">
-<a href="#section-3.14" class="section-number selfRef">3.14. </a><a href="#name-jwks-uri" class="section-name selfRef">JWKS URI</a>
-        </h3>
-<p id="section-3.14-1">The <code>jwks_uri</code> parameter provides the URL of the signature agent's
-JWKS keys as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>. This covers
-HTTP Message Signatures Directory as defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-3.14-1" class="pilcrow">¶</a></p>
-<p id="section-3.14-2">When present, this parameter separates key material discovery from metadata
-discovery. Clients that need key material <span class="bcp14">SHOULD</span> fetch the directory at the
-given URL rather than relying on the <code>keys</code> parameter. This separation allows
+<section id="section-3.1.2">
+          <h4 id="name-jwks-uri">
+<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-jwks-uri" class="section-name selfRef">JWKS URI</a>
+          </h4>
+<p id="section-3.1.2-1">The <code>jwks_uri</code> parameter provides the URL of a JWK Set as defined in
+<span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>, following the <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> semantics. <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> does not mandate
+a media type for the resource at <code>jwks_uri</code>.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-2">When present, this parameter separates key material discovery from metadata
+discovery. Clients that need key material <span class="bcp14">SHOULD</span> fetch the key set at the
+given URL rather than relying on the <code>jwks</code> parameter. This separation allows
 registry operators to host metadata and key material on different endpoints,
 supporting deployment scenarios where the registry endpoint itself contains
-signature agent card metadata but the key directory is hosted elsewhere.<a href="#section-3.14-2" class="pilcrow">¶</a></p>
-<p id="section-3.14-3">If both <code>jwks_uri</code> and <code>keys</code> are present, the
-<code>jwks_uri</code> takes precedence for key discovery.<a href="#section-3.14-3" class="pilcrow">¶</a></p>
-<p id="section-3.14-4">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-3.14-4" class="pilcrow">¶</a></p>
-<p id="section-3.14-5">Example<a href="#section-3.14-5" class="pilcrow">¶</a></p>
+signature agent card metadata but key material is hosted elsewhere.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-3">A Signature Agent Card <span class="bcp14">MUST NOT</span> contain both <code>jwks_uri</code> and <code>jwks</code>. Clients
+<span class="bcp14">SHOULD</span> reject a card that contains both parameters.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-4">The resource at <code>jwks_uri</code> <span class="bcp14">SHOULD</span> be signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+Clients <span class="bcp14">SHOULD</span> validate the signature and ignore keys that do not carry a
+corresponding valid signature.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-5">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-3.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-6">Example<a href="#section-3.1.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.14-6.1">
-            <p id="section-3.14-6.1.1"><code>https://example.com/.well-known/http-message-signatures-directory</code><a href="#section-3.14-6.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1.2-7.1">
+              <p id="section-3.1.2-7.1.1"><code>https://example.com/.well-known/http-message-signatures-directory</code><a href="#section-3.1.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
-        </ul>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-jwks">
+<section id="section-3.1.3">
+          <h4 id="name-jwks">
+<a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-jwks" class="section-name selfRef">JWKS</a>
+          </h4>
+<p id="section-3.1.3-1">The <code>jwks</code> parameter contains a JWK Set as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>. It is
+the inline client metadata parameter defined in <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-2">If <code>jwks</code> is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<code>Content-Digest</code> header <span class="bcp14">MUST</span> be included in the covered components.<a href="#section-3.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-3">TODO: describe signature, CWS keys.<a href="#section-3.1.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="web-bot-auth-extension">
+<section id="section-3.2">
+        <h3 id="name-web-bot-auth-extension">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-web-bot-auth-extension" class="section-name selfRef">Web Bot Auth Extension</a>
+        </h3>
+<p id="section-3.2-1">The <code>web_bot_auth</code> parameter is a JSON object carrying bot-specific metadata. It
+is registered in the OAuth Dynamic Client Registration Metadata registry <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>
+(see <a href="#iana" class="auto internal xref">Section 7</a>), so that it may appear in any Client ID Metadata Document <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>.
+Its members are governed by the "Web Bot Auth Metadata Parameters" registry
+defined in <a href="#iana" class="auto internal xref">Section 7</a>. Members for which the value is unknown <span class="bcp14">MUST</span> be ignored.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The members defined by this document are below.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<div id="signature-agent-parameter-user-agent">
+<section id="section-3.2.1">
+          <h4 id="name-expected-user-agent">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-expected-user-agent" class="section-name selfRef">Expected user agent</a>
+          </h4>
+<p id="section-3.2.1-1">The <code>expected-user-agent</code> parameter specifies one or more <code>User-Agent</code> strings as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-10.1.5" class="relref">Section 10.1.5</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>
+or prefix matches. Prefixes <span class="bcp14">MAY</span> use <code>*</code> as a wildcard.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-2">Example<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1-3.1">
+              <p id="section-3.2.1-3.1.1"><code>Mozilla/5.0 ExampleBot</code><a href="#section-3.2.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-robotstxt-token">
+<section id="section-3.2.2">
+          <h4 id="name-robotstxt-product-token">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-robotstxt-product-token" class="section-name selfRef">robots.txt product token</a>
+          </h4>
+<p id="section-3.2.2-1">The <code>rfc9309-product-token</code> parameter specifies the product token used for
+<code>robots.txt</code> directives per <span><a href="https://rfc-editor.org/rfc/rfc9309#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#ROBOTSTXT" class="cite xref">ROBOTSTXT</a>]</span>.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-2">Example<a href="#section-3.2.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.2-3.1">
+              <p id="section-3.2.2-3.1.1"><code>ExampleBot</code><a href="#section-3.2.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-robotstxt-compliance">
+<section id="section-3.2.3">
+          <h4 id="name-robotstxt-compliance">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-robotstxt-compliance" class="section-name selfRef">robots.txt compliance</a>
+          </h4>
+<p id="section-3.2.3-1">The <code>rfc9309-compliance</code> parameter lists directives from <code>robots.txt</code> that the
+agent implements.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-2">Example<a href="#section-3.2.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.3-3.1">
+              <p id="section-3.2.3-3.1.1"><code>["User-Agent", "Disallow"]</code><a href="#section-3.2.3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.3-3.2">
+              <p id="section-3.2.3-3.2.1"><code>["User-Agent", "Disallow", "CrawlDelay"]</code><a href="#section-3.2.3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-trigger">
+<section id="section-3.2.4">
+          <h4 id="name-trigger">
+<a href="#section-3.2.4" class="section-number selfRef">3.2.4. </a><a href="#name-trigger" class="section-name selfRef">Trigger</a>
+          </h4>
+<p id="section-3.2.4-1">The <code>trigger</code> parameter indicates the operational mode of the agent.<a href="#section-3.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.4-2">Valid values:<a href="#section-3.2.4-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.2.4-3">
+<li id="section-3.2.4-3.1">
+              <p id="section-3.2.4-3.1.1"><code>fetcher</code> - request initiated by the user<a href="#section-3.2.4-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-3.2.4-3.2">
+              <p id="section-3.2.4-3.2.1"><code>crawler</code> - autonomous scanning<a href="#section-3.2.4-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="signature-agent-parameter-purpose">
+<section id="section-3.2.5">
+          <h4 id="name-purpose">
+<a href="#section-3.2.5" class="section-number selfRef">3.2.5. </a><a href="#name-purpose" class="section-name selfRef">Purpose</a>
+          </h4>
+<p id="section-3.2.5-1">The <code>purpose</code> parameter describes the intended use of collected data. Values
+<span class="bcp14">SHOULD</span> be drawn from a controlled vocabulary, such as <span>[<a href="#AIPREF-VOCAB" class="cite xref">AIPREF-VOCAB</a>]</span>.<a href="#section-3.2.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.5-2">Example<a href="#section-3.2.5-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.5-3.1">
+              <p id="section-3.2.5-3.1.1"><code>search</code><a href="#section-3.2.5-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.5-3.2">
+              <p id="section-3.2.5-3.2.1"><code>tdm</code><a href="#section-3.2.5-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-targeted-content">
+<section id="section-3.2.6">
+          <h4 id="name-targeted-content">
+<a href="#section-3.2.6" class="section-number selfRef">3.2.6. </a><a href="#name-targeted-content" class="section-name selfRef">Targeted content</a>
+          </h4>
+<p id="section-3.2.6-1">The <code>targeted-content</code> parameter specifies the type of data the agent seeks.
+Its format is arbitrary UTF-8 encoded string.<a href="#section-3.2.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.6-2">Example<a href="#section-3.2.6-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.6-3.1">
+              <p id="section-3.2.6-3.1.1"><code>SEO analysis</code><a href="#section-3.2.6-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.6-3.2">
+              <p id="section-3.2.6-3.2.1"><code>Vulnerability scanning</code><a href="#section-3.2.6-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.6-3.3">
+              <p id="section-3.2.6-3.3.1"><code>Ads verification</code><a href="#section-3.2.6-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-rate-control">
+<section id="section-3.2.7">
+          <h4 id="name-rate-control">
+<a href="#section-3.2.7" class="section-number selfRef">3.2.7. </a><a href="#name-rate-control" class="section-name selfRef">Rate control</a>
+          </h4>
+<p id="section-3.2.7-1">The <code>rate-control</code> parameter indicates how origins can influence the agent’s
+request rate.<a href="#section-3.2.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.7-2">TODO: specify a format<a href="#section-3.2.7-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.7-3">Example<a href="#section-3.2.7-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.7-4.1">
+              <p id="section-3.2.7-4.1.1">CrawlDelay in robots.txt (non-standard)<a href="#section-3.2.7-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.7-4.2">
+              <p id="section-3.2.7-4.2.1">Custom tool<a href="#section-3.2.7-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.7-4.3">
+              <p id="section-3.2.7-4.3.1">429 + <span>[<a href="#RATELIMIT-HEADER" class="cite xref">RATELIMIT-HEADER</a>]</span><a href="#section-3.2.7-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-rate-expectation">
+<section id="section-3.2.8">
+          <h4 id="name-rate-expectation">
+<a href="#section-3.2.8" class="section-number selfRef">3.2.8. </a><a href="#name-rate-expectation" class="section-name selfRef">Rate expectation</a>
+          </h4>
+<p id="section-3.2.8-1">The <code>rate-expectation</code> parameter specifies anticipated request volume or
+burstiness.<a href="#section-3.2.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.8-2">TODO: consider a format such as <code>avg=10rps;max=100rps</code><a href="#section-3.2.8-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.8-3">Example<a href="#section-3.2.8-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.8-4.1">
+              <p id="section-3.2.8-4.1.1">500 rps<a href="#section-3.2.8-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.8-4.2">
+              <p id="section-3.2.8-4.2.1">Spikes during reindexing<a href="#section-3.2.8-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="signature-agent-parameter-known-urls">
+<section id="section-3.2.9">
+          <h4 id="name-known-urls">
+<a href="#section-3.2.9" class="section-number selfRef">3.2.9. </a><a href="#name-known-urls" class="section-name selfRef">Known URLs</a>
+          </h4>
+<p id="section-3.2.9-1">The <code>known-urls</code> parameter lists predictable endpoints accessed by the agent.<a href="#section-3.2.9-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.9-2">These URLs may be absolute URLs like <code>https://example.com/index.html</code>.
+They could be relative path like <code>/ads.txt</code>.
+Or they can use <code>*</code> as wildcard such as <code>*.png</code>.<a href="#section-3.2.9-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.9-3">Example<a href="#section-3.2.9-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.9-4.1">
+              <p id="section-3.2.9-4.1.1"><code>["/"]</code><a href="#section-3.2.9-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.9-4.2">
+              <p id="section-3.2.9-4.2.1"><code>["/ads.txt"]</code><a href="#section-3.2.9-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.9-4.3">
+              <p id="section-3.2.9-4.3.1"><code>["/favicon.ico"]</code><a href="#section-3.2.9-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.2.9-4.4">
+              <p id="section-3.2.9-4.4.1"><code>["/index.html"]</code><a href="#section-3.2.9-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 </section>
 </div>
 <div id="signature-agent-parameter-ips-uri">
-<section id="section-3.15">
-        <h3 id="name-ip-address-list-uri">
-<a href="#section-3.15" class="section-number selfRef">3.15. </a><a href="#name-ip-address-list-uri" class="section-name selfRef">IP Address List URI</a>
-        </h3>
-<p id="section-3.15-1">The <code>ips_uri</code> parameter provides the URL of the signature agent's
-IP address list as defined in <span>[<a href="#JAFAR" class="cite xref">JAFAR</a>]</span>.<a href="#section-3.15-1" class="pilcrow">¶</a></p>
-<p id="section-3.15-2">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-3.15-2" class="pilcrow">¶</a></p>
-<p id="section-3.15-3">Example<a href="#section-3.15-3" class="pilcrow">¶</a></p>
+<section id="section-3.2.10">
+          <h4 id="name-ip-address-list-uri">
+<a href="#section-3.2.10" class="section-number selfRef">3.2.10. </a><a href="#name-ip-address-list-uri" class="section-name selfRef">IP Address List URI</a>
+          </h4>
+<p id="section-3.2.10-1">The <code>ips_uri</code> parameter provides the URL of the signature agent's
+IP address list as defined in <span>[<a href="#JAFAR" class="cite xref">JAFAR</a>]</span>.<a href="#section-3.2.10-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.10-2">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-3.2.10-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.10-3">Example<a href="#section-3.2.10-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.15-4.1">
-            <p id="section-3.15-4.1.1"><code>https://example.com/ips.json</code><a href="#section-3.15-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2.10-4.1">
+              <p id="section-3.2.10-4.1.1"><code>https://example.com/ips.json</code><a href="#section-3.2.10-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        </ul>
+          </ul>
 </section>
 </div>
-<div id="signature-agent-parameter-keys">
-<section id="section-3.16">
-        <h3 id="name-keys">
-<a href="#section-3.16" class="section-number selfRef">3.16. </a><a href="#name-keys" class="section-name selfRef">Keys</a>
-        </h3>
-<p id="section-3.16-1">The <code>keys</code> parameter contains a JWKS as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>.<a href="#section-3.16-1" class="pilcrow">¶</a></p>
-<p id="section-3.16-2">If <code>keys</code> is present, it is <span class="bcp14">RECOMMENDED</span> that the card is signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-<code>Content-Digest</code> header <span class="bcp14">MUST</span> be included in the covered components.<a href="#section-3.16-2" class="pilcrow">¶</a></p>
-<p id="section-3.16-3">TODO: describe signature, CWS keys.<a href="#section-3.16-3" class="pilcrow">¶</a></p>
-<p id="section-3.16-4">Example<a href="#section-3.16-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.16-5.1">
-            <p id="section-3.16-5.1.1">https://example.com/.well-known/http-message-signatures-directory<a href="#section-3.16-5.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.16-5.2">
-            <p id="section-3.16-5.2.1">JWKS-directory<a href="#section-3.16-5.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
 </section>
 </div>
 </section>
@@ -1719,21 +1751,66 @@ IP address list as defined in <span>[<a href="#JAFAR" class="cite xref">JAFAR</a
       <h2 id="name-discovery">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-discovery" class="section-name selfRef">Discovery</a>
       </h2>
-<p id="section-4-1">A registry is a list of URLs, each refering to a signature agent card.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The URI scheme <span class="bcp14">MUST</span> be one of:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-1">A Signature Agent Card is discovered by dereferencing its <code>client_id</code>, as
+described in <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>, or from a registry.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">A registry is a list of URLs, each refering to a signature agent card. An entry
+<span class="bcp14">MAY</span> be the <code>client_id</code> of a Signature Agent Card.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">The URI scheme <span class="bcp14">MUST</span> be one of:<a href="#section-4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4-3.1">
-          <p id="section-4-3.1.1">https (<span class="bcp14">RECOMMENDED</span>): Points to an HTTPS resource serving a signature agent card<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4-4.1">
+          <p id="section-4-4.1.1">https: Points to an HTTPS resource serving a signature agent card<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-4-3.2">
-          <p id="section-4-3.2.1">http: Points to an HTTP resource serving a signature agent card<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-3.3">
-          <p id="section-4-3.3.1">data: Contains an inline signature agent card<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-4-4.2">
+          <p id="section-4-4.2.1">data: Contains an inline signature agent card<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-4-4">Example<a href="#section-4-4" class="pilcrow">¶</a></p>
-<div class="lang-txt sourcecode" id="section-4-5">
+<div id="cimd-discovery">
+<section id="section-4.1">
+        <h3 id="name-cimd-based-discovery">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-cimd-based-discovery" class="section-name selfRef">CIMD-based discovery</a>
+        </h3>
+<p id="section-4.1-1">A Signature Agent advertises its identity through a resolvable <code>client_id</code> URL,
+as defined in <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. A consumer discovers the agent's metadata and keys as
+follows:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.1-2">
+<li id="section-4.1-2.1">
+            <p id="section-4.1-2.1.1">Obtain a <code>client_id</code> URL, from a <code>Signature-Agent</code> header with <code>type=cimd</code>
+(<a href="#signature-agent-header" class="auto internal xref">Section 4.5</a>), a registry entry, or out of band.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-4.1-2.2">
+            <p id="section-4.1-2.2.1">Dereference the <code>client_id</code> with a <code>GET</code> request. The response <span class="bcp14">MUST</span> be
+<code>200 (OK)</code>, redirects <span class="bcp14">MUST NOT</span> be followed, and the returned <code>client_id</code> <span class="bcp14">MUST</span>
+match the requested URL (see <a href="#signature-agent-parameter-client-id" class="auto internal xref">Section 3.1.1</a>). The
+response is the Signature Agent Card.<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-4.1-2.3">
+            <p id="section-4.1-2.3.1">Obtain key material. If the card has a <code>jwks_uri</code>, fetch the JWK Set at that
+URL; otherwise use the inline <code>jwks</code> parameter.<a href="#section-4.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<p id="section-4.1-3">The metadata document and the key set are distinct resources reached at different
+hops, so no content negotiation between them is required.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-4">
+<pre>
+GET /bot HTTP/1.1
+Host: example.com
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "client_id": "https://example.com/bot",
+  "client_name": "Example Bot",
+  "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
+  "web_bot_auth": {
+    "trigger": "fetcher",
+    "purpose": "tdm"
+  }
+}
+</pre><a href="#section-4.1-4" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1-5">Example<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<div class="lang-txt sourcecode" id="section-4.1-6">
 <pre>
 # An example list of bots
 https://bot1.example.com/.well-known/http-message-signatures-directory
@@ -1744,21 +1821,22 @@ https://zerotrust-gateway.example.com/v1/signature-agent-card
 
 # Below is an inlined card with the data URL scheme
 data:application/json,{"client_name":"Inline Bot","jwks_uri":"https://inline.example.com/.well-known/http-message-signatures-directory"}
-</pre><a href="#section-4-5" class="pilcrow">¶</a>
+</pre><a href="#section-4.1-6" class="pilcrow">¶</a>
+</div>
+</section>
 </div>
 <div id="formal-syntax">
-<section id="section-4.1">
+<section id="section-4.2">
         <h3 id="name-formal-syntax">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-formal-syntax" class="section-name selfRef">Formal Syntax</a>
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-formal-syntax" class="section-name selfRef">Formal Syntax</a>
         </h3>
-<p id="section-4.1-1">Below is an Augmented Backus-Naur Form (ABNF) description, as described in <span>[<a href="#ABNF" class="cite xref">ABNF</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">The below definition imports <code>http-URI</code> and <code>https-URI</code> from <span>[<a href="#HTTP" class="cite xref">HTTP</a>]</span>, and
-<code>dataurl</code> from <span>[<a href="#DATAURL" class="cite xref">DATAURL</a>]</span>.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.1-3">
+<p id="section-4.2-1">Below is an Augmented Backus-Naur Form (ABNF) description, as described in <span>[<a href="#ABNF" class="cite xref">ABNF</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">The below definition imports <code>https-URI</code> from <span>[<a href="#HTTP" class="cite xref">HTTP</a>]</span>, and <code>dataurl</code> from
+<span>[<a href="#DATAURL" class="cite xref">DATAURL</a>]</span>.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-3">
 <pre>
 registry = *(cardendpointline / emptyline)
 cardendpointline = (
-    http-URI /       ; As defined in Section 4.2.1 of RFC 9110
     https-URI /      ; As defined in Section 4.2.2 of RFC 9110
     dataurl          ; As defined in Section 3 of RFC 2397
 ) EOL
@@ -1782,127 +1860,140 @@ UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
          %xF4 %x80-8F 2UTF8-tail
 
 UTF8-tail = %x80-BF
-</pre><a href="#section-4.1-3" class="pilcrow">¶</a>
+</pre><a href="#section-4.2-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="out-of-band-communication-between-client-and-origin">
-<section id="section-4.2">
+<section id="section-4.3">
         <h3 id="name-out-of-band-communication-b">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-out-of-band-communication-b" class="section-name selfRef">Out-of-band communication between client and origin</a>
         </h3>
-<p id="section-4.2-1">A signature agent <span class="bcp14">MAY</span> submit their signature agent card to an origin, or the
-origin <span class="bcp14">MAY</span> manually add them to their local registry.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">A signature agent <span class="bcp14">MAY</span> submit their signature agent card to an origin, or the
+origin <span class="bcp14">MAY</span> manually add them to their local registry.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="registry-endpoint">
-<section id="section-4.3">
+<section id="section-4.4">
         <h3 id="name-registry-endpoint">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-registry-endpoint" class="section-name selfRef">Registry Endpoint</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-registry-endpoint" class="section-name selfRef">Registry Endpoint</a>
         </h3>
-<p id="section-4.3-1">A registry <span class="bcp14">MAY</span> be provided via a GitHub repository, a public file server, or a
-dedicated endpoint.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3-2">The registry <span class="bcp14">SHOULD</span> be served over HTTPS.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
-<p id="section-4.3-3">A client application <span class="bcp14">SHOULD</span> validate the registry format and reject malformed
-entries.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">A registry <span class="bcp14">MAY</span> be provided via a GitHub repository, a public file server, or a
+dedicated endpoint.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">The registry <span class="bcp14">SHOULD</span> be served over HTTPS.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">A client application <span class="bcp14">SHOULD</span> validate the registry format and reject malformed
+entries.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <div id="registry-authentication">
-<section id="section-4.3.1">
+<section id="section-4.4.1">
           <h4 id="name-authentication">
-<a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-authentication" class="section-name selfRef">Authentication</a>
+<a href="#section-4.4.1" class="section-number selfRef">4.4.1. </a><a href="#name-authentication" class="section-name selfRef">Authentication</a>
           </h4>
-<p id="section-4.3.1-1">A registry endpoint <span class="bcp14">MAY</span> require authentication to restrict access to authorized
+<p id="section-4.4.1-1">A registry endpoint <span class="bcp14">MAY</span> require authentication to restrict access to authorized
 clients. This allows a registry operator to expose registries without revealing
-their contents publicly.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.1-2">No specific authentication mechanism is mandated. Implementations <span class="bcp14">MAY</span> use
+their contents publicly.<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.1-2">No specific authentication mechanism is mandated. Implementations <span class="bcp14">MAY</span> use
 pre-shared keys as mentioned in <span>[<a href="#PSK-TLS" class="cite xref">PSK-TLS</a>]</span>, bearer tokens as defined in <span>[<a href="#OAUTH-BEARER" class="cite xref">OAUTH-BEARER</a>]</span>, or HTTP Message
 Signatures as defined in <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>. HTTP Message Signatures
-are <span class="bcp14">RECOMMENDED</span> when key rotation without out-of-band coordination is desired.<a href="#section-4.3.1-2" class="pilcrow">¶</a></p>
+are <span class="bcp14">RECOMMENDED</span> when key rotation without out-of-band coordination is desired.<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="registry-conditional-requests">
-<section id="section-4.3.2">
+<section id="section-4.4.2">
           <h4 id="name-efficient-polling-with-cond">
-<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-efficient-polling-with-cond" class="section-name selfRef">Efficient Polling with Conditional Requests</a>
+<a href="#section-4.4.2" class="section-number selfRef">4.4.2. </a><a href="#name-efficient-polling-with-cond" class="section-name selfRef">Efficient Polling with Conditional Requests</a>
           </h4>
-<p id="section-4.3.2-1">Registry servers <span class="bcp14">SHOULD</span> include <code>ETag</code> and <code>Last-Modified</code> response header
-fields as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-8.8" class="relref">Section 8.8</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>.<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.2-2">Clients <span class="bcp14">SHOULD</span> send <code>If-None-Match</code> or <code>If-Modified-Since</code> precondition
+<p id="section-4.4.2-1">Registry servers <span class="bcp14">SHOULD</span> include <code>ETag</code> and <code>Last-Modified</code> response header
+fields as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-8.8" class="relref">Section 8.8</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.2-2">Clients <span class="bcp14">SHOULD</span> send <code>If-None-Match</code> or <code>If-Modified-Since</code> precondition
 header fields as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-13.1" class="relref">Section 13.1</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span> on subsequent requests.
 A server <span class="bcp14">SHOULD</span> respond with <code>304 (Not Modified)</code> when the registry has not
-changed, avoiding redundant data transfer.<a href="#section-4.3.2-2" class="pilcrow">¶</a></p>
+changed, avoiding redundant data transfer.<a href="#section-4.4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="registry-caching">
-<section id="section-4.3.3">
+<section id="section-4.4.3">
           <h4 id="name-caching">
-<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-caching" class="section-name selfRef">Caching</a>
+<a href="#section-4.4.3" class="section-number selfRef">4.4.3. </a><a href="#name-caching" class="section-name selfRef">Caching</a>
           </h4>
-<p id="section-4.3.3-1">Registry servers <span class="bcp14">SHOULD</span> include a <code>Cache-Control</code> response header field as
+<p id="section-4.4.3-1">Registry servers <span class="bcp14">SHOULD</span> include a <code>Cache-Control</code> response header field as
 defined in <span>[<a href="#HTTP-CACHE" class="cite xref">HTTP-CACHE</a>]</span> to communicate the intended freshness lifetime of the
 registry content. Clients <span class="bcp14">SHOULD</span> respect these cache directives and <span class="bcp14">SHOULD NOT</span>
-poll more frequently than indicated.<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
+poll more frequently than indicated.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="signature-agent-header">
-<section id="section-4.4">
+<section id="section-4.5">
         <h3 id="name-signature-agent-header">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent header</a>
         </h3>
-<p id="section-4.4-1">Signature Agent Card format defined in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> extends the
-format of <code>Signature-Agent</code> header as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory-05#section-4.1" class="relref">Section 4.1</a> of [<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">When used for HTTP Message Signatures, and hosted on a well-known URL, Signature
-Agent Card <span class="bcp14">MAY</span> be discovered via a <code>Signature-Agent</code> header.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">When used for HTTP Message Signatures, a Signature Agent Card <span class="bcp14">MAY</span> be discovered
+via a <code>Signature-Agent</code> header member with <code>type=cimd</code>. The URI carried in that
+member is the <code>client_id</code> of a Signature Agent Card resolved as described in
+<a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="signature-key">
+<section id="section-4.6">
+        <h3 id="name-composable-discovery-with-s">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-composable-discovery-with-s" class="section-name selfRef">Composable discovery with Signature-Key</a>
+        </h3>
+<p id="section-4.6-1">The discovery in this document is anchored on the <code>client_id</code> URL and is
+independent of the header that carries it. <span>[<a href="#SIGNATURE-KEY" class="cite xref">SIGNATURE-KEY</a>]</span> defines a composable
+<code>Signature-Key</code> header with an extensible registry of key-distribution schemes.
+A future scheme could carry a <code>client_id</code> URL, letting a verifier resolve a
+Signature Agent Card per-signature alongside the keying material. This document
+does not define such a scheme; it is noted as a possible composable carrier.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="change-notification">
-<section id="section-4.5">
+<section id="section-4.7">
         <h3 id="name-change-notification">
-<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-change-notification" class="section-name selfRef">Change Notification</a>
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-change-notification" class="section-name selfRef">Change Notification</a>
         </h3>
-<p id="section-4.5-1">Pull-based consumption with conditional requests is sufficient for most
+<p id="section-4.7-1">Pull-based consumption with conditional requests is sufficient for most
 deployments. When lower notification latency is required (e.g., to promptly
 act on entry removal), a registry operator <span class="bcp14">MAY</span> implement a push-based change
-notification mechanism.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+notification mechanism.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
 <div id="notification-advertisement">
-<section id="section-4.5.1">
+<section id="section-4.7.1">
           <h4 id="name-advertising-the-notificatio">
-<a href="#section-4.5.1" class="section-number selfRef">4.5.1. </a><a href="#name-advertising-the-notificatio" class="section-name selfRef">Advertising the Notification Endpoint</a>
+<a href="#section-4.7.1" class="section-number selfRef">4.7.1. </a><a href="#name-advertising-the-notificatio" class="section-name selfRef">Advertising the Notification Endpoint</a>
           </h4>
-<p id="section-4.5.1-1">A registry operator that supports change notifications <span class="bcp14">SHOULD</span> advertise its
+<p id="section-4.7.1-1">A registry operator that supports change notifications <span class="bcp14">SHOULD</span> advertise its
 notification endpoint in the registry HTTP response using a <code>Link</code> header field
-as defined in <span>[<a href="#WEB-LINKING" class="cite xref">WEB-LINKING</a>]</span>:<a href="#section-4.5.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.5.1-2">
+as defined in <span>[<a href="#WEB-LINKING" class="cite xref">WEB-LINKING</a>]</span>:<a href="#section-4.7.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.7.1-2">
 <pre>
 Link: &lt;https://registry.example/v1/registry-changes&gt;; rel="registry-changes"
-</pre><a href="#section-4.5.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-4.7.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.5.1-3">The <code>registry-changes</code> link relation identifies an endpoint to which clients
-may register callbacks out of band.<a href="#section-4.5.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.5.1-4">TODO: Register the <code>registry-changes</code> link relation with IANA, or replace it
-with an extension relation URI.<a href="#section-4.5.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.7.1-3">The <code>registry-changes</code> link relation identifies an endpoint to which clients
+may register callbacks out of band.<a href="#section-4.7.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.7.1-4">TODO: Register the <code>registry-changes</code> link relation with IANA, or replace it
+with an extension relation URI.<a href="#section-4.7.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="notification-registration">
-<section id="section-4.5.2">
+<section id="section-4.7.2">
           <h4 id="name-callback-registration">
-<a href="#section-4.5.2" class="section-number selfRef">4.5.2. </a><a href="#name-callback-registration" class="section-name selfRef">Callback Registration</a>
+<a href="#section-4.7.2" class="section-number selfRef">4.7.2. </a><a href="#name-callback-registration" class="section-name selfRef">Callback Registration</a>
           </h4>
-<p id="section-4.5.2-1">Registration of a client callback URL with the registry operator is performed
+<p id="section-4.7.2-1">Registration of a client callback URL with the registry operator is performed
 out of band. No specific registration protocol is defined by this document.
-An unsubscribe mechanism <span class="bcp14">SHOULD</span> be considered, and <span class="bcp14">MAY</span> also be out of band.<a href="#section-4.5.2-1" class="pilcrow">¶</a></p>
+An unsubscribe mechanism <span class="bcp14">SHOULD</span> be considered, and <span class="bcp14">MAY</span> also be out of band.<a href="#section-4.7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="notification-requests">
-<section id="section-4.5.3">
+<section id="section-4.7.3">
           <h4 id="name-notification-requests">
-<a href="#section-4.5.3" class="section-number selfRef">4.5.3. </a><a href="#name-notification-requests" class="section-name selfRef">Notification Requests</a>
+<a href="#section-4.7.3" class="section-number selfRef">4.7.3. </a><a href="#name-notification-requests" class="section-name selfRef">Notification Requests</a>
           </h4>
-<p id="section-4.5.3-1">When an entry is added to or removed from the registry, the registry operator
-<span class="bcp14">MUST</span> send an HTTP request to each registered callback URL.<a href="#section-4.5.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.5.3-2">The format in <span>[<a href="#CDDL" class="cite xref">CDDL</a>]</span> is as follows:<a href="#section-4.5.3-2" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-4.5.3-3">
+<p id="section-4.7.3-1">When an entry is added to or removed from the registry, the registry operator
+<span class="bcp14">MUST</span> send an HTTP request to each registered callback URL.<a href="#section-4.7.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.7.3-2">The format in <span>[<a href="#CDDL" class="cite xref">CDDL</a>]</span> is as follows:<a href="#section-4.7.3-2" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-4.7.3-3">
 <pre>
 Action = "put" / "delete"
 
@@ -1910,21 +2001,21 @@ Notification = {
   action: Action,
   signature-agent: tstr
 }
-</pre><a href="#section-4.5.3-3" class="pilcrow">¶</a>
+</pre><a href="#section-4.7.3-3" class="pilcrow">¶</a>
 </div>
-<p id="section-4.5.3-4">TODO: should we use application/json, a new media-type, permit binary encoding?
-TODO: should signature-agent be an array?<a href="#section-4.5.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.5.3-5"><code>action</code> denotes the operation performed on the registry:
+<p id="section-4.7.3-4">TODO: should we use application/json, a new media-type, permit binary encoding?
+TODO: should signature-agent be an array?<a href="#section-4.7.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.7.3-5"><code>action</code> denotes the operation performed on the registry:
 1. <code>put</code> when a new entry has been added,
-2. <code>delete</code> when an entry has been removed.<a href="#section-4.5.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.5.3-6">The request <span class="bcp14">MUST</span> use <code>POST</code>.
+2. <code>delete</code> when an entry has been removed.<a href="#section-4.7.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.7.3-6">The request <span class="bcp14">MUST</span> use <code>POST</code>.
 It <span class="bcp14">MUST</span> be signed using <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> with a key present in the
 registry operator's existing signature agent card. This is the signature agent
 card associated with the registry operator during out-of-band callback
-registration.<a href="#section-4.5.3-6" class="pilcrow">¶</a></p>
-<p id="section-4.5.3-7">The <code>Content-Type</code> <span class="bcp14">SHOULD</span> be <code>application/json</code>.<a href="#section-4.5.3-7" class="pilcrow">¶</a></p>
-<p id="section-4.5.3-8">Example notification for an added entry:<a href="#section-4.5.3-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.5.3-9">
+registration.<a href="#section-4.7.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.7.3-7">The <code>Content-Type</code> <span class="bcp14">SHOULD</span> be <code>application/json</code>.<a href="#section-4.7.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.7.3-8">Example notification for an added entry:<a href="#section-4.7.3-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.7.3-9">
 <pre>
 POST /registry-callback HTTP/1.1
 Host: origin.example
@@ -1938,28 +2029,28 @@ Content-Digest: sha-256=:base64hash:
   "action": "put",
   "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
 }
-</pre><a href="#section-4.5.3-9" class="pilcrow">¶</a>
+</pre><a href="#section-4.7.3-9" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="notification-processing">
-<section id="section-4.5.4">
+<section id="section-4.7.4">
           <h4 id="name-notification-processing">
-<a href="#section-4.5.4" class="section-number selfRef">4.5.4. </a><a href="#name-notification-processing" class="section-name selfRef">Notification Processing</a>
+<a href="#section-4.7.4" class="section-number selfRef">4.7.4. </a><a href="#name-notification-processing" class="section-name selfRef">Notification Processing</a>
           </h4>
-<p id="section-4.5.4-1">Upon receiving a notification, the client <span class="bcp14">MUST</span> verify the HTTP Message
+<p id="section-4.7.4-1">Upon receiving a notification, the client <span class="bcp14">MUST</span> verify the HTTP Message
 Signature against the registry operator's key, discovered via the registry
 operator's signature-agent card. Notifications with missing or invalid
-signatures <span class="bcp14">MUST</span> be rejected.<a href="#section-4.5.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.5.4-2">A notification is advisory only. The registry endpoint remains the authoritative
+signatures <span class="bcp14">MUST</span> be rejected.<a href="#section-4.7.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.7.4-2">A notification is advisory only. The registry endpoint remains the authoritative
 source of truth. After verifying a <code>put</code> notification, clients <span class="bcp14">SHOULD</span> re-fetch
-the affected signature agent card to obtain current metadata.<a href="#section-4.5.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.5.4-3">For <code>delete</code> notifications, clients <span class="bcp14">SHOULD</span> confirm the removal by re-fetching
+the affected signature agent card to obtain current metadata.<a href="#section-4.7.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.7.4-3">For <code>delete</code> notifications, clients <span class="bcp14">SHOULD</span> confirm the removal by re-fetching
 the full registry. This confirmation does not need to happen synchronously with
-notification processing.<a href="#section-4.5.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.5.4-4">Registry operators <span class="bcp14">SHOULD</span> retry delivery of failed notifications with
+notification processing.<a href="#section-4.7.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.7.4-4">Registry operators <span class="bcp14">SHOULD</span> retry delivery of failed notifications with
 exponential backoff. Clients that miss notifications will recover on their next
-conditional pull from the registry endpoint.<a href="#section-4.5.4-4" class="pilcrow">¶</a></p>
+conditional pull from the registry endpoint.<a href="#section-4.7.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2012,7 +2103,7 @@ authority.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-private-registries" class="section-name selfRef">Private Registries</a>
         </h3>
 <p id="section-5.3-1">Registry endpoints that require authentication as described in
-<a href="#registry-authentication" class="auto internal xref">Section 4.3.1</a> limit exposure of registry entries to authorized
+<a href="#registry-authentication" class="auto internal xref">Section 4.4.1</a> limit exposure of registry entries to authorized
 clients only. Registry operators <span class="bcp14">SHOULD</span> use authenticated endpoints when the
 enumeration of their registry entries is sensitive.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 </section>
@@ -2042,595 +2133,436 @@ entries; registry servers <span class="bcp14">SHOULD</span> treat access logs as
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<div id="registration-template">
+<div id="oauth-dynamic-client-registration-metadata-registration">
 <section id="section-7.1">
-        <h3 id="name-registration-template">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-registration-template" class="section-name selfRef">Registration template</a>
+        <h3 id="name-oauth-dynamic-client-regist">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-oauth-dynamic-client-regist" class="section-name selfRef">OAuth Dynamic Client Registration Metadata Registration</a>
         </h3>
-<p id="section-7.1-1">New registrations need to list the following attributes:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.1-2">
-          <dt id="section-7.1-2.1"><strong>Parameter Name:</strong></dt>
+<p id="section-7.1-1">IANA is requested to register the following parameter in the "OAuth Dynamic
+Client Registration Metadata" registry established by <span>[<a href="#DCR" class="cite xref">DCR</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.1-2">
+          <dt id="section-7.1-2.1"><strong>Client Metadata Name:</strong></dt>
           <dd style="margin-left: 1.5em" id="section-7.1-2.2">
-            <p id="section-7.1-2.2.1">The name requested (e.g. "useragent"). This name is
-case sensitive.  Names may not match other registered names in a
-case-insensitive manner unless the Designated Experts state that
-there is a compelling reason to allow an exception<a href="#section-7.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-7.1-2.2.1">web_bot_auth<a href="#section-7.1-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.1-2.3"><strong>Parameter Description:</strong></dt>
+<dt id="section-7.1-2.3"><strong>Client Metadata Description:</strong></dt>
           <dd style="margin-left: 1.5em" id="section-7.1-2.4">
-            <p id="section-7.1-2.4.1">Brief description of the Header Parameter<a href="#section-7.1-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-7.1-2.4.1">A JSON object carrying bot-specific metadata for a Signature Agent. Its members
+are registered in the "Web Bot Auth Metadata Parameters" registry.<a href="#section-7.1-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-7.1-2.5"><strong>Change Controller:</strong></dt>
           <dd style="margin-left: 1.5em" id="section-7.1-2.6">
-            <p id="section-7.1-2.6.1">For Standards Track RFCs, list the "IESG".  For others, give the
-name of the responsible party.  Other details (e.g., postal
-address, email address, home page URI) may also be included.<a href="#section-7.1-2.6.1" class="pilcrow">¶</a></p>
+            <p id="section-7.1-2.6.1">IETF<a href="#section-7.1-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-7.1-2.7"><strong>Reference:</strong></dt>
           <dd style="margin-left: 1.5em" id="section-7.1-2.8">
-            <p id="section-7.1-2.8.1">Where this parameter is defined<a href="#section-7.1-2.8.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-7.1-2.9"><strong>Notes:</strong></dt>
-          <dd style="margin-left: 1.5em" id="section-7.1-2.10">
-            <p id="section-7.1-2.10.1">Any notes associated with the entry<a href="#section-7.1-2.10.1" class="pilcrow">¶</a></p>
+            <p id="section-7.1-2.8.1"><a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a><a href="#section-7.1-2.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-7.1-3">New entries in this registry are subject to the Specification Required
-registration policy (<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>], <a href="https://rfc-editor.org/rfc/rfc8126#section-4.6" class="relref">Section 4.6</a></span>). Designated experts need to
-ensure that the token type is defined to be used for both token issuance and
-redemption. Additionally, the experts can reject registrations on the basis
-that they do not meet the security and privacy requirements defined in TODO.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<div id="initial-registry-content">
-<section id="section-7.1.1">
-          <h4 id="name-initial-registry-content">
-<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-initial-registry-content" class="section-name selfRef">Initial Registry content</a>
+<p id="section-7.1-3">The remaining parameters used by a Signature Agent Card (<code>client_id</code>,
+<code>client_name</code>, <code>client_uri</code>, <code>logo_uri</code>, <code>contacts</code>, <code>jwks_uri</code>, <code>jwks</code>) are
+already registered OAuth client metadata parameters and are not registered by
+this document.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="web-bot-auth-metadata-parameters-registry">
+<section id="section-7.2">
+        <h3 id="name-web-bot-auth-metadata-param">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-web-bot-auth-metadata-param" class="section-name selfRef">Web Bot Auth Metadata Parameters Registry</a>
+        </h3>
+<p id="section-7.2-1">IANA is requested to create the "Web Bot Auth Metadata Parameters" registry. This
+registry governs the members of the <code>web_bot_auth</code> object defined in
+<a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<div id="registration-template">
+<section id="section-7.2.1">
+          <h4 id="name-registration-template">
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-registration-template" class="section-name selfRef">Registration template</a>
           </h4>
-<p id="section-7.1.1-1">This section registers the Signature Agent Card Parameter names defined
-in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in this registry.<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
-<div id="client-name-parameter">
-<section id="section-7.1.1.1">
-            <h5 id="name-client-name-parameter">
-<a href="#section-7.1.1.1" class="section-number selfRef">7.1.1.1. </a><a href="#name-client-name-parameter" class="section-name selfRef">Client Name Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.1-1">
-              <dt id="section-7.1.1.1-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.2">
-                <p id="section-7.1.1.1-1.2.1">client_name<a href="#section-7.1.1.1-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.1-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.4">
-                <p id="section-7.1.1.1-1.4.1">A friendly name for your signature agent.<a href="#section-7.1.1.1-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.1-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.6">
-                <p id="section-7.1.1.1-1.6.1">IETF<a href="#section-7.1.1.1-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.1-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.8">
-                <p id="section-7.1.1.1-1.8.1"><a href="#signature-agent-parameter-name" class="auto internal xref">Section 3.1</a><a href="#section-7.1.1.1-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.1-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.1-1.10">
-                <p id="section-7.1.1.1-1.10.1">N/A<a href="#section-7.1.1.1-1.10.1" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-1">New registrations need to list the following attributes:<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.2.1-2">
+            <dt id="section-7.2.1-2.1"><strong>Parameter Name:</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-7.2.1-2.2">
+              <p id="section-7.2.1-2.2.1">The name requested (e.g. "purpose"). This name is
+case sensitive.  Names may not match other registered names in a
+case-insensitive manner unless the Designated Experts state that
+there is a compelling reason to allow an exception<a href="#section-7.2.1-2.2.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="client-uri-parameter">
-<section id="section-7.1.1.2">
-            <h5 id="name-client-uri-parameter">
-<a href="#section-7.1.1.2" class="section-number selfRef">7.1.1.2. </a><a href="#name-client-uri-parameter" class="section-name selfRef">Client URI Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.2-1">
-              <dt id="section-7.1.1.2-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.2">
-                <p id="section-7.1.1.2-1.2.1">client_uri<a href="#section-7.1.1.2-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.2-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.4">
-                <p id="section-7.1.1.2-1.4.1">Describes what the bot does inline with data URI or with an HTTP link to an external resource<a href="#section-7.1.1.2-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.2-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.6">
-                <p id="section-7.1.1.2-1.6.1">IETF<a href="#section-7.1.1.2-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.2-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.8">
-                <p id="section-7.1.1.2-1.8.1"><a href="#signature-agent-parameter-about" class="auto internal xref">Section 3.2</a><a href="#section-7.1.1.2-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.2-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.2-1.10">
-                <p id="section-7.1.1.2-1.10.1">N/A<a href="#section-7.1.1.2-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.1-2.3"><strong>Parameter Description:</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-7.2.1-2.4">
+              <p id="section-7.2.1-2.4.1">Brief description of the parameter<a href="#section-7.2.1-2.4.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="logo-uri-parameter">
-<section id="section-7.1.1.3">
-            <h5 id="name-logo-uri-parameter">
-<a href="#section-7.1.1.3" class="section-number selfRef">7.1.1.3. </a><a href="#name-logo-uri-parameter" class="section-name selfRef">Logo URI Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.3-1">
-              <dt id="section-7.1.1.3-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.2">
-                <p id="section-7.1.1.3-1.2.1">logo_uri<a href="#section-7.1.1.3-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.3-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.4">
-                <p id="section-7.1.1.3-1.4.1">Image for a quick visual identification<a href="#section-7.1.1.3-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.3-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.6">
-                <p id="section-7.1.1.3-1.6.1">IETF<a href="#section-7.1.1.3-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.3-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.8">
-                <p id="section-7.1.1.3-1.8.1"><a href="#signature-agent-parameter-logo" class="auto internal xref">Section 3.4</a><a href="#section-7.1.1.3-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.3-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.3-1.10">
-                <p id="section-7.1.1.3-1.10.1">N/A<a href="#section-7.1.1.3-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.1-2.5"><strong>Change Controller:</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-7.2.1-2.6">
+              <p id="section-7.2.1-2.6.1">For Standards Track RFCs, list the "IESG".  For others, give the
+name of the responsible party.  Other details (e.g., postal
+address, email address, home page URI) may also be included.<a href="#section-7.2.1-2.6.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="contacts-parameter">
-<section id="section-7.1.1.4">
-            <h5 id="name-contacts-parameter">
-<a href="#section-7.1.1.4" class="section-number selfRef">7.1.1.4. </a><a href="#name-contacts-parameter" class="section-name selfRef">Contacts Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.4-1">
-              <dt id="section-7.1.1.4-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.2">
-                <p id="section-7.1.1.4-1.2.1">contacts<a href="#section-7.1.1.4-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.4-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.4">
-                <p id="section-7.1.1.4-1.4.1">An array of URI with a reliable communication channel; typically email addresses<a href="#section-7.1.1.4-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.4-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.6">
-                <p id="section-7.1.1.4-1.6.1">IETF<a href="#section-7.1.1.4-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.4-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.8">
-                <p id="section-7.1.1.4-1.8.1"><a href="#signature-agent-parameter-contact" class="auto internal xref">Section 3.3</a><a href="#section-7.1.1.4-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.4-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.4-1.10">
-                <p id="section-7.1.1.4-1.10.1">N/A<a href="#section-7.1.1.4-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.1-2.7"><strong>Reference:</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-7.2.1-2.8">
+              <p id="section-7.2.1-2.8.1">Where this parameter is defined<a href="#section-7.2.1-2.8.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
+<dt id="section-7.2.1-2.9"><strong>Notes:</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-7.2.1-2.10">
+              <p id="section-7.2.1-2.10.1">Any notes associated with the entry<a href="#section-7.2.1-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
 </dl>
+<p id="section-7.2.1-3">New entries in this registry are subject to the Specification Required
+registration policy (<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>], <a href="https://rfc-editor.org/rfc/rfc8126#section-4.6" class="relref">Section 4.6</a></span>). Designated experts can reject
+registrations on the basis that they do not meet the security and privacy
+requirements defined in TODO.<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="initial-registry-content">
+<section id="section-7.2.2">
+          <h4 id="name-initial-registry-content">
+<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-initial-registry-content" class="section-name selfRef">Initial Registry content</a>
+          </h4>
+<p id="section-7.2.2-1">This section registers the <code>web_bot_auth</code> member names defined
+in <a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a> in this registry.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
 <div id="expected-user-agent-parameter">
-<section id="section-7.1.1.5">
+<section id="section-7.2.2.1">
             <h5 id="name-expected-user-agent-paramet">
-<a href="#section-7.1.1.5" class="section-number selfRef">7.1.1.5. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
+<a href="#section-7.2.2.1" class="section-number selfRef">7.2.2.1. </a><a href="#name-expected-user-agent-paramet" class="section-name selfRef">Expected User Agent Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.5-1">
-              <dt id="section-7.1.1.5-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.2">
-                <p id="section-7.1.1.5-1.2.1">expected-user-agent<a href="#section-7.1.1.5-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.1-1">
+              <dt id="section-7.2.2.1-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.1-1.2">
+                <p id="section-7.2.2.1-1.2.1">expected-user-agent<a href="#section-7.2.2.1-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.5-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.4">
-                <p id="section-7.1.1.5-1.4.1">String or fragment patterns<a href="#section-7.1.1.5-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.1-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.1-1.4">
+                <p id="section-7.2.2.1-1.4.1">String or fragment patterns<a href="#section-7.2.2.1-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.5-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.6">
-                <p id="section-7.1.1.5-1.6.1">IETF<a href="#section-7.1.1.5-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.1-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.1-1.6">
+                <p id="section-7.2.2.1-1.6.1">IETF<a href="#section-7.2.2.1-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.5-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.8">
-                <p id="section-7.1.1.5-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.5</a><a href="#section-7.1.1.5-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.1-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.1-1.8">
+                <p id="section-7.2.2.1-1.8.1"><a href="#signature-agent-parameter-user-agent" class="auto internal xref">Section 3.2.1</a><a href="#section-7.2.2.1-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.5-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.5-1.10">
-                <p id="section-7.1.1.5-1.10.1">N/A<a href="#section-7.1.1.5-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.1-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.1-1.10">
+                <p id="section-7.2.2.1-1.10.1">N/A<a href="#section-7.2.2.1-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rfc9309-product-token-parameter">
-<section id="section-7.1.1.6">
+<section id="section-7.2.2.2">
             <h5 id="name-rfc9309-product-token-param">
-<a href="#section-7.1.1.6" class="section-number selfRef">7.1.1.6. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
+<a href="#section-7.2.2.2" class="section-number selfRef">7.2.2.2. </a><a href="#name-rfc9309-product-token-param" class="section-name selfRef">RFC9309 Product Token Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.6-1">
-              <dt id="section-7.1.1.6-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.2">
-                <p id="section-7.1.1.6-1.2.1">rfc9309-product-token<a href="#section-7.1.1.6-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.2-1">
+              <dt id="section-7.2.2.2-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.2-1.2">
+                <p id="section-7.2.2.2-1.2.1">rfc9309-product-token<a href="#section-7.2.2.2-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.6-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.4">
-                <p id="section-7.1.1.6-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.1.1.6-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.2-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.2-1.4">
+                <p id="section-7.2.2.2-1.4.1">Robots.txt product token your signature-agent satisfies.<a href="#section-7.2.2.2-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.6-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.6">
-                <p id="section-7.1.1.6-1.6.1">IETF<a href="#section-7.1.1.6-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.2-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.2-1.6">
+                <p id="section-7.2.2.2-1.6.1">IETF<a href="#section-7.2.2.2-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.6-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.8">
-                <p id="section-7.1.1.6-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.6</a><a href="#section-7.1.1.6-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.2-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.2-1.8">
+                <p id="section-7.2.2.2-1.8.1"><a href="#signature-agent-parameter-robotstxt-token" class="auto internal xref">Section 3.2.2</a><a href="#section-7.2.2.2-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.6-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.6-1.10">
-                <p id="section-7.1.1.6-1.10.1">N/A<a href="#section-7.1.1.6-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.2-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.2-1.10">
+                <p id="section-7.2.2.2-1.10.1">N/A<a href="#section-7.2.2.2-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rfc9309-compliance-parameter">
-<section id="section-7.1.1.7">
+<section id="section-7.2.2.3">
             <h5 id="name-rfc9309-compliance-paramete">
-<a href="#section-7.1.1.7" class="section-number selfRef">7.1.1.7. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
+<a href="#section-7.2.2.3" class="section-number selfRef">7.2.2.3. </a><a href="#name-rfc9309-compliance-paramete" class="section-name selfRef">RFC9309 Compliance Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.7-1">
-              <dt id="section-7.1.1.7-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.2">
-                <p id="section-7.1.1.7-1.2.1">rfc9309-compliance<a href="#section-7.1.1.7-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.3-1">
+              <dt id="section-7.2.2.3-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.3-1.2">
+                <p id="section-7.2.2.3-1.2.1">rfc9309-compliance<a href="#section-7.2.2.3-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.7-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.4">
-                <p id="section-7.1.1.7-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.1.1.7-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.3-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.3-1.4">
+                <p id="section-7.2.2.3-1.4.1">Does your signature-agent respect robots.txt.<a href="#section-7.2.2.3-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.7-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.6">
-                <p id="section-7.1.1.7-1.6.1">IETF<a href="#section-7.1.1.7-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.3-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.3-1.6">
+                <p id="section-7.2.2.3-1.6.1">IETF<a href="#section-7.2.2.3-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.7-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.8">
-                <p id="section-7.1.1.7-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.7</a><a href="#section-7.1.1.7-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.3-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.3-1.8">
+                <p id="section-7.2.2.3-1.8.1"><a href="#signature-agent-parameter-robotstxt-compliance" class="auto internal xref">Section 3.2.3</a><a href="#section-7.2.2.3-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.7-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.7-1.10">
-                <p id="section-7.1.1.7-1.10.1">N/A<a href="#section-7.1.1.7-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.3-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.3-1.10">
+                <p id="section-7.2.2.3-1.10.1">N/A<a href="#section-7.2.2.3-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="trigger-parameter">
-<section id="section-7.1.1.8">
+<section id="section-7.2.2.4">
             <h5 id="name-trigger-parameter">
-<a href="#section-7.1.1.8" class="section-number selfRef">7.1.1.8. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
+<a href="#section-7.2.2.4" class="section-number selfRef">7.2.2.4. </a><a href="#name-trigger-parameter" class="section-name selfRef">Trigger Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.8-1">
-              <dt id="section-7.1.1.8-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.2">
-                <p id="section-7.1.1.8-1.2.1">trigger<a href="#section-7.1.1.8-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.4-1">
+              <dt id="section-7.2.2.4-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.4-1.2">
+                <p id="section-7.2.2.4-1.2.1">trigger<a href="#section-7.2.2.4-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.8-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.4">
-                <p id="section-7.1.1.8-1.4.1">Fetcher/Crawler<a href="#section-7.1.1.8-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.4-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.4-1.4">
+                <p id="section-7.2.2.4-1.4.1">Fetcher/Crawler<a href="#section-7.2.2.4-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.8-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.6">
-                <p id="section-7.1.1.8-1.6.1">IETF<a href="#section-7.1.1.8-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.4-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.4-1.6">
+                <p id="section-7.2.2.4-1.6.1">IETF<a href="#section-7.2.2.4-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.8-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.8">
-                <p id="section-7.1.1.8-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.8</a><a href="#section-7.1.1.8-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.4-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.4-1.8">
+                <p id="section-7.2.2.4-1.8.1"><a href="#signature-agent-parameter-trigger" class="auto internal xref">Section 3.2.4</a><a href="#section-7.2.2.4-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.8-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.8-1.10">
-                <p id="section-7.1.1.8-1.10.1">N/A<a href="#section-7.1.1.8-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.4-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.4-1.10">
+                <p id="section-7.2.2.4-1.10.1">N/A<a href="#section-7.2.2.4-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="purpose-parameter">
-<section id="section-7.1.1.9">
+<section id="section-7.2.2.5">
             <h5 id="name-purpose-parameter">
-<a href="#section-7.1.1.9" class="section-number selfRef">7.1.1.9. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
+<a href="#section-7.2.2.5" class="section-number selfRef">7.2.2.5. </a><a href="#name-purpose-parameter" class="section-name selfRef">Purpose Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.9-1">
-              <dt id="section-7.1.1.9-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.2">
-                <p id="section-7.1.1.9-1.2.1">purpose<a href="#section-7.1.1.9-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.5-1">
+              <dt id="section-7.2.2.5-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.5-1.2">
+                <p id="section-7.2.2.5-1.2.1">purpose<a href="#section-7.2.2.5-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.9-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.4">
-                <p id="section-7.1.1.9-1.4.1">Intended use for the collected data<a href="#section-7.1.1.9-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.5-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.5-1.4">
+                <p id="section-7.2.2.5-1.4.1">Intended use for the collected data<a href="#section-7.2.2.5-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.9-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.6">
-                <p id="section-7.1.1.9-1.6.1">IETF<a href="#section-7.1.1.9-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.5-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.5-1.6">
+                <p id="section-7.2.2.5-1.6.1">IETF<a href="#section-7.2.2.5-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.9-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.8">
-                <p id="section-7.1.1.9-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.9</a><a href="#section-7.1.1.9-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.5-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.5-1.8">
+                <p id="section-7.2.2.5-1.8.1"><a href="#signature-agent-parameter-purpose" class="auto internal xref">Section 3.2.5</a><a href="#section-7.2.2.5-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.9-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.9-1.10">
-                <p id="section-7.1.1.9-1.10.1">N/A<a href="#section-7.1.1.9-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.5-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.5-1.10">
+                <p id="section-7.2.2.5-1.10.1">N/A<a href="#section-7.2.2.5-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="targeted-content-parameter">
-<section id="section-7.1.1.10">
+<section id="section-7.2.2.6">
             <h5 id="name-targeted-content-parameter">
-<a href="#section-7.1.1.10" class="section-number selfRef">7.1.1.10. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
+<a href="#section-7.2.2.6" class="section-number selfRef">7.2.2.6. </a><a href="#name-targeted-content-parameter" class="section-name selfRef">Targeted Content Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.10-1">
-              <dt id="section-7.1.1.10-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.2">
-                <p id="section-7.1.1.10-1.2.1">targeted-content<a href="#section-7.1.1.10-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.6-1">
+              <dt id="section-7.2.2.6-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.6-1.2">
+                <p id="section-7.2.2.6-1.2.1">targeted-content<a href="#section-7.2.2.6-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.10-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.4">
-                <p id="section-7.1.1.10-1.4.1">Type of data your agent seeks<a href="#section-7.1.1.10-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.6-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.6-1.4">
+                <p id="section-7.2.2.6-1.4.1">Type of data your agent seeks<a href="#section-7.2.2.6-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.10-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.6">
-                <p id="section-7.1.1.10-1.6.1">IETF<a href="#section-7.1.1.10-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.6-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.6-1.6">
+                <p id="section-7.2.2.6-1.6.1">IETF<a href="#section-7.2.2.6-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.10-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.8">
-                <p id="section-7.1.1.10-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.10</a><a href="#section-7.1.1.10-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.6-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.6-1.8">
+                <p id="section-7.2.2.6-1.8.1"><a href="#signature-agent-parameter-targeted-content" class="auto internal xref">Section 3.2.6</a><a href="#section-7.2.2.6-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.10-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.10-1.10">
-                <p id="section-7.1.1.10-1.10.1">N/A<a href="#section-7.1.1.10-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.6-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.6-1.10">
+                <p id="section-7.2.2.6-1.10.1">N/A<a href="#section-7.2.2.6-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rate-control-parameter">
-<section id="section-7.1.1.11">
+<section id="section-7.2.2.7">
             <h5 id="name-rate-control-parameter">
-<a href="#section-7.1.1.11" class="section-number selfRef">7.1.1.11. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
+<a href="#section-7.2.2.7" class="section-number selfRef">7.2.2.7. </a><a href="#name-rate-control-parameter" class="section-name selfRef">Rate control Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.11-1">
-              <dt id="section-7.1.1.11-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.2">
-                <p id="section-7.1.1.11-1.2.1">rate-control<a href="#section-7.1.1.11-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.7-1">
+              <dt id="section-7.2.2.7-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.7-1.2">
+                <p id="section-7.2.2.7-1.2.1">rate-control<a href="#section-7.2.2.7-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.11-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.4">
-                <p id="section-7.1.1.11-1.4.1">How can an origin control your crawl rate<a href="#section-7.1.1.11-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.7-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.7-1.4">
+                <p id="section-7.2.2.7-1.4.1">How can an origin control your crawl rate<a href="#section-7.2.2.7-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.11-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.6">
-                <p id="section-7.1.1.11-1.6.1">IETF<a href="#section-7.1.1.11-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.7-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.7-1.6">
+                <p id="section-7.2.2.7-1.6.1">IETF<a href="#section-7.2.2.7-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.11-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.8">
-                <p id="section-7.1.1.11-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.11</a><a href="#section-7.1.1.11-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.7-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.7-1.8">
+                <p id="section-7.2.2.7-1.8.1"><a href="#signature-agent-parameter-rate-control" class="auto internal xref">Section 3.2.7</a><a href="#section-7.2.2.7-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.11-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.11-1.10">
-                <p id="section-7.1.1.11-1.10.1">N/A<a href="#section-7.1.1.11-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.7-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.7-1.10">
+                <p id="section-7.2.2.7-1.10.1">N/A<a href="#section-7.2.2.7-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="rate-expectation-parameter">
-<section id="section-7.1.1.12">
+<section id="section-7.2.2.8">
             <h5 id="name-rate-expectation-parameter">
-<a href="#section-7.1.1.12" class="section-number selfRef">7.1.1.12. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
+<a href="#section-7.2.2.8" class="section-number selfRef">7.2.2.8. </a><a href="#name-rate-expectation-parameter" class="section-name selfRef">Rate expectation Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.12-1">
-              <dt id="section-7.1.1.12-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.2">
-                <p id="section-7.1.1.12-1.2.1">rate-expectation<a href="#section-7.1.1.12-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.8-1">
+              <dt id="section-7.2.2.8-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.8-1.2">
+                <p id="section-7.2.2.8-1.2.1">rate-expectation<a href="#section-7.2.2.8-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.12-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.4">
-                <p id="section-7.1.1.12-1.4.1">Expected traffic and intensity<a href="#section-7.1.1.12-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.8-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.8-1.4">
+                <p id="section-7.2.2.8-1.4.1">Expected traffic and intensity<a href="#section-7.2.2.8-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.12-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.6">
-                <p id="section-7.1.1.12-1.6.1">IETF<a href="#section-7.1.1.12-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.8-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.8-1.6">
+                <p id="section-7.2.2.8-1.6.1">IETF<a href="#section-7.2.2.8-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.12-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.8">
-                <p id="section-7.1.1.12-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.12</a><a href="#section-7.1.1.12-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.8-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.8-1.8">
+                <p id="section-7.2.2.8-1.8.1"><a href="#signature-agent-parameter-rate-expectation" class="auto internal xref">Section 3.2.8</a><a href="#section-7.2.2.8-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.12-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.12-1.10">
-                <p id="section-7.1.1.12-1.10.1">N/A<a href="#section-7.1.1.12-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.8-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.8-1.10">
+                <p id="section-7.2.2.8-1.10.1">N/A<a href="#section-7.2.2.8-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="known-urls-parameter">
-<section id="section-7.1.1.13">
+<section id="section-7.2.2.9">
             <h5 id="name-known-urls-parameter">
-<a href="#section-7.1.1.13" class="section-number selfRef">7.1.1.13. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
+<a href="#section-7.2.2.9" class="section-number selfRef">7.2.2.9. </a><a href="#name-known-urls-parameter" class="section-name selfRef">Known URLs Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.13-1">
-              <dt id="section-7.1.1.13-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.2">
-                <p id="section-7.1.1.13-1.2.1">known-urls<a href="#section-7.1.1.13-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.9-1">
+              <dt id="section-7.2.2.9-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.9-1.2">
+                <p id="section-7.2.2.9-1.2.1">known-urls<a href="#section-7.2.2.9-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.13-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.4">
-                <p id="section-7.1.1.13-1.4.1">Predictable endpoint accessed<a href="#section-7.1.1.13-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.9-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.9-1.4">
+                <p id="section-7.2.2.9-1.4.1">Predictable endpoint accessed<a href="#section-7.2.2.9-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.13-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.6">
-                <p id="section-7.1.1.13-1.6.1">IETF<a href="#section-7.1.1.13-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.9-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.9-1.6">
+                <p id="section-7.2.2.9-1.6.1">IETF<a href="#section-7.2.2.9-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.13-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.8">
-                <p id="section-7.1.1.13-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.13</a><a href="#section-7.1.1.13-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.9-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.9-1.8">
+                <p id="section-7.2.2.9-1.8.1"><a href="#signature-agent-parameter-known-urls" class="auto internal xref">Section 3.2.9</a><a href="#section-7.2.2.9-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.13-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.13-1.10">
-                <p id="section-7.1.1.13-1.10.1">N/A<a href="#section-7.1.1.13-1.10.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="jwks-uri-parameter">
-<section id="section-7.1.1.14">
-            <h5 id="name-jwks-uri-parameter">
-<a href="#section-7.1.1.14" class="section-number selfRef">7.1.1.14. </a><a href="#name-jwks-uri-parameter" class="section-name selfRef">JWKS URI Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.14-1">
-              <dt id="section-7.1.1.14-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.2">
-                <p id="section-7.1.1.14-1.2.1">jwks_uri<a href="#section-7.1.1.14-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.14-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.4">
-                <p id="section-7.1.1.14-1.4.1">URL of the signature agent's key set. This can be an HTTP Message Signatures Directory for key discovery<a href="#section-7.1.1.14-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.14-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.6">
-                <p id="section-7.1.1.14-1.6.1">IETF<a href="#section-7.1.1.14-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.14-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.8">
-                <p id="section-7.1.1.14-1.8.1"><a href="#signature-agent-parameter-jwks-uri" class="auto internal xref">Section 3.14</a><a href="#section-7.1.1.14-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.14-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.14-1.10">
-                <p id="section-7.1.1.14-1.10.1">N/A<a href="#section-7.1.1.14-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.9-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.9-1.10">
+                <p id="section-7.2.2.9-1.10.1">N/A<a href="#section-7.2.2.9-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="ip-address-list-uri-parameter">
-<section id="section-7.1.1.15">
+<section id="section-7.2.2.10">
             <h5 id="name-ip-address-list-uri-paramet">
-<a href="#section-7.1.1.15" class="section-number selfRef">7.1.1.15. </a><a href="#name-ip-address-list-uri-paramet" class="section-name selfRef">IP Address List URI Parameter</a>
+<a href="#section-7.2.2.10" class="section-number selfRef">7.2.2.10. </a><a href="#name-ip-address-list-uri-paramet" class="section-name selfRef">IP Address List URI Parameter</a>
             </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.15-1">
-              <dt id="section-7.1.1.15-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.15-1.2">
-                <p id="section-7.1.1.15-1.2.1">ips_uri<a href="#section-7.1.1.15-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-7.2.2.10-1">
+              <dt id="section-7.2.2.10-1.1"><strong>Parameter Name:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.10-1.2">
+                <p id="section-7.2.2.10-1.2.1">ips_uri<a href="#section-7.2.2.10-1.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.15-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.15-1.4">
-                <p id="section-7.1.1.15-1.4.1">URL of the signature agent's IP address list in <span>[<a href="#JAFAR" class="cite xref">JAFAR</a>]</span> format.<a href="#section-7.1.1.15-1.4.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.10-1.3"><strong>Parameter Description:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.10-1.4">
+                <p id="section-7.2.2.10-1.4.1">URL of the signature agent's IP address list in <span>[<a href="#JAFAR" class="cite xref">JAFAR</a>]</span> format.<a href="#section-7.2.2.10-1.4.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.15-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.15-1.6">
-                <p id="section-7.1.1.15-1.6.1">IETF<a href="#section-7.1.1.15-1.6.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.10-1.5"><strong>Change Controller:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.10-1.6">
+                <p id="section-7.2.2.10-1.6.1">IETF<a href="#section-7.2.2.10-1.6.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.15-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.15-1.8">
-                <p id="section-7.1.1.15-1.8.1"><a href="#signature-agent-parameter-ips-uri" class="auto internal xref">Section 3.15</a><a href="#section-7.1.1.15-1.8.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.10-1.7"><strong>Reference:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.10-1.8">
+                <p id="section-7.2.2.10-1.8.1"><a href="#signature-agent-parameter-ips-uri" class="auto internal xref">Section 3.2.10</a><a href="#section-7.2.2.10-1.8.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.1.1.15-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.15-1.10">
-                <p id="section-7.1.1.15-1.10.1">N/A<a href="#section-7.1.1.15-1.10.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="keys-parameter">
-<section id="section-7.1.1.16">
-            <h5 id="name-keys-parameter">
-<a href="#section-7.1.1.16" class="section-number selfRef">7.1.1.16. </a><a href="#name-keys-parameter" class="section-name selfRef">Keys Parameter</a>
-            </h5>
-<span class="break"></span><dl class="dlParallel" id="section-7.1.1.16-1">
-              <dt id="section-7.1.1.16-1.1"><strong>Parameter Name:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.16-1.2">
-                <p id="section-7.1.1.16-1.2.1">keys<a href="#section-7.1.1.16-1.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.16-1.3"><strong>Parameter Description:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.16-1.4">
-                <p id="section-7.1.1.16-1.4.1">JWKS Endpoint<a href="#section-7.1.1.16-1.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.16-1.5"><strong>Change Controller:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.16-1.6">
-                <p id="section-7.1.1.16-1.6.1">IETF<a href="#section-7.1.1.16-1.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.16-1.7"><strong>Reference:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.16-1.8">
-                <p id="section-7.1.1.16-1.8.1"><a href="#signature-agent-parameter-keys" class="auto internal xref">Section 3.16</a><a href="#section-7.1.1.16-1.8.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-7.1.1.16-1.9"><strong>Notes:</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-7.1.1.16-1.10">
-                <p id="section-7.1.1.16-1.10.1">N/A<a href="#section-7.1.1.16-1.10.1" class="pilcrow">¶</a></p>
+<dt id="section-7.2.2.10-1.9"><strong>Notes:</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-7.2.2.10-1.10">
+                <p id="section-7.2.2.10-1.10.1">N/A<a href="#section-7.2.2.10-1.10.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2664,6 +2596,14 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <dt id="CDDL">[CDDL]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CIMD">[CIMD]</dt>
+        <dd>
+<span class="refAuthor">Parecki, A.</span> and <span class="refAuthor">E. Smith</span>, <span class="refTitle">"OAuth Client ID Metadata Document"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-client-id-metadata-document-01</span>, <time datetime="2026-03-01" class="refDate">1 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-client-id-metadata-document-01">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-client-id-metadata-document-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DCR">[DCR]</dt>
+        <dd>
+<span class="refAuthor">Richer, J., Ed.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Machulak, M.</span>, and <span class="refAuthor">P. Hunt</span>, <span class="refTitle">"OAuth 2.0 Dynamic Client Registration Protocol"</span>, <span class="seriesInfo">RFC 7591</span>, <span class="seriesInfo">DOI 10.17487/RFC7591</span>, <time datetime="2015-07" class="refDate">July 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7591">https://www.rfc-editor.org/rfc/rfc7591</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="DIRECTORY">[DIRECTORY]</dt>
         <dd>
@@ -2704,6 +2644,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3986">[RFC3986]</dt>
+        <dd>
+<span class="refAuthor">Berners-Lee, T.</span>, <span class="refAuthor">Fielding, R.</span>, and <span class="refAuthor">L. Masinter</span>, <span class="refTitle">"Uniform Resource Identifier (URI): Generic Syntax"</span>, <span class="seriesInfo">STD 66</span>, <span class="seriesInfo">RFC 3986</span>, <span class="seriesInfo">DOI 10.17487/RFC3986</span>, <time datetime="2005-01" class="refDate">January 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3986">https://www.rfc-editor.org/rfc/rfc3986</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8126">[RFC8126]</dt>
         <dd>
@@ -2758,6 +2702,10 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
         <dd>
 <span class="refAuthor">Koster, M.</span>, <span class="refAuthor">Illyes, G.</span>, <span class="refAuthor">Zeller, H.</span>, and <span class="refAuthor">L. Sassman</span>, <span class="refTitle">"Robots Exclusion Protocol"</span>, <span class="seriesInfo">RFC 9309</span>, <span class="seriesInfo">DOI 10.17487/RFC9309</span>, <time datetime="2022-09" class="refDate">September 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9309">https://www.rfc-editor.org/rfc/rfc9309</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="SIGNATURE-KEY">[SIGNATURE-KEY]</dt>
+        <dd>
+<span class="refAuthor">Hardt, D.</span> and <span class="refAuthor">T. Meunier</span>, <span class="refTitle">"HTTP Signature Keys"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-hardt-httpbis-signature-key-05</span>, <time datetime="2026-06-17" class="refDate">17 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-hardt-httpbis-signature-key-05">https://datatracker.ietf.org/doc/html/draft-hardt-httpbis-signature-key-05</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="UTF8">[UTF8]</dt>
       <dd>
 <span class="refAuthor">Yergeau, F.</span>, <span class="refTitle">"UTF-8, a transformation format of ISO 10646"</span>, <span class="seriesInfo">STD 63</span>, <span class="seriesInfo">RFC 3629</span>, <span class="seriesInfo">DOI 10.17487/RFC3629</span>, <time datetime="2003-11" class="refDate">November 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3629">https://www.rfc-editor.org/rfc/rfc3629</a>&gt;</span>. </dd>
@@ -2797,67 +2745,103 @@ in <a href="#signature-agent-card" class="auto internal xref">Section 3</a> in t
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v02<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">v03<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Add <code>ips_uri</code> parameter so client can expose IP addresses<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Reframe Signature Agent Card as an OAuth client metadata document (<span>[<a href="#DCR" class="cite xref">DCR</a>]</span>/<span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> namespace) extended with a single <code>web_bot_auth</code> object<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.2">
-          <p id="appendix-D-2.2.1">Add optional <code>jwks_uri</code> parameter to separate key material from metadata<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.2.1">Add resolvable <code>client_id</code> parameter and CIMD-based discovery (GET, 200 OK, no redirects, client_id match)<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.3">
-          <p id="appendix-D-2.3.1">Fix inline data URL example in registry to use valid signature agent card<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.3.1">Allow <code>Signature-Agent</code> header members with <code>type=cimd</code> and registry entries to reference a <code>client_id</code> URL<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.4">
-          <p id="appendix-D-2.4.1">Rename "Public list" to "Registry Endpoint" for clarity<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.4.1">Register <code>web_bot_auth</code> in the OAuth Dynamic Client Registration Metadata registry; move bot-specific parameters into a new "Web Bot Auth Metadata Parameters" registry<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.5">
-          <p id="appendix-D-2.5.1">Add authentication guidance for private registry endpoints<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.5.1">Stop redefining shared client metadata fields (client_name, client_uri, logo_uri, contacts); reference RFC 7591 instead, and drop the non-standard data:text/plain restriction on <code>client_uri</code><a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.6">
-          <p id="appendix-D-2.6.1">Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.6.1">Rename the inline key parameter from <code>keys</code> to <code>jwks</code> to match the <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> namespace, and state that the <code>jwks_uri</code> resource is a JWK Set (no mandated media type) so generic consumers can read directory keys<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.7">
-          <p id="appendix-D-2.7.1">Add caching guidance referencing HTTP-CACHE<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.7.1">Require <code>client_id</code> in a card resolved through its <code>client_id</code><a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.8">
-          <p id="appendix-D-2.8.1">Add change notification section: PUT/DELETE webhook signed with HTTP Message Signatures, OOB callback registration, pull as source of truth<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.8.1">Require <code>jwks</code> and <code>jwks_uri</code> to be mutually exclusive<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.9">
-          <p id="appendix-D-2.9.1">Expand Security Considerations: registry integrity via HTTP Message Signatures, private registry guidance<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.9.1">Restrict registry entries and resolvable cards to <code>https</code> (drop <code>http</code>)<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.10">
-          <p id="appendix-D-2.10.1">Expand Privacy Considerations: customer list exposure, access patterns<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.10.1">Mirror the directory signing requirement: the <code>jwks_uri</code> resource <span class="bcp14">SHOULD</span> be signed using HTTP Message Signatures<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.11">
-          <p id="appendix-D-2.11.1">Add normative reference to RFC 8288 (Web Linking)<a href="#appendix-D-2.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.11.1">Note Signature-Key as a possible composable carrier (informative)<a href="#appendix-D-2.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-3">v01<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-3">v02<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-4.1">
-          <p id="appendix-D-4.1.1">Add contributors<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.1.1">Add <code>ips_uri</code> parameter so client can expose IP addresses<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.2">
-          <p id="appendix-D-4.2.1">Aligning registry draft with oauth dynamic client registration iana registry<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.2.1">Add optional <code>jwks_uri</code> parameter to separate key material from metadata<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.3">
-          <p id="appendix-D-4.3.1">Add an about-url field<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.3.1">Fix inline data URL example in registry to use valid signature agent card<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.4">
-          <p id="appendix-D-4.4.1">Add ABNF for discovery of signature-agent card (registry)<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.4.1">Rename "Public list" to "Registry Endpoint" for clarity<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.5">
-          <p id="appendix-D-4.5.1">Add precisions about known URLs<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.5.1">Add authentication guidance for private registry endpoints<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.6">
-          <p id="appendix-D-4.6.1">Add placeholder for image size<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.6.1">Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.7">
+          <p id="appendix-D-4.7.1">Add caching guidance referencing HTTP-CACHE<a href="#appendix-D-4.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.8">
+          <p id="appendix-D-4.8.1">Add change notification section: PUT/DELETE webhook signed with HTTP Message Signatures, OOB callback registration, pull as source of truth<a href="#appendix-D-4.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.9">
+          <p id="appendix-D-4.9.1">Expand Security Considerations: registry integrity via HTTP Message Signatures, private registry guidance<a href="#appendix-D-4.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.10">
+          <p id="appendix-D-4.10.1">Expand Privacy Considerations: customer list exposure, access patterns<a href="#appendix-D-4.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.11">
+          <p id="appendix-D-4.11.1">Add normative reference to RFC 8288 (Web Linking)<a href="#appendix-D-4.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-5">v00<a href="#appendix-D-5" class="pilcrow">¶</a></p>
+<p id="appendix-D-5">v01<a href="#appendix-D-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-6.1">
-          <p id="appendix-D-6.1.1">Initial draft<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.1.1">Add contributors<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.2">
+          <p id="appendix-D-6.2.1">Aligning registry draft with oauth dynamic client registration iana registry<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.3">
+          <p id="appendix-D-6.3.1">Add an about-url field<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.4">
+          <p id="appendix-D-6.4.1">Add ABNF for discovery of signature-agent card (registry)<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.5">
+          <p id="appendix-D-6.5.1">Add precisions about known URLs<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-6.6">
+          <p id="appendix-D-6.6.1">Add placeholder for image size<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-7">v00<a href="#appendix-D-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D-8.1">
+          <p id="appendix-D-8.1.1">Initial draft<a href="#appendix-D-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
