@@ -138,7 +138,8 @@ described in {{cimd-discovery}}.
     "targeted-content": "Cat pictures",
     "rate-control": "429",
     "rate-expectation": "avg=10rps;max=100rps",
-    "known-urls": ["/", "/robots.txt", "*.png"]
+    "known-urls": ["/", "/robots.txt", "*.png"],
+    "ips_uri": "https://example.com/ips.json"
   }
 }
 ~~~
@@ -343,6 +344,17 @@ Example
 * `["/ads.txt"]`
 * `["/favicon.ico"]`
 * `["/index.html"]`
+
+### IP Address List URI {#signature-agent-parameter-ips-uri}
+
+The `ips_uri` parameter provides the URL of the signature agent's
+IP address list as defined in {{JAFAR}}.
+
+The URI scheme MUST be `https`.
+
+Example
+
+* `https://example.com/ips.json`
 
 # Discovery
 
@@ -863,6 +875,23 @@ in {{web-bot-auth-extension}} in this registry.
 
 **Reference:**
 : {{signature-agent-parameter-known-urls}}
+
+**Notes:**
+: N/A
+
+#### IP Address List URI Parameter
+
+**Parameter Name:**
+: ips_uri
+
+**Parameter Description:**
+: URL of the signature agent's IP address list in {{JAFAR}} format.
+
+**Change Controller:**
+: IETF
+
+**Reference:**
+: {{signature-agent-parameter-ips-uri}}
 
 **Notes:**
 : N/A
