@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 12 December 2026                                         Google
-                                                            10 June 2026
+Expires: 21 December 2026                                         Google
+                                                            19 June 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 December 2026.
+   This Internet-Draft will expire on 21 December 2026.
 
 Copyright Notice
 
@@ -78,9 +78,10 @@ Table of Contents
      4.1.  Deployment Models
      4.2.  Generating HTTP Message Signature
        4.2.1.  Signature-Agent
-       4.2.2.  Anti-replay
-       4.2.3.  Additional headers
-       4.2.4.  Sending a request
+       4.2.2.  Multiple signatures
+       4.2.3.  Anti-replay
+       4.2.4.  Additional headers
+       4.2.5.  Sending a request
      4.3.  Requesting a Message signature
      4.4.  Validating Message signature
      4.5.  Key Distribution and Discovery
@@ -107,21 +108,23 @@ Table of Contents
    8.  References
      8.1.  Normative References
      8.2.  Informative References
-   Appendix A.  Test Vectors
-     A.1.  RSASSA-PSS Using SHA-512
-       A.1.1.  Signature-Agent absent from the request
-       A.1.2.  Signature-Agent included present on the request
-       A.1.3.  Legacy Signature-Agent (sf-string instead of
+   Appendix A.  Examples
+     A.1.  Multiple signatures with a remote browser
+   Appendix B.  Test Vectors
+     B.1.  RSASSA-PSS Using SHA-512
+       B.1.1.  Signature-Agent absent from the request
+       B.1.2.  Signature-Agent included present on the request
+       B.1.3.  Legacy Signature-Agent (sf-string instead of
                sf-dictionary) included present on the request
-     A.2.  EdDSA Using Curve edwards25519
-       A.2.1.  Signature-Agent absent from the request
-       A.2.2.  Signature-Agent included present on the request
-       A.2.3.  Legacy Signature-Agent (sf-string instead of
+     B.2.  EdDSA Using Curve edwards25519
+       B.2.1.  Signature-Agent absent from the request
+       B.2.2.  Signature-Agent included present on the request
+       B.2.3.  Legacy Signature-Agent (sf-string instead of
                sf-dictionary) included present on the request
-   Appendix B.  Implementations
-     B.1.  Clients
-     B.2.  Servers
-     B.3.  Test vectors
+   Appendix C.  Implementations
+     C.1.  Clients
+     C.2.  Servers
+     C.3.  Test vectors
    Acknowledgments
    Changelog
    Authors' Addresses
@@ -286,7 +289,7 @@ Table of Contents
 
    Signature-Agent is an HTTP Method context header defined in
    Section 4.1 of [DIRECTORY].  It is RECOMMENDED that the Agent sends
-   requests with Signature-Agent header, as described in Section 4.2.4.
+   requests with Signature-Agent header, as described in Section 4.2.5.
    If the header is to be sent, one of its members MUST be signed as a
    component as defined in Section 2.1 of [HTTP-MESSAGE-SIGNATURES].
    The Signature-Agent member identifies where candidate key material
@@ -299,7 +302,26 @@ Table of Contents
 
    It is RECOMMENDED that the key matches the signature label.
 
-4.2.2.  Anti-replay
+4.2.2.  Multiple signatures
+
+   A request MAY contain more than one Web Bot Auth signature.  Each
+   signature is identified by its HTTP Message Signatures label.  When
+   Signature-Agent is present, each signer SHOULD provide a Signature-
+   Agent member for its label.
+
+   A signer MAY cover selected members from another signature label,
+   including "signature";key=..., "signature-input";key=..., and
+   "signature-agent";key=.... This lets a signer preserve evidence that
+   another signer contributed to the request.
+
+   This records which parties signed which fields.  It does not, by
+   itself, express authorization, delegation, or consent.  Those
+   meanings are deployment policy or are carried in separately signed
+   fields.  The delegation examples in [DIRECTORY] cover a different
+   problem: how key material can show delegation.  Multiple signatures
+   only show which signatures were present and what they covered.
+
+4.2.3.  Anti-replay
 
    Origins MAY want to prevent signatures from being spoofed or used
    multiple times by bad actors and thus require a nonce to be added to
@@ -315,7 +337,7 @@ Table of Contents
    Client MUST ensure that this nonce is unique for the validity window
    of the signature, as defined by created and expires attributes.
 
-4.2.3.  Additional headers
+4.2.4.  Additional headers
 
    Agents MAY include additional components, such as specific HTTP
    headers, in the signature.  This can be prompted by the origin
@@ -327,7 +349,7 @@ Table of Contents
    Origins MAY ignore certain headers at their own discretion, and
    request a new signature, as described in Section 4.3.
 
-4.2.4.  Sending a request
+4.2.5.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
    Updating the architecture diagram, the flow looks as follow.
@@ -509,7 +531,7 @@ Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
 
 5.3.  Nonce validation
 
-   Clients control the nonce.  While Section 4.2.2 mandates that clients
+   Clients control the nonce.  While Section 4.2.3 mandates that clients
    MUST provide a globally unique nonce, it is the origin's
    responsibility to enforce it.
 
@@ -578,7 +600,7 @@ Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
    MUST update the components of the associated signatures accordingly.
 
    For instance, an intermediary updating the Signature-Agent from sig2
-   to sig3 on the example provided in Appendix A.1.2 would result in the
+   to sig3 on the example provided in Appendix B.1.2 would result in the
    following Signature, Signature-Input, and Signature-Agent header.
 
 NOTE: '\' line wrapping per RFC 8792
@@ -736,20 +758,58 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
    [SIGNATURE-KEY]
               Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
               Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-04, 9 April 2026,
+              key-05, 17 June 2026,
               <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-04>.
+              httpbis-signature-key-05>.
 
-Appendix A.  Test Vectors
+Appendix A.  Examples
 
-A.1.  RSASSA-PSS Using SHA-512
+A.1.  Multiple signatures with a remote browser
+
+   This example shows Alice's agent using a remote browser to fetch a
+   resource.  The agent signs selected request fields.  The remote
+   browser signs the request it sends to the origin and also covers the
+   agent's signature fields.  The signature values are illustrative;
+   this is not a test vector.
+
+   NOTE: '\' line wrapping per RFC 8792
+
+   GET /resource HTTP/1.1
+   Host: origin.example
+   Signature-Agent: agent="https://agent.alice.example",\
+    browser="https://browser.example"
+   Signature-Input: agent=("@method" "@authority" "@path"\
+    "signature-agent";key="agent");created=1735689600\
+    ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+    ;tag="web-bot-auth",\
+    browser=("@method" "@authority" "@path"\
+    "signature-agent";key="browser"\
+    "signature-agent";key="agent"\
+    "signature-input";key="agent"\
+    "signature";key="agent");created=1735689601\
+    ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
+    ;tag="web-bot-auth"
+   Signature: agent=:YWdlbnQtc2lnbmF0dXJl:,\
+    browser=:YnJvd3Nlci1zaWduYXR1cmU=:
+
+   The origin can verify both signatures.  The agent signature covers
+   the fields selected by Alice's agent.  The browser signature covers
+   the request sent by the remote browser, its own Signature-Agent
+   member, and the agent signature fields.  This records that the remote
+   browser forwarded a request carrying the agent's signature.  It does
+   not say that Alice's agent authorized the remote browser to act for
+   it.
+
+Appendix B.  Test Vectors
+
+B.1.  RSASSA-PSS Using SHA-512
 
    The test vectors in this section use the RSA-PSS key defined in
    Appendix B.1.2 of [HTTP-MESSAGE-SIGNATURES].  This section includes
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
-A.1.1.  Signature-Agent absent from the request
+B.1.1.  Signature-Agent absent from the request
 
    This example presents a minimal signature using the rsa-pss-sha512
    algorithm over test-request.  The request does not contain a
@@ -782,7 +842,7 @@ Signature-Input: sig1=("@authority")\
  ;tag="web-bot-auth"
 Signature: sig1=:Bqj+UQfJNSRx0Dz/K/4/+Bo1l8UUH5Ps1zYzX6H6nKCyZJ88Hry/KZF2JishxI1h9+LJTmRmDmw2HxbUeZkoUUgmLbg168GWiYFBK0IQRKQvvbnzrONutKNmanvIXNvrN2ZB2h+w9ekSol3XJRncErrwcU2PWltBR+An4H2kIiRBfnBRi85eCVF+s6SYRxoAJvRo6avTCvCZe9Gvw8Ezbj8QnHU37uvTN72+MBDEsFN94ozfAT8MTB4wAwqXYLMf9mnl0mpK2UbnXrzgffRxOhEHVvHNIN8aB7ThM1p4JzaTN1HuXQFPYOWgCojOCv2IovGOygai/j3p4PzMJUp4Lw==:
 
-A.1.2.  Signature-Agent included present on the request
+B.1.2.  Signature-Agent included present on the request
 
    This example presents a minimal signature using the rsa-pss-sha512
    algorithm over test-request.  The request contains a Signature-Agent
@@ -817,7 +877,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;tag="web-bot-auth"
 Signature: sig2=:ngb8Yuk2zY/O5nyApob/uwIRWNE1md5xrzYSpPfVCWMHMjdQhj8HTPY8lrE8jHDHRtpqUy7jvYM8LzaHb1NGyxPemVMEOoZpBWXxboqSbp1LTAb2o5qbETmSuDM7UZE4WuSDQoIG5GF5AZ8b8lFEWDP1pw0XV1zsZMn8EPU/DbTkFtGgVPdGehjywJRqnXCXEX0wRCGg4+nTJwWs736JqgbBCuafQPCdwITQucMyGA12QOmMc8eQUdjcS/uqzkDxj1+iI3PDCYnscUTHcGuNv6rWxIx0D+rqWhOoLeYwzDPUm3qs2utVCATIgK0ktLWSfGcPK6p3IwJIUj7cSkbVRg==:
 
-A.1.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
+B.1.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
         included present on the request
 
    THIS IS A LEGACY EXAMPLE.  IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE
@@ -856,14 +916,14 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;tag="web-bot-auth"
 Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
 
-A.2.  EdDSA Using Curve edwards25519
+B.2.  EdDSA Using Curve edwards25519
 
    The test vectors in this section use the Ed25519 key defined in
    Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].  This section include
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
-A.2.1.  Signature-Agent absent from the request
+B.2.1.  Signature-Agent absent from the request
 
    This example presents a minimal signature using the ed25519 algorithm
    over test-request.  The request does not contain a Signature-Agent
@@ -896,7 +956,7 @@ Signature-Input: sig1=("@authority")\
  ;tag="web-bot-auth"
 Signature: sig1=:FFASViSdcgsyaqqYiCnkHreeZzbNKcTzDvZC5uVlP/dn9IbWj8j0o4wKFTH3rBnUiSUBduwm1Gp5VlIPCp01Ag==:
 
-A.2.2.  Signature-Agent included present on the request
+B.2.2.  Signature-Agent included present on the request
 
    This example presents a minimal signature using the ed25519 algorithm
    over test-request.  The request contains a Signature-Agent header.
@@ -930,7 +990,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;tag="web-bot-auth"
 Signature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:
 
-A.2.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
+B.2.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
         included present on the request
 
    THIS IS A LEGACY EXAMPLE.  IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE
@@ -968,7 +1028,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;tag="web-bot-auth"
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
 
-Appendix B.  Implementations
+Appendix C.  Implementations
 
    This draft has a couple of public implementations.  A demonstration
    server has been deployed to https://http-message-signatures-
@@ -978,7 +1038,7 @@ Appendix B.  Implementations
    It uses ed25519 example signing and verifying keys defined in
    Appendix B.1.4 of [HTTP-MESSAGE-SIGNATURES].
 
-B.1.  Clients
+C.1.  Clients
 
    *  Chrome MV3 (https://github.com/cloudflare/web-bot-auth)
       (TypeScript)
@@ -1012,7 +1072,7 @@ B.1.  Clients
 
    *  Rust binaries (https://github.com/cloudflare/web-bot-auth) (Rust)
 
-B.2.  Servers
+C.2.  Servers
 
    *  Caddy plugin (https://github.com/cloudflare/web-bot-auth) (Go)
 
@@ -1022,7 +1082,7 @@ B.2.  Servers
    *  Apache module (https://github.com/garyillyes/web-bot-auth-apache)
       (C)
 
-B.3.  Test vectors
+C.3.  Test vectors
 
    *  In JSON format (https://github.com/cloudflare/web-bot-
       auth/blob/main/packages/web-bot-auth/test/test_data/
@@ -1042,6 +1102,8 @@ Changelog
 
    *  Add SSRF security considerations for Signature-Agent directory
       fetches
+
+   *  Add guidance and an example for multiple Web Bot Auth signatures
 
    *  Add typed Signature-Agent discovery examples for directory,
       jwks_uri, and cimd

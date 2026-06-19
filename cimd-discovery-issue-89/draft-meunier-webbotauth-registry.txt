@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 12 December 2026                                         Amazon
+Expires: 21 December 2026                                         Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                            10 June 2026
+                                                            19 June 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 December 2026.
+   This Internet-Draft will expire on 21 December 2026.
 
 Copyright Notice
 
@@ -1055,9 +1055,9 @@ Content-Digest: sha-256=:base64hash:
    [SIGNATURE-KEY]
               Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
               Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-04, 9 April 2026,
+              key-05, 17 June 2026,
               <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-04>.
+              httpbis-signature-key-05>.
 
    [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
