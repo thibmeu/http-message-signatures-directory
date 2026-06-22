@@ -121,8 +121,7 @@ Table of Contents
      A.7.  Rollout and Fallback
      A.8.  Proxies and Intermediaries
      A.9.  CORS
-     A.10. Observability
-     A.11. Deployment Anti-Patterns
+     A.10. Deployment Anti-Patterns
    Appendix B.  Examples
      B.1.  Multiple signatures with a remote browser
    Appendix C.  Test Vectors
@@ -784,13 +783,6 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
               RFC 9205, DOI 10.17487/RFC9205, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9205>.
 
-   [KEY-DIRECTORY-HTTP]
-              Darling, F., Meunier, T., and S. Newton, "Recommendations
-              for Key Directories over HTTP", Work in Progress,
-              Internet-Draft, draft-darling-key-directory-over-http-00,
-              13 February 2025, <https://datatracker.ietf.org/doc/html/
-              draft-darling-key-directory-over-http-00>.
-
    [OAUTH-BEARER]
               Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
@@ -863,9 +855,7 @@ A.4.  Cache Behaviour
 
    Verifiers should use normal HTTP caching semantics [HTTP-CACHE] for
    key directories.  In particular, verifiers should respect Cache-
-   Control, Expires, Date, ETag, and Last-Modified when present.  This
-   is consistent with the cache behaviour described in Section 5.4 of
-   [KEY-DIRECTORY-HTTP].
+   Control, Expires, Date, ETag, and Last-Modified when present.
 
    A verifier should not fetch the directory for every request.  It
    should refresh cached directories when they become stale, and can use
@@ -927,28 +917,19 @@ A.9.  CORS
    without credentials.  CORS is not key authentication and does not
    replace signature validation.
 
-A.10.  Observability
-
-   Verifiers should measure signature parse failures, unknown key IDs,
-   directory fetch attempts, fetch failures, cache hits, stale cache
-   use, negative cache use, verification latency, and the enforcement
-   action taken.  Logs should avoid recording full signed headers or
-   user-specific request data unless needed for a specific
-   investigation.
-
-A.11.  Deployment Anti-Patterns
+A.10.  Deployment Anti-Patterns
 
    Deployments should avoid:
 
-   *  using test or demonstration keys in production;
+   *  using test or demonstration keys in production
 
-   *  issuing one static signature for many requests;
+   *  issuing one static signature for many requests
 
-   *  asking users to copy long-lived signatures into third-party tools;
+   *  asking users to copy long-lived signatures into third-party tools
 
-   *  sharing one signing key across unrelated agents or purposes;
+   *  sharing one signing key across unrelated agents or purposes
 
-   *  relying on manual key rotation as the only revocation mechanism.
+   *  relying on manual key rotation as the only revocation mechanism
 
 Appendix B.  Examples
 

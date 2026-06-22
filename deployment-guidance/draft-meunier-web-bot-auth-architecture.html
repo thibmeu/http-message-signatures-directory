@@ -1326,10 +1326,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
                 <p id="section-toc.1-1.9.2.9.1"><a href="#appendix-A.9" class="auto internal xref">A.9</a>.  <a href="#name-cors" class="internal xref">CORS</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.10">
-                <p id="section-toc.1-1.9.2.10.1"><a href="#appendix-A.10" class="auto internal xref">A.10</a>. <a href="#name-observability" class="internal xref">Observability</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.11">
-                <p id="section-toc.1-1.9.2.11.1"><a href="#appendix-A.11" class="auto internal xref">A.11</a>. <a href="#name-deployment-anti-patterns" class="internal xref">Deployment Anti-Patterns</a></p>
+                <p id="section-toc.1-1.9.2.10.1"><a href="#appendix-A.10" class="auto internal xref">A.10</a>. <a href="#name-deployment-anti-patterns" class="internal xref">Deployment Anti-Patterns</a></p>
 </li>
             </ul>
 </li>
@@ -2230,10 +2227,6 @@ sensitive user data is involved.<a href="#section-6.3-1" class="pilcrow">¶</a><
         <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"Building Protocols with HTTP"</span>, <span class="seriesInfo">BCP 56</span>, <span class="seriesInfo">RFC 9205</span>, <span class="seriesInfo">DOI 10.17487/RFC9205</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9205">https://www.rfc-editor.org/rfc/rfc9205</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="KEY-DIRECTORY-HTTP">[KEY-DIRECTORY-HTTP]</dt>
-        <dd>
-<span class="refAuthor">Darling, F.</span>, <span class="refAuthor">Meunier, T.</span>, and <span class="refAuthor">S. Newton</span>, <span class="refTitle">"Recommendations for Key Directories over HTTP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-darling-key-directory-over-http-00</span>, <time datetime="2025-02-13" class="refDate">13 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-darling-key-directory-over-http-00">https://datatracker.ietf.org/doc/html/draft-darling-key-directory-over-http-00</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="OAUTH-BEARER">[OAUTH-BEARER]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span> and <span class="refAuthor">D. Hardt</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: Bearer Token Usage"</span>, <span class="seriesInfo">RFC 6750</span>, <span class="seriesInfo">DOI 10.17487/RFC6750</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6750">https://www.rfc-editor.org/rfc/rfc6750</a>&gt;</span>. </dd>
@@ -2326,8 +2319,7 @@ when many requests reference the same uncached directory.<a href="#appendix-A.3-
         </h3>
 <p id="appendix-A.4-1">Verifiers should use normal HTTP caching semantics <span>[<a href="#HTTP-CACHE" class="cite xref">HTTP-CACHE</a>]</span> for key
 directories. In particular, verifiers should respect <code>Cache-Control</code>, <code>Expires</code>,
-<code>Date</code>, <code>ETag</code>, and <code>Last-Modified</code> when present. This is consistent with the
-cache behaviour described in <span><a href="https://datatracker.ietf.org/doc/html/draft-darling-key-directory-over-http-00#section-5.4" class="relref">Section 5.4</a> of [<a href="#KEY-DIRECTORY-HTTP" class="cite xref">KEY-DIRECTORY-HTTP</a>]</span>.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
+<code>Date</code>, <code>ETag</code>, and <code>Last-Modified</code> when present.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.4-2">A verifier should not fetch the directory for every request. It should refresh
 cached directories when they become stale, and can use background refresh with
 jitter to avoid synchronized refetches.<a href="#appendix-A.4-2" class="pilcrow">¶</a></p>
@@ -2400,39 +2392,27 @@ as <code>Access-Control-Allow-Origin: *</code> without credentials. CORS is not 
 authentication and does not replace signature validation.<a href="#appendix-A.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="observability">
-<section id="appendix-A.10">
-        <h3 id="name-observability">
-<a href="#appendix-A.10" class="section-number selfRef">A.10. </a><a href="#name-observability" class="section-name selfRef">Observability</a>
-        </h3>
-<p id="appendix-A.10-1">Verifiers should measure signature parse failures, unknown key IDs, directory
-fetch attempts, fetch failures, cache hits, stale cache use, negative cache use,
-verification latency, and the enforcement action taken. Logs should avoid
-recording full signed headers or user-specific request data unless needed for a
-specific investigation.<a href="#appendix-A.10-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="deployment-anti-patterns">
-<section id="appendix-A.11">
+<section id="appendix-A.10">
         <h3 id="name-deployment-anti-patterns">
-<a href="#appendix-A.11" class="section-number selfRef">A.11. </a><a href="#name-deployment-anti-patterns" class="section-name selfRef">Deployment Anti-Patterns</a>
+<a href="#appendix-A.10" class="section-number selfRef">A.10. </a><a href="#name-deployment-anti-patterns" class="section-name selfRef">Deployment Anti-Patterns</a>
         </h3>
-<p id="appendix-A.11-1">Deployments should avoid:<a href="#appendix-A.11-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.10-1">Deployments should avoid:<a href="#appendix-A.10-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A.11-2.1">
-            <p id="appendix-A.11-2.1.1">using test or demonstration keys in production;<a href="#appendix-A.11-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-A.10-2.1">
+            <p id="appendix-A.10-2.1.1">using test or demonstration keys in production<a href="#appendix-A.10-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.11-2.2">
-            <p id="appendix-A.11-2.2.1">issuing one static signature for many requests;<a href="#appendix-A.11-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.10-2.2">
+            <p id="appendix-A.10-2.2.1">issuing one static signature for many requests<a href="#appendix-A.10-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.11-2.3">
-            <p id="appendix-A.11-2.3.1">asking users to copy long-lived signatures into third-party tools;<a href="#appendix-A.11-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.10-2.3">
+            <p id="appendix-A.10-2.3.1">asking users to copy long-lived signatures into third-party tools<a href="#appendix-A.10-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.11-2.4">
-            <p id="appendix-A.11-2.4.1">sharing one signing key across unrelated agents or purposes;<a href="#appendix-A.11-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.10-2.4">
+            <p id="appendix-A.10-2.4.1">sharing one signing key across unrelated agents or purposes<a href="#appendix-A.10-2.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.11-2.5">
-            <p id="appendix-A.11-2.5.1">relying on manual key rotation as the only revocation mechanism.<a href="#appendix-A.11-2.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.10-2.5">
+            <p id="appendix-A.10-2.5.1">relying on manual key rotation as the only revocation mechanism<a href="#appendix-A.10-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
