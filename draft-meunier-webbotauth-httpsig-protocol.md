@@ -1,9 +1,9 @@
 ---
-title: "HTTP Message Signatures for automated traffic Architecture"
+title: "HTTP Message Signatures for automated traffic"
 abbrev: "HTTP Message Signatures for Bots"
 category: info
 
-docname: draft-meunier-web-bot-auth-architecture-latest
+docname: draft-meunier-webbotauth-httpsig-protocol-latest
 submissiontype: IETF
 number:
 date:
@@ -19,7 +19,7 @@ venue:
   mail: "web-bot-auth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
   github: "thibmeu/http-message-signatures-directory"
-  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html"
+  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.html"
 
 author:
  -
