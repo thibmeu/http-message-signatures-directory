@@ -41,7 +41,7 @@ normative:
   CDDL: RFC8610
   CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   DCR: RFC7591
-  DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
+  DIRECTORY: I-D.draft-meunier-webbotauth-httpsig-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
