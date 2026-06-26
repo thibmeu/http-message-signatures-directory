@@ -1018,62 +1018,73 @@ Tanya Verma.
 # Changelog
 {:numbered="false"}
 
-v05
+draft-meunier-webbotauth-httpsig-protocol-00
 
-- Add SSRF security considerations for Signature-Agent directory fetches
-- Add deployment guidance for verifier outcomes, directory fetching, caching,
-  retry, rollout, proxies, CORS, and observability
-- Add security considerations for test keys, static signatures, and discovery
-  failure handling
-- Add guidance and an example for multiple Web Bot Auth signatures
-- Add typed Signature-Agent discovery examples for `directory`, `jwks_uri`, and `cimd`
-- Clarify that `Signature-Input` `keyid` selects the key and `Signature-Agent` locates candidate key material
-- Note Signature-Key as an optional alternative discovery header
-- Fix some typos
+- Rename draft from `draft-meunier-web-bot-auth-architecture`.
+- Add SSRF guidance for `Signature-Agent` directory fetches.
+- Add deployment guidance for verifier outcomes, directory fetches, caching,
+  retry, rollout, proxies, CORS, and observability.
+- Add guidance for test keys, static signatures, and discovery failures.
+- Add multiple Web Bot Auth signatures and an example.
+- Add typed `Signature-Agent` discovery examples for `directory`, `jwks_uri`,
+  and `cimd`.
+- Clarify that `Signature-Input` `keyid` selects the key and `Signature-Agent`
+  points to candidate key material.
+- Note `Signature-Key` as an optional discovery header.
+- Fix typos.
 
-v04
+draft-meunier-web-bot-auth-architecture-05
 
-- Change Signature-Agent to a sf-dictionary
-- Add security consideration around intermediary re-keying Signature-Agent
-- Add `target-uri` as a valid replacement for `@authority`
-- Add more contributors
-- Add new implementations of architecture drafts
-- Remove "purpose" field from web-bot-auth architecture example
+- Add Sandor Major as an author.
+- Add session protocol considerations.
+- Update HTTP Message Signatures test vectors.
+- Keep legacy `Signature-Agent` string examples for implementers migrating to
+  dictionary members.
 
-v03
+draft-meunier-web-bot-auth-architecture-04
 
-- Update linzer example url
-- Fix section and name of status code 429
-- Fix typos
+- Change `Signature-Agent` to a Structured Fields dictionary.
+- Add a security consideration for intermediaries that relabel
+  `Signature-Agent` members.
+- Allow `@target-uri` as a replacement for `@authority`.
+- Add contributors.
+- Add implementations.
+- Remove the `purpose` field from the Web Bot Auth example.
 
-v02
+draft-meunier-web-bot-auth-architecture-03
 
-- Add response status code
-- Add a few reference to improve readability
-- Add consideration to sign additional headers
-- Add use of TLS in security considerations
-- Add RSASSA-PSS example
-- Update acknowledgement section
-- Reference new implementations: PHP, Python, Ruby, Rust
-- Fix signature-agent in the arch diagram to use structured fields
-- Fix test vectors to use signature-agent with structured fields
-- Fix some typos
+- Update the Linzer example URL.
+- Fix the section reference and name for status code 429.
+- Fix typos.
 
-v01
+draft-meunier-web-bot-auth-architecture-02
 
-- Add mandatory signing of Signature-Agent by clients if present
-- Add test vectors for request with and without Signature-Agent
-- Update example diagram to be correct
-- Add security consideration about reverse proxy
-- Update why origin may request a new signature
-- Update nonce validation wording and global uniqueness
-- Acknowledgements
+- Add response status codes.
+- Add references for readability.
+- Add text about signing extra headers.
+- Add TLS guidance to Security Considerations.
+- Add RSASSA-PSS examples.
+- Update acknowledgments.
+- Add PHP, Python, Ruby, and Rust implementations.
+- Fix `Signature-Agent` in the architecture diagram to use Structured Fields.
+- Fix test vectors to use Structured Fields for `Signature-Agent`.
+- Fix typos.
 
-v00
+draft-meunier-web-bot-auth-architecture-01
 
-- Initial draft
-- How to leverage HTTP Message Signature to sign request
-- How to verify these Signature
-- Define web-bot-auth tag to scope this signature
-- Derive keyid using JWK Thumbprint
-- High level Security and Privacy considerations
+- Require clients to sign `Signature-Agent` when it is present.
+- Add test vectors for requests with and without `Signature-Agent`.
+- Fix the example diagram.
+- Add reverse proxy security considerations.
+- Update text about why an origin may request a new signature.
+- Update nonce validation wording and uniqueness requirements.
+- Add acknowledgments.
+
+draft-meunier-web-bot-auth-architecture-00
+
+- Initial draft.
+- Describe how to use HTTP Message Signatures to sign requests.
+- Describe signature verification.
+- Define the `web-bot-auth` tag.
+- Derive `keyid` from the JWK Thumbprint.
+- Add initial Security and Privacy Considerations.

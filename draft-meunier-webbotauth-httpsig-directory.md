@@ -487,32 +487,46 @@ Lucas Pardue.
 # Changelog
 {:numbered="false"}
 
-v04
+draft-meunier-webbotauth-httpsig-directory-00
 
-- Change `Signature-Agent` to a `sf-dictionary`
-- Add `type` parameter to `Signature-Agent` with `directory`, `jwks_uri`, and `cimd` values; default to `directory`
-- Add `req` flag on directory response
-- Add `Content-Digest` to directory response validation
-- Add more contributors
+- Rename draft from `draft-meunier-http-message-signatures-directory`.
+- Add typed `Signature-Agent` discovery with `directory`, `jwks_uri`, and
+  `cimd`; default to `directory` when no type is present.
+- Add `Content-Digest` to directory response validation.
+- Update `Signature-Agent` examples to use `type=directory`.
+- Fix wording around URI values and directory response signatures.
 
-v03
+draft-meunier-http-message-signatures-directory-05
 
-- Remove "purpose" field from web-bot-auth
+- Add Sandor Major as an author.
+- Remove a stale author TODO from the examples.
 
-v02
+draft-meunier-http-message-signatures-directory-04
 
-- Correct typos
+- Change `Signature-Agent` to a Structured Fields dictionary.
+- Add the `req` flag on directory response signatures.
+- Add contributors.
 
-v01
+draft-meunier-http-message-signatures-directory-03
 
-- Update content-type from `application/http-message-signatures-directory` to `application/http-message-signatures-directory+json`
-- Add delegation and chaining examples: full x5c chain, AIA extension, and x5u
-- Add inline directory example with data URI
-- Fix well-known path in examples
+- Remove the `purpose` field from the Web Bot Auth example.
 
-v00
+draft-meunier-http-message-signatures-directory-02
 
-- Initial draft
-- Definition of Signature-Agent and its three supported URI https, http, and data.
-- Leverages JWKS as a directory fo HTTP Message Signatures
-- Well-known and content-type
+- Fix typos.
+
+draft-meunier-http-message-signatures-directory-01
+
+- Change the media type from `application/http-message-signatures-directory` to
+  `application/http-message-signatures-directory+json`.
+- Add delegation and chaining examples using a full `x5c` chain, AIA, and
+  `x5u`.
+- Add an inline directory example using a `data` URI.
+- Fix the well-known path in examples.
+
+draft-meunier-http-message-signatures-directory-00
+
+- Initial draft.
+- Define `Signature-Agent` for `https`, `http`, and `data` URI values.
+- Use JWKS as a directory for HTTP Message Signatures keys.
+- Define the well-known URI and media type.
