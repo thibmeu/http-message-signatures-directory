@@ -460,9 +460,9 @@ Table of Contents
 
    Examples:
 
-Signature-Agent: sig1="https://signer.example.com"
-Signature-Agent: sig2="https://signer.example.com/.well-known/jwks.json";type=jwks_uri
-Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
+Signature-Agent: sig1="https://signature-agent.test"
+Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
+Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 
    Example:
 
@@ -613,24 +613,25 @@ Signature-Agent: sig3="https://signer.example.com/mybot";type=cimd
    defined in Section 4.2.1, An intermediary updating the member key
    MUST update the components of the associated signatures accordingly.
 
-   For instance, an intermediary updating the Signature-Agent from sig2
-   to sig3 on the example provided in Appendix C.1.2 would result in the
-   following Signature, Signature-Input, and Signature-Agent header.
+   For instance, an intermediary updating the Signature-Agent from
+   agent2 to agent3 on the example provided in Appendix C.1.2 would
+   result in the following Signature, Signature-Input, and Signature-
+   Agent header fields after recomputing the signature.
 
 NOTE: '\' line wrapping per RFC 8792
 
-Signature-Agent: sig3="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="sig3")\
+Signature-Agent: agent3="https://signature-agent.test"
+Signature-Input: sig2=("@authority" "signature-agent";key="agent3")\
  ;created=1735689600\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
- ;expires=1735693200\
- ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
+ ;expires=4889289600\
+ ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
  ;tag="web-bot-auth"
-Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
+Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPddqIs5qLdVzb+RpXzjDcao9tFk6Ad0ccX/vf1qQmVXkH0MMpXhPGBmJT1b21nUinkrGhBPEnb+OXSJVTmLGWLgCihPSpzaEE6BUp9IFWjJoMOF3pOY+1Yinukj2/JXr1+meTe0pwGWtQ079SHhKbP1veqXanFN1rrQ5QwbDiYklfDEC4PLVKYLFXryFuTAj5wivj7/8Y9qbD6dFyMggEIPe4a0ubOzmAiTuQyW+OqOfFvPwxVWkYxUgoapjz5rEA1Dguc3ZZo/2ja+N/1fmOe7/Q==:
 
-   Signature is unchanged as the base is similar.  Both Signature-Agent
-   and Signature-Input reflect the update from sig2 to sig3.
+   Signature-Agent, Signature-Input, and Signature all reflect the
+   update from agent2 to agent3.
 
 5.8.  Server-Side Request Forgery (SSRF)
 
@@ -996,7 +997,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=4889289600\
- ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
+ ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
  ;tag="web-bot-auth"
 
    This results in the following Signature-Input and Signature header
@@ -1009,9 +1010,9 @@ Signature-Input: sig1=("@authority")\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=4889289600\
- ;nonce="EfK54mBzFxPqwpmZ430GZRqVGrLT/DplPWuFIM1jLJDjrAIX3yFGidftF1h1+zLHfjoNKhx74yU1psH1XD7BeA=="\
+ ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
  ;tag="web-bot-auth"
-Signature: sig1=:Bqj+UQfJNSRx0Dz/K/4/+Bo1l8UUH5Ps1zYzX6H6nKCyZJ88Hry/KZF2JishxI1h9+LJTmRmDmw2HxbUeZkoUUgmLbg168GWiYFBK0IQRKQvvbnzrONutKNmanvIXNvrN2ZB2h+w9ekSol3XJRncErrwcU2PWltBR+An4H2kIiRBfnBRi85eCVF+s6SYRxoAJvRo6avTCvCZe9Gvw8Ezbj8QnHU37uvTN72+MBDEsFN94ozfAT8MTB4wAwqXYLMf9mnl0mpK2UbnXrzgffRxOhEHVvHNIN8aB7ThM1p4JzaTN1HuXQFPYOWgCojOCv2IovGOygai/j3p4PzMJUp4Lw==:
+Signature: sig1=:hWPaj85MWQiRkzU4jnIKvdPQiDfMCPIoxOP8nZveNc3aFQ7r/UmXWCwGNImw588iRvTFey5TR3fVEgnXpcttlyK+u5pN831z9Wlr+IMNfub4uEM3SuO+SKFygJZyLG0pf7OAiRcU4C0gyx1BS/+z9ydQTRzDLr88wCkBBRqwGRrSi8HTwxkqg1jugobh93hcnU6gV8MK1n+VnhRprIgl2RQSO6q5cfbB4OS8C4t/8ndW0lYmP2SWzKZJXnpX5Wrj17PuLqnVW6MO8pJnLAMXNvxUdx32KHeq/cHFrzZazZsua3UOoP+k+niHwoQ8bBWj1Vi4mM1mYJK+fk366cCLsQ==:
 
 C.1.2.  Signature-Agent included present on the request
 
@@ -1030,7 +1031,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=4889289600\
- ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
+ ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
  ;tag="web-bot-auth"
 
    This results in the following Signature-Input and Signature header
@@ -1044,9 +1045,9 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
  ;alg="rsa-pss-sha512"\
  ;expires=4889289600\
- ;nonce="zJwYV5pG8TA9NnaOu9RBShBXtiWuyoWthZXQBT2J77XTpW3ADk49DlbOvpqjJqy3SH3lyNVS/Zo0DmKQX8HYuQ=="\
+ ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
  ;tag="web-bot-auth"
-Signature: sig2=:ngb8Yuk2zY/O5nyApob/uwIRWNE1md5xrzYSpPfVCWMHMjdQhj8HTPY8lrE8jHDHRtpqUy7jvYM8LzaHb1NGyxPemVMEOoZpBWXxboqSbp1LTAb2o5qbETmSuDM7UZE4WuSDQoIG5GF5AZ8b8lFEWDP1pw0XV1zsZMn8EPU/DbTkFtGgVPdGehjywJRqnXCXEX0wRCGg4+nTJwWs736JqgbBCuafQPCdwITQucMyGA12QOmMc8eQUdjcS/uqzkDxj1+iI3PDCYnscUTHcGuNv6rWxIx0D+rqWhOoLeYwzDPUm3qs2utVCATIgK0ktLWSfGcPK6p3IwJIUj7cSkbVRg==:
+Signature: sig2=:gHzpLNeHaHIO19NaJH9YMW5dcVSi2s0wOMBr6p18vcofS106sfC4KBIS0/szPlBBd1vIcyQ88B6CTEWIhRAiVrb9zfX0mx1aG12CSGWcYkSirHeyTxhbuJvXd27ed6skWoy4PjXItq38936ivUQjfdIwXh1aX6HxkAC3vRnEdSNfntkLWeEuIQ5BLIOBGE39fSwg27Qjq6OVWYas/9/aFUr3HA34MXWYdp+//cvlEKDp3kRoLOw9ro0AOr6srHrTeEtxon2afcws1aZVSlPdd2fZSEIGmw9HAHLDCEkFTERu1gH2k/zIEqgy7CAYXI9E5slog0cLg/Vc6+f8gih33g==:
 
 C.1.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
         included present on the request
@@ -1110,7 +1111,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=4889289600\
- ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
+ ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
  ;tag="web-bot-auth"
 
    This results in the following Signature-Input and Signature header
@@ -1123,9 +1124,9 @@ Signature-Input: sig1=("@authority")\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=4889289600\
- ;nonce="g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ=="\
+ ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
  ;tag="web-bot-auth"
-Signature: sig1=:FFASViSdcgsyaqqYiCnkHreeZzbNKcTzDvZC5uVlP/dn9IbWj8j0o4wKFTH3rBnUiSUBduwm1Gp5VlIPCp01Ag==:
+Signature: sig1=:QKN4fTdIYfh82fvoZCQiQA1weuozfCS/Led2zTMbewMMqH8PI2Wsy/5c4ao6B6D09nraNQdBNOADg8aM1MqfCg==:
 
 C.2.2.  Signature-Agent included present on the request
 
@@ -1143,7 +1144,7 @@ NOTE: '\' line wrapping per RFC 8792
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=4889289600\
- ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
+ ;nonce="n9p433xm+NJ3ph3upfBIGmsuwHw387YV7Q/F+6BSpGCVjYCqQw6rznNA8PVVLySrAWsv0hQtFioQb6E1YsauiA=="\
  ;tag="web-bot-auth"
 
    This results in the following Signature-Input and Signature header
@@ -1157,9 +1158,9 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
  ;alg="ed25519"\
  ;expires=4889289600\
- ;nonce="XeP72svPKNiGEg3aDE7WJuTpN69H08oMFqC8NLFy1MptpENAT3WZTYwK+MYdsFMlaqHCJGo9ZAhqer1NWY9Epg=="\
+ ;nonce="n9p433xm+NJ3ph3upfBIGmsuwHw387YV7Q/F+6BSpGCVjYCqQw6rznNA8PVVLySrAWsv0hQtFioQb6E1YsauiA=="\
  ;tag="web-bot-auth"
-Signature: sig2=:DGiW2ErlQh0hc8wY2FQdbnFd6CEmonyY8nlvECIJFaUSYYNvNvSsGyP99BUGtq51gA4ouXlkUwjnta084bpjCg==:
+Signature: sig2=:RdNFx5Bj6au3YgAMQL/RzmUlZE8QZLIaXGRpw985hWnwPfMxT228NMk6ehRS1PSl4e8PhbNZACSanGdhEwYCCg==:
 
 C.2.3.  Legacy Signature-Agent (sf-string instead of sf-dictionary)
         included present on the request
@@ -1301,6 +1302,8 @@ Changelog
       Agent points to candidate key material.
 
    *  Note Signature-Key as an optional discovery header.
+
+   *  Align examples with published test-vector fixtures.
 
    *  Fix typos.
 
