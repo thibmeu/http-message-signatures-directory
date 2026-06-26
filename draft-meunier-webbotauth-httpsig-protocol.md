@@ -32,7 +32,7 @@ author:
     email: ietf@sandormajor.com
 
 normative:
-  DIRECTORY: I-D.draft-meunier-http-message-signatures-directory
+  DIRECTORY: I-D.draft-meunier-webbotauth-httpsig-directory
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
