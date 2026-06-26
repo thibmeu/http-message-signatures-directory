@@ -965,9 +965,15 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 ## Clients
 
+draft-meunier-webbotauth-httpsig-protocol-00
+
 * [Chrome MV3](https://github.com/cloudflare/web-bot-auth) (TypeScript)
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+* [Rust binaries](https://github.com/cloudflare/web-bot-auth) (Rust)
+
+draft-meunier-web-bot-auth-architecture-03
 
 * [Puppeteer script](https://github.com/stytchauth/web-bot-auth-example) (JavaScript)
 
@@ -977,7 +983,7 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Bot-Authentication](https://github.com/cyberstormdotmu/bot-authentication) (Python)
 
-* [HTPie plugin](https://github.com/cloudflare/web-bot-auth) (Python)
+* [HTTPie plugin](https://github.com/cloudflare/web-bot-auth) (Python)
 
 * [Web scrapers (scrapy/crawl4ai)](https://github.com/cyberstormdotmu/bot-authentication) (Python)
 
@@ -985,13 +991,15 @@ It uses ed25519 example signing and verifying keys defined in {{Appendix B.1.4 o
 
 * [Linzer](https://github.com/nomadium/linzer/blob/master/spec/integration/cloudflare_example_research_spec.rb) (Ruby)
 
-* [Rust binaries](https://github.com/cloudflare/web-bot-auth) (Rust)
-
 ## Servers
 
-* [Caddy plugin](https://github.com/cloudflare/web-bot-auth) (Go)
+draft-meunier-webbotauth-httpsig-protocol-00
 
 * [Cloudflare Workers](https://github.com/cloudflare/web-bot-auth) (TypeScript)
+
+draft-meunier-web-bot-auth-architecture-03
+
+* [Caddy plugin](https://github.com/cloudflare/web-bot-auth) (Go)
 
 * [Apache module](https://github.com/garyillyes/web-bot-auth-apache) (C)
 
@@ -1028,6 +1036,7 @@ draft-meunier-webbotauth-httpsig-protocol-00
 - Add multiple Web Bot Auth signatures and an example.
 - Add typed `Signature-Agent` discovery examples for `directory`, `jwks_uri`,
   and `cimd`.
+- Group implementations by the draft version that added them.
 - Clarify that `Signature-Input` `keyid` selects the key and `Signature-Agent`
   points to candidate key material.
 - Note `Signature-Key` as an optional discovery header.
