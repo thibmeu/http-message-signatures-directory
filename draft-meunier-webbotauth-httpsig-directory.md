@@ -3,7 +3,7 @@ title: "HTTP Message Signatures Directory"
 abbrev: "HTTP Message Signatures Directory"
 category: std
 
-docname: draft-meunier-http-message-signatures-directory-latest
+docname: draft-meunier-webbotauth-httpsig-directory-latest
 submissiontype: IETF
 number:
 date:
@@ -19,7 +19,7 @@ venue:
   mail: "web-bot-auth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/web-bot-auth/"
   github: "thibmeu/http-message-signatures-directory"
-  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html"
+  latest: "https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-directory.html"
 
 author:
  -
