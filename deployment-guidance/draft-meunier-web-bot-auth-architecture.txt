@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 24 December 2026                                         Google
-                                                            22 June 2026
+Expires: 28 December 2026                                         Google
+                                                            26 June 2026
 
 
        HTTP Message Signatures for automated traffic Architecture
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 December 2026.
+   This Internet-Draft will expire on 28 December 2026.
 
 Copyright Notice
 
@@ -683,7 +683,8 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 
 5.11.  Discovery Failure
 
-   Failure to fetch or validate a key directory means that the asserted
+   Failure to fetch or validate a key directory, beyond the directory
+   cache window discussed in Appendix A.4, means that the asserted
    identity is not verified.  It does not prove that the signer is
    malicious, and it does not make the request trusted.  The resulting
    enforcement decision is local policy.
@@ -836,7 +837,8 @@ A.2.  Directory Availability
    that block ordinary verifier fetches of the well-known resource.
 
    The directory endpoint should support GET.  Supporting HEAD, ETag,
-   Last-Modified, and conditional requests can reduce fetch load.
+   Last-Modified, Cache-Control, and conditional requests can reduce
+   fetch load.  Cache is specifically discussed in Appendix A.4.
 
 A.3.  Bounded Directory Fetches
 
@@ -880,7 +882,7 @@ A.6.  Freshness and Replay
    sensitivity to clock skew and signing failures.  Nonces provide
    stronger replay defense, but require state at the verifier.  Some
    deployments can tolerate bounded replay for short windows; others
-   need strict nonce tracking.
+   need strict Section 5.3.
 
    These choices are deployment policy.  Verifiers should avoid
    accepting signatures with freshness windows longer than their risk

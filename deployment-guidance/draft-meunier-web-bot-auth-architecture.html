@@ -1052,7 +1052,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 24 December 2026</td>
+<td class="center">Expires 28 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <dd class="internet-draft">draft-meunier-web-bot-auth-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-22" class="published">22 June 2026</time>
+<time datetime="2026-06-26" class="published">26 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-24">24 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-28">28 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1127,7 +1127,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2104,9 +2104,10 @@ it unusable.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
         <h3 id="name-discovery-failure">
 <a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-discovery-failure" class="section-name selfRef">Discovery Failure</a>
         </h3>
-<p id="section-5.11-1">Failure to fetch or validate a key directory means that the asserted identity is
-not verified. It does not prove that the signer is malicious, and it does not
-make the request trusted. The resulting enforcement decision is local policy.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
+<p id="section-5.11-1">Failure to fetch or validate a key directory, beyond the directory cache window
+discussed in <a href="#cache-behaviour" class="auto internal xref">Appendix A.4</a>, means that the asserted identity is not
+verified. It does not prove that the signer is malicious, and it does not make
+the request trusted. The resulting enforcement decision is local policy.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2294,7 +2295,8 @@ make it reachable without requiring Web Bot Auth on the directory request. They
 should also avoid bot protection rules that block ordinary verifier fetches of
 the well-known resource.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-2">The directory endpoint should support <code>GET</code>. Supporting <code>HEAD</code>, <code>ETag</code>,
-<code>Last-Modified</code>, and conditional requests can reduce fetch load.<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
+<code>Last-Modified</code>, <code>Cache-Control</code>, and conditional requests can reduce fetch
+load. Cache is specifically discussed in <a href="#cache-behaviour" class="auto internal xref">Appendix A.4</a>.<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="bounded-directory-fetches">
@@ -2349,7 +2351,7 @@ exponential backoff and jitter. When a directory response includes
 <p id="appendix-A.6-1">Shorter signature lifetimes reduce replay risk but increase sensitivity to clock
 skew and signing failures. Nonces provide stronger replay defense, but require
 state at the verifier. Some deployments can tolerate bounded replay for short
-windows; others need strict nonce tracking.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+windows; others need strict <a href="#nonce-validation" class="auto internal xref">Section 5.3</a>.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.6-2">These choices are deployment policy. Verifiers should avoid accepting signatures
 with freshness windows longer than their risk model permits.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
 </section>
