@@ -43,6 +43,7 @@ normative:
 
 informative:
   CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
+  HTTP-BEST-PRACTICES: RFC9205
   OAUTH-BEARER: RFC6750
   RFC8446:
   OWASP-SSRF:
@@ -476,7 +477,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 `Signature` is unchanged as the base is similar. Both `Signature-Agent` and
 `Signature-Input` reflect the update from `sig2` to `sig3`.
 
-## Server-Side Request Forgery (SSRF)
+## Server-Side Request Forgery (SSRF) {#ssrf}
 
 As described in {{key-distribution-and-discovery}}, verifiers may fetch key directories based on
 the value conveyed in `Signature-Agent` when included in a request. Since
@@ -508,6 +509,29 @@ Verifiers SHOULD take appropriate precautions as follows:
 
 Further recommendations can be found in the Open Worldwide Application
 Security Project (OWASP) SSRF Prevention Cheat Sheet {{OWASP-SSRF}}.
+
+## Test and Demonstration Keys
+
+Test keys, including the example keys in {{HTTP-MESSAGE-SIGNATURES}}, MUST NOT
+be used in production. Verifiers SHOULD reject known test keys when they are
+detected in key directories or out-of-band configuration.
+
+## Static Signatures
+
+Deployments MUST NOT treat a precomputed Web Bot Auth signature as a long-lived
+access credential. A reusable static signature has bearer-token semantics and can
+be replayed until the covered signature parameters, key, or verifier policy make
+it unusable.
+
+Agents SHOULD generate signatures for the request being sent, with bounded
+`created` and `expires` values. Long expiration windows increase replay risk.
+
+## Discovery Failure
+
+Failure to fetch or validate a key directory, beyond the directory cache window
+discussed in {{cache-behaviour}}, means that the asserted identity is not
+verified. It does not prove that the signer is malicious, and it does not make
+the request trusted. The resulting enforcement decision is local policy.
 
 # Privacy Considerations
 
@@ -543,6 +567,123 @@ This document has no IANA actions.
 
 
 --- back
+
+# Deployment Guidance
+
+This appendix is operational guidance. It does not define new protocol
+requirements.
+
+## Verifier Outcomes
+
+Verifiers should keep three outcomes distinct:
+
+`verified`
+: the signature and key material validate.
+
+`invalid`
+: the signature, covered components, key, or freshness checks fail.
+
+`unverified`
+: the verifier cannot obtain enough information to decide, for example because
+  directory discovery failed or the key is unknown.
+
+Origins can apply local policy to each outcome. During deployment, treating
+`unverified` as one bot-management signal is safer than treating it as either
+`verified` or `invalid`.
+
+## Directory Availability
+
+Directory resources are bootstrap material. Operators serving a directory should
+make it reachable without requiring Web Bot Auth on the directory request. They
+should also avoid bot protection rules that block ordinary verifier fetches of
+the well-known resource.
+
+The directory endpoint should support `GET`. Supporting `HEAD`, `ETag`,
+`Last-Modified`, `Cache-Control`, and conditional requests can reduce fetch
+load. Cache is specifically discussed in {{cache-behaviour}}.
+
+## Bounded Directory Fetches
+
+Verifiers fetch directories named by untrusted requests. Fetches should be
+bounded as described in {{ssrf}}. In particular, verifiers should use a fetch
+timeout, bound the decoded response size, bound the number of keys considered,
+limit redirects, and prevent fetches to private, loopback, and link-local
+addresses.
+
+Verifiers should also coalesce concurrent fetches for the same directory and
+apply per-directory or per-origin concurrency limits. This avoids a fetch storm
+when many requests reference the same uncached directory.
+
+## Cache Behaviour {#cache-behaviour}
+
+Verifiers should use normal HTTP caching semantics {{HTTP-CACHE}} for key
+directories. In particular, verifiers should respect `Cache-Control`, `Expires`,
+`Date`, `ETag`, and `Last-Modified` when present.
+
+A verifier should not fetch the directory for every request. It should refresh
+cached directories when they become stale, and can use background refresh with
+jitter to avoid synchronized refetches.
+
+## Negative Caching and Retry
+
+Verifiers can cache unsuccessful discovery outcomes for a short period to reduce
+repeated fetches. Negative cache entries should expire after no more than five
+minutes. They are operational throttling state, not proof that a signature is
+invalid.
+
+Network failures, TLS failures, and `5xx` responses should be treated as
+transient unless local policy says otherwise. Verifiers should retry with bounded
+exponential backoff and jitter. When a directory response includes
+`Retry-After`, verifiers should respect it as described by {{HTTP}} and
+{{HTTP-BEST-PRACTICES}}.
+
+## Freshness and Replay
+
+Shorter signature lifetimes reduce replay risk but increase sensitivity to clock
+skew and signing failures. Nonces provide stronger replay defense, but require
+state at the verifier. Some deployments can tolerate bounded replay for short
+windows; others need strict {{nonce-validation}}.
+
+These choices are deployment policy. Verifiers should avoid accepting signatures
+with freshness windows longer than their risk model permits.
+
+## Rollout and Fallback
+
+Web Bot Auth deployments will coexist with existing bot identification signals
+during rollout. Verifiers can continue to use existing methods such as IP-based
+checks, forward-confirmed reverse DNS, local allowlists, and reputation systems.
+
+Fallback should not turn an unsupported or unverifiable Web Bot Auth signature
+into a trusted identity. It should leave the request in the origin's existing
+bot-management path.
+
+## Proxies and Intermediaries
+
+Proxies and intermediaries need to preserve the fields covered by a signature if
+the origin will verify that signature. If a proxy rewrites the authority, path,
+or signed header fields, the origin may no longer see the message that was
+signed.
+
+A deployment can instead verify at the proxy and pass the result to the origin
+through a deployment-local trusted channel. That assertion is local policy; it is
+not a replacement for the original HTTP Message Signature.
+
+## CORS
+
+Key directories contain public key material. If browser-based verifiers need to
+fetch them cross-origin, a directory server can use a permissive CORS policy such
+as `Access-Control-Allow-Origin: *` without credentials. CORS is not key
+authentication and does not replace signature validation.
+
+## Deployment Anti-Patterns
+
+Deployments should avoid:
+
+* using test or demonstration keys in production
+* issuing one static signature for many requests
+* asking users to copy long-lived signatures into third-party tools
+* sharing one signing key across unrelated agents or purposes
+* relying on manual key rotation as the only revocation mechanism
 
 # Examples
 
@@ -880,6 +1021,10 @@ Tanya Verma.
 v05
 
 - Add SSRF security considerations for Signature-Agent directory fetches
+- Add deployment guidance for verifier outcomes, directory fetching, caching,
+  retry, rollout, proxies, CORS, and observability
+- Add security considerations for test keys, static signatures, and discovery
+  failure handling
 - Add guidance and an example for multiple Web Bot Auth signatures
 - Add typed Signature-Agent discovery examples for `directory`, `jwks_uri`, and `cimd`
 - Clarify that `Signature-Input` `keyid` selects the key and `Signature-Agent` locates candidate key material
