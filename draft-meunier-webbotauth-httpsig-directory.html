@@ -1959,64 +1959,88 @@ Lucas Pardue.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-C-1">v04<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">draft-meunier-webbotauth-httpsig-directory-00<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Change <code>Signature-Agent</code> to a <code>sf-dictionary</code><a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Rename draft from <code>draft-meunier-http-message-signatures-directory</code>.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.2">
-          <p id="appendix-C-2.2.1">Add <code>type</code> parameter to <code>Signature-Agent</code> with <code>directory</code>, <code>jwks_uri</code>, and <code>cimd</code> values; default to <code>directory</code><a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.2.1">Add typed <code>Signature-Agent</code> discovery with <code>directory</code>, <code>jwks_uri</code>, and
+<code>cimd</code>; default to <code>directory</code> when no type is present.<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.3">
-          <p id="appendix-C-2.3.1">Add <code>req</code> flag on directory response<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.3.1">Add <code>Content-Digest</code> to directory response validation.<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.4">
-          <p id="appendix-C-2.4.1">Add <code>Content-Digest</code> to directory response validation<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.4.1">Update <code>Signature-Agent</code> examples to use <code>type=directory</code>.<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.5">
-          <p id="appendix-C-2.5.1">Add more contributors<a href="#appendix-C-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.5.1">Fix wording around URI values and directory response signatures.<a href="#appendix-C-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-3">v03<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">draft-meunier-http-message-signatures-directory-05<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-4.1">
-          <p id="appendix-C-4.1.1">Remove "purpose" field from web-bot-auth<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-4.1.1">Add Sandor Major as an author.<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.2">
+          <p id="appendix-C-4.2.1">Remove a stale author TODO from the examples.<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-5">v02<a href="#appendix-C-5" class="pilcrow">¶</a></p>
+<p id="appendix-C-5">draft-meunier-http-message-signatures-directory-04<a href="#appendix-C-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-6.1">
-          <p id="appendix-C-6.1.1">Correct typos<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-6.1.1">Change <code>Signature-Agent</code> to a Structured Fields dictionary.<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.2">
+          <p id="appendix-C-6.2.1">Add the <code>req</code> flag on directory response signatures.<a href="#appendix-C-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.3">
+          <p id="appendix-C-6.3.1">Add contributors.<a href="#appendix-C-6.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-7">v01<a href="#appendix-C-7" class="pilcrow">¶</a></p>
+<p id="appendix-C-7">draft-meunier-http-message-signatures-directory-03<a href="#appendix-C-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-8.1">
-          <p id="appendix-C-8.1.1">Update content-type from <code>application/http-message-signatures-directory</code> to <code>application/http-message-signatures-directory+json</code><a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.2">
-          <p id="appendix-C-8.2.1">Add delegation and chaining examples: full x5c chain, AIA extension, and x5u<a href="#appendix-C-8.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.3">
-          <p id="appendix-C-8.3.1">Add inline directory example with data URI<a href="#appendix-C-8.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.4">
-          <p id="appendix-C-8.4.1">Fix well-known path in examples<a href="#appendix-C-8.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-8.1.1">Remove the <code>purpose</code> field from the Web Bot Auth example.<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-9">v00<a href="#appendix-C-9" class="pilcrow">¶</a></p>
+<p id="appendix-C-9">draft-meunier-http-message-signatures-directory-02<a href="#appendix-C-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-10.1">
-          <p id="appendix-C-10.1.1">Initial draft<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.1.1">Fix typos.<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-10.2">
-          <p id="appendix-C-10.2.1">Definition of Signature-Agent and its three supported URI https, http, and data.<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-C-11">draft-meunier-http-message-signatures-directory-01<a href="#appendix-C-11" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-12.1">
+          <p id="appendix-C-12.1.1">Change the media type from <code>application/http-message-signatures-directory</code> to
+<code>application/http-message-signatures-directory+json</code>.<a href="#appendix-C-12.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-10.3">
-          <p id="appendix-C-10.3.1">Leverages JWKS as a directory fo HTTP Message Signatures<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-C-12.2">
+          <p id="appendix-C-12.2.1">Add delegation and chaining examples using a full <code>x5c</code> chain, AIA, and
+<code>x5u</code>.<a href="#appendix-C-12.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-10.4">
-          <p id="appendix-C-10.4.1">Well-known and content-type<a href="#appendix-C-10.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-C-12.3">
+          <p id="appendix-C-12.3.1">Add an inline directory example using a <code>data</code> URI.<a href="#appendix-C-12.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-12.4">
+          <p id="appendix-C-12.4.1">Fix the well-known path in examples.<a href="#appendix-C-12.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-13">draft-meunier-http-message-signatures-directory-00<a href="#appendix-C-13" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-14.1">
+          <p id="appendix-C-14.1.1">Initial draft.<a href="#appendix-C-14.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.2">
+          <p id="appendix-C-14.2.1">Define <code>Signature-Agent</code> for <code>https</code>, <code>http</code>, and <code>data</code> URI values.<a href="#appendix-C-14.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.3">
+          <p id="appendix-C-14.3.1">Use JWKS as a directory for HTTP Message Signatures keys.<a href="#appendix-C-14.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.4">
+          <p id="appendix-C-14.4.1">Define the well-known URI and media type.<a href="#appendix-C-14.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>

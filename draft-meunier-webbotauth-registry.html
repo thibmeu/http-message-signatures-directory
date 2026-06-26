@@ -2745,103 +2745,121 @@ in <a href="#web-bot-auth-extension" class="auto internal xref">Section 3.2</a> 
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-D-1">v03<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">draft-meunier-webbotauth-registry-03<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-2.1">
-          <p id="appendix-D-2.1.1">Reframe Signature Agent Card as an OAuth client metadata document (<span>[<a href="#DCR" class="cite xref">DCR</a>]</span>/<span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> namespace) extended with a single <code>web_bot_auth</code> object<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.1.1">Make the Signature Agent Card an OAuth client metadata document with a
+<code>web_bot_auth</code> object.<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.2">
-          <p id="appendix-D-2.2.1">Add resolvable <code>client_id</code> parameter and CIMD-based discovery (GET, 200 OK, no redirects, client_id match)<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.2.1">Add resolvable <code>client_id</code> discovery: <code>GET</code>, <code>200 OK</code>, no redirects, and an
+exact <code>client_id</code> match.<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.3">
-          <p id="appendix-D-2.3.1">Allow <code>Signature-Agent</code> header members with <code>type=cimd</code> and registry entries to reference a <code>client_id</code> URL<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.3.1">Allow <code>Signature-Agent</code> members with <code>type=cimd</code> and registry entries to point
+to a <code>client_id</code> URL.<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.4">
-          <p id="appendix-D-2.4.1">Register <code>web_bot_auth</code> in the OAuth Dynamic Client Registration Metadata registry; move bot-specific parameters into a new "Web Bot Auth Metadata Parameters" registry<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.4.1">Register <code>web_bot_auth</code> in the OAuth Dynamic Client Registration Metadata
+registry.<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.5">
-          <p id="appendix-D-2.5.1">Stop redefining shared client metadata fields (client_name, client_uri, logo_uri, contacts); reference RFC 7591 instead, and drop the non-standard data:text/plain restriction on <code>client_uri</code><a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.5.1">Move bot-specific fields into a new Web Bot Auth Metadata Parameters registry.<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.6">
-          <p id="appendix-D-2.6.1">Rename the inline key parameter from <code>keys</code> to <code>jwks</code> to match the <span>[<a href="#DCR" class="cite xref">DCR</a>]</span> namespace, and state that the <code>jwks_uri</code> resource is a JWK Set (no mandated media type) so generic consumers can read directory keys<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.6.1">Stop redefining shared client metadata fields; reference RFC 7591 instead.<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.7">
-          <p id="appendix-D-2.7.1">Require <code>client_id</code> in a card resolved through its <code>client_id</code><a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.7.1">Drop the <code>data:text/plain</code> restriction on <code>client_uri</code>.<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.8">
-          <p id="appendix-D-2.8.1">Require <code>jwks</code> and <code>jwks_uri</code> to be mutually exclusive<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.8.1">Rename inline keys from <code>keys</code> to <code>jwks</code> to match OAuth client metadata.<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.9">
-          <p id="appendix-D-2.9.1">Restrict registry entries and resolvable cards to <code>https</code> (drop <code>http</code>)<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.9.1">State that <code>jwks_uri</code> points to a JWK Set, without requiring a media type.<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.10">
-          <p id="appendix-D-2.10.1">Mirror the directory signing requirement: the <code>jwks_uri</code> resource <span class="bcp14">SHOULD</span> be signed using HTTP Message Signatures<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.10.1">Require <code>client_id</code> in a card resolved through its <code>client_id</code>.<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-2.11">
-          <p id="appendix-D-2.11.1">Note Signature-Key as a possible composable carrier (informative)<a href="#appendix-D-2.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-2.11.1">Require <code>jwks</code> and <code>jwks_uri</code> to be mutually exclusive.<a href="#appendix-D-2.11.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.12">
+          <p id="appendix-D-2.12.1">Restrict registry entries and resolvable cards to <code>https</code>.<a href="#appendix-D-2.12.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.13">
+          <p id="appendix-D-2.13.1">Say the <code>jwks_uri</code> resource <span class="bcp14">SHOULD</span> be signed using HTTP Message Signatures.<a href="#appendix-D-2.13.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.14">
+          <p id="appendix-D-2.14.1">Note <code>Signature-Key</code> as a possible carrier.<a href="#appendix-D-2.14.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-3">v02<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-3">draft-meunier-webbotauth-registry-02<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-4.1">
-          <p id="appendix-D-4.1.1">Add <code>ips_uri</code> parameter so client can expose IP addresses<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.1.1">Add <code>ips_uri</code> so a client can publish IP addresses.<a href="#appendix-D-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.2">
-          <p id="appendix-D-4.2.1">Add optional <code>jwks_uri</code> parameter to separate key material from metadata<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.2.1">Add <code>jwks_uri</code> to separate key material from metadata.<a href="#appendix-D-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.3">
-          <p id="appendix-D-4.3.1">Fix inline data URL example in registry to use valid signature agent card<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.3.1">Fix the inline data URL example.<a href="#appendix-D-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.4">
-          <p id="appendix-D-4.4.1">Rename "Public list" to "Registry Endpoint" for clarity<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.4.1">Rename "Public list" to "Registry Endpoint".<a href="#appendix-D-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.5">
-          <p id="appendix-D-4.5.1">Add authentication guidance for private registry endpoints<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.5.1">Add authentication guidance for private registry endpoints.<a href="#appendix-D-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.6">
-          <p id="appendix-D-4.6.1">Add conditional GET (ETag/If-Modified-Since) guidance for efficient polling<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.6.1">Add conditional GET guidance using <code>ETag</code> and <code>If-Modified-Since</code>.<a href="#appendix-D-4.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.7">
-          <p id="appendix-D-4.7.1">Add caching guidance referencing HTTP-CACHE<a href="#appendix-D-4.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.7.1">Add caching guidance using HTTP-CACHE.<a href="#appendix-D-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.8">
-          <p id="appendix-D-4.8.1">Add change notification section: PUT/DELETE webhook signed with HTTP Message Signatures, OOB callback registration, pull as source of truth<a href="#appendix-D-4.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.8.1">Add change notifications using signed <code>PUT</code> and <code>DELETE</code> webhooks.<a href="#appendix-D-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.9">
-          <p id="appendix-D-4.9.1">Expand Security Considerations: registry integrity via HTTP Message Signatures, private registry guidance<a href="#appendix-D-4.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.9.1">Keep pull-based registry fetches as the source of truth.<a href="#appendix-D-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.10">
-          <p id="appendix-D-4.10.1">Expand Privacy Considerations: customer list exposure, access patterns<a href="#appendix-D-4.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.10.1">Add registry integrity and private registry guidance to Security
+Considerations.<a href="#appendix-D-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-4.11">
-          <p id="appendix-D-4.11.1">Add normative reference to RFC 8288 (Web Linking)<a href="#appendix-D-4.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-4.11.1">Add customer list exposure and access patterns to Privacy Considerations.<a href="#appendix-D-4.11.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-4.12">
+          <p id="appendix-D-4.12.1">Add RFC 8288 as a normative reference.<a href="#appendix-D-4.12.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-5">v01<a href="#appendix-D-5" class="pilcrow">¶</a></p>
+<p id="appendix-D-5">draft-meunier-webbotauth-registry-01<a href="#appendix-D-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-6.1">
-          <p id="appendix-D-6.1.1">Add contributors<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.1.1">Add contributors.<a href="#appendix-D-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.2">
-          <p id="appendix-D-6.2.1">Aligning registry draft with oauth dynamic client registration iana registry<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.2.1">Align the registry draft with the OAuth Dynamic Client Registration Metadata
+registry.<a href="#appendix-D-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.3">
-          <p id="appendix-D-6.3.1">Add an about-url field<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.3.1">Add an about URL field.<a href="#appendix-D-6.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.4">
-          <p id="appendix-D-6.4.1">Add ABNF for discovery of signature-agent card (registry)<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.4.1">Add ABNF for registry discovery.<a href="#appendix-D-6.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.5">
-          <p id="appendix-D-6.5.1">Add precisions about known URLs<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.5.1">Clarify known URLs.<a href="#appendix-D-6.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-D-6.6">
-          <p id="appendix-D-6.6.1">Add placeholder for image size<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-6.6.1">Add a placeholder for image size.<a href="#appendix-D-6.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-D-7">v00<a href="#appendix-D-7" class="pilcrow">¶</a></p>
+<p id="appendix-D-7">draft-meunier-webbotauth-registry-00<a href="#appendix-D-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-8.1">
-          <p id="appendix-D-8.1.1">Initial draft<a href="#appendix-D-8.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-D-8.1.1">Initial draft.<a href="#appendix-D-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>

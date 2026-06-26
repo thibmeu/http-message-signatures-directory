@@ -1081,92 +1081,91 @@ Acknowledgments
 
 Changelog
 
-   v03
+   draft-meunier-webbotauth-registry-03
 
-   *  Reframe Signature Agent Card as an OAuth client metadata document
-      ([DCR]/[CIMD] namespace) extended with a single web_bot_auth
-      object
+   *  Make the Signature Agent Card an OAuth client metadata document
+      with a web_bot_auth object.
 
-   *  Add resolvable client_id parameter and CIMD-based discovery (GET,
-      200 OK, no redirects, client_id match)
+   *  Add resolvable client_id discovery: GET, 200 OK, no redirects, and
+      an exact client_id match.
 
-   *  Allow Signature-Agent header members with type=cimd and registry
-      entries to reference a client_id URL
+   *  Allow Signature-Agent members with type=cimd and registry entries
+      to point to a client_id URL.
 
    *  Register web_bot_auth in the OAuth Dynamic Client Registration
-      Metadata registry; move bot-specific parameters into a new "Web
-      Bot Auth Metadata Parameters" registry
+      Metadata registry.
 
-   *  Stop redefining shared client metadata fields (client_name,
-      client_uri, logo_uri, contacts); reference RFC 7591 instead, and
-      drop the non-standard data:text/plain restriction on client_uri
+   *  Move bot-specific fields into a new Web Bot Auth Metadata
+      Parameters registry.
 
-   *  Rename the inline key parameter from keys to jwks to match the
-      [DCR] namespace, and state that the jwks_uri resource is a JWK Set
-      (no mandated media type) so generic consumers can read directory
-      keys
+   *  Stop redefining shared client metadata fields; reference RFC 7591
+      instead.
 
-   *  Require client_id in a card resolved through its client_id
+   *  Drop the data:text/plain restriction on client_uri.
 
-   *  Require jwks and jwks_uri to be mutually exclusive
+   *  Rename inline keys from keys to jwks to match OAuth client
+      metadata.
 
-   *  Restrict registry entries and resolvable cards to https (drop
-      http)
+   *  State that jwks_uri points to a JWK Set, without requiring a media
+      type.
 
-   *  Mirror the directory signing requirement: the jwks_uri resource
-      SHOULD be signed using HTTP Message Signatures
+   *  Require client_id in a card resolved through its client_id.
 
-   *  Note Signature-Key as a possible composable carrier (informative)
+   *  Require jwks and jwks_uri to be mutually exclusive.
 
-   v02
+   *  Restrict registry entries and resolvable cards to https.
 
-   *  Add ips_uri parameter so client can expose IP addresses
+   *  Say the jwks_uri resource SHOULD be signed using HTTP Message
+      Signatures.
 
-   *  Add optional jwks_uri parameter to separate key material from
-      metadata
+   *  Note Signature-Key as a possible carrier.
 
-   *  Fix inline data URL example in registry to use valid signature
-      agent card
+   draft-meunier-webbotauth-registry-02
 
-   *  Rename "Public list" to "Registry Endpoint" for clarity
+   *  Add ips_uri so a client can publish IP addresses.
 
-   *  Add authentication guidance for private registry endpoints
+   *  Add jwks_uri to separate key material from metadata.
 
-   *  Add conditional GET (ETag/If-Modified-Since) guidance for
-      efficient polling
+   *  Fix the inline data URL example.
 
-   *  Add caching guidance referencing HTTP-CACHE
+   *  Rename "Public list" to "Registry Endpoint".
 
-   *  Add change notification section: PUT/DELETE webhook signed with
-      HTTP Message Signatures, OOB callback registration, pull as source
-      of truth
+   *  Add authentication guidance for private registry endpoints.
 
-   *  Expand Security Considerations: registry integrity via HTTP
-      Message Signatures, private registry guidance
+   *  Add conditional GET guidance using ETag and If-Modified-Since.
 
-   *  Expand Privacy Considerations: customer list exposure, access
-      patterns
+   *  Add caching guidance using HTTP-CACHE.
 
-   *  Add normative reference to RFC 8288 (Web Linking)
+   *  Add change notifications using signed PUT and DELETE webhooks.
 
-   v01
+   *  Keep pull-based registry fetches as the source of truth.
 
-   *  Add contributors
+   *  Add registry integrity and private registry guidance to Security
+      Considerations.
 
-   *  Aligning registry draft with oauth dynamic client registration
-      iana registry
+   *  Add customer list exposure and access patterns to Privacy
+      Considerations.
 
-   *  Add an about-url field
+   *  Add RFC 8288 as a normative reference.
 
-   *  Add ABNF for discovery of signature-agent card (registry)
+   draft-meunier-webbotauth-registry-01
 
-   *  Add precisions about known URLs
+   *  Add contributors.
 
-   *  Add placeholder for image size
+   *  Align the registry draft with the OAuth Dynamic Client
+      Registration Metadata registry.
 
-   v00
+   *  Add an about URL field.
 
-   *  Initial draft
+   *  Add ABNF for registry discovery.
+
+   *  Clarify known URLs.
+
+   *  Add a placeholder for image size.
+
+   draft-meunier-webbotauth-registry-00
+
+   *  Initial draft.
 
 Authors' Addresses
 
