@@ -300,8 +300,10 @@ Additional requirements are placed on this validation:
 
 - During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
-- During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
+- During step 5, the Origin MAY discard signatures for which it does not know the `keyid`.
+- During step 5, if the `keyid` is unknown to the Origin, the Origin SHOULD NOT fetch key material during request processing. Any key-material fetches using `Signature-Agent` MUST be bounded as described in {{bounded-directory-fetches}} and {{ssrf}}.
+
+`Signature-Agent` is a discovery hint, not a fetch trigger.
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
@@ -480,9 +482,10 @@ from `agent2` to `agent3`.
 ## Server-Side Request Forgery (SSRF) {#ssrf}
 
 As described in {{key-distribution-and-discovery}}, verifiers may fetch key directories based on
-the value conveyed in `Signature-Agent` when included in a request. Since
-clients control the `Signature-Agent` header value, this introduces a risk of
-server-side request forgery (SSRF) attacks by malicious clients.
+the value conveyed in `Signature-Agent` when included in a request. Because
+`Signature-Agent` is supplied by the client, an attacker can use arbitrary
+values to induce fetches. Unconditional fetches create SSRF and
+fetch-amplification risk.
 
 Verifiers SHOULD take appropriate precautions as follows:
 
@@ -602,13 +605,18 @@ The directory endpoint should support `GET`. Supporting `HEAD`, `ETag`,
 `Last-Modified`, `Cache-Control`, and conditional requests can reduce fetch
 load. Cache is specifically discussed in {{cache-behaviour}}.
 
-## Bounded Directory Fetches
+## Bounded Directory Fetches {#bounded-directory-fetches}
 
 Verifiers fetch directories named by untrusted requests. Fetches should be
 bounded as described in {{ssrf}}. In particular, verifiers should use a fetch
 timeout, bound the decoded response size, bound the number of keys considered,
 limit redirects, and prevent fetches to private, loopback, and link-local
 addresses.
+
+A verifier should not start one outbound fetch per new `Signature-Agent` value.
+Fetch policy may include allowlists, rate thresholds, sampling, scheduled
+refresh, operator approval, or a trusted resolver. Logging `Signature-Agent`
+for later evaluation can be sufficient.
 
 Verifiers should also coalesce concurrent fetches for the same directory and
 apply per-directory or per-origin concurrency limits. This avoids a fetch storm
