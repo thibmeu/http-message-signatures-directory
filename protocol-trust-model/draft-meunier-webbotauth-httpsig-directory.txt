@@ -5,12 +5,12 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 12 December 2026                                         Google
-                                                            10 June 2026
+Expires: 15 January 2027                                          Google
+                                                            14 July 2026
 
 
                    HTTP Message Signatures Directory
-         draft-meunier-http-message-signatures-directory-latest
+           draft-meunier-webbotauth-httpsig-directory-latest
 
 Abstract
 
@@ -18,8 +18,8 @@ Abstract
    [HTTP-MESSAGE-SIGNATURES] to advertise their signing keys.
 
    It defines a key directory format based on JWKS as defined in
-   Section 5 of [JWK], as well as new HTTP Method Context to allow for
-   in-band key discovery.
+   Section 5 of [JWK], as well as a new HTTP Method Context for in-band
+   key discovery.
 
 About This Document
 
@@ -27,9 +27,9 @@ About This Document
 
    The latest revision of this draft can be found at
    https://thibmeu.github.io/http-message-signatures-directory/draft-
-   meunier-http-message-signatures-directory.html.  Status information
-   for this document may be found at https://datatracker.ietf.org/doc/
-   draft-meunier-http-message-signatures-directory/.
+   meunier-webbotauth-httpsig-directory.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   meunier-webbotauth-httpsig-directory/.
 
    Discussion of this document takes place on the Web Bot Auth Working
    Group mailing list (mailto:web-bot-auth@ietf.org), which is archived
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 December 2026.
+   This Internet-Draft will expire on 15 January 2027.
 
 Copyright Notice
 
@@ -122,8 +122,7 @@ Table of Contents
 
    2.  A well-known URI location for discovering these key directories,
 
-   3.  A new HTTP header field enabling in-band key directory location
-       discovery.
+   3.  A new HTTP header field enabling in-band key material discovery.
 
    Together, these mechanisms enable key distribution and discovery for
    HTTP Message Signatures cryptographic material.
@@ -154,30 +153,49 @@ Table of Contents
 
    A service sending signed requests as defined in
    [HTTP-MESSAGE-SIGNATURES] MAY include a Signature-Agent header field
-   to communicate its signing key directory.  This header field contains
-   a URI allowing retrieval of an HTTP Message Signatures Directory as
-   defined in Section 3.
+   to communicate where its verification key material can be found.
+   This header field contains a URI and a type parameter that identifies
+   the discovery mechanism.
 
 4.1.  Header Field Definition
 
-   The Signature-Agent header field is an Dictionary Structured Header
-   as defined in Section 3.2 of [STRUCTURED-HEADERS].  Its member values
-   MUST be an String Item which contain a [URI].
+   The Signature-Agent header field is a Dictionary Structured Header as
+   defined in Section 3.2 of [STRUCTURED-HEADERS].  Its member values
+   MUST be String Items that contain a [URI].
+
+   The type parameter is a Token Item as defined in Section 3.3.4 of
+   [STRUCTURED-HEADERS].  If the type parameter is absent, its value is
+   directory.
+
+   The following type values are defined:
+
+   directory  The member value identifies an origin.  For https URI
+      values, a client resolves the HTTP Message Signatures Directory
+      using the well-known URI registered in Section 7.1 at that origin.
+      For data URI values, the member value contains an inline HTTP
+      Message Signatures Directory.
+
+   jwks_uri  The member value identifies a JWK Set URI.
+
+   cimd  The member value identifies a Client ID Metadata Document
+      [CIMD] URI.
+
+   A client that does not support a type value MUST ignore that member.
+   A client MUST NOT infer the discovery mechanism from the URI path,
+   media type, or response body.
 
    The URI scheme MUST be one of:
 
-   *  *https (RECOMMENDED)*: Points to an HTTPS resource serving the key
-      directory
+   *  *https (RECOMMENDED)*: Points to an HTTPS resource
 
-   *  *http*: Points to an HTTP resource serving the key directory
+   *  *data*: Contains inline key material
 
-   *  *data*: Contains an inline key directory
+   When using the data URI scheme with type=directory, the media type
+   MUST be application/http-message-signatures-directory+json.  The
+   content MAY be base64 encoded as per [BASE64].  The data URI scheme
+   MUST NOT be used with other type values.
 
-   When using the "data" URI scheme, the media type MUST be application/
-   http-message-signatures-directory+json.  The content MAY be base64
-   encoded as per [BASE64].
-
-   If dictonary values are not a valid URI-reference, the entire header
+   If dictionary values are not valid URI-references, the entire header
    field MAY be ignored.
 
 5.  Security Considerations
@@ -202,19 +220,24 @@ Table of Contents
    To ensure the authenticity and integrity of the key material provided
    by the directory, clients *SHOULD* validate the directory's response.
 
-   When a directory server provides a key directory over HTTP or HTTPS,
-   it is RECOMMENDED that it constructs and includes one HTTP Message
-   Signatures per keys with the response, as defined in
-   [HTTP-MESSAGE-SIGNATURES].  Each key SHOULD be used to provide one
-   signature.
+   When a directory server provides a key directory over HTTPS, it MUST
+   construct and include one HTTP Message Signature per key with the
+   response, as defined in [HTTP-MESSAGE-SIGNATURES].  Each key MUST be
+   used to provide one signature.  These signatures prove possession of
+   the advertised keys and, by covering @authority, prevent the key set
+   from being re-served under a different authority.  They do not confer
+   authority over the serving domain: that comes from the TLS connection
+   alone.
 
-   Directory server SHOULD include:
+   Directory server MUST include the following covered components:
 
    @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES].
       req flag defined in Section 2.4 of [HTTP-MESSAGE-SIGNATURES] MUST
       be set.
 
-   Directory server SHOULD include the following @signature-params as
+   content-digest  as defined in [DIGEST-FIELDS].
+
+   Directory server MUST include the following @signature-params as
    defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
    created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
@@ -228,10 +251,11 @@ Table of Contents
    tag  MUST be http-message-signatures-directory
 
    Clients SHOULD validate these signatures using the keys provided by
-   the directory.  Clients SHOULD ignore keys from a directory response
-   that do not have a corresponding valid signature.  This validation
-   ensures the integrity of the key set and its association with the
-   intended directory.
+   the directory.  Clients SHOULD validate the Content-Digest field
+   against the response body.  Clients SHOULD ignore keys from a
+   directory response that do not have a corresponding valid signature.
+   This validation checks the integrity of the key set and binds it to
+   the intended authority.
 
 6.  Privacy Considerations
 
@@ -308,6 +332,17 @@ Table of Contents
 8.  References
 
 8.1.  Normative References
+
+   [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
+              Document", Work in Progress, Internet-Draft, draft-ietf-
+              oauth-client-id-metadata-document-02, 6 July 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
+              client-id-metadata-document-02>.
+
+   [DIGEST-FIELDS]
+              Polli, R. and L. Pardue, "Digest Fields", RFC 9530,
+              DOI 10.17487/RFC9530, February 2024,
+              <https://www.rfc-editor.org/rfc/rfc9530>.
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
@@ -404,12 +439,13 @@ A.1.  Key Directory on example.com
 
 A.2.  Delegation and chaining
 
-   There are multiple methods to perform delegation and chaining.  There
-   are no specific methods that have been favored by implementation so
-   far, should they even support them.  It is adviced to consider
-   delegation as experimental for now, and provide input on the
-   associated GitHub issue (https://github.com/thibmeu/http-message-
-   signatures-directory/issues/27).
+   Delegation and chaining are out of scope for this document and are
+   expected to be specified separately.  The examples below are
+   informative only: they illustrate how existing JWK fields (x5c, x5u,
+   AIA) could carry a delegation, without defining verifier behaviour.
+   Input is welcome on the associated GitHub issue
+   (https://github.com/thibmeu/http-message-signatures-directory/
+   issues/27).
 
 A.2.1.  Key Directory on sub.example.com with a delegation from
         example.com via x5c full certificate chain
@@ -517,7 +553,7 @@ A.3.  Request with HTTP Signature-Agent
 
    POST /foo?param=Value&Pet=dog HTTP/1.1
    Host: example.com
-   Signature-Agent: my_test="https://directory.test"
+   Signature-Agent: my_test="https://directory.test";type=directory
    {"hello": "world"}
 
    HTTP/1.1 200 OK
@@ -547,44 +583,73 @@ Acknowledgments
 
 Changelog
 
-   v04
+   draft-meunier-webbotauth-httpsig-directory-01
 
-   *  Change Signature-Agent to a sf-dictionary
+   *  Directory responses MUST include one HTTP Message Signature per
+      advertised key, covering @authority and content-digest (previously
+      RECOMMENDED).  Clarify what these signatures establish: proof of
+      possession and protection against re-hosting, not authority over
+      the domain, which comes from TLS alone.
 
-   *  Add req flag on directory response
+   *  Delegation and chaining are explicitly out of scope; the examples
+      are informative only (previously "experimental").
 
-   *  Add more contributors
+   draft-meunier-webbotauth-httpsig-directory-00
 
-   v03
+   *  Rename draft from draft-meunier-http-message-signatures-directory.
 
-   *  Remove "purpose" field from web-bot-auth
+   *  Add typed Signature-Agent discovery with directory, jwks_uri, and
+      cimd; default to directory when no type is present.
 
-   v02
+   *  Add Content-Digest to directory response validation.
 
-   *  Correct typos
+   *  Update Signature-Agent examples to use type=directory.
 
-   v01
+   *  Fix wording around URI values and directory response signatures.
 
-   *  Update content-type from application/http-message-signatures-
-      directory to application/http-message-signatures-directory+json
+   draft-meunier-http-message-signatures-directory-05
 
-   *  Add delegation and chaining examples: full x5c chain, AIA
-      extension, and x5u
+   *  Add Sandor Major as an author.
 
-   *  Add inline directory example with data URI
+   *  Remove a stale author TODO from the examples.
 
-   *  Fix well-known path in examples
+   draft-meunier-http-message-signatures-directory-04
 
-   v00
+   *  Change Signature-Agent to a Structured Fields dictionary.
 
-   *  Initial draft
+   *  Add the req flag on directory response signatures.
 
-   *  Definition of Signature-Agent and its three supported URI https,
-      http, and data.
+   *  Add contributors.
 
-   *  Leverages JWKS as a directory fo HTTP Message Signatures
+   draft-meunier-http-message-signatures-directory-03
 
-   *  Well-known and content-type
+   *  Remove the purpose field from the Web Bot Auth example.
+
+   draft-meunier-http-message-signatures-directory-02
+
+   *  Fix typos.
+
+   draft-meunier-http-message-signatures-directory-01
+
+   *  Change the media type from application/http-message-signatures-
+      directory to application/http-message-signatures-directory+json.
+
+   *  Add delegation and chaining examples using a full x5c chain, AIA,
+      and x5u.
+
+   *  Add an inline directory example using a data URI.
+
+   *  Fix the well-known path in examples.
+
+   draft-meunier-http-message-signatures-directory-00
+
+   *  Initial draft.
+
+   *  Define Signature-Agent for https, http, and data URI values.
+
+   *  Use JWKS as a directory for HTTP Message Signatures keys.
+
+   *  Define the well-known URI and media type.
 
 Authors' Addresses
 
