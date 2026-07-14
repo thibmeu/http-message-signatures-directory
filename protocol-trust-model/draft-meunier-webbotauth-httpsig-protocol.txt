@@ -4,7 +4,7 @@
 
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
-Intended status: Standards Track                                S. Major
+Intended status: Informational                                  S. Major
 Expires: 15 January 2027                                          Google
                                                             14 July 2026
 
@@ -279,7 +279,7 @@ Table of Contents
    lists, or the Signature-Agent header.  The distribution method does
    not change what a valid signature proves.
 
-   Signature-Agent is a client-controlled hint.  Verifiers MUST NOT
+   Signature-Agent is a client-controlled hint.  Verifiers SHOULD NOT
    grant trust based on its value alone.  This header can be used to
    triage requests, but trust is attached to the verified key, or to a
    verified binding (Section 4.3).
