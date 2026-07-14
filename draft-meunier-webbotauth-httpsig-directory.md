@@ -113,7 +113,7 @@ STRUCTURED-HEADERS}}. If the `type` parameter is absent, its value is `directory
 The following `type` values are defined:
 
 `directory`
-: The member value identifies an origin. For `http` and `https` URI values, a
+: The member value identifies an origin. For `https` URI values, a
 client resolves the HTTP Message Signatures Directory using the well-known URI
 registered in {{wkuri-reg}} at that origin. For `data` URI values, the member
 value contains an inline HTTP Message Signatures Directory.
@@ -131,7 +131,6 @@ or response body.
 The URI scheme MUST be one of:
 
 - **https (RECOMMENDED)**: Points to an HTTPS resource
-- **http**: Points to an HTTP resource
 - **data**: Contains inline key material
 
 When using the `data` URI scheme with `type=directory`, the media type MUST be
@@ -160,10 +159,13 @@ Servers SHOULD cache the directory contents and refresh upon expiration.
 To ensure the authenticity and integrity of the key material provided by the
 directory, clients **SHOULD** validate the directory's response.
 
-When a directory server provides a key directory over HTTP or HTTPS, it is
-RECOMMENDED that it constructs and includes one HTTP Message Signatures per keys
+When a directory server provides a key directory over HTTPS, it is
+RECOMMENDED that it construct and include one HTTP Message Signature per key
 with the response, as defined in {{HTTP-MESSAGE-SIGNATURES}}.
-Each key SHOULD be used to provide one signature.
+Each key SHOULD be used to provide one signature. These signatures prove
+possession of the advertised keys and, by covering `@authority`, prevent the
+key set from being re-served under a different authority. They do not confer
+authority over the serving domain: that comes from the TLS connection alone.
 
 Directory server SHOULD include the following covered components:
 
@@ -338,9 +340,11 @@ Cache-Control: max-age=86400
 
 ## Delegation and chaining
 
-There are multiple methods to perform delegation and chaining. There are no specific methods
-that have been favored by implementation so far, should they even support them.
-It is adviced to consider delegation as experimental for now, and provide input on the associated
+Delegation and chaining are out of scope for this document and are expected
+to be specified separately. The examples below are informative only: they
+illustrate how existing JWK fields (`x5c`, `x5u`, AIA) could carry a
+delegation, without defining verifier behaviour. Input is welcome on the
+associated
 [GitHub issue](https://github.com/thibmeu/http-message-signatures-directory/issues/27).
 
 ### Key Directory on sub.example.com with a delegation from example.com via x5c full certificate chain
@@ -486,6 +490,14 @@ Lucas Pardue.
 
 # Changelog
 {:numbered="false"}
+
+draft-meunier-webbotauth-httpsig-directory-01
+
+- Clarify what directory response signatures establish: proof of possession
+  and protection against re-hosting, not authority over the domain, which
+  comes from TLS alone.
+- Delegation and chaining are explicitly out of scope; the examples are
+  informative only (previously "experimental").
 
 draft-meunier-webbotauth-httpsig-directory-00
 
