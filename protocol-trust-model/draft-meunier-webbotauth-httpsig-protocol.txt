@@ -17,8 +17,7 @@ Abstract
    This document describes a protocol for identifying automated traffic
    using [HTTP-MESSAGE-SIGNATURES].  The goal is to allow automated HTTP
    clients to cryptographically sign outbound requests, allowing HTTP
-   servers to attribute requests to a stable, unforgeable identifier:
-   the client's public key.
+   servers to verify their identity with confidence.
 
 About This Document
 
@@ -171,7 +170,7 @@ Table of Contents
    [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from bots
    be signed by a private key owned by its provider.  This way, every
    origin can validate the service identity.  Section 4 defines what
-   that identity is and what validating it establishes.
+   that identity is and what validation it establishes.
 
 2.  Motivation
 
@@ -259,8 +258,8 @@ Table of Contents
    Unlike an IP address, a key is cheap to mint: an Agent blocked on its
    keyid can rotate its key or stop sending signatures altogether.  This
    is acceptable and out of scope.  The protocol targets honest clients
-   that want to accrue trust; an Agent that drops the signal falls back
-   to the origin's existing bot-management path.
+   that want to accrue trust.  An Agent that does not participate falls
+   back to the origin's existing bot-management path.
 
    A valid signature proves two things: the request was produced by a
    holder of the private key, and requests with the same keyid come from
@@ -277,23 +276,23 @@ Table of Contents
 
    The verifier needs the public key of the client they are validating.
    Section 5.5 discusses ways to obtain it: out-of-band exchange, public
-   lists, or the Signature-Agent header.  The channel does not change
-   what a valid signature proves.
+   lists, or the Signature-Agent header.  The distribution method does
+   not change what a valid signature proves.
 
    Signature-Agent is a client-controlled hint.  Verifiers MUST NOT
-   grant trust based on its value alone.  The header can be used to
+   grant trust based on its value alone.  This header can be used to
    triage requests, but trust is attached to the verified key, or to a
    verified binding (Section 4.3).
 
-   Discovery is still required for key updates (addition, removal).  It
-   is bounded by the caching described in Appendix A.4.
+   Discovery is required for key updates (addition, removal).  It is
+   bounded by the caching described in Appendix A.4.
 
 4.3.  Binding a key to a Web origin
 
-   By design, a key and its thumbprint are a stable identifier.  When
+   By design, a key and its thumbprint form a stable identifier.  When
    key material comes from the well-known directory defined in
    [DIRECTORY], the verifier additionally learns which domain publishes
-   the key: the TLS connection authenticates the domain serving the
+   the key.  The TLS connection authenticates the domain serving the
    directory, and each advertised key signs the directory response,
    proving possession and preventing the key set from being re-served
    under a different authority (Section 5.2 of [DIRECTORY]).  These
@@ -301,8 +300,7 @@ Table of Contents
    the TLS connection alone.
 
    In this document, such a binding is optional.  Origins MAY use it for
-   accountability or to persist trust across key rotation, or ignore it
-   and treat the key as the whole identity.
+   accountability or to persist trust across key rotation.
 
 4.4.  Out of scope
 
