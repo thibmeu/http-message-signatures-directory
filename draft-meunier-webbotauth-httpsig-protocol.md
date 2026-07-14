@@ -53,7 +53,7 @@ informative:
 
 --- abstract
 
-This document describes an architecture for identifying automated
+This document describes a protocol for identifying automated
 traffic using {{HTTP-MESSAGE-SIGNATURES}}. The goal
 is to allow automated HTTP clients to cryptographically sign outbound
 requests, allowing HTTP servers to verify their identity with confidence.
@@ -73,10 +73,11 @@ themselves to origins for several reasons:
 4. Service level differentiation between human and automated traffic
 
 Current identification methods such as IP allowlisting, User-Agent strings, or shared API keys have
-significant limitations in security, scalability, and manageability. This document defines an
-architecture enabling agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
+significant limitations in security, scalability, and manageability. This document defines a
+protocol enabling agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
 It proposes that every request from bots be signed by a private key owned by its provider.
-This way, every origin can validate the service identity.
+This way, every origin can validate the service identity. {{trust-model}}
+defines what that identity is and what validation it establishes.
 
 # Motivation
 
@@ -108,7 +109,7 @@ mechanism that empowers small and large agents to share their identity.
 
 ## HTTP layer choice
 
-This architecture operates solely at the HTTP layer.
+This protocol operates solely at the HTTP layer.
 It allows signatures to be generated and
 verified without modifying the transport layer or TLS stack. It enables
 flexible deployment across proxies, gateways, and origin servers, and aligns
@@ -134,7 +135,70 @@ The following terms are used throughout this document:
 **Origin**
 : An HTTP server receiving signed requests that implements the HTTP protocol and verifies {{HTTP-MESSAGE-SIGNATURES}} signatures. It acts as a verifier of the signature as defined by {{HTTP-MESSAGE-SIGNATURES}}.
 
-# Architecture
+# Identity and Trust Model {#trust-model}
+
+This section defines what identity means in this protocol, and what a
+verifier can conclude from a valid signature.
+
+## The key is the identity {#key-is-identity}
+
+In this draft, an Agent's identity is its signing key. The `keyid` defined in
+{{generating-http-message-signature}} is a normalised thumbprint of that key. Origins
+can log, rate limit, allowlist, or block a `keyid` the way they do IP
+addresses and User-Agent today.
+
+Unlike an IP address, a key is cheap to mint: an Agent blocked on its `keyid`
+can rotate its key or stop sending signatures altogether. This is acceptable
+and out of scope. The protocol targets honest clients that want to accrue
+trust. An Agent that does not participate falls back to the origin's existing
+bot-management path.
+
+A valid signature proves two things: the request was produced by a holder of
+the private key, and requests with the same `keyid` come from holders of the
+same key. This is enough for an origin to build trust for a `keyid`. It
+does not say who operates the Agent, whether the Agent is benign, or whether
+the request is authorized. Those are origin policy.
+
+A verifier only needs the public key to validate a signature. Whether
+that key is bound to something more, such as a domain ({{origin-binding}}),
+is deployment specific.
+
+## Discovery is not trust {#discovery-is-not-trust}
+
+The verifier needs the public key of the client they are validating.
+{{key-distribution-and-discovery}} discusses ways to obtain it: out-of-band
+exchange, public lists, or the `Signature-Agent` header. The distribution method
+does not change what a valid signature proves.
+
+`Signature-Agent` is a client-controlled hint. Verifiers SHOULD NOT grant
+trust based on its value alone. This header can be used to triage requests, but
+trust is attached to the verified key, or to a verified binding
+({{origin-binding}}).
+
+Discovery is required for key updates (addition, removal). It is bounded by the
+caching described in {{cache-behaviour}}.
+
+## Binding a key to a Web origin {#origin-binding}
+
+By design, a key and its thumbprint form a stable identifier. When key material
+comes from the well-known directory defined in {{DIRECTORY}}, the verifier
+additionally learns which domain publishes the key. The TLS connection
+authenticates the domain serving the directory, and each advertised key signs
+the directory response, proving possession and preventing the key set from
+being re-served under a different authority (Section 5.2 of {{DIRECTORY}}).
+These signatures do not confer authority over the domain: that comes from the
+TLS connection alone.
+
+In this document, such a binding is optional. Origins MAY use it for
+accountability or to persist trust across key rotation.
+
+## Out of scope
+
+This protocol does not authenticate human users, does not provide anonymous
+authentication, and does not define authorization or delegation. See
+{{privacy-considerations}}.
+
+# Protocol Overview {#architecture}
 
 ~~~aasvg
 +--------+               +---------+                           +----------+
@@ -255,7 +319,7 @@ and request a new signature, as described in {{requesting-message-signature}}.
 
 ### Sending a request {#sending-request}
 
-An Agent SHOULD send a request with the signature generated above. Updating the architecture diagram, the flow looks as follow.
+An Agent SHOULD send a request with the signature generated above. Updating the overview diagram, the flow looks as follow.
 
 ~~~aasvg
 +---------+                                                                                  +----------+
@@ -301,16 +365,17 @@ Additional requirements are placed on this validation:
 - During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}.
+- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}. Fetching key material affects only whether verification is possible, not what a valid signature means ({{discovery-is-not-trust}}).
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
 ## Key Distribution and Discovery {#key-distribution-and-discovery}
 
-This section describes key discovery for the agent.
+This section describes key discovery for the agent. Discovery provides key
+material; it does not confer trust ({{discovery-is-not-trust}}).
 
 The reference for discovery is a URL. It SHOULD be an HTTPS URL. The
-`Signature-Agent` header defines typed discovery. This architecture uses these
+`Signature-Agent` header defines typed discovery. This protocol uses these
 types:
 
 `directory`
@@ -368,7 +433,7 @@ See {{signature-agent}} for more details.
 ### Signature-Key header
 
 {{SIGNATURE-KEY}} defines a separate key discovery header for HTTP Message
-Signatures. Deployments MAY use it when they need that model. This architecture
+Signatures. Deployments MAY use it when they need that model. This protocol
 uses `Signature-Agent` as its default discovery mechanism.
 
 ## Session Protocol Considerations
@@ -533,11 +598,11 @@ discussed in {{cache-behaviour}}, means that the asserted identity is not
 verified. It does not prove that the signer is malicious, and it does not make
 the request trusted. The resulting enforcement decision is local policy.
 
-# Privacy Considerations
+# Privacy Considerations {#privacy-considerations}
 
 ## Public Identity
 
-This architecture assumes that automated clients identify themselves
+This protocol assumes that automated clients identify themselves
 explicitly using digital signatures. The identity associated with a signing
 key is expected to be publicly discoverable for verification purposes. This
 reduces anonymity and allows receivers to associate requests with specific
@@ -1025,6 +1090,17 @@ Tanya Verma.
 
 # Changelog
 {:numbered="false"}
+
+draft-meunier-webbotauth-httpsig-protocol-01
+
+- Add an Identity and Trust Model section: the key is the identity, discovery
+  confers no trust, and the directory binding to a Web origin is an optional
+  layer that persists trust across key rotation. Blocking on `keyid` is
+  best-effort by design; the protocol targets honest clients accruing trust.
+  Verifiers MUST NOT grant trust on the `Signature-Agent` value alone. No wire
+  format change.
+- Describe the document as a protocol throughout, matching the draft name
+  (was: architecture).
 
 draft-meunier-webbotauth-httpsig-protocol-00
 
