@@ -220,16 +220,16 @@ Table of Contents
    To ensure the authenticity and integrity of the key material provided
    by the directory, clients *SHOULD* validate the directory's response.
 
-   When a directory server provides a key directory over HTTPS, it MUST
-   construct and include one HTTP Message Signature per key with the
-   response, as defined in [HTTP-MESSAGE-SIGNATURES].  Each key MUST be
-   used to provide one signature.  These signatures prove possession of
-   the advertised keys and, by covering @authority, prevent the key set
-   from being re-served under a different authority.  They do not confer
-   authority over the serving domain: that comes from the TLS connection
-   alone.
+   When a directory server provides a key directory over HTTPS, it is
+   RECOMMENDED that it construct and include one HTTP Message Signature
+   per key with the response, as defined in [HTTP-MESSAGE-SIGNATURES].
+   Each key SHOULD be used to provide one signature.  These signatures
+   prove possession of the advertised keys and, by covering @authority,
+   prevent the key set from being re-served under a different authority.
+   They do not confer authority over the serving domain: that comes from
+   the TLS connection alone.
 
-   Directory server MUST include the following covered components:
+   Directory server SHOULD include the following covered components:
 
    @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES].
       req flag defined in Section 2.4 of [HTTP-MESSAGE-SIGNATURES] MUST
@@ -237,7 +237,7 @@ Table of Contents
 
    content-digest  as defined in [DIGEST-FIELDS].
 
-   Directory server MUST include the following @signature-params as
+   Directory server SHOULD include the following @signature-params as
    defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
 
    created  as defined in Section 2.3 of [HTTP-MESSAGE-SIGNATURES]
@@ -585,9 +585,7 @@ Changelog
 
    draft-meunier-webbotauth-httpsig-directory-01
 
-   *  Directory responses MUST include one HTTP Message Signature per
-      advertised key, covering @authority and content-digest (previously
-      RECOMMENDED).  Clarify what these signatures establish: proof of
+   *  Clarify what directory response signatures establish: proof of
       possession and protection against re-hosting, not authority over
       the domain, which comes from TLS alone.
 

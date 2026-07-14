@@ -256,6 +256,12 @@ Table of Contents
    Origins can log, rate limit, allowlist, or block a keyid the way they
    do IP addresses and User-Agent today.
 
+   Unlike an IP address, a key is cheap to mint: an Agent blocked on its
+   keyid can rotate its key or stop sending signatures altogether.  This
+   is acceptable and out of scope.  The protocol targets honest clients
+   that want to accrue trust; an Agent that drops the signal falls back
+   to the origin's existing bot-management path.
+
    A valid signature proves two things: the request was produced by a
    holder of the private key, and requests with the same keyid come from
    holders of the same key.  This is enough for an origin to build trust
@@ -286,15 +292,17 @@ Table of Contents
 
    By design, a key and its thumbprint are a stable identifier.  When
    key material comes from the well-known directory defined in
-   [DIRECTORY], the Web PKI binds the key to the serving domain.  For
-   instance, bot.example publishes keys under its domain, and the
-   directory proves possession of them by having each advertised key
-   signs the directory response (Section 5.2 of [DIRECTORY]).  The
-   directory content is authenticated by the TLS connection to the
-   origin and by the keys it contains.
+   [DIRECTORY], the verifier additionally learns which domain publishes
+   the key: the TLS connection authenticates the domain serving the
+   directory, and each advertised key signs the directory response,
+   proving possession and preventing the key set from being re-served
+   under a different authority (Section 5.2 of [DIRECTORY]).  These
+   signatures do not confer authority over the domain: that comes from
+   the TLS connection alone.
 
    In this document, such a binding is optional.  Origins MAY use it for
-   accountability, or ignore it and treat the key as the whole identity.
+   accountability or to persist trust across key rotation, or ignore it
+   and treat the key as the whole identity.
 
 4.4.  Out of scope
 
@@ -1351,9 +1359,11 @@ Changelog
 
    *  Add an Identity and Trust Model section: the key is the identity,
       discovery confers no trust, and the directory binding to a Web
-      origin is an optional layer that persists identity across key
-      rotation.  Verifiers MUST NOT grant trust on the Signature-Agent
-      value alone.  No wire format change.
+      origin is an optional layer that persists trust across key
+      rotation.  Blocking on keyid is best-effort by design; the
+      protocol targets honest clients accruing trust.  Verifiers MUST
+      NOT grant trust on the Signature-Agent value alone.  No wire
+      format change.
 
    *  Describe the document as a protocol throughout, matching the draft
       name (was: architecture).

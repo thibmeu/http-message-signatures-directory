@@ -1403,14 +1403,14 @@ with a different validity period. When rotating keys, clients <span class="bcp14
         </h3>
 <p id="section-5.2-1">To ensure the authenticity and integrity of the key material provided by the
 directory, clients <strong><span class="bcp14">SHOULD</span></strong> validate the directory's response.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">When a directory server provides a key directory over HTTPS, it <span class="bcp14">MUST</span>
-construct and include one HTTP Message Signature per key
+<p id="section-5.2-2">When a directory server provides a key directory over HTTPS, it is
+<span class="bcp14">RECOMMENDED</span> that it construct and include one HTTP Message Signature per key
 with the response, as defined in <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
-Each key <span class="bcp14">MUST</span> be used to provide one signature. These signatures prove
+Each key <span class="bcp14">SHOULD</span> be used to provide one signature. These signatures prove
 possession of the advertised keys and, by covering <code>@authority</code>, prevent the
 key set from being re-served under a different authority. They do not confer
 authority over the serving domain: that comes from the TLS connection alone.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Directory server <span class="bcp14">MUST</span> include the following covered components:<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Directory server <span class="bcp14">SHOULD</span> include the following covered components:<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-5.2-4">
           <dt id="section-5.2-4.1"><code>@authority</code></dt>
           <dd style="margin-left: 1.5em" id="section-5.2-4.2">
@@ -1423,7 +1423,7 @@ authority over the serving domain: that comes from the TLS connection alone.<a h
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-5.2-5">Directory server <span class="bcp14">MUST</span> include the following <code>@signature-params</code> as defined in
+<p id="section-5.2-5">Directory server <span class="bcp14">SHOULD</span> include the following <code>@signature-params</code> as defined in
 <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.3" class="relref">Section 2.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-5.2-5" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-5.2-6">
           <dt id="section-5.2-6.1"><code>created</code></dt>
@@ -1964,11 +1964,9 @@ Lucas Pardue.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <p id="appendix-C-1">draft-meunier-webbotauth-httpsig-directory-01<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Directory responses <span class="bcp14">MUST</span> include one HTTP Message Signature per advertised
-key, covering <code>@authority</code> and <code>content-digest</code> (previously <span class="bcp14">RECOMMENDED</span>).
-Clarify what these signatures establish: proof of possession and protection
-against re-hosting, not authority over the domain, which comes from TLS
-alone.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Clarify what directory response signatures establish: proof of possession
+and protection against re-hosting, not authority over the domain, which
+comes from TLS alone.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.2">
           <p id="appendix-C-2.2.1">Delegation and chaining are explicitly out of scope; the examples are
