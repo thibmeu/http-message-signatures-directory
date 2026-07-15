@@ -148,8 +148,8 @@ can log, rate limit, allowlist, or block a `keyid` the way they do IP
 addresses and User-Agent today.
 
 Unlike an IP address, a key is cheap to mint: an Agent blocked on its `keyid`
-can rotate its key or stop sending signatures altogether. This is acceptable
-and out of scope. The protocol targets honest clients that want to accrue
+can rotate its key or stop sending signatures altogether. The protocol does
+not try to prevent this. It targets honest clients that want to accrue
 trust. An Agent that does not participate falls back to the origin's existing
 bot-management path.
 
@@ -170,8 +170,8 @@ The verifier needs the public key of the client they are validating.
 exchange, public lists, or the `Signature-Agent` header. The distribution method
 does not change what a valid signature proves.
 
-`Signature-Agent` is a client-controlled hint. Verifiers SHOULD NOT grant
-trust based on its value alone. This header can be used to triage requests, but
+`Signature-Agent` is a client-controlled hint. Verifiers MUST NOT grant
+trust based on its value alone. They can use it to triage requests, but
 trust is attached to the verified key, or to a verified binding
 ({{origin-binding}}).
 
@@ -189,8 +189,22 @@ being re-served under a different authority (Section 5.2 of {{DIRECTORY}}).
 These signatures do not confer authority over the domain: that comes from the
 TLS connection alone.
 
-In this document, such a binding is optional. Origins MAY use it for
-accountability or to persist trust across key rotation.
+This protocol supports two modes. In the first, the key alone is the
+identity. An Agent needs nothing more than a keypair, and there is no
+rotation: a new key is a new identity, and trust starts over. In the
+second, the identity is a domain name. The Agent MUST publish its keys in
+the directory defined in {{DIRECTORY}}, and a verifier relying on the
+domain MUST validate the binding described above. This mode supports
+rotation: the directory serves the old and the new key together, and
+removing a key deactivates it once caches expire. It also gives verifiers
+a name to attach information to, which persists trust across rotation.
+
+[[ Editor's note: the two-mode split follows the July 2026 list discussion.
+https://mailarchive.ietf.org/arch/msg/web-bot-auth/IZ0Ie47iydtlC1laaJcxxxR3VW8/
+The MUST on directory binding is new. Previous versions said MAY mostly as
+the main mode was key alone and binding was an optional layer.
+Depending of how the group discusses the two modes, that wording is subject
+to change ]]
 
 ## Out of scope
 
@@ -1094,11 +1108,13 @@ Tanya Verma.
 draft-meunier-webbotauth-httpsig-protocol-01
 
 - Add an Identity and Trust Model section: the key is the identity, discovery
-  confers no trust, and the directory binding to a Web origin is an optional
-  layer that persists trust across key rotation. Blocking on `keyid` is
-  best-effort by design; the protocol targets honest clients accruing trust.
-  Verifiers MUST NOT grant trust on the `Signature-Agent` value alone. No wire
-  format change.
+  confers no trust, and the protocol supports two modes. With a key alone,
+  an Agent needs nothing more than a keypair and there is no rotation. When
+  the identity is a domain name, the directory binding (TLS and proof of
+  possession) is a MUST, and rotation works by serving old and new keys
+  together. Blocking on `keyid` is best-effort by design. The protocol
+  targets honest clients accruing trust. Verifiers MUST NOT grant trust on
+  the `Signature-Agent` value alone. No wire format change.
 - Describe the document as a protocol throughout, matching the draft name
   (was: architecture).
 
