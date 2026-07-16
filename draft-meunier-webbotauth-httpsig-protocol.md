@@ -152,8 +152,8 @@ addresses and User-Agent today.
 Unlike an IP address, a key is cheap to mint: an Agent blocked on its `keyid`
 can rotate its key or stop sending signatures altogether. The protocol does
 not try to prevent this. It targets honest clients that want to be
-recognised across requests. An Agent that does not participate falls back to the origin's existing
-bot-management path.
+recognised across requests. Unsigned requests are out of scope. This
+document does not define or change how origins treat them.
 
 A valid signature proves two things: the request was produced by a holder of
 the private key ({{anti-replay}} bounds reuse), and requests with the same
