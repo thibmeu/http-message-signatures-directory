@@ -169,7 +169,7 @@ possession of the advertised keys and, by covering `@authority`, prevent the
 key set from being re-served under a different authority. They do not confer
 authority over the serving domain: that comes from the TLS connection alone.
 
-Directory server SHOULD include the following covered components:
+Directory server MUST include the following covered components:
 
 `@authority`
 : as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
