@@ -87,10 +87,10 @@ Together, these mechanisms enable key distribution and discovery for HTTP Messag
 The key directory is served as a JSON Web Key Set (JWKS) as defined in {{Section 5 of JWK}}.
 The "alg" parameter are restricted to algorithm registered against HTTP Signature Algorithms Section of {{HTTP-MESSAGE-SIGNATURES-IANA}}
 
-The directory SHOULD be served over HTTPS.
+The directory MUST be served over HTTPS.
 The directory MUST be served with media type `application/http-message-signatures-directory+json`.
 
-A client application SHOULD validate the directory format and reject malformed entries.
+A verifier SHOULD validate the directory format and reject malformed entries.
 
 # HTTP Method Context `Signature-Agent`
 
@@ -110,7 +110,7 @@ STRUCTURED-HEADERS}}. If the `type` parameter is absent, its value is `directory
 The following `type` values are defined:
 
 `directory`
-: The member value identifies an origin. A client resolves the HTTP Message
+: The member value identifies an origin. A verifier resolves the HTTP Message
 Signatures Directory using the well-known URI registered in {{wkuri-reg}} at
 that origin.
 
@@ -120,12 +120,12 @@ that origin.
 `cimd`
 : The member value identifies a Client ID Metadata Document {{CIMD}} URI.
 
-A client that does not support a `type` value MUST ignore that member.
-A client MUST NOT infer the discovery mechanism from the URI path, media type,
+A verifier that does not support a `type` value MUST ignore that member.
+A verifier MUST NOT infer the discovery mechanism from the URI path, media type,
 or response body.
 
-[[ Editor's note: strenghen requirements around jwks_uri and cimd. directory
-uses a signed well-knwon to guarantee {{security}} ]]
+[[ Editor's note: strengthen requirements around jwks_uri and cimd. directory
+uses a signed well-known to guarantee {{security}} ]]
 
 The URI scheme MUST be `https`.
 
@@ -140,14 +140,15 @@ ignored.
 
 ## Key rotation
 
-Clients SHOULD implement key rotation by including multiple keys in the directory
-with a different validity period. When rotating keys, clients SHOULD:
+Directory operators SHOULD implement key rotation by including multiple keys
+in the directory with a different validity period. When rotating keys,
+operators SHOULD:
 
 1. Add the new key to the directory before its intended use date
 2. Continue to include the old key until its expiration date
 3. Remove expired keys from the directory
 
-Servers SHOULD cache the directory contents and refresh upon expiration.
+Verifiers SHOULD cache the directory contents and refresh upon expiration.
 
 Removing a key from the directory deactivates it. Verifiers stop accepting keys
 once their cached copy expires. The directory's cache lifetime therefore bounds
@@ -158,7 +159,7 @@ how long a removed key keeps verifying.
 ## Binding keys to the directory authority
 
 To ensure the authenticity and integrity of the key material provided by the
-directory, clients **SHOULD** validate the directory's response.
+directory, verifiers SHOULD validate the directory's response.
 
 It is RECOMMENDED that a directory server construct and include one HTTP
 Message Signature per key with the response, as defined in
@@ -191,13 +192,12 @@ Directory server SHOULD include the following `@signature-params` as defined in
 `tag`
 : MUST be `http-message-signatures-directory`
 
-Clients SHOULD validate these signatures using the keys provided by the
-directory. Clients SHOULD validate the `Content-Digest` field against the
-response body. Clients SHOULD ignore keys from a directory response that do not
-have a corresponding valid signature. This validation checks the integrity of the
-key set and binds it to the intended authority.
-
-[[ Editor's note: consider using MUST here ]]
+Verifiers relying on the domain binding MUST validate these signatures
+using the keys provided by the directory, validate the `Content-Digest`
+field against the response body, and ignore keys that do not have a
+corresponding valid signature. Verifiers using keys opaquely MAY skip this
+validation, in which case they obtain no binding. This validation checks
+the integrity of the key set and binds it to the intended authority.
 
 # Privacy Considerations
 
@@ -382,15 +382,8 @@ Lucas Pardue.
 
 draft-meunier-webbotauth-httpsig-directory-01
 
-- Clarify what directory response signatures establish: proof of possession
-  and protection against re-hosting, not authority over the domain, which
-  comes from TLS alone.
-- Delegation and chaining are out of scope. Remove the `x5c`, AIA, and `x5u`
-  examples (previously "experimental").
-- Remove the `http` and `data` URI schemes for `Signature-Agent`. Discovery
-  uses `https` only, and the inline directory example is gone with it.
-- State that removing a key from the directory deactivates it once verifier
-  caches expire, so the cache lifetime bounds deactivation.
+- Tighten the domain binding: `https` only, MUST validate when relying on it.
+- Remove delegation examples; use verifier and directory operator role terms.
 
 draft-meunier-webbotauth-httpsig-directory-00
 
