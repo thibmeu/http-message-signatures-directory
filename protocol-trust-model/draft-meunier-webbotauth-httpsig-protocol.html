@@ -1174,7 +1174,7 @@ requests, allowing HTTP servers to verify their identity with confidence.<a href
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-identity-and-trust-model" class="internal xref">Identity and Trust Model</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-key-is-the-identity" class="internal xref">The key is the identity</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-signing-key-provides-co" class="internal xref">The signing key provides continuity</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-discovery-is-not-trust" class="internal xref">Discovery is not trust</a></p>
@@ -1533,15 +1533,15 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
       <h2 id="name-identity-and-trust-model">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-identity-and-trust-model" class="section-name selfRef">Identity and Trust Model</a>
       </h2>
-<p id="section-4-1">This section defines what identity means in this protocol, and what a
+<p id="section-4-1">This section defines the identifiers produced by this protocol and what a
 verifier can conclude from a valid signature.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <div id="key-is-identity">
 <section id="section-4.1">
-        <h3 id="name-the-key-is-the-identity">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-the-key-is-the-identity" class="section-name selfRef">The key is the identity</a>
+        <h3 id="name-the-signing-key-provides-co">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-the-signing-key-provides-co" class="section-name selfRef">The signing key provides continuity</a>
         </h3>
-<p id="section-4.1-1">In this draft, an Agent's base identity is its signing key. <a href="#origin-binding" class="auto internal xref">Section 4.3</a>
-defines a domain binding that can extend it. The <code>keyid</code> defined in
+<p id="section-4.1-1">In this draft, an Agent's signing key is its base identifier. <a href="#origin-binding" class="auto internal xref">Section 4.3</a>
+defines a domain binding a verifier can establish. The <code>keyid</code> defined in
 <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a> is a normalised thumbprint of that key. Origins
 can log, rate limit, allowlist, or block a <code>keyid</code> the way they do IP
 addresses and User-Agent today.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
@@ -1596,12 +1596,12 @@ publish the same key. It attaches to the (key, domain) pair the verifier
 validated.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">This protocol supports two modes. Both use the same wire format: nothing
 in a request signals a mode, and the verifier chooses what to rely on.
-In the opaque mode, the key alone is the identity. An Agent needs nothing
-more than a keypair. This document defines no rotation for this mode: a
-new key is a new identity, though a future mechanism may provide rotation.
-In the domain binding mode, the identity is a domain name. The binding
-exists only for keys published in the directory defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>:
-an Agent exposes its domain to verifiers by publishing its keys there.
+In opaque mode, verification returns the key as its identifier. An Agent
+needs nothing more than a keypair. This document defines no rotation for this mode: a
+new key is a new identifier, though a future mechanism may provide rotation.
+In the domain binding mode, verification adds an authenticated domain-to-key
+binding. The binding exists only for keys published in the directory defined in <span>[<a href="#DIRECTORY" class="cite xref">DIRECTORY</a>]</span>:
+an Agent presents a domain to verifiers by publishing its keys there.
 A verifier relying on the domain <span class="bcp14">MUST</span> validate the binding described
 above. A verifier using keys opaquely
 <span class="bcp14">MAY</span> skip that validation, in which case it obtains no binding. Domain

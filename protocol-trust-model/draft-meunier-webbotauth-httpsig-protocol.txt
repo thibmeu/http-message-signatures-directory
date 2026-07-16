@@ -75,7 +75,7 @@ Table of Contents
      2.1.  HTTP layer choice
    3.  Conventions and Definitions
    4.  Identity and Trust Model
-     4.1.  The key is the identity
+     4.1.  The signing key provides continuity
      4.2.  Discovery is not trust
      4.3.  Binding a key to a Web origin
      4.4.  Out of scope
@@ -245,14 +245,14 @@ Table of Contents
 
 4.  Identity and Trust Model
 
-   This section defines what identity means in this protocol, and what a
-   verifier can conclude from a valid signature.
+   This section defines the identifiers produced by this protocol and
+   what a verifier can conclude from a valid signature.
 
-4.1.  The key is the identity
+4.1.  The signing key provides continuity
 
-   In this draft, an Agent's base identity is its signing key.
-   Section 4.3 defines a domain binding that can extend it.  The keyid
-   defined in Section 5.2 is a normalised thumbprint of that key.
+   In this draft, an Agent's signing key is its base identifier.
+   Section 4.3 defines a domain binding a verifier can establish.  The
+   keyid defined in Section 5.2 is a normalised thumbprint of that key.
    Origins can log, rate limit, allowlist, or block a keyid the way they
    do IP addresses and User-Agent today.
 
@@ -304,19 +304,20 @@ Table of Contents
 
    This protocol supports two modes.  Both use the same wire format:
    nothing in a request signals a mode, and the verifier chooses what to
-   rely on.  In the opaque mode, the key alone is the identity.  An
-   Agent needs nothing more than a keypair.  This document defines no
-   rotation for this mode: a new key is a new identity, though a future
-   mechanism may provide rotation.  In the domain binding mode, the
-   identity is a domain name.  The binding exists only for keys
-   published in the directory defined in [DIRECTORY]: an Agent exposes
-   its domain to verifiers by publishing its keys there.  A verifier
-   relying on the domain MUST validate the binding described above.  A
-   verifier using keys opaquely MAY skip that validation, in which case
-   it obtains no binding.  Domain binding supports rotation: the
-   directory serves the old and the new key together, and removing a key
-   deactivates it once caches expire.  It also gives verifiers a name to
-   attach information to, which persists across rotation.
+   rely on.  In opaque mode, verification returns the key as its
+   identifier.  An Agent needs nothing more than a keypair.  This
+   document defines no rotation for this mode: a new key is a new
+   identifier, though a future mechanism may provide rotation.  In the
+   domain binding mode, verification adds an authenticated domain-to-key
+   binding.  The binding exists only for keys published in the directory
+   defined in [DIRECTORY]: an Agent presents a domain to verifiers by
+   publishing its keys there.  A verifier relying on the domain MUST
+   validate the binding described above.  A verifier using keys opaquely
+   MAY skip that validation, in which case it obtains no binding.
+   Domain binding supports rotation: the directory serves the old and
+   the new key together, and removing a key deactivates it once caches
+   expire.  It also gives verifiers a name to attach information to,
+   which persists across rotation.
 
    [[ Editor's note: the two-mode split follows the July 2026 list
    discussion. https://mailarchive.ietf.org/arch/msg/web-bot-auth/
