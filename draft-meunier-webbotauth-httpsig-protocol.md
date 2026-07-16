@@ -50,6 +50,7 @@ informative:
     title: OWASP Server-Side Request Forgery Prevention Cheat Sheet
     target: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
   SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
+  WELLKNOWN-URI: RFC8615
 
 --- abstract
 
@@ -142,20 +143,22 @@ verifier can conclude from a valid signature.
 
 ## The key is the identity {#key-is-identity}
 
-In this draft, an Agent's identity is its signing key. The `keyid` defined in
+In this draft, an Agent's base identity is its signing key. {{origin-binding}}
+defines a domain binding that can extend it. The `keyid` defined in
 {{generating-http-message-signature}} is a normalised thumbprint of that key. Origins
 can log, rate limit, allowlist, or block a `keyid` the way they do IP
 addresses and User-Agent today.
 
 Unlike an IP address, a key is cheap to mint: an Agent blocked on its `keyid`
 can rotate its key or stop sending signatures altogether. The protocol does
-not try to prevent this. It targets honest clients that want to accrue
-trust. An Agent that does not participate falls back to the origin's existing
+not try to prevent this. It targets honest clients that want to be
+recognised across requests. An Agent that does not participate falls back to the origin's existing
 bot-management path.
 
 A valid signature proves two things: the request was produced by a holder of
 the private key, and requests with the same `keyid` come from holders of the
-same key. This is enough for an origin to build trust for a `keyid`. It
+same key. This is enough for an origin to recognise a `keyid` and attach
+policy to it. It
 does not say who operates the Agent, whether the Agent is benign, or whether
 the request is authorized. Those are origin policy.
 
@@ -172,7 +175,7 @@ does not change what a valid signature proves.
 
 `Signature-Agent` is a client-controlled hint. Verifiers MUST NOT grant
 trust based on its value alone. They can use it to triage requests, but
-trust is attached to the verified key, or to a verified binding
+policy attaches to the verified key, or to a verified binding
 ({{origin-binding}}).
 
 Discovery is required for key updates (addition, removal). It is bounded by the
@@ -185,25 +188,34 @@ comes from the well-known directory defined in {{DIRECTORY}}, the verifier
 additionally learns which domain publishes the key. The TLS connection
 authenticates the domain serving the directory, and each advertised key signs
 the directory response, proving possession and preventing the key set from
-being re-served under a different authority (Section 5.2 of {{DIRECTORY}}).
+being re-served under a different authority (see "Binding keys to the
+directory authority" in {{DIRECTORY}}).
 These signatures do not confer authority over the domain: that comes from the
-TLS connection alone.
+TLS connection alone. The binding is not exclusive: several domains may
+publish the same key. It attaches to the (key, domain) pair the verifier
+validated.
 
-This protocol supports two modes. In the first, the key alone is the
-identity. An Agent needs nothing more than a keypair, and there is no
-rotation: a new key is a new identity, and trust starts over. In the
-second, the identity is a domain name. The Agent MUST publish its keys in
-the directory defined in {{DIRECTORY}}, and a verifier relying on the
-domain MUST validate the binding described above. This mode supports
-rotation: the directory serves the old and the new key together, and
-removing a key deactivates it once caches expire. It also gives verifiers
-a name to attach information to, which persists trust across rotation.
+This protocol supports two modes. Both use the same wire format: nothing
+in a request signals a mode, and the verifier chooses what to rely on.
+In the opaque mode, the key alone is the identity. An Agent needs nothing
+more than a keypair. This document defines no rotation for this mode: a
+new key is a new identity, though a future mechanism may provide rotation.
+In the domain binding mode, the identity is a domain name. The binding
+exists only for keys published in the directory defined in {{DIRECTORY}}:
+an Agent exposes its domain to verifiers by publishing its keys there.
+A verifier relying on the domain MUST validate the binding described
+above. A verifier using keys opaquely
+MAY skip that validation, in which case it obtains no binding. Domain
+binding supports rotation: the directory serves the old and the new key
+together, and removing a key deactivates it once caches expire. It also
+gives verifiers a name to attach information to, which persists across
+rotation.
 
 [[ Editor's note: the two-mode split follows the July 2026 list discussion.
 https://mailarchive.ietf.org/arch/msg/web-bot-auth/IZ0Ie47iydtlC1laaJcxxxR3VW8/
 The MUST on directory binding is new. Previous versions said MAY mostly as
 the main mode was key alone and binding was an optional layer.
-Depending of how the group discusses the two modes, that wording is subject
+Depending on how the group discusses the two modes, that wording is subject
 to change ]]
 
 ## Out of scope
@@ -402,6 +414,14 @@ in {{DIRECTORY}}. This is the default when no `type` parameter is present.
 `cimd`
 : Resolve the member value as a Client ID Metadata Document {{CIMD}} URI. The
 document then provides key material through `jwks` or `jwks_uri`.
+
+Only the `directory` type establishes the domain binding in
+{{origin-binding}}. `jwks_uri` and `cimd` point to an arbitrary URL: TLS
+authenticates the host, not the path, no possession proof ties the
+keys to the URL, and nothing reserves the path to the origin's operator
+the way a {{WELLKNOWN-URI}} does. These types operate in the opaque mode. Trust attaches
+to the key ({{discovery-is-not-trust}}), not the URL, and a key change is
+an identity change.
 
 For all types, the key is selected using the `keyid` parameter in
 `Signature-Input`.
@@ -1107,16 +1127,8 @@ Tanya Verma.
 
 draft-meunier-webbotauth-httpsig-protocol-01
 
-- Add an Identity and Trust Model section: the key is the identity, discovery
-  confers no trust, and the protocol supports two modes. With a key alone,
-  an Agent needs nothing more than a keypair and there is no rotation. When
-  the identity is a domain name, the directory binding (TLS and proof of
-  possession) is a MUST, and rotation works by serving old and new keys
-  together. Blocking on `keyid` is best-effort by design. The protocol
-  targets honest clients accruing trust. Verifiers MUST NOT grant trust on
-  the `Signature-Agent` value alone. No wire format change.
-- Describe the document as a protocol throughout, matching the draft name
-  (was: architecture).
+- Add an Identity and Trust Model section: opaque and domain binding modes.
+- Describe the document as a protocol throughout (was: architecture).
 
 draft-meunier-webbotauth-httpsig-protocol-00
 
