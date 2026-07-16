@@ -1052,7 +1052,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 16 January 2027</td>
+<td class="center">Expires 17 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <dd class="internet-draft">draft-meunier-webbotauth-httpsig-directory-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-15" class="published">15 July 2026</time>
+<time datetime="2026-07-16" class="published">16 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-16">16 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-17">17 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1127,7 +1127,7 @@ as well as a new HTTP Method Context for in-band key discovery.<a href="#section
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1283,9 +1283,9 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">The key directory is served as a JSON Web Key Set (JWKS) as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>.
 The "alg" parameter are restricted to algorithm registered against HTTP Signature Algorithms Section of <span>[<a href="#HTTP-MESSAGE-SIGNATURES-IANA" class="cite xref">HTTP-MESSAGE-SIGNATURES-IANA</a>]</span><a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The directory <span class="bcp14">SHOULD</span> be served over HTTPS.
+<p id="section-3-2">The directory <span class="bcp14">MUST</span> be served over HTTPS.
 The directory <span class="bcp14">MUST</span> be served with media type <code>application/http-message-signatures-directory+json</code>.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">A client application <span class="bcp14">SHOULD</span> validate the directory format and reject malformed entries.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">A verifier <span class="bcp14">SHOULD</span> validate the directory format and reject malformed entries.<a href="#section-3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="http-method-context-signature-agent">
@@ -1309,7 +1309,7 @@ Its member values <span class="bcp14">MUST</span> be String Items that contain a
 <span class="break"></span><dl class="dlParallel" id="section-4.1-4">
           <dt id="section-4.1-4.1"><code>directory</code></dt>
           <dd style="margin-left: 1.5em" id="section-4.1-4.2">
-            <p id="section-4.1-4.2.1">The member value identifies an origin. A client resolves the HTTP Message
+            <p id="section-4.1-4.2.1">The member value identifies an origin. A verifier resolves the HTTP Message
 Signatures Directory using the well-known URI registered in <a href="#wkuri-reg" class="auto internal xref">Section 7.1</a> at
 that origin.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </dd>
@@ -1325,11 +1325,11 @@ that origin.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-4.1-5">A client that does not support a <code>type</code> value <span class="bcp14">MUST</span> ignore that member.
-A client <span class="bcp14">MUST NOT</span> infer the discovery mechanism from the URI path, media type,
+<p id="section-4.1-5">A verifier that does not support a <code>type</code> value <span class="bcp14">MUST</span> ignore that member.
+A verifier <span class="bcp14">MUST NOT</span> infer the discovery mechanism from the URI path, media type,
 or response body.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1-6">[[ Editor's note: strenghen requirements around jwks_uri and cimd. directory
-uses a signed well-knwon to guarantee <a href="#security" class="auto internal xref">Section 5</a> ]]<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">[[ Editor's note: strengthen requirements around jwks_uri and cimd. directory
+uses a signed well-known to guarantee <a href="#security" class="auto internal xref">Section 5</a> ]]<a href="#section-4.1-6" class="pilcrow">¶</a></p>
 <p id="section-4.1-7">The URI scheme <span class="bcp14">MUST</span> be <code>https</code>.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
 <p id="section-4.1-8">[[ Editor's note: earlier versions also allowed <code>http</code> and <code>data</code> URI
 schemes. A <code>data</code> URI carries inline key material with no authority behind
@@ -1350,8 +1350,9 @@ ignored.<a href="#section-4.1-9" class="pilcrow">¶</a></p>
         <h3 id="name-key-rotation">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-key-rotation" class="section-name selfRef">Key rotation</a>
         </h3>
-<p id="section-5.1-1">Clients <span class="bcp14">SHOULD</span> implement key rotation by including multiple keys in the directory
-with a different validity period. When rotating keys, clients <span class="bcp14">SHOULD</span>:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">Directory operators <span class="bcp14">SHOULD</span> implement key rotation by including multiple keys
+in the directory with a different validity period. When rotating keys,
+operators <span class="bcp14">SHOULD</span>:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1-2">
 <li id="section-5.1-2.1">
             <p id="section-5.1-2.1.1">Add the new key to the directory before its intended use date<a href="#section-5.1-2.1.1" class="pilcrow">¶</a></p>
@@ -1363,7 +1364,7 @@ with a different validity period. When rotating keys, clients <span class="bcp14
             <p id="section-5.1-2.3.1">Remove expired keys from the directory<a href="#section-5.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-5.1-3">Servers <span class="bcp14">SHOULD</span> cache the directory contents and refresh upon expiration.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Verifiers <span class="bcp14">SHOULD</span> cache the directory contents and refresh upon expiration.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1-4">Removing a key from the directory deactivates it. Verifiers stop accepting keys
 once their cached copy expires. The directory's cache lifetime therefore bounds
 how long a removed key keeps verifying.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
@@ -1376,7 +1377,7 @@ how long a removed key keeps verifying.<a href="#section-5.1-4" class="pilcrow">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-binding-keys-to-the-directo" class="section-name selfRef">Binding keys to the directory authority</a>
         </h3>
 <p id="section-5.2-1">To ensure the authenticity and integrity of the key material provided by the
-directory, clients <strong><span class="bcp14">SHOULD</span></strong> validate the directory's response.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+directory, verifiers <span class="bcp14">SHOULD</span> validate the directory's response.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">It is <span class="bcp14">RECOMMENDED</span> that a directory server construct and include one HTTP
 Message Signature per key with the response, as defined in
 <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
@@ -1421,12 +1422,12 @@ authority over the serving domain: that comes from the TLS connection alone.<a h
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-5.2-7">Clients <span class="bcp14">SHOULD</span> validate these signatures using the keys provided by the
-directory. Clients <span class="bcp14">SHOULD</span> validate the <code>Content-Digest</code> field against the
-response body. Clients <span class="bcp14">SHOULD</span> ignore keys from a directory response that do not
-have a corresponding valid signature. This validation checks the integrity of the
-key set and binds it to the intended authority.<a href="#section-5.2-7" class="pilcrow">¶</a></p>
-<p id="section-5.2-8">[[ Editor's note: consider using <span class="bcp14">MUST</span> here ]]<a href="#section-5.2-8" class="pilcrow">¶</a></p>
+<p id="section-5.2-7">Verifiers relying on the domain binding <span class="bcp14">MUST</span> validate these signatures
+using the keys provided by the directory, validate the <code>Content-Digest</code>
+field against the response body, and ignore keys that do not have a
+corresponding valid signature. Verifiers using keys opaquely <span class="bcp14">MAY</span> skip this
+validation, in which case they obtain no binding. This validation checks
+the integrity of the key set and binds it to the intended authority.<a href="#section-5.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1778,21 +1779,10 @@ Lucas Pardue.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <p id="appendix-C-1">draft-meunier-webbotauth-httpsig-directory-01<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Clarify what directory response signatures establish: proof of possession
-and protection against re-hosting, not authority over the domain, which
-comes from TLS alone.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Tighten the domain binding: <code>https</code> only, <span class="bcp14">MUST</span> validate when relying on it.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.2">
-          <p id="appendix-C-2.2.1">Delegation and chaining are out of scope. Remove the <code>x5c</code>, AIA, and <code>x5u</code>
-examples (previously "experimental").<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-2.3">
-          <p id="appendix-C-2.3.1">Remove the <code>http</code> and <code>data</code> URI schemes for <code>Signature-Agent</code>. Discovery
-uses <code>https</code> only, and the inline directory example is gone with it.<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-2.4">
-          <p id="appendix-C-2.4.1">State that removing a key from the directory deactivates it once verifier
-caches expire, so the cache lifetime bounds deactivation.<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.2.1">Remove delegation examples; use verifier and directory operator role terms.<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-C-3">draft-meunier-webbotauth-httpsig-directory-00<a href="#appendix-C-3" class="pilcrow">¶</a></p>
