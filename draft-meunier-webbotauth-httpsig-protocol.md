@@ -156,8 +156,8 @@ recognised across requests. An Agent that does not participate falls back to the
 bot-management path.
 
 A valid signature proves two things: the request was produced by a holder of
-the private key, and requests with the same `keyid` come from holders of the
-same key. This is enough for an origin to recognise a `keyid` and attach
+the private key ({{anti-replay}} bounds reuse), and requests with the same
+`keyid` come from holders of the same key. This is enough for an origin to recognise a `keyid` and attach
 policy to it. It
 does not say who operates the Agent, whether the Agent is benign, or whether
 the request is authorized. Those are origin policy.
@@ -419,9 +419,9 @@ Only the `directory` type establishes the domain binding in
 {{origin-binding}}. `jwks_uri` and `cimd` point to an arbitrary URL: TLS
 authenticates the host, not the path, no possession proof ties the
 keys to the URL, and nothing reserves the path to the origin's operator
-the way a {{WELLKNOWN-URI}} does. These types operate in the opaque mode. Trust attaches
-to the key ({{discovery-is-not-trust}}), not the URL, and a key change is
-an identity change.
+the way a {{WELLKNOWN-URI}} does. Under this protocol, these types provide
+an opaque value: trust attaches to that value and the keys it resolves to
+({{discovery-is-not-trust}}), and this document defines no binding for it.
 
 For all types, the key is selected using the `keyid` parameter in
 `Signature-Input`.
