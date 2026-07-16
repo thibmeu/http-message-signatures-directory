@@ -138,13 +138,13 @@ The following terms are used throughout this document:
 
 # Identity and Trust Model {#trust-model}
 
-This section defines what identity means in this protocol, and what a
+This section defines the identifiers produced by this protocol and what a
 verifier can conclude from a valid signature.
 
-## The key is the identity {#key-is-identity}
+## The signing key provides continuity {#key-is-identity}
 
-In this draft, an Agent's base identity is its signing key. {{origin-binding}}
-defines a domain binding that can extend it. The `keyid` defined in
+In this draft, an Agent's signing key is its base identifier. {{origin-binding}}
+defines a domain binding a verifier can establish. The `keyid` defined in
 {{generating-http-message-signature}} is a normalised thumbprint of that key. Origins
 can log, rate limit, allowlist, or block a `keyid` the way they do IP
 addresses and User-Agent today.
@@ -197,12 +197,12 @@ validated.
 
 This protocol supports two modes. Both use the same wire format: nothing
 in a request signals a mode, and the verifier chooses what to rely on.
-In the opaque mode, the key alone is the identity. An Agent needs nothing
-more than a keypair. This document defines no rotation for this mode: a
-new key is a new identity, though a future mechanism may provide rotation.
-In the domain binding mode, the identity is a domain name. The binding
-exists only for keys published in the directory defined in {{DIRECTORY}}:
-an Agent exposes its domain to verifiers by publishing its keys there.
+In opaque mode, verification returns the key as its identifier. An Agent
+needs nothing more than a keypair. This document defines no rotation for this mode: a
+new key is a new identifier, though a future mechanism may provide rotation.
+In the domain binding mode, verification adds an authenticated domain-to-key
+binding. The binding exists only for keys published in the directory defined in {{DIRECTORY}}:
+an Agent presents a domain to verifiers by publishing its keys there.
 A verifier relying on the domain MUST validate the binding described
 above. A verifier using keys opaquely
 MAY skip that validation, in which case it obtains no binding. Domain
