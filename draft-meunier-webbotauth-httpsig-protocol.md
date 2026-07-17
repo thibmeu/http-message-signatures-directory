@@ -77,8 +77,8 @@ Current identification methods such as IP allowlisting, User-Agent strings, or s
 significant limitations in security, scalability, and manageability. This document defines a
 protocol enabling agents to cryptographically identify themselves using {{HTTP-MESSAGE-SIGNATURES}}.
 It proposes that every request from bots be signed by a private key owned by its provider.
-This way, every origin can validate the service identity. {{trust-model}}
-defines what that identity is and what validation it establishes.
+This way, every origin can validate the service identifier. {{trust-model}}
+defines what that identifier is and what validation it establishes.
 
 # Motivation
 
@@ -136,12 +136,12 @@ The following terms are used throughout this document:
 **Origin**
 : An HTTP server receiving signed requests that implements the HTTP protocol and verifies {{HTTP-MESSAGE-SIGNATURES}} signatures. It acts as a verifier of the signature as defined by {{HTTP-MESSAGE-SIGNATURES}}.
 
-# Identity and Trust Model {#trust-model}
+# Identifiers and Trust Model {#trust-model}
 
 This section defines the identifiers produced by this protocol and what a
 verifier can conclude from a valid signature.
 
-## The signing key provides continuity {#key-is-identity}
+## The signing key provides continuity {#key-is-identifier}
 
 In this draft, an Agent's signing key is its base identifier. {{origin-binding}}
 defines a domain binding a verifier can establish. The `keyid` defined in
@@ -1127,7 +1127,7 @@ Tanya Verma.
 
 draft-meunier-webbotauth-httpsig-protocol-01
 
-- Add an Identity and Trust Model section: opaque and domain binding modes.
+- Add an Identifiers and Trust Model section: opaque and domain binding modes.
 - Describe the document as a protocol throughout (was: architecture).
 
 draft-meunier-webbotauth-httpsig-protocol-00
