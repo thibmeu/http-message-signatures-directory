@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 17 January 2027                                          Google
-                                                            16 July 2026
+Expires: 18 January 2027                                          Google
+                                                            17 July 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 January 2027.
+   This Internet-Draft will expire on 18 January 2027.
 
 Copyright Notice
 
@@ -74,7 +74,7 @@ Table of Contents
    2.  Motivation
      2.1.  HTTP layer choice
    3.  Conventions and Definitions
-   4.  Identity and Trust Model
+   4.  Identifiers and Trust Model
      4.1.  The signing key provides continuity
      4.2.  Discovery is not trust
      4.3.  Binding a key to a Web origin
@@ -169,8 +169,8 @@ Table of Contents
    enabling agents to cryptographically identify themselves using
    [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from bots
    be signed by a private key owned by its provider.  This way, every
-   origin can validate the service identity.  Section 4 defines what
-   that identity is and what validation it establishes.
+   origin can validate the service identifier.  Section 4 defines what
+   that identifier is and what validation it establishes.
 
 2.  Motivation
 
@@ -243,7 +243,7 @@ Table of Contents
       signatures.  It acts as a verifier of the signature as defined by
       [HTTP-MESSAGE-SIGNATURES].
 
-4.  Identity and Trust Model
+4.  Identifiers and Trust Model
 
    This section defines the identifiers produced by this protocol and
    what a verifier can conclude from a valid signature.
@@ -1394,8 +1394,8 @@ Changelog
 
    draft-meunier-webbotauth-httpsig-protocol-01
 
-   *  Add an Identity and Trust Model section: opaque and domain binding
-      modes.
+   *  Add an Identifiers and Trust Model section: opaque and domain
+      binding modes.
 
    *  Describe the document as a protocol throughout (was:
       architecture).
