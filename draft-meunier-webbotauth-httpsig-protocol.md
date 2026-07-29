@@ -332,15 +332,23 @@ A request MAY contain more than one Web Bot Auth signature. Each signature is
 identified by its HTTP Message Signatures label. When `Signature-Agent` is
 present, each signer SHOULD provide a `Signature-Agent` member for its label.
 
-A signer MAY cover selected members from another signature label, including
-`"signature";key=...`, `"signature-input";key=...`, and
-`"signature-agent";key=...`. This lets a signer preserve evidence that another
-signer contributed to the request.
+A signer MAY cover members from another signature label, which preserves
+evidence that another signer contributed to the request. A signer that covers
+`"signature";key=X` MUST also cover `"signature-input";key=X`, and MUST cover
+`"signature-agent";key=X` when that member is present.
 
-This records which parties signed which fields. It does not, by itself, express
-authorization, delegation, or consent. Those meanings are deployment policy or
-are carried in separately signed fields. Multiple signatures only show which
-signatures were present and what they covered.
+A signature value on its own does not identify the message it was computed
+over, which is why {{Section 7.3.7 of HTTP-MESSAGE-SIGNATURES}} recommends
+against signing one. Covering `signature-input` alongside it removes the
+ambiguity: the outer signer commits to which components the inner signature
+covered, under which key, and over which validity window.
+
+Verifiers MUST validate each signature independently against its own covered
+components and its own key. An outer signature that covers an inner one is
+evidence that those bytes, over that set of components, were present. It does
+not make the inner signature valid, and it does not express authorization,
+delegation, or consent. Those meanings are deployment policy, or are carried in
+separately signed fields.
 
 ### Anti-replay {#anti-replay}
 
@@ -1015,12 +1023,12 @@ Signature: agent=:YWdlbnQtc2lnbmF0dXJl:,\
  browser=:YnJvd3Nlci1zaWduYXR1cmU=:
 ~~~
 
-The origin can verify both signatures. The `agent` signature covers the fields
-selected by Alice's agent. The `browser` signature covers the request sent by the
-remote browser, its own `Signature-Agent` member, and the `agent` signature
-fields. This records that the remote browser forwarded a request carrying the
-agent's signature. It does not say that Alice's agent authorized the remote
-browser to act for it.
+The origin verifies each signature on its own. The `agent` signature covers the
+fields selected by Alice's agent. The `browser` signature covers the request
+sent by the remote browser, its own `Signature-Agent` member, and all three of
+the `agent` label's fields, as {{multiple-signatures}} requires. This records
+that the remote browser forwarded a request carrying the agent's signature. It
+does not say that Alice's agent authorized the remote browser to act for it.
 
 # Test Vectors
 
