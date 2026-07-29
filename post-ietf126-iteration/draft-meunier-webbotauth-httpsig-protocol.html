@@ -1840,7 +1840,7 @@ document.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
 The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>
 along with the <code>Signature-Agent</code> header for discovery of its verification key.
-Upon receiving the request, the Origin obtains the verification key for the Agent,
+Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="deployment-models">
 <section id="section-5.1">
@@ -3664,68 +3664,50 @@ Tanya Verma.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
 <p id="appendix-H-1">draft-meunier-webbotauth-httpsig-protocol-02<a href="#appendix-H-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-2.1">
-          <p id="appendix-H-2.1.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.1.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document, with
+its well-known URI and media type registrations, and change the intended
+status to Standards Track.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.2">
-          <p id="appendix-H-2.2.1">Anchor identity on the <code>Signature-Agent</code> URL. The identifier is the URL the
-verifier resolved, which for a <code>directory</code> member is the well-known URI. The
-key thumbprint is the identifier only when no URL is sent.<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.2.1">Anchor identity on the resolved <code>Signature-Agent</code> URL rather than on the key.
+Rotation is the same URL serving a new key, and the key thumbprint is the
+identifier only when no URL is sent.<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.3">
-          <p id="appendix-H-2.3.1">Define rotation as the same URL serving a new key.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.3.1">Normalize the resolved URL before comparing identifiers, and drop the query
+and fragment from the identifier.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.4">
-          <p id="appendix-H-2.4.1">Move the domain binding and the directory possession proof to an appendix.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.4.1">Key lookup is on the (URL, key) pair. Define what redistributed key material
+has to carry, which source wins when two disagree, and what a failed
+resolution means.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.5">
-          <p id="appendix-H-2.5.1">Require <code>signature-input</code> and <code>signature-agent</code> to be covered alongside
-<code>signature</code> when chaining, along with the components the inner signature
-covered, and require verifiers to validate each signature independently.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.5.1">Require <code>kid</code> to equal the key thumbprint in the well-known directory, and
+reject a directory response signature whose <code>created</code> is in the future.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.6">
-          <p id="appendix-H-2.6.1">Key lookup is on the (URL, key) pair, not the key alone. Define what a
-redistributed key set has to carry to attribute to a URL, and which source
-wins when they disagree.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.6.1">Recommend a seven day ceiling on how long a verifier uses cached directory
+contents.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.7">
-          <p id="appendix-H-2.7.1">Normalize the resolved URL before comparing identifiers, and drop the query
-and fragment from the identifier for every discovery type.<a href="#appendix-H-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.7.1">When chaining, require an outer signature covering an inner <code>signature</code> to
+also cover its <code>signature-input</code>, <code>signature-agent</code>, and every component the
+inner signature covered, and require verifiers to validate each signature
+independently.<a href="#appendix-H-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.8">
-          <p id="appendix-H-2.8.1">Recommend a seven day ceiling on how long a verifier uses cached directory
-contents.<a href="#appendix-H-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.8.1">Correct the <code>Signature-Agent</code> relabeling guidance: an intermediary cannot
+change a covered member key.<a href="#appendix-H-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.9">
-          <p id="appendix-H-2.9.1">Require <code>kid</code> to equal the key thumbprint for the well-known directory, so
-<code>keyid</code> selects by matching.<a href="#appendix-H-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.9.1">Note that covering <code>@authority</code> alone leaves a signature reusable across
+methods, paths, and bodies for its validity window.<a href="#appendix-H-2.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.10">
-          <p id="appendix-H-2.10.1">Describe what a failed <code>Signature-Agent</code> resolution means.<a href="#appendix-H-2.10.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.11">
-          <p id="appendix-H-2.11.1">Correct the <code>Signature-Agent</code> relabeling guidance: a covered member key
-cannot be changed by an intermediary that cannot recompute the signature.<a href="#appendix-H-2.11.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.12">
-          <p id="appendix-H-2.12.1">Note that covering <code>@authority</code> alone leaves a signature reusable across
-methods, paths, and bodies for its validity window.<a href="#appendix-H-2.12.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.13">
-          <p id="appendix-H-2.13.1">Reject a directory response signature whose <code>created</code> is in the future.<a href="#appendix-H-2.13.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.14">
-          <p id="appendix-H-2.14.1">Add objectives and constraints.<a href="#appendix-H-2.14.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.15">
-          <p id="appendix-H-2.15.1">Add the relationship with anonymous bot authentication. State the client's
-and the origin's decisions as out of scope, rather than asserting that
-participation is voluntary.<a href="#appendix-H-2.15.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.16">
-          <p id="appendix-H-2.16.1">Add a use case to identifier mapping appendix.<a href="#appendix-H-2.16.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.17">
-          <p id="appendix-H-2.17.1">Add the well-known URI and media type IANA registrations.<a href="#appendix-H-2.17.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.10.1">Move the domain binding and the directory possession proof to an appendix.
+Add objectives and constraints, the relationship with anonymous bot
+authentication, and a use case to identifier mapping.<a href="#appendix-H-2.10.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-H-3">draft-meunier-webbotauth-httpsig-protocol-01<a href="#appendix-H-3" class="pilcrow">¶</a></p>

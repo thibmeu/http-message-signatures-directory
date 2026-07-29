@@ -445,9 +445,9 @@ Table of Contents
    using its signing key, and includes it in the request as defined in
    Section 3.1 of [HTTP-MESSAGE-SIGNATURES] along with the Signature-
    Agent header for discovery of its verification key.  Upon receiving
-   the request, the Origin obtains the verification key for the Agent,
-   validates the signature, and processes the request if the signature
-   is valid.
+   the request, the Origin ensures it has the verification key for the
+   Agent, validates the signature, and processes the request if the
+   signature is valid.
 
 5.1.  Deployment Models
 
@@ -1878,58 +1878,42 @@ Changelog
    draft-meunier-webbotauth-httpsig-protocol-02
 
    *  Fold draft-meunier-webbotauth-httpsig-directory into this
-      document.
+      document, with its well-known URI and media type registrations,
+      and change the intended status to Standards Track.
 
-   *  Anchor identity on the Signature-Agent URL.  The identifier is the
-      URL the verifier resolved, which for a directory member is the
-      well-known URI.  The key thumbprint is the identifier only when no
-      URL is sent.
-
-   *  Define rotation as the same URL serving a new key.
-
-   *  Move the domain binding and the directory possession proof to an
-      appendix.
-
-   *  Require signature-input and signature-agent to be covered
-      alongside signature when chaining, along with the components the
-      inner signature covered, and require verifiers to validate each
-      signature independently.
-
-   *  Key lookup is on the (URL, key) pair, not the key alone.  Define
-      what a redistributed key set has to carry to attribute to a URL,
-      and which source wins when they disagree.
+   *  Anchor identity on the resolved Signature-Agent URL rather than on
+      the key.  Rotation is the same URL serving a new key, and the key
+      thumbprint is the identifier only when no URL is sent.
 
    *  Normalize the resolved URL before comparing identifiers, and drop
-      the query and fragment from the identifier for every discovery
-      type.
+      the query and fragment from the identifier.
+
+   *  Key lookup is on the (URL, key) pair.  Define what redistributed
+      key material has to carry, which source wins when two disagree,
+      and what a failed resolution means.
+
+   *  Require kid to equal the key thumbprint in the well-known
+      directory, and reject a directory response signature whose created
+      is in the future.
 
    *  Recommend a seven day ceiling on how long a verifier uses cached
       directory contents.
 
-   *  Require kid to equal the key thumbprint for the well-known
-      directory, so keyid selects by matching.
+   *  When chaining, require an outer signature covering an inner
+      signature to also cover its signature-input, signature-agent, and
+      every component the inner signature covered, and require verifiers
+      to validate each signature independently.
 
-   *  Describe what a failed Signature-Agent resolution means.
-
-   *  Correct the Signature-Agent relabeling guidance: a covered member
-      key cannot be changed by an intermediary that cannot recompute the
-      signature.
+   *  Correct the Signature-Agent relabeling guidance: an intermediary
+      cannot change a covered member key.
 
    *  Note that covering @authority alone leaves a signature reusable
       across methods, paths, and bodies for its validity window.
 
-   *  Reject a directory response signature whose created is in the
-      future.
-
-   *  Add objectives and constraints.
-
-   *  Add the relationship with anonymous bot authentication.  State the
-      client's and the origin's decisions as out of scope, rather than
-      asserting that participation is voluntary.
-
-   *  Add a use case to identifier mapping appendix.
-
-   *  Add the well-known URI and media type IANA registrations.
+   *  Move the domain binding and the directory possession proof to an
+      appendix.  Add objectives and constraints, the relationship with
+      anonymous bot authentication, and a use case to identifier
+      mapping.
 
    draft-meunier-webbotauth-httpsig-protocol-01
 
