@@ -1866,12 +1866,10 @@ Acknowledgments
 
    The editor would also like to thank the following individuals (listed
    in alphabetical order) for feedback, insight, and implementation of
-   this document - Richard Barnes, Marwan Fayed, Max Gerber, Maxime
-   Guerreiro, Dick Hardt, Scott Hendrickson, Jonathan Hoyland, Dennis
-   Jackson, Nikhil Kandoi, Akshat Mahajan, Blake Morrison, Mark
-   Nottingham, Eugenio Panero, Lucas Pardue, Kaveh Ranjbar, Eric
-   Rescorla, Justin Richer, Martin Thomson, Malte Ubl, Loganaden
-   Velvindron, Tanya Verma.
+   this document - Marwan Fayed, Maxime Guerreiro, Scott Hendrickson,
+   Jonathan Hoyland, Nikhil Kandoi, Akshat Mahajan, Mark Nottingham,
+   Eugenio Panero, Lucas Pardue, Malte Ubl, Loganaden Velvindron, Tanya
+   Verma.
 
 Changelog
 
