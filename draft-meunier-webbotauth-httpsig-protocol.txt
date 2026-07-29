@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                  S. Major
-Expires: 28 December 2026                                         Google
-                                                            26 June 2026
+Expires: 30 January 2027                                          Google
+                                                            29 July 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -14,10 +14,10 @@ Expires: 28 December 2026                                         Google
 
 Abstract
 
-   This document describes an architecture for identifying automated
-   traffic using [HTTP-MESSAGE-SIGNATURES].  The goal is to allow
-   automated HTTP clients to cryptographically sign outbound requests,
-   allowing HTTP servers to verify their identity with confidence.
+   This document describes a protocol for identifying automated traffic
+   using [HTTP-MESSAGE-SIGNATURES].  The goal is to allow automated HTTP
+   clients to cryptographically sign outbound requests, allowing HTTP
+   servers to verify their identity with confidence.
 
 About This Document
 
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2026.
+   This Internet-Draft will expire on 30 January 2027.
 
 Copyright Notice
 
@@ -74,43 +74,48 @@ Table of Contents
    2.  Motivation
      2.1.  HTTP layer choice
    3.  Conventions and Definitions
-   4.  Architecture
-     4.1.  Deployment Models
-     4.2.  Generating HTTP Message Signature
-       4.2.1.  Signature-Agent
-       4.2.2.  Multiple signatures
-       4.2.3.  Anti-replay
-       4.2.4.  Additional headers
-       4.2.5.  Sending a request
-     4.3.  Requesting a Message signature
-     4.4.  Validating Message signature
-     4.5.  Key Distribution and Discovery
-       4.5.1.  Out-of-band communication between client and origin
-       4.5.2.  Public list
-       4.5.3.  Signature-Agent header
-       4.5.4.  Signature-Key header
-     4.6.  Session Protocol Considerations
-   5.  Security Considerations
-     5.1.  Use of TLS
-     5.2.  Performance Impact
-     5.3.  Nonce validation
-     5.4.  Key Compromise Response
-     5.5.  Shared Secrets Considered Harmful
-     5.6.  Key Reuse Considered Harmful
-     5.7.  Reverse proxy consideration
-       5.7.1.  Signature-Agent labeling
-     5.8.  Server-Side Request Forgery (SSRF)
-     5.9.  Test and Demonstration Keys
-     5.10. Static Signatures
-     5.11. Discovery Failure
-   6.  Privacy Considerations
-     6.1.  Public Identity
-     6.2.  No Human Correlation
-     6.3.  Minimizing Tracking Risks
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   4.  Identifiers and Trust Model
+     4.1.  The signing key provides continuity
+     4.2.  Discovery is not trust
+     4.3.  Binding a key to a Web origin
+     4.4.  Out of scope
+   5.  Protocol Overview
+     5.1.  Deployment Models
+     5.2.  Generating HTTP Message Signature
+       5.2.1.  Signature-Agent
+       5.2.2.  Multiple signatures
+       5.2.3.  Anti-replay
+       5.2.4.  Additional headers
+       5.2.5.  Sending a request
+     5.3.  Requesting a Message signature
+     5.4.  Validating Message signature
+     5.5.  Key Distribution and Discovery
+       5.5.1.  Out-of-band communication between client and origin
+       5.5.2.  Public list
+       5.5.3.  Signature-Agent header
+       5.5.4.  Signature-Key header
+     5.6.  Session Protocol Considerations
+   6.  Security Considerations
+     6.1.  Use of TLS
+     6.2.  Performance Impact
+     6.3.  Nonce validation
+     6.4.  Key Compromise Response
+     6.5.  Shared Secrets Considered Harmful
+     6.6.  Key Reuse Considered Harmful
+     6.7.  Reverse proxy consideration
+       6.7.1.  Signature-Agent labeling
+     6.8.  Server-Side Request Forgery (SSRF)
+     6.9.  Test and Demonstration Keys
+     6.10. Static Signatures
+     6.11. Discovery Failure
+   7.  Privacy Considerations
+     7.1.  Public Identity
+     7.2.  No Human Correlation
+     7.3.  Minimizing Tracking Risks
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Appendix A.  Deployment Guidance
      A.1.  Verifier Outcomes
      A.2.  Directory Availability
@@ -160,11 +165,12 @@ Table of Contents
 
    Current identification methods such as IP allowlisting, User-Agent
    strings, or shared API keys have significant limitations in security,
-   scalability, and manageability.  This document defines an
-   architecture enabling agents to cryptographically identify themselves
-   using [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from
-   bots be signed by a private key owned by its provider.  This way,
-   every origin can validate the service identity.
+   scalability, and manageability.  This document defines a protocol
+   enabling agents to cryptographically identify themselves using
+   [HTTP-MESSAGE-SIGNATURES].  It proposes that every request from bots
+   be signed by a private key owned by its provider.  This way, every
+   origin can validate the service identifier.  Section 4 defines what
+   that identifier is and what validation it establishes.
 
 2.  Motivation
 
@@ -203,7 +209,7 @@ Table of Contents
 
 2.1.  HTTP layer choice
 
-   This architecture operates solely at the HTTP layer.  It allows
+   This protocol operates solely at the HTTP layer.  It allows
    signatures to be generated and verified without modifying the
    transport layer or TLS stack.  It enables flexible deployment across
    proxies, gateways, and origin servers, and aligns with existing
@@ -237,7 +243,97 @@ Table of Contents
       signatures.  It acts as a verifier of the signature as defined by
       [HTTP-MESSAGE-SIGNATURES].
 
-4.  Architecture
+4.  Identifiers and Trust Model
+
+   This section defines the identifiers produced by this protocol and
+   what a verifier can conclude from a valid signature.
+
+4.1.  The signing key provides continuity
+
+   In this draft, an Agent's signing key is its base identifier.
+   Section 4.3 defines a domain binding a verifier can establish.  The
+   keyid defined in Section 5.2 is a normalised thumbprint of that key.
+   Origins can log, rate limit, allowlist, or block a keyid the way they
+   do IP addresses and User-Agent today.
+
+   Unlike an IP address, a key is cheap to mint: an Agent blocked on its
+   keyid can rotate its key or stop sending signatures altogether.  The
+   protocol does not try to prevent this.  It targets honest clients
+   that want to be recognised across requests.  Unsigned requests are
+   out of scope.  This document does not define or change how origins
+   treat them.
+
+   A valid signature proves two things: the request was produced by a
+   holder of the private key (Section 5.2.3 bounds reuse), and requests
+   with the same keyid come from holders of the same key.  This is
+   enough for an origin to recognise a keyid and attach policy to it.
+   It does not say who operates the Agent, whether the Agent is benign,
+   or whether the request is authorized.  Those are origin policy.
+
+   A verifier only needs the public key to validate a signature.
+   Whether that key is bound to something more, such as a domain
+   (Section 4.3), is deployment specific.
+
+4.2.  Discovery is not trust
+
+   The verifier needs the public key of the client they are validating.
+   Section 5.5 discusses ways to obtain it: out-of-band exchange, public
+   lists, or the Signature-Agent header.  The distribution method does
+   not change what a valid signature proves.
+
+   Signature-Agent is a client-controlled hint.  Verifiers MUST NOT
+   grant trust based on its value alone.  They can use it to triage
+   requests, but policy attaches to the verified key, or to a verified
+   binding (Section 4.3).
+
+   Discovery is required for key updates (addition, removal).  It is
+   bounded by the caching described in Appendix A.4.
+
+4.3.  Binding a key to a Web origin
+
+   By design, a key and its thumbprint form a stable identifier.  When
+   key material comes from the well-known directory defined in
+   [DIRECTORY], the verifier additionally learns which domain publishes
+   the key.  The TLS connection authenticates the domain serving the
+   directory, and each advertised key signs the directory response,
+   proving possession and preventing the key set from being re-served
+   under a different authority (see "Binding keys to the directory
+   authority" in [DIRECTORY]).  These signatures do not confer authority
+   over the domain: that comes from the TLS connection alone.  The
+   binding is not exclusive: several domains may publish the same key.
+   It attaches to the (key, domain) pair the verifier validated.
+
+   This protocol supports two modes.  Both use the same wire format:
+   nothing in a request signals a mode, and the verifier chooses what to
+   rely on.  In opaque mode, verification returns the key as its
+   identifier.  An Agent needs nothing more than a keypair.  This
+   document defines no rotation for this mode: a new key is a new
+   identifier, though a future mechanism may provide rotation.  In the
+   domain binding mode, verification adds an authenticated domain-to-key
+   binding.  The binding exists only for keys published in the directory
+   defined in [DIRECTORY]: an Agent presents a domain to verifiers by
+   publishing its keys there.  A verifier relying on the domain MUST
+   validate the binding described above.  A verifier using keys opaquely
+   MAY skip that validation, in which case it obtains no binding.
+   Domain binding supports rotation: the directory serves the old and
+   the new key together, and removing a key deactivates it once caches
+   expire.  It also gives verifiers a name to attach information to,
+   which persists across rotation.
+
+   [[ Editor's note: the two-mode split follows the July 2026 list
+   discussion. https://mailarchive.ietf.org/arch/msg/web-bot-auth/
+   IZ0Ie47iydtlC1laaJcxxxR3VW8/ The MUST on directory binding is new.
+   Previous versions said MAY mostly as the main mode was key alone and
+   binding was an optional layer.  Depending on how the group discusses
+   the two modes, that wording is subject to change ]]
+
+4.4.  Out of scope
+
+   This protocol does not authenticate human users, does not provide
+   anonymous authentication, and does not define authorization or
+   delegation.  See Section 7.
+
+5.  Protocol Overview
 
 +--------+               +---------+                           +----------+
 |        |               |         |         Exchange          |          |
@@ -259,7 +355,7 @@ Table of Contents
    Agent, validates the signature, and processes the request if the
    signature is valid.
 
-4.1.  Deployment Models
+5.1.  Deployment Models
 
    Signature verification can be performed either directly by origins or
    delegated to a fronting proxy.  Direct verification by origins
@@ -267,7 +363,7 @@ Table of Contents
    processing and enables shared caching across multiple origins.  The
    choice depends on traffic volume and operational requirements.
 
-4.2.  Generating HTTP Message Signature
+5.2.  Generating HTTP Message Signature
 
    [HTTP-MESSAGE-SIGNATURES] defines components to be signed.
 
@@ -299,11 +395,11 @@ Table of Contents
 
    It is RECOMMENDED the expiry to be no more than 24 hours.
 
-4.2.1.  Signature-Agent
+5.2.1.  Signature-Agent
 
    Signature-Agent is an HTTP Method context header defined in
    Section 4.1 of [DIRECTORY].  It is RECOMMENDED that the Agent sends
-   requests with Signature-Agent header, as described in Section 4.2.5.
+   requests with Signature-Agent header, as described in Section 5.2.5.
    If the header is to be sent, one of its members MUST be signed as a
    component as defined in Section 2.1 of [HTTP-MESSAGE-SIGNATURES].
    The Signature-Agent member identifies where candidate key material
@@ -316,7 +412,7 @@ Table of Contents
 
    It is RECOMMENDED that the key matches the signature label.
 
-4.2.2.  Multiple signatures
+5.2.2.  Multiple signatures
 
    A request MAY contain more than one Web Bot Auth signature.  Each
    signature is identified by its HTTP Message Signatures label.  When
@@ -335,14 +431,14 @@ Table of Contents
    problem: how key material can show delegation.  Multiple signatures
    only show which signatures were present and what they covered.
 
-4.2.3.  Anti-replay
+5.2.3.  Anti-replay
 
    Origins MAY want to prevent signatures from being spoofed or used
    multiple times by bad actors and thus require a nonce to be added to
    the @signature-params.  This is described in Section 7.2.2 of
    [HTTP-MESSAGE-SIGNATURES].
 
-   Agents SHOULD extend @signature-parameters defined in Section 4.2 as
+   Agents SHOULD extend @signature-parameters defined in Section 5.2 as
    follows:
 
    nonce  base64url encoded random byte array.  It is RECOMMENDED to use
@@ -351,22 +447,22 @@ Table of Contents
    Client MUST ensure that this nonce is unique for the validity window
    of the signature, as defined by created and expires attributes.
 
-4.2.4.  Additional headers
+5.2.4.  Additional headers
 
    Agents MAY include additional components, such as specific HTTP
    headers, in the signature.  This can be prompted by the origin
-   requesting additional headers, as described in Section 4.3, or
+   requesting additional headers, as described in Section 5.3, or
    initiated by the agent to provide more information within the
    signature scope.  For example, an agent might include an HTTP header
    expressing its intent and sign it.
 
    Origins MAY ignore certain headers at their own discretion, and
-   request a new signature, as described in Section 4.3.
+   request a new signature, as described in Section 5.3.
 
-4.2.5.  Sending a request
+5.2.5.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
-   Updating the architecture diagram, the flow looks as follow.
+   Updating the overview diagram, the flow looks as follow.
 
 +---------+                                                                                  +----------+
 |         |                                     Exchange                                     |          |
@@ -386,20 +482,20 @@ Table of Contents
 
    The Agent SHOULD send requests with two headers
 
-   1.  Signature defined in Section 4.2
+   1.  Signature defined in Section 5.2
 
-   2.  Signature-Input defined in Section 4.2
+   2.  Signature-Input defined in Section 5.2
 
-   Mentioned in Section 4.2.1, the Agent MAY send requests with
+   Mentioned in Section 5.2.1, the Agent MAY send requests with
    Signature-Agent header.
 
-4.3.  Requesting a Message signature
+5.3.  Requesting a Message signature
 
    Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
    by an origin.  An Origin MAY choose to request signatures from
    clients that did not initially provide them.  If requesting, Origins
-   MUST use the same parameters as those defined by the Section 4.2.
+   MUST use the same parameters as those defined by the Section 5.2.
    The status code SHOULD be 403 Forbidden as defined in Section 15.5.4
    of [HTTP].
 
@@ -409,7 +505,7 @@ Table of Contents
    time.  The status code SHOULD be 429 Too Many Requests as defined in
    Section 4 of [HTTP-MORE-STATUS-CODE].
 
-4.4.  Validating Message signature
+5.4.  Validating Message signature
 
    Upon receiving an HTTP request, the origin has to verify the
    signature.  The algorithm is provided in Section 3.2 of
@@ -431,19 +527,22 @@ Table of Contents
 
    *  During step 5, if the keyid is unknown to the origin, they MAY
       fetch key material as indicated by the Signature-Agent header
-      defined in Section 4 of [DIRECTORY].
+      defined in Section 4 of [DIRECTORY].  Fetching key material
+      affects only whether verification is possible, not what a valid
+      signature means (Section 4.2).
 
    Origin MAY require the nonce to satisfy certain constraints: be
    globally unique using a global nonce store, be unique to a specific
    location or time window using a local cache, or no constraint at all.
 
-4.5.  Key Distribution and Discovery
+5.5.  Key Distribution and Discovery
 
-   This section describes key discovery for the agent.
+   This section describes key discovery for the agent.  Discovery
+   provides key material; it does not confer trust (Section 4.2).
 
    The reference for discovery is a URL.  It SHOULD be an HTTPS URL.
-   The Signature-Agent header defines typed discovery.  This
-   architecture uses these types:
+   The Signature-Agent header defines typed discovery.  This protocol
+   uses these types:
 
    directory  Resolve the HTTP Message Signatures Directory at the well-
       known URI registered in [DIRECTORY].  This is the default when no
@@ -454,6 +553,15 @@ Table of Contents
    cimd  Resolve the member value as a Client ID Metadata Document
       [CIMD] URI.  The document then provides key material through jwks
       or jwks_uri.
+
+   Only the directory type establishes the domain binding in
+   Section 4.3. jwks_uri and cimd point to an arbitrary URL: TLS
+   authenticates the host, not the path, no possession proof ties the
+   keys to the URL, and nothing reserves the path to the origin's
+   operator the way a [WELLKNOWN-URI] does.  Under this protocol, these
+   types provide an opaque value: trust attaches to that value and the
+   keys it resolves to (Section 4.2), and this document defines no
+   binding for it.
 
    For all types, the key is selected using the keyid parameter in
    Signature-Input.
@@ -478,30 +586,30 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
      }]
    }
 
-4.5.1.  Out-of-band communication between client and origin
+5.5.1.  Out-of-band communication between client and origin
 
    A service submitting their key to an origin, or the origin manually
    adding a service to their trusted list.
 
-4.5.2.  Public list
+5.5.2.  Public list
 
    Could be a GitHub repository like the public suffix list.  The issue
    is the gating of such repositories, and therefore its governance.
 
-4.5.3.  Signature-Agent header
+5.5.3.  Signature-Agent header
 
    This allows for backward compatibility with existing header agent
    filtering, and an upgrade to a cryptographically secured protocol.
-   See Section 4.2.1 for more details.
+   See Section 5.2.1 for more details.
 
-4.5.4.  Signature-Key header
+5.5.4.  Signature-Key header
 
    [SIGNATURE-KEY] defines a separate key discovery header for HTTP
    Message Signatures.  Deployments MAY use it when they need that
-   model.  This architecture uses Signature-Agent as its default
-   discovery mechanism.
+   model.  This protocol uses Signature-Agent as its default discovery
+   mechanism.
 
-4.6.  Session Protocol Considerations
+5.6.  Session Protocol Considerations
 
    Per-request signature generation and verification may incur
    computational overhead from cryptographic operations and key
@@ -518,9 +626,9 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    The design of session protocols, including appropriate session
    lifetimes and binding mechanisms, is out of scope for this document.
 
-5.  Security Considerations
+6.  Security Considerations
 
-5.1.  Use of TLS
+6.1.  Use of TLS
 
    We reassess Section 7.1.2 of [HTTP-MESSAGE-SIGNATURES].  Clients
    SHOULD use TLS [RFC8446] (https) or equivalent transport security
@@ -529,12 +637,12 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    attackers unintended access.
 
    This include reverse proxy and their consideration presented in
-   Section 5.7.
+   Section 6.7.
 
    An origin SHOULD refuse Signature headers when communicated over an
    unsecured channel.
 
-5.2.  Performance Impact
+6.2.  Performance Impact
 
    Origins should account for the overhead of signature verification in
    their operations.  A local cache of public keys reduces network
@@ -543,9 +651,9 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    latency and set appropriate timeouts to maintain service levels under
    load.
 
-5.3.  Nonce validation
+6.3.  Nonce validation
 
-   Clients control the nonce.  While Section 4.2.3 mandates that clients
+   Clients control the nonce.  While Section 5.2.3 mandates that clients
    MUST provide a globally unique nonce, it is the origin's
    responsibility to enforce it.
 
@@ -554,7 +662,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    nonce store.  Some origins may find that their use case can tolerate
    sharding on location, timing, or other properties.
 
-5.4.  Key Compromise Response
+6.4.  Key Compromise Response
 
    An agent signing key might get compromised.
 
@@ -565,7 +673,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    To minimise the impact of a key compromise, the origin should support
    rapid key rotation and monitor for suspicious signature patterns.
 
-5.5.  Shared Secrets Considered Harmful
+6.5.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
@@ -573,14 +681,14 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective revocation if needed.
 
-5.6.  Key Reuse Considered Harmful
+6.6.  Key Reuse Considered Harmful
 
    Implementations SHOULD NOT reuse a signing key for different
    purposes.  For example, if an agent implementor has two agents they
    want to differentiate, these should use distinct signing keys and
    signing key directories.
 
-5.7.  Reverse proxy consideration
+6.7.  Reverse proxy consideration
 
    An origin may be placed behind a reverse proxy, which means the proxy
    will see the Signature and Signature-Agent headers before the origin
@@ -593,7 +701,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 
    Origins MAY require a specific nonce policy to prevent such malicious
    behaviour and decide to validate the signature themselves.  This has
-   to be done in accordance with Section 5.3.  For example, an origin
+   to be done in accordance with Section 6.3.  For example, an origin
    could require a nonce derived from public information (such as the
    current date), mandate nonce chaining (where each nonce is the hash
    of the previous one), or provide its own nonce in an Accept-Signature
@@ -603,14 +711,14 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    the origin to convey accept-signature header, or deployment specific
    exchanges.
 
-5.7.1.  Signature-Agent labeling
+6.7.1.  Signature-Agent labeling
 
    An intermediary is allowed to relabel an existing signature when
    processing the message, per Section 7.2.5 of
    [HTTP-MESSAGE-SIGNATURES].
 
    This MAY apply to Signature-Agent, when included in the request as
-   defined in Section 4.2.1, An intermediary updating the member key
+   defined in Section 5.2.1, An intermediary updating the member key
    MUST update the components of the associated signatures accordingly.
 
    For instance, an intermediary updating the Signature-Agent from
@@ -633,9 +741,9 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    Signature-Agent, Signature-Input, and Signature all reflect the
    update from agent2 to agent3.
 
-5.8.  Server-Side Request Forgery (SSRF)
+6.8.  Server-Side Request Forgery (SSRF)
 
-   As described in Section 4.5, verifiers may fetch key directories
+   As described in Section 5.5, verifiers may fetch key directories
    based on the value conveyed in Signature-Agent when included in a
    request.  Since clients control the Signature-Agent header value,
    this introduces a risk of server-side request forgery (SSRF) attacks
@@ -664,14 +772,14 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    Application Security Project (OWASP) SSRF Prevention Cheat Sheet
    [OWASP-SSRF].
 
-5.9.  Test and Demonstration Keys
+6.9.  Test and Demonstration Keys
 
    Test keys, including the example keys in [HTTP-MESSAGE-SIGNATURES],
    MUST NOT be used in production.  Verifiers SHOULD reject known test
    keys when they are detected in key directories or out-of-band
    configuration.
 
-5.10.  Static Signatures
+6.10.  Static Signatures
 
    Deployments MUST NOT treat a precomputed Web Bot Auth signature as a
    long-lived access credential.  A reusable static signature has
@@ -682,7 +790,7 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    bounded created and expires values.  Long expiration windows increase
    replay risk.
 
-5.11.  Discovery Failure
+6.11.  Discovery Failure
 
    Failure to fetch or validate a key directory, beyond the directory
    cache window discussed in Appendix A.4, means that the asserted
@@ -690,18 +798,18 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    malicious, and it does not make the request trusted.  The resulting
    enforcement decision is local policy.
 
-6.  Privacy Considerations
+7.  Privacy Considerations
 
-6.1.  Public Identity
+7.1.  Public Identity
 
-   This architecture assumes that automated clients identify themselves
+   This protocol assumes that automated clients identify themselves
    explicitly using digital signatures.  The identity associated with a
    signing key is expected to be publicly discoverable for verification
    purposes.  This reduces anonymity and allows receivers to associate
    requests with specific agents.  If an agent wishes not to identify
    itself, this is not the right choice of protocol for it.
 
-6.2.  No Human Correlation
+7.2.  No Human Correlation
 
    The key used for signing MUST NOT be tied to a specific human
    individual.  Keys SHOULD represent a role, company, or automation
@@ -709,7 +817,7 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    avoids accidental exposure of personally identifiable information and
    prevents the misuse of keys for user tracking or profiling.
 
-6.3.  Minimizing Tracking Risks
+7.3.  Minimizing Tracking Risks
 
    To limit tracking risks, implementations SHOULD avoid long-lived,
    globally unique key identifiers unless strictly necessary.  Key
@@ -717,13 +825,13 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    signing information that could be used to correlate activity across
    contexts, especially where sensitive user data is involved.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    This document has no IANA actions.
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [DIRECTORY]
               Meunier, T. and S. Major, "HTTP Message Signatures
@@ -772,13 +880,13 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
               Document", Work in Progress, Internet-Draft, draft-ietf-
-              oauth-client-id-metadata-document-01, 1 March 2026,
+              oauth-client-id-metadata-document-02, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              client-id-metadata-document-01>.
+              client-id-metadata-document-02>.
 
    [HTTP-BEST-PRACTICES]
               Nottingham, M., "Building Protocols with HTTP", BCP 56,
@@ -804,9 +912,14 @@ Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPd
    [SIGNATURE-KEY]
               Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
               Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-05, 17 June 2026,
+              key-07, 4 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-05>.
+              httpbis-signature-key-07>.
+
+   [WELLKNOWN-URI]
+              Nottingham, M., "Well-Known Uniform Resource Identifiers
+              (URIs)", RFC 8615, DOI 10.17487/RFC8615, May 2019,
+              <https://www.rfc-editor.org/rfc/rfc8615>.
 
 Appendix A.  Deployment Guidance
 
@@ -844,7 +957,7 @@ A.2.  Directory Availability
 A.3.  Bounded Directory Fetches
 
    Verifiers fetch directories named by untrusted requests.  Fetches
-   should be bounded as described in Section 5.8.  In particular,
+   should be bounded as described in Section 6.8.  In particular,
    verifiers should use a fetch timeout, bound the decoded response
    size, bound the number of keys considered, limit redirects, and
    prevent fetches to private, loopback, and link-local addresses.
@@ -883,7 +996,7 @@ A.6.  Freshness and Replay
    sensitivity to clock skew and signing failures.  Nonces provide
    stronger replay defense, but require state at the verifier.  Some
    deployments can tolerate bounded replay for short windows; others
-   need strict Section 5.3.
+   need strict Section 6.3.
 
    These choices are deployment policy.  Verifiers should avoid
    accepting signatures with freshness windows longer than their risk
@@ -1278,6 +1391,14 @@ Acknowledgments
    Malte Ubl, Loganaden Velvindron, Tanya Verma.
 
 Changelog
+
+   draft-meunier-webbotauth-httpsig-protocol-01
+
+   *  Add an Identifiers and Trust Model section: opaque and domain
+      binding modes.
+
+   *  Describe the document as a protocol throughout (was:
+      architecture).
 
    draft-meunier-webbotauth-httpsig-protocol-00
 

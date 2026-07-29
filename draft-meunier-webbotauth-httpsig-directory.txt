@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 28 December 2026                                         Google
-                                                            26 June 2026
+Expires: 30 January 2027                                          Google
+                                                            29 July 2026
 
 
                    HTTP Message Signatures Directory
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2026.
+   This Internet-Draft will expire on 30 January 2027.
 
 Copyright Notice
 
@@ -88,20 +88,11 @@ Table of Contents
      7.2.  Media Types
        7.2.1.  "application/http-message-signatures-directory+json"
                media type
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   8.  Normative References
    Appendix A.  Examples
      A.1.  Key Directory on example.com
      A.2.  Delegation and chaining
-       A.2.1.  Key Directory on sub.example.com with a delegation from
-               example.com via x5c full certificate chain
-       A.2.2.  Key Directory on sub.example.com with a delegation from
-               example.com via a leaf certificate and AIA field
-       A.2.3.  Key Directory on sub.example.com with a delegation from
-               example.com via x5u field
      A.3.  Request with HTTP Signature-Agent
-     A.4.  Request with data URI Signature-Agent
    Acknowledgments
    Changelog
    Authors' Addresses
@@ -142,12 +133,12 @@ Table of Contents
    algorithm registered against HTTP Signature Algorithms Section of
    [HTTP-MESSAGE-SIGNATURES-IANA]
 
-   The directory SHOULD be served over HTTPS.  The directory MUST be
+   The directory MUST be served over HTTPS.  The directory MUST be
    served with media type application/http-message-signatures-
    directory+json.
 
-   A client application SHOULD validate the directory format and reject
-   malformed entries.
+   A verifier SHOULD validate the directory format and reject malformed
+   entries.
 
 4.  HTTP Method Context Signature-Agent
 
@@ -169,33 +160,28 @@ Table of Contents
 
    The following type values are defined:
 
-   directory  The member value identifies an origin.  For http and https
-      URI values, a client resolves the HTTP Message Signatures
-      Directory using the well-known URI registered in Section 7.1 at
-      that origin.  For data URI values, the member value contains an
-      inline HTTP Message Signatures Directory.
+   directory  The member value identifies an origin.  A verifier
+      resolves the HTTP Message Signatures Directory using the well-
+      known URI registered in Section 7.1 at that origin.
 
    jwks_uri  The member value identifies a JWK Set URI.
 
    cimd  The member value identifies a Client ID Metadata Document
       [CIMD] URI.
 
-   A client that does not support a type value MUST ignore that member.
-   A client MUST NOT infer the discovery mechanism from the URI path,
-   media type, or response body.
+   A verifier that does not support a type value MUST ignore that
+   member.  A verifier MUST NOT infer the discovery mechanism from the
+   URI path, media type, or response body.
 
-   The URI scheme MUST be one of:
+   [[ Editor's note: strengthen requirements around jwks_uri and cimd.
+   directory uses a signed well-known to guarantee Section 5 ]]
 
-   *  *https (RECOMMENDED)*: Points to an HTTPS resource
+   The URI scheme MUST be https.
 
-   *  *http*: Points to an HTTP resource
-
-   *  *data*: Contains inline key material
-
-   When using the data URI scheme with type=directory, the media type
-   MUST be application/http-message-signatures-directory+json.  The
-   content MAY be base64 encoded as per [BASE64].  The data URI scheme
-   MUST NOT be used with other type values.
+   [[ Editor's note: earlier versions also allowed http and data URI
+   schemes.  A data URI carries inline key material with no authority
+   behind it, which muddied what the directory binding proves.  Both are
+   removed for now. ]]
 
    If dictionary values are not valid URI-references, the entire header
    field MAY be ignored.
@@ -204,9 +190,9 @@ Table of Contents
 
 5.1.  Key rotation
 
-   Clients SHOULD implement key rotation by including multiple keys in
-   the directory with a different validity period.  When rotating keys,
-   clients SHOULD:
+   Directory operators SHOULD implement key rotation by including
+   multiple keys in the directory with a different validity period.
+   When rotating keys, operators SHOULD:
 
    1.  Add the new key to the directory before its intended use date
 
@@ -214,21 +200,29 @@ Table of Contents
 
    3.  Remove expired keys from the directory
 
-   Servers SHOULD cache the directory contents and refresh upon
+   Verifiers SHOULD cache the directory contents and refresh upon
    expiration.
+
+   Removing a key from the directory deactivates it.  Verifiers stop
+   accepting keys once their cached copy expires.  The directory's cache
+   lifetime therefore bounds how long a removed key keeps verifying.
+
+   [[ Editor's note: Recommendation around lifetime? ]]
 
 5.2.  Binding keys to the directory authority
 
    To ensure the authenticity and integrity of the key material provided
-   by the directory, clients *SHOULD* validate the directory's response.
+   by the directory, verifiers SHOULD validate the directory's response.
 
-   When a directory server provides a key directory over HTTP or HTTPS,
-   it is RECOMMENDED that it constructs and includes one HTTP Message
-   Signatures per keys with the response, as defined in
+   It is RECOMMENDED that a directory server construct and include one
+   HTTP Message Signature per key with the response, as defined in
    [HTTP-MESSAGE-SIGNATURES].  Each key SHOULD be used to provide one
-   signature.
+   signature.  These signatures prove possession of the advertised keys
+   and, by covering @authority, prevent the key set from being re-served
+   under a different authority.  They do not confer authority over the
+   serving domain: that comes from the TLS connection alone.
 
-   Directory server SHOULD include the following covered components:
+   Directory server MUST include the following covered components:
 
    @authority  as defined in Section 2.2.3 of [HTTP-MESSAGE-SIGNATURES].
       req flag defined in Section 2.4 of [HTTP-MESSAGE-SIGNATURES] MUST
@@ -249,12 +243,13 @@ Table of Contents
 
    tag  MUST be http-message-signatures-directory
 
-   Clients SHOULD validate these signatures using the keys provided by
-   the directory.  Clients SHOULD validate the Content-Digest field
-   against the response body.  Clients SHOULD ignore keys from a
-   directory response that do not have a corresponding valid signature.
-   This validation checks the integrity of the key set and binds it to
-   the intended authority.
+   Verifiers relying on the domain binding MUST validate these
+   signatures using the keys provided by the directory, validate the
+   Content-Digest field against the response body, and ignore keys that
+   do not have a corresponding valid signature.  Verifiers using keys
+   opaquely MAY skip this validation, in which case they obtain no
+   binding.  This validation checks the integrity of the key set and
+   binds it to the intended authority.
 
 6.  Privacy Considerations
 
@@ -328,15 +323,13 @@ Table of Contents
    Author:  see Authors' Addresses section
    Change controller:  IETF
 
-8.  References
-
-8.1.  Normative References
+8.  Normative References
 
    [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
               Document", Work in Progress, Internet-Draft, draft-ietf-
-              oauth-client-id-metadata-document-01, 1 March 2026,
+              oauth-client-id-metadata-document-02, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              client-id-metadata-document-01>.
+              client-id-metadata-document-02>.
 
    [DIGEST-FIELDS]
               Polli, R. and L. Pardue, "Digest Fields", RFC 9530,
@@ -395,24 +388,6 @@ Table of Contents
               <https://www.iana.org/assignments/well-known-uris/well-
               known-uris.xhtml>.
 
-8.2.  Informative References
-
-   [BASE64]   Masinter, L., "The "data" URL scheme", RFC 2397,
-              DOI 10.17487/RFC2397, August 1998,
-              <https://www.rfc-editor.org/rfc/rfc2397>.
-
-   [CRYPTO-TEST-KEYS]
-              Gutmann, P. and C. Bonnell, "Standard Public Key
-              Cryptography (PKC) Test Keys", RFC 9500,
-              DOI 10.17487/RFC9500, December 2023,
-              <https://www.rfc-editor.org/rfc/rfc9500>.
-
-   [X509-PKI] Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
-              Housley, R., and W. Polk, "Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
-              <https://www.rfc-editor.org/rfc/rfc5280>.
-
 Appendix A.  Examples
 
 A.1.  Key Directory on example.com
@@ -438,111 +413,15 @@ A.1.  Key Directory on example.com
 
 A.2.  Delegation and chaining
 
-   There are multiple methods to perform delegation and chaining.  There
-   are no specific methods that have been favored by implementation so
-   far, should they even support them.  It is adviced to consider
-   delegation as experimental for now, and provide input on the
+   Delegation and chaining are out of scope for this document and are
+   expected to be specified separately.  Input is welcome on the
    associated GitHub issue (https://github.com/thibmeu/http-message-
    signatures-directory/issues/27).
 
-A.2.1.  Key Directory on sub.example.com with a delegation from
-        example.com via x5c full certificate chain
-
-   In this example, example.com key is testECCP256 provided in
-   Section 2.3 of [CRYPTO-TEST-KEYS].  Certificate chain is passed via
-   x5c key parameter defined in Section 4.7 of [JWK].
-
-GET /.well-known/http-message-signatures-directory HTTP/1.1
-Host: sub.example.com
-Accept: application/http-message-signatures-directory
-
-HTTP/1.1 200 OK
-Content-Type: application/http-message-signatures-directory
-Cache-Control: max-age=86400
-{
-  "keys": [{
-    "kty": "OKP",
-    "crv": "Ed25519",
-    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
-    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
-    "use": "sig",
-    "nbf": 1712793600,
-    "exp": 1715385600,
-    "x5c": [
-      "MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv",
-      "MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV"
-    ]
-  }]
-}
-
-A.2.2.  Key Directory on sub.example.com with a delegation from
-        example.com via a leaf certificate and AIA field
-
-   In this example, example.com key is testECCP256 provided in
-   Section 2.3 of [CRYPTO-TEST-KEYS].  Certificate chain is passed via
-   x5c key parameter defined in Section 4.7 of [JWK], and the root
-   certificate is signaled by the presence of an Authority Information
-   Access extension as defined in Section 5.2.7 of [X509-PKI].
-
-GET /.well-known/http-message-signatures-directory HTTP/1.1
-Host: sub.example.com
-Accept: application/http-message-signatures-directory
-
-HTTP/1.1 200 OK
-Content-Type: application/http-message-signatures-directory
-Cache-Control: max-age=86400
-{
-  "keys": [{
-    "kty": "OKP",
-    "crv": "Ed25519",
-    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
-    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
-    "use": "sig",
-    "nbf": 1712793600,
-    "exp": 1715385600,
-    "x5c": [
-      "MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv"
-    ]
-  }]
-}
-
-   The AIA extension is as follow
-
-X509v3 extensions:
-  Authority Information Access:
-    CA Issuers - URI:https://example.com/.well-known/http-message-signatures-directory.crt
-
-   The verifier should validate the signature with the public key in the
-   Signature-Agent, match the public key with the leaf cert, then fetch
-   the root cert from the AIA URI and verify the leaf cert with it.
-
-A.2.3.  Key Directory on sub.example.com with a delegation from
-        example.com via x5u field
-
-   Leveraging x5c imposes that a PEM encoded certificate is present in
-   the returned JWKS.  If size is a constraint, or deployment imposes a
-   more dynamic certificate management, directory server may use x5u key
-   parameter defined in Section 4.6 of [JWK].
-
-GET /.well-known/http-message-signatures-directory HTTP/1.1
-Host: sub.example.com
-Accept: application/http-message-signatures-directory
-
-HTTP/1.1 200 OK
-Content-Type: application/http-message-signatures-directory
-Cache-Control: max-age=86400
-
-{
-  "keys": [{
-    "kty": "OKP",
-    "crv": "Ed25519",
-    "kid": "NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw",
-    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
-    "use": "sig",
-    "nbf": 1712793600,
-    "exp": 1715385600,
-    "x5u": "https://example.com/.well-known/http-message-signature-chain/sub.example.com.crt"
-}
+   [[ Editor's note: earlier versions carried informative delegation
+   examples using x5c, AIA, and x5u.  They suggested verifier behaviour
+   this document does not define, so they are removed for clarity
+   purposes.  Issue 27 tracks a possible separate document. ]]
 
 A.3.  Request with HTTP Signature-Agent
 
@@ -557,29 +436,20 @@ A.3.  Request with HTTP Signature-Agent
    HTTP/1.1 200 OK
    {"message": "good dog"}
 
-A.4.  Request with data URI Signature-Agent
-
-   A Signature-Agent using data URI can be used to communicate an
-   ephemeral keys, as long as there is a chain to a certificate trusted
-   by the origin.
-
-   In this example, the directory is signed by example.com.  The CA is
-   self-signed, even though it MAY be part of an existing PKI.
-
-POST /foo?param=Value&Pet=dog HTTP/1.1
-Host: example.com
-Signature-Agent: my_test="data:application/http-message-signatures-directory;utf8,{\"keys\":[{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"kid\":\"NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw\",\"x\":\"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs\",\"use\":\"sig\",\"nbf\":1712793600,\"exp\":1715385600,\"x5c\":[\"MIIBYTCCAQagAwIBAgIUFDXRG3pgZ6txehQO2LT4aCqI3f0wCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MjQxWhcNMzUwNjExMTA0MjQxWjAaMRgwFgYDVQQDDA9zdWIuZXhhbXBsZS5jb20wKjAFBgMrZXADIQAmtAuPk//z2JcRL368WCsjLb1yUX0IL+g8+zDdzkPRu6NdMFswCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0OBBYEFKV3qaYNFbzQB1QmN4sa13+t4RmoMB8GA1UdIwQYMBaAFFtwp5gX95/2N9L349xEbCEJ17vUMAoGCCqGSM49BAMCA0kAMEYCIQC8r+GvvNnjI+zzOEDMOM/g9e8QLm00IZXP+tjDqah1UQIhAJHffLke9iEP1pUdm+oRLrq6bUqyLELi5TH2t+BaagKv\",\"MIIBcDCCARagAwIBAgIUS502rlCXxG2vviltGdfe3fmX4pIwCgYIKoZIzj0EAwIwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwNjEzMTA0MTQzWhcNMzUwNjExMTA0MTQzWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEIlSPiPt4L/teyjdERSxyoeVY+9b3O+XkjpMjLMRcWxbEzRDEy41bihcTnpSILImSVymTQl9BQZq36QpCpJQnKjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1UdDgQWBBRbcKeYF/ef9jfS9+PcRGwhCde71DAKBggqhkjOPQQDAgNIADBFAiEAwTOqm1zNAvZuQ8Zb5AftQIZotq4Xe6GHz3+nJ04ybgoCIEEZtn1Pa+GCbmbWh12piHJBKh09TCA0feTedisbwzPV\"]}]}"
-{"hello": "world"}
-
-HTTP/1.1 200 OK
-{"message": "good dog"}
-
 Acknowledgments
 
    Marwan Fayed, Maxime Guerreiro, Jonathan Hoyland, Nikhil Kandoi,
    Akshat Mahajan, Eugenio Panero, Lucas Pardue.
 
 Changelog
+
+   draft-meunier-webbotauth-httpsig-directory-01
+
+   *  Tighten the domain binding: https only, MUST validate when relying
+      on it.
+
+   *  Remove delegation examples; use verifier and directory operator
+      role terms.
 
    draft-meunier-webbotauth-httpsig-directory-00
 
