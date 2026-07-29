@@ -44,8 +44,9 @@ normative:
   JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
-  STRUCTURED-HEADERS: RFC8941
-  URI: RFC8820
+  ORIGIN: RFC6454
+  STRUCTURED-HEADERS: RFC9651
+  URI: RFC3986
   WellKnownURIs:
     title: Well-Known URIs
     target: https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
@@ -55,10 +56,12 @@ informative:
   HTTP-BEST-PRACTICES: RFC9205
   OAUTH-BEARER: RFC6750
   RFC8446:
+  REGISTRY: I-D.draft-meunier-webbotauth-registry
   OWASP-SSRF:
     title: OWASP Server-Side Request Forgery Prevention Cheat Sheet
     target: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
   SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
+  USE-CASES: I-D.draft-nottingham-webbotauth-use-cases
   WELLKNOWN-URI: RFC8615
 
 --- abstract
@@ -83,7 +86,7 @@ themselves to origins for several reasons:
 
 1. Regulatory compliance requiring transparency of automated systems
 2. Origin resource management and access control
-3. Protection against impersonation and reputation management
+3. Protection against impersonation
 4. Service level differentiation between human and automated traffic
 
 Current identification methods such as IP allowlisting, User-Agent strings, or shared API keys have
@@ -121,6 +124,25 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
 Using well-established cryptography, we can instead define a simple and secure
 mechanism that empowers small and large agents to share their identity.
 
+## Objectives and constraints {#objectives}
+
+This protocol has two objectives:
+
+1. Continuity of bot trust, so that an origin can tell it is dealing with the
+   same party it dealt with before.
+2. Optional binding to another anchor, such as a domain.
+
+It works under two constraints:
+
+1. Preserve the simplicity of usage for bots, and the simplicity of action for
+   websites.
+2. Require no pre-established relationship between the two.
+
+The second constraint is what rules out shared secrets and per-site
+onboarding. The first is a statement about operational cost on both ends: a
+site today greps its logs for an IP address and a User-Agent, and with this
+protocol it greps for a handle it can verify.
+
 ## HTTP layer choice
 
 This protocol operates solely at the HTTP layer.
@@ -154,89 +176,131 @@ The following terms are used throughout this document:
 This section defines the identifiers produced by this protocol and what a
 verifier can conclude from a valid signature.
 
-## The signing key provides continuity {#key-is-identifier}
+## The Signature-Agent URL is the identifier {#url-is-identifier}
 
-In this draft, an Agent's signing key is its base identifier. {{origin-binding}}
-defines a domain binding a verifier can establish. The `keyid` defined in
-{{generating-http-message-signature}} is a normalised thumbprint of that key. Origins
-can log, rate limit, allowlist, or block a `keyid` the way they do IP
-addresses and User-Agent today.
+An Agent identifies itself with the HTTPS URL it publishes its keys at, carried
+in `Signature-Agent` ({{signature-agent}}). A verifier resolves that member
+value ({{key-distribution-and-discovery}}) and checks the signature against the
+keys it returns. The identifier is the URL the verifier fetched, which for a
+`directory` member is the well-known URI rather than the value the client sent.
+What the verifier ends up with is a pair: that URL, and a key the URL endorses.
+The URL is the anchor. Origins can log, rate limit, allowlist, or block it the
+way they do IP addresses and User-Agent today.
 
-Unlike an IP address, a key is cheap to mint: an Agent blocked on its `keyid`
-can rotate its key or stop sending signatures altogether. The protocol does
-not try to prevent this. It targets honest clients that want to be
-recognised across requests. Unsigned requests are out of scope. This
-document does not define or change how origins treat them.
+The URL on its own carries nothing. A client picks the value it sends, so an
+unresolved `Signature-Agent` is a claim rather than an identity. It becomes an
+identifier once the verifier fetches it and finds that it endorses a key that
+verifies the request ({{discovery-is-not-trust}}). Until then, verifiers MUST
+NOT attach policy to it.
 
-A valid signature proves two things: the request was produced by a holder of
-the private key ({{anti-replay}} bounds reuse), and requests with the same
-`keyid` come from holders of the same key. This is enough for an origin to recognise a `keyid` and attach
-policy to it. It
-does not say who operates the Agent, whether the Agent is benign, or whether
+A valid signature over a resolved URL proves that the request came from a
+holder of a key that URL publishes, and that requests naming the same URL come
+from holders of keys that URL publishes. {{anti-replay}} bounds reuse. It says
+nothing about who operates the Agent, whether the Agent is benign, or whether
 the request is authorized. Those are origin policy.
 
-A verifier only needs the public key to validate a signature. Whether
-that key is bound to something more, such as a domain ({{origin-binding}}),
-is deployment specific.
+Nothing stops an Agent from abandoning a URL and standing up another one, and
+the protocol does not try to. It targets honest clients that want to be
+recognised across requests.
 
-## Discovery is not trust {#discovery-is-not-trust}
+## Rotation {#rotation}
 
-The verifier needs the public key of the client they are validating.
-{{key-distribution-and-discovery}} discusses ways to obtain it: out-of-band
-exchange, public lists, or the `Signature-Agent` header. The distribution method
-does not change what a valid signature proves.
+Because the identifier is the URL and not the key, an Agent can rotate keys
+without losing continuity. It publishes the new key alongside the old one, then
+drops the old one ({{key-rotation}}). The URL does not change, so a verifier
+that recognised it before still recognises it after. No name and no third party
+are involved.
 
-`Signature-Agent` is a client-controlled hint. Verifiers MUST NOT grant
-trust based on its value alone. They can use it to triage requests, but
-policy attaches to the verified key, or to a verified binding
-({{origin-binding}}).
+`keyid` selects which key verifies a given request. It is not the identifier,
+and verifiers SHOULD NOT use it to carry continuity across a rotation.
 
-Discovery is required for key updates (addition, removal). It is bounded by the
-caching described in {{cache-behaviour}}.
+{{SIGNATURE-KEY}} takes a different approach, where a long-lived key signs
+short-lived delegated keys. Deployments MAY use it. This document does not
+define rotation that way.
+
+## When no URL is sent {#no-url}
+
+`Signature-Agent` is RECOMMENDED but not required. Without it, a verifier has
+only the key, and the identifier is the `keyid` thumbprint defined in
+{{generating-http-message-signature}}. Verification still works, provided the
+verifier already holds that key.
+
+This mode has no rotation. A new key is a new identifier, and the verifier has
+no way to connect the two.
+
+## What the URL endorses {#discovery-is-not-trust}
+
+Resolving a `Signature-Agent` URL over TLS establishes that the host named in
+the URL served this key set at fetch time. Read as an assertion, it is the URL
+endorsing the key: whoever controls that URL says this key signs for it. That
+is what makes the URL usable as an identifier, and all it gives you. It does
+not say that the operator of that URL is honest, competent, or the same party
+as anyone else the verifier knows about.
+
+What matters is not when the verifier resolved the URL, but that it holds the
+association between a URL and the keys published there, so a verifier that
+already holds it need not fetch. A verifier MUST NOT attribute a request to a
+`Signature-Agent` URL unless it holds that association for the key the
+signature was verified with. Evidence comes either from resolving the URL
+itself, at request time or ahead of it, or from
+{{redistributed-key-material}}. Verifiers refetch to pick up key additions and
+removals, bounded by {{cache-behaviour}}.
+
+Where a verifier holds the same pair from more than one source, the newer
+evidence wins, including when it omits a key that older evidence included.
+Evidence is ordered by when it was produced, not when the verifier obtained
+it: the `created` parameter for a directory response signature
+({{origin-binding-appendix}}), and the time of the fetch for a directory the
+verifier resolved itself. Ordering by acquisition instead lets a list
+downloaded today carry an assertion older than the verifier's own last poll,
+reinstating a key its operator removed.
 
 ## Binding a key to a Web origin {#origin-binding}
 
-By design, a key and its thumbprint form a stable identifier. When key material
-comes from the well-known directory defined in {{configuration}}, the verifier
-additionally learns which domain publishes the key. The TLS connection
-authenticates the domain serving the directory, and each advertised key signs
-the directory response, proving possession and preventing the key set from
-being re-served under a different authority ({{directory-authority-binding}}).
-These signatures do not confer authority over the domain: that comes from the
-TLS connection alone. The binding is not exclusive: several domains may
-publish the same key. It attaches to the (key, domain) pair the verifier
-validated.
+A well-known URL is a special case of the above, not a separate mode. When a
+`Signature-Agent` value resolves through the `directory` type
+({{key-distribution-and-discovery}}), the identifier is still the URL, but that
+URL now names a domain rather than an arbitrary path on one. {{WELLKNOWN-URI}}
+reserves the path, so the domain operator stands behind the key set, not
+whoever happens to be able to write a path under that host.
 
-This protocol supports two modes. Both use the same wire format: nothing
-in a request signals a mode, and the verifier chooses what to rely on.
-In opaque mode, verification returns the key as its identifier. An Agent
-needs nothing more than a keypair. This document defines no rotation for this mode: a
-new key is a new identifier, though a future mechanism may provide rotation.
-In the domain binding mode, verification adds an authenticated domain-to-key
-binding. The binding exists only for keys published in the directory defined in {{configuration}}:
-an Agent presents a domain to verifiers by publishing its keys there.
-A verifier relying on the domain MUST validate the binding described
-above. A verifier using keys opaquely
-MAY skip that validation, in which case it obtains no binding. Domain
-binding supports rotation: the directory serves the old and the new key
-together, and removing a key deactivates it once caches expire. It also
-gives verifiers a name to attach information to, which persists across
-rotation.
+Reach for this when a verifier's decision consumes something the key cannot
+carry by itself, which in practice means information an origin already holds
+against that name. Continuity and rotation do not need it, so the mechanics live in
+{{origin-binding-appendix}}. Nothing in a request signals that a URL is
+well-known: a verifier that wants the domain recognises the shape of the URL
+and applies those checks itself.
 
-[[ Editor's note: the two-mode split follows the July 2026 list discussion.
-https://mailarchive.ietf.org/arch/msg/web-bot-auth/IZ0Ie47iydtlC1laaJcxxxR3VW8/
-The MUST on directory binding is new. Previous versions said MAY mostly as
-the main mode was key alone and binding was an optional layer.
-Depending on how the group discusses the two modes, that wording is subject
-to change ]]
+## Relationship with anonymous bot authentication {#relationship}
+
+Identifying an automated client is one of four positions in a space, split by
+whether the claim is self-issued or made by a third party, and by whether it
+carries a name a verifier can look up.
+
+|                | Self-issued              | Third party claims           |
+|:---------------|:-------------------------|:-----------------------------|
+| No public name | Opaque value (pseudonym) | Anonymous endorsement        |
+| Name           | Domain binding           | Domain + additional assertions |
+{: title="Approaches to identifying automated clients"}
+
+This document covers the self-issued column. An Agent presents a URL it
+controls, and no third party is involved. The right-hand column is the subject
+of separate work.
 
 ## Out of scope
 
 This protocol does not authenticate human users, does not provide anonymous
-authentication, and does not define authorization or delegation. See
+authentication, and does not define authorization or delegation. It does not
+define how reputation is computed, held, or exchanged, and it defines no
+mechanism for one origin to convey an opinion about an Agent to another. See
 {{privacy-considerations}}.
 
-# Protocol Overview {#architecture}
+A client has a choice whether to sign its requests, and an origin has a choice
+how it treats signed and unsigned requests. Multiple factors could influence
+either decision, but the decisions themselves are outside the scope of this
+document.
+
+# Protocol Overview
 
 ~~~aasvg
 +--------+               +---------+                           +----------+
@@ -296,7 +360,20 @@ The signing key is available to the agent at request time. Algorithms should be 
 
 The creation of the signature is defined in {{Section 3.1 of HTTP-MESSAGE-SIGNATURES}}.
 
-It is RECOMMENDED the expiry to be no more than 24 hours.
+It is RECOMMENDED that expiry be no more than 24 hours.
+
+The components above bind the signature to an authority, not to a request. A
+signature covering `@authority` alone verifies against any method, path, or body
+sent to that authority until it expires, so anyone who observes one request can
+reuse it against the same origin until then.
+`expires` bounds how long that lasts; the covered components bound what it
+reaches. Agents that want to narrow it SHOULD also cover `@method` and
+`@path`, or use `@target-uri`, as {{example-multiple-signatures}} does. A signer that omits them remains conformant.
+
+No component covers the body. An Agent that needs one MUST send and cover
+`Content-Digest` {{DIGEST-FIELDS}}. This document does not require it: most
+automated traffic is `GET`, and a mandatory digest would force every Agent to
+buffer request bodies it would otherwise stream.
 
 ### Signature-Agent {#signature-agent}
 
@@ -311,6 +388,13 @@ resolves the value to key material. {{key-distribution-and-discovery}} defines
 the types. When `type` is absent, its value is `directory`. A verifier that
 does not support a `type` value MUST ignore that member, and MUST NOT infer the
 mechanism from the URI path, media type, or response body.
+
+Earlier versions of this protocol defined `Signature-Agent` as a bare String,
+and deployments still send it ({{example-legacy}}). A verifier MAY accept that
+form and treat it as a dictionary with a single member whose key is the label
+of the signature covering it. Signers MUST send the dictionary form. The two
+are distinguishable on the wire: a String Item begins with a double quote, a
+Dictionary member key does not.
 
 It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
 If the header is to be sent, one of its members MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
@@ -334,14 +418,25 @@ present, each signer SHOULD provide a `Signature-Agent` member for its label.
 
 A signer MAY cover members from another signature label, which preserves
 evidence that another signer contributed to the request. A signer that covers
-`"signature";key=X` MUST also cover `"signature-input";key=X`, and MUST cover
-`"signature-agent";key=X` when that member is present.
+`"signature";key=X` MUST also cover `"signature-input";key=X`, MUST cover
+`"signature-agent";key=X` when that member is present, and MUST cover every
+component identifier listed in `"signature-input";key=X`.
 
 A signature value on its own does not identify the message it was computed
 over, which is why {{Section 7.3.7 of HTTP-MESSAGE-SIGNATURES}} recommends
-against signing one. Covering `signature-input` alongside it removes the
-ambiguity: the outer signer commits to which components the inner signature
-covered, under which key, and over which validity window.
+against signing one. Covering `signature-input` is not sufficient:
+it lists component identifiers, whose values resolve against whatever
+message the verifier holds. An outer signature that named those identifiers
+without covering them would still verify after the whole header set was lifted
+onto a different message, the ambiguity
+{{Section 7.3.7 of HTTP-MESSAGE-SIGNATURES}} describes. Covering the union
+closes it: the outer signer commits to a message on which the inner signature
+is checkable, under which key, and over which validity window.
+
+A signer that cannot cover one of those components, because it changed the
+value the inner signature was computed over, MUST NOT cover the inner
+`signature` member. It signs the request on its own terms, and the inner
+signature travels as an ordinary field.
 
 Verifiers MUST validate each signature independently against its own covered
 components and its own key. An outer signature that covers an inner one is
@@ -399,7 +494,9 @@ The Agent SHOULD send requests with two headers
 1. `Signature` defined in {{generating-http-message-signature}}
 2. `Signature-Input` defined in {{generating-http-message-signature}}
 
-Mentioned in {{signature-agent}}, the Agent MAY send requests with `Signature-Agent` header.
+As described in {{signature-agent}}, it is RECOMMENDED that the Agent also send
+the `Signature-Agent` header. Without it the Agent is identified by its key
+alone, with the consequences described in {{no-url}}.
 
 ## Requesting a Message signature {#requesting-message-signature}
 
@@ -419,24 +516,33 @@ Additional requirements are placed on this validation:
 
 - During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
-- During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in {{signature-agent}}. Fetching key material affects only whether verification is possible, not what a valid signature means ({{discovery-is-not-trust}}).
+- During step 5, the Origin MAY discard signatures for which it does not know the `keyid` for the `Signature-Agent` URL the signature covers.
+- During step 5, if the `keyid` is not known for that URL, the Origin MAY fetch key material as indicated by the `Signature-Agent` header defined in {{signature-agent}}. Fetching key material affects only whether verification is possible, not what a valid signature means ({{discovery-is-not-trust}}).
+
+Key lookup MUST be keyed on the (URL, key) pair, not on the key alone. A
+verifier that indexes by `keyid` alone will verify a request naming one URL
+with a key it learned from another, and attribute it to the URL the client
+asserted. The party whose URL is asserted cannot detect or stop this: its own
+directory is never fetched, so no rotation or removal has any effect.
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
 ## Key Distribution and Discovery {#key-distribution-and-discovery}
 
-This section describes key discovery for the agent. Discovery provides key
-material; it does not confer trust ({{discovery-is-not-trust}}).
+This section describes how a verifier resolves a `Signature-Agent` URL to key
+material. {{discovery-is-not-trust}} covers what the fetch does and does not
+establish.
 
 The reference for discovery is an HTTPS URL, carried in a `Signature-Agent`
 member as defined in {{signature-agent}}. The member's `type` parameter names
 how the URL resolves to key material. This protocol defines three types:
 
 `directory`
-: Resolve the HTTP Message Signatures Directory at the well-known URI
-registered in {{wkuri-reg}}, at the origin named by the member value. This is
-the default when no `type` parameter is present.
+: The member value MUST be the ASCII serialization of an origin as defined in
+{{Section 6.2 of ORIGIN}}, and a verifier MUST ignore a member carrying
+anything else. Resolve the HTTP Message Signatures Directory at the well-known
+URI registered in {{wkuri-reg}}, at that origin. This is the default when no
+`type` parameter is present.
 
 `jwks_uri`
 : Resolve the member value as a direct JWK Set URI.
@@ -445,27 +551,40 @@ the default when no `type` parameter is present.
 : Resolve the member value as a Client ID Metadata Document {{CIMD}} URI. The
 document then provides key material through `jwks` or `jwks_uri`.
 
-Only the `directory` type establishes the domain binding in
-{{origin-binding}}. `jwks_uri` and `cimd` point to an arbitrary URL: TLS
-authenticates the host, not the path, no possession proof ties the
-keys to the URL, and nothing reserves the path to the origin's operator
-the way a well-known URI does. Under this protocol, these types provide
-an opaque value: trust attaches to that value and the keys it resolves to
-({{discovery-is-not-trust}}), and this document defines no binding for it.
+All three types produce an identifier: the URL the verifier resolved, with any
+query and fragment discarded. For `directory` that is the well-known URI, one
+per origin. For `jwks_uri` and `cimd` it is the member value; the verifier
+fetches that value as sent, so the query is dropped from the identifier and not
+from the request. Otherwise one key set would yield an identifier per spelling,
+and an Agent could mint them at will.
+
+Identifiers are compared after normalization as described in
+{{Section 6.2.2 of URI}} and {{Section 6.2.3 of URI}}, which lowercases the
+scheme and host, removes a default port, and resolves dot-segments. Two
+identifiers are the same when their normalized forms are equal octet for octet.
+
+The types differ in what else that URL tells a verifier. TLS authenticates the
+host but not the path, and nothing reserves the `jwks_uri` or `cimd` path to
+the host's operator. The well-known URI is reserved, so `directory`
+additionally names a domain ({{origin-binding}}).
 
 For all types, the key is selected using the `keyid` parameter in
-`Signature-Input`.
+`Signature-Input`. A JWK served at the well-known URI registered in
+{{wkuri-reg}} MUST carry a `kid` equal to the thumbprint defined in
+{{generating-http-message-signature}}, so a verifier selects a key by matching
+`keyid` against `kid`. Deriving `kid` from the key material keeps it globally
+unique and lets a verifier check the directory's own labelling rather than
+trusting it.
+
+`jwks_uri` and `cimd` resolve to key sets that may serve other consumers, where
+`kid` is an operator-chosen label. A verifier that cannot match `keyid` against
+`kid` there computes thumbprints instead.
 
 ~~~
 Signature-Agent: sig1="https://signature-agent.test"
 Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 ~~~
-
-Deployments can also distribute keys without `Signature-Agent`, for example by
-submitting them to an origin out of band or publishing them in a shared list.
-Whether a verifier accepts such keys is local policy, and this document defines
-no format for it.
 
 ### Directory format {#configuration}
 
@@ -515,10 +634,33 @@ once their cached copy expires, so the directory's cache lifetime bounds how
 long a removed key keeps verifying. Verifiers SHOULD cache the directory
 contents and refresh upon expiration, as described in {{cache-behaviour}}.
 
-### Signature-Agent header {#signature-agent-header}
+A verifier SHOULD NOT attribute a request to a URL ({{url-is-identifier}}) on
+key material older than seven days, so that removal deactivates a key within a
+bounded time even where the directory asks to be cached for longer. This bounds
+attribution, not caching: {{HTTP-CACHE}} governs the fetch. It is not a
+revocation mechanism, and this document defines none.
 
-This allows for backward compatibility with existing header agent filtering, and an upgrade to a cryptographically secured protocol.
-See {{signature-agent}} for more details.
+### Redistributed key material {#redistributed-key-material}
+
+Bot allowlists are how this ecosystem works today, and they will carry Web Bot
+Auth keys whether or not this document says so. This section says what a
+verifier may conclude from key material it did not fetch itself. Defining a
+format for redistribution is out of scope.
+
+A verifier MUST NOT attribute a request to a `Signature-Agent` URL on the basis
+of redistributed key material unless it carries, for the key in question, a
+valid directory response signature as described in {{origin-binding-appendix}}
+whose `expires` has not passed. Without that proof the material stays usable
+for verifying signatures, but it carries no URL, so the identifier falls back
+to the key thumbprint ({{no-url}}). {{key-rotation}} bounds attribution either
+way, anchored here on when the operator signed rather than when the verifier
+received it.
+
+The predicate is who terminated the TLS connection, not what triggered the
+fetch. A verifier polling a directory on its own schedule is resolving it, as
+is a control plane polling on behalf of the verifiers it serves, and neither is
+redistribution. Nor is a list that names directory URLs rather than embedding
+keys: {{REGISTRY}} works that way, and the verifier still resolves them.
 
 ### Signature-Key header
 
@@ -535,49 +677,6 @@ One approach: after successful signature verification, an origin issues a sessio
 The design of session protocols, including appropriate session lifetimes and binding mechanisms, is out of scope for this document.
 
 # Security Considerations {#security-considerations}
-
-## Binding keys to the directory authority {#directory-authority-binding}
-
-To ensure the authenticity and integrity of the key material provided by the
-directory, verifiers SHOULD validate the directory's response.
-
-It is RECOMMENDED that a directory server construct and include one HTTP
-Message Signature per key with the response, as defined in
-{{HTTP-MESSAGE-SIGNATURES}}. Each key SHOULD be used to provide one signature.
-These signatures prove possession of the advertised keys and, by covering
-`@authority`, prevent the key set from being re-served under a different
-authority. They do not confer authority over the serving domain: that comes
-from the TLS connection alone.
-
-Directory server MUST include the following covered components:
-
-`@authority`
-: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
-
-`content-digest`
-: as defined in {{DIGEST-FIELDS}}.
-
-Directory server SHOULD include the following `@signature-params` as defined in
-{{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
-
-`created`
-: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
-
-`expires`
-: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
-
-`keyid`
-: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
-
-`tag`
-: MUST be `http-message-signatures-directory`
-
-Verifiers relying on the domain binding MUST validate these signatures
-using the keys provided by the directory, validate the `Content-Digest`
-field against the response body, and ignore keys that do not have a
-corresponding valid signature. Verifiers using keys opaquely MAY skip this
-validation, in which case they obtain no binding. This validation checks
-the integrity of the key set and binds it to the intended authority.
 
 ## Use of TLS
 
@@ -603,11 +702,16 @@ Different validation policies have different performance and operational conside
 
 ## Key Compromise Response
 
-An agent signing key might get compromised.
+This document defines no revocation. Removing a compromised key from the
+directory is the only remedy, and it takes effect at each verifier on its next
+refresh, so the key can keep verifying for as long as {{key-rotation}} allows:
+up to seven days. The protocol carries no channel back to verifiers, so an
+Agent cannot reach them sooner. Signature lifetimes
+({{generating-http-message-signature}}) are the only lever that acts faster.
 
-If that happens, the agent SHOULD cease using the compromised key as soon as possible, notify affected origins if possible, and generate a new key pair.
-
-To minimise the impact of a key compromise, the origin should support rapid key rotation and monitor for suspicious signature patterns.
+Agents SHOULD remove a compromised key and publish a replacement immediately.
+Origins should support rapid key rotation and monitor for suspicious signature
+patterns.
 
 ## Shared Secrets Considered Harmful
 
@@ -645,35 +749,19 @@ to convey `accept-signature` header, or deployment specific exchanges.
 
 ### Signature-Agent labeling
 
-An intermediary is allowed to relabel an existing signature when processing the
-message, per {{Section 7.2.5 of HTTP-MESSAGE-SIGNATURES}}.
+{{Section 7.2.5 of HTTP-MESSAGE-SIGNATURES}} allows an intermediary to relabel
+a signature, because the label of a `Signature` dictionary member is not part
+of the signature base. The key of a `Signature-Agent` member is different: when
+a signature covers `"signature-agent";key="agent2"`, that key appears in the
+signature base, so changing it invalidates the signature. Only the holder of
+the signing key can produce a signature over the new member key.
 
-This MAY apply to `Signature-Agent`, when included in the request as defined in
-{{signature-agent}},
-An intermediary updating the member key MUST update the components of the
-associated signatures accordingly.
+An intermediary MUST NOT alter the key of a `Signature-Agent` member that is
+covered by a signature it is not able to recompute. Relabeling the `Signature`
+dictionary member remains permitted.
 
-For instance, an intermediary updating the `Signature-Agent` from `agent2` to
-`agent3` on the example provided in {{example-signature-agent-included}} would
-result in the following `Signature`, `Signature-Input`, and `Signature-Agent`
-header fields after recomputing the signature.
-
-~~~
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Agent: agent3="https://signature-agent.test"
-Signature-Input: sig2=("@authority" "signature-agent";key="agent3")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
- ;tag="web-bot-auth"
-Signature: sig2=:bpfH5RL2nS54KUUVMs0lIT13RcgskY/9iF8IfQIxowd7Im08KgpVek5tnmXvYPddqIs5qLdVzb+RpXzjDcao9tFk6Ad0ccX/vf1qQmVXkH0MMpXhPGBmJT1b21nUinkrGhBPEnb+OXSJVTmLGWLgCihPSpzaEE6BUp9IFWjJoMOF3pOY+1Yinukj2/JXr1+meTe0pwGWtQ079SHhKbP1veqXanFN1rrQ5QwbDiYklfDEC4PLVKYLFXryFuTAj5wivj7/8Y9qbD6dFyMggEIPe4a0ubOzmAiTuQyW+OqOfFvPwxVWkYxUgoapjz5rEA1Dguc3ZZo/2ja+N/1fmOe7/Q==:
-~~~
-
-`Signature-Agent`, `Signature-Input`, and `Signature` all reflect the update
-from `agent2` to `agent3`.
+A signer acting as an intermediary on its own signature is not restricted by
+this, since it can sign the result.
 
 ## Server-Side Request Forgery (SSRF) {#ssrf}
 
@@ -724,12 +812,43 @@ it unusable.
 Agents SHOULD generate signatures for the request being sent, with bounded
 `created` and `expires` values. Long expiration windows increase replay risk.
 
-## Discovery Failure
+## Discovery Failure {#discovery-failure}
 
-Failure to fetch or validate a key directory, beyond the directory cache window
-discussed in {{cache-behaviour}}, means that the asserted identity is not
-verified. It does not prove that the signer is malicious, and it does not make
-the request trusted. The resulting enforcement decision is local policy.
+Resolving a `Signature-Agent` URL can fail in several ways: the name does not
+resolve, the connection or TLS handshake fails, the response is not a directory
+or contains no key matching `keyid`, or the fetch is refused by the verifier's
+own limits ({{ssrf}}). All have the same outcome for the request in hand. The
+verifier holds no association between that URL and the signing key, so under
+{{discovery-is-not-trust}} it MUST NOT attribute the request to that URL. It may
+still verify the signature if it holds the key by other means, in which case the
+identifier is the thumbprint ({{no-url}}); otherwise the request is unverified.
+
+They differ in what they say about cached state, and verifiers MUST keep them
+apart. A directory that resolves and does not contain the key is evidence: it is
+newer than whatever the verifier holds, and under {{discovery-is-not-trust}}
+replaces it. That is how a removed key stops verifying. A directory that fails
+to resolve is not evidence and MUST NOT evict a cached entry, or an
+operator's outage revokes its keys at every verifier at once.
+
+A failed fetch says nothing about the signer. It does not prove the signer is
+malicious, and it does not make the request trusted. What an origin does with
+an unverified request is local policy, and treating it as a distinct outcome
+rather than as success or failure is discussed in {{verifier-outcomes}}.
+Verifiers should also expect failures to be correlated: a single operator's
+directory going down takes out every request naming it at once, across every
+verifier whose cache expires in the same window.
+
+## Unsigned requests {#unsigned-requests}
+
+Most HTTP requests carry no signature. A verifier that sees none has learned
+nothing about the sender: not that it is automated, not that it is human, not
+that it is evading anything. Absence of a signal is not evidence about the
+party that did not send it, in the same way that a failed fetch
+({{discovery-failure}}) is not evidence about the signer.
+
+What an origin does with a request it cannot attribute is its own decision, as
+it was before this protocol existed. This document neither requires an origin
+to treat unsigned requests differently nor gives it grounds to.
 
 # Privacy Considerations {#privacy-considerations}
 
@@ -869,12 +988,99 @@ Change controller:
 
 --- back
 
+# Use cases and what they need {#use-cases}
+
+{{USE-CASES}} collects the use cases this group has discussed. Most are served
+by the URL alone. The table below records which ones need the domain binding in
+{{origin-binding-appendix}}, and why.
+
+| Use case | What the origin does | Needs |
+|:---------|:---------------------|:------|
+| Mitigating volumetric abuse | Rate limit per URL | URL |
+| Controlling access by bots | Set policy per URL | URL |
+| Providing different content to bots | Recognise a given URL | URL |
+| Auditing bot behaviour | Group logs by URL | URL |
+| Classifying traffic | Correlate observed behaviour with a URL | URL |
+| IP address mobility and sharing | Nothing: the signature does not depend on the IP | URL |
+| Robots.txt alignment | Match the crawler against a name in the file | Domain |
+| Conveying contextual information | Read signed headers alongside the identifier | Domain |
+{: title="Use cases and the identifier they need"}
+
+The last two are the pattern from {{origin-binding}}. Both consume something
+held against a name rather than against the key: a robots.txt file names
+crawlers, and contextual assertions are only worth as much as the party making
+them. End-user authentication and anonymous authentication are out of scope.
+
+# Validating the domain binding {#origin-binding-appendix}
+
+This appendix describes what a verifier checks when it wants the domain a key
+is published under, rather than the URL on its own. It applies to the
+`directory` type in {{key-distribution-and-discovery}}. Verification,
+rotation, and continuity do not depend on any of it, and a verifier that only
+needs the URL as an identifier can skip the whole appendix.
+
+Authority over the domain comes from the TLS connection to the directory.
+Nothing below adds to that.
+
+## Possession proof on the directory response
+
+It is RECOMMENDED that a directory server construct and include one HTTP
+Message Signature per key with the response, as defined in
+{{HTTP-MESSAGE-SIGNATURES}}. Each key SHOULD be used to provide one signature.
+These signatures prove possession of the advertised keys and, by covering
+`@authority`, prevent the key set from being re-served under a different
+authority. This matters for a domain-bound identifier, where the verifier is
+about to consume information it holds against the name: it distinguishes a key set
+the key holders assembled from one that was copied.
+
+Directory server MUST include the following covered components:
+
+`@authority`
+: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
+
+`content-digest`
+: as defined in {{DIGEST-FIELDS}}.
+
+Directory server MUST include the following `@signature-params` as defined in
+{{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`created`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`expires`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+Without them the signature is a permanent assertion that these keys were bound
+to this authority at some unstated time, of no use to a verifier
+consuming it through {{redistributed-key-material}}.
+
+`keyid`
+: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
+
+`tag`
+: MUST be `http-message-signatures-directory`
+
+A verifier relying on the domain MUST validate these signatures using the keys
+provided by the directory, MUST validate the `Content-Digest` field against the
+response body, and MUST ignore keys that do not have a corresponding valid
+signature. A verifier MUST reject a directory response signature whose
+`created` is in the future, as it would a certificate that is not yet valid.
+{{discovery-is-not-trust}} orders competing evidence by `created`, so a
+future-dated signature would outrank every later fetch.
+
+## What the binding attaches to
+
+The binding is not exclusive. Several domains may publish the same key, and the
+binding attaches to the pair the verifier validated, not to the key on its own.
+A verifier that recognises a key under one domain has learned nothing about the
+same key served under another.
+
 # Deployment Guidance
 
 This appendix is operational guidance. It does not define new protocol
 requirements.
 
-## Verifier Outcomes
+## Verifier Outcomes {#verifier-outcomes}
 
 Verifiers should keep three outcomes distinct:
 
@@ -905,11 +1111,8 @@ load. Cache is specifically discussed in {{cache-behaviour}}.
 
 ## Bounded Directory Fetches
 
-Verifiers fetch directories named by untrusted requests. Fetches should be
-bounded as described in {{ssrf}}. In particular, verifiers should use a fetch
-timeout, bound the decoded response size, bound the number of keys considered,
-limit redirects, and prevent fetches to private, loopback, and link-local
-addresses.
+Verifiers fetch directories named by untrusted requests, and should bound those
+fetches as described in {{ssrf}}.
 
 Verifiers should also coalesce concurrent fetches for the same directory and
 apply per-directory or per-origin concurrency limits. This avoids a fetch storm
@@ -947,6 +1150,16 @@ windows; others need strict {{nonce-validation}}.
 
 These choices are deployment policy. Verifiers should avoid accepting signatures
 with freshness windows longer than their risk model permits.
+
+## Directory Response Signature Lifetimes
+
+Where the key set is redistributed, revocation latency is already floored by
+how often the redistributor republishes, so a short `expires` on a directory
+response signature ({{origin-binding-appendix}}) buys nothing and costs
+availability: at expiry every consumer drops that operator's keys to unverified
+at once, with no serving stale. Operators should set `expires` well beyond the
+republication interval of any list they expect to appear in. The lever for
+faster revocation is publishing more often, not signing shorter.
 
 ## Rollout and Fallback
 
@@ -1032,6 +1245,14 @@ does not say that Alice's agent authorized the remote browser to act for it.
 
 # Test Vectors
 
+These vectors exercise the minimum this document requires, so most of them
+cover `@authority` and nothing else, with an `expires` far enough out that they
+do not age. That combination is a parsing and verification exercise, not a
+configuration to copy: as {{generating-http-message-signature}} explains, a
+signature covering `@authority` alone is reusable against that authority for
+any method, path, and body until it expires. Deployments should cover more and
+expire sooner.
+
 ## RSASSA-PSS Using SHA-512
 
 The test vectors in this section use the RSA-PSS key defined in {{Appendix B.1.2 of HTTP-MESSAGE-SIGNATURES}}.
@@ -1109,9 +1330,9 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
 Signature: sig2=:gHzpLNeHaHIO19NaJH9YMW5dcVSi2s0wOMBr6p18vcofS106sfC4KBIS0/szPlBBd1vIcyQ88B6CTEWIhRAiVrb9zfX0mx1aG12CSGWcYkSirHeyTxhbuJvXd27ed6skWoy4PjXItq38936ivUQjfdIwXh1aX6HxkAC3vRnEdSNfntkLWeEuIQ5BLIOBGE39fSwg27Qjq6OVWYas/9/aFUr3HA34MXWYdp+//cvlEKDp3kRoLOw9ro0AOr6srHrTeEtxon2afcws1aZVSlPdd2fZSEIGmw9HAHLDCEkFTERu1gH2k/zIEqgy7CAYXI9E5slog0cLg/Vc6+f8gih33g==:
 ~~~
 
-### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+### Legacy Signature-Agent, sf-string {#example-legacy}
 
-THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
+Retained for implementers migrating to the dictionary form ({{signature-agent}}). Do not copy it into new deployments.
 
 This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -1225,9 +1446,9 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
 Signature: sig2=:RdNFx5Bj6au3YgAMQL/RzmUlZE8QZLIaXGRpw985hWnwPfMxT228NMk6ehRS1PSl4e8PhbNZACSanGdhEwYCCg==:
 ~~~
 
-### Legacy Signature-Agent (sf-string instead of sf-dictionary) included present on the request
+### Legacy Signature-Agent, sf-string
 
-THIS IS A LEGACY EXAMPLE. IF YOU ARE AN IMPLEMENTER, PLEASE UPDATE TO THE ABOVE.
+Retained for implementers migrating to the dictionary form ({{signature-agent}}). Do not copy it into new deployments.
 
 This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -1332,8 +1553,43 @@ Malte Ubl,
 Loganaden Velvindron,
 Tanya Verma.
 
+{::comment}
+Pending permission to acknowledge. Add to the list above once each has agreed.
+Richard Barnes,
+Max Gerber,
+Dick Hardt,
+Dennis Jackson,
+Blake Morrison,
+Kaveh Ranjbar,
+Eric Rescorla,
+Justin Richer,
+Martin Thomson.
+{:/comment}
+
 # Changelog
 {:numbered="false"}
+
+draft-meunier-webbotauth-httpsig-protocol-02
+
+- Fold `draft-meunier-webbotauth-httpsig-directory` into this document with its
+  IANA registrations, and move to Standards Track.
+- Anchor identity on the resolved `Signature-Agent` URL rather than the key.
+  Rotation is the same URL serving a new key; the thumbprint identifies only
+  when no URL is sent. A `directory` value is an origin, identifiers are
+  normalized before comparison, and `kid` equals the key thumbprint.
+- Define attribution: lookup on the (URL, key) pair, what redistributed key
+  material must carry, which source wins when two disagree, what a failed
+  resolution means, a seven day bound on the evidence behind it, and rejection
+  of directory response signatures dated in the future.
+- When chaining, an outer signature covering an inner `signature` MUST also
+  cover its `signature-input`, `signature-agent`, and every component the inner
+  signature covered. Verifiers validate each signature independently.
+- Say what a signature does not reach: not the body without `Content-Digest`,
+  and not the method or path when only `@authority` is covered. Correct the
+  relabeling guidance, and note how to migrate from the sf-string form.
+- Move the domain binding to an appendix. Add objectives, the relationship with
+  anonymous bot authentication, a use case to identifier mapping, what an
+  unsigned request tells a verifier, and the worst case for a compromised key.
 
 draft-meunier-webbotauth-httpsig-protocol-01
 
