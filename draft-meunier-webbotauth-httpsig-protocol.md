@@ -1,7 +1,7 @@
 ---
 title: "HTTP Message Signatures for automated traffic"
 abbrev: "HTTP Message Signatures for Bots"
-category: info
+category: std
 
 docname: draft-meunier-webbotauth-httpsig-protocol-latest
 submissiontype: IETF
@@ -32,17 +32,26 @@ author:
     email: ietf@sandormajor.com
 
 normative:
-  DIRECTORY: I-D.draft-meunier-webbotauth-httpsig-directory
+  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
+  DIGEST-FIELDS: RFC9530
   HTTP-MESSAGE-SIGNATURES: RFC9421
+  HTTP-MESSAGE-SIGNATURES-IANA:
+    title: HTTP Message Signatures
+    target: https://www.iana.org/assignments/http-message-signature/http-message-signature.xhtml
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
   HTTP-MORE-STATUS-CODE: RFC6585
+  JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
+  STRUCTURED-HEADERS: RFC8941
+  URI: RFC8820
+  WellKnownURIs:
+    title: Well-Known URIs
+    target: https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
 
 
 informative:
-  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   HTTP-BEST-PRACTICES: RFC9205
   OAUTH-BEARER: RFC6750
   RFC8446:
@@ -58,6 +67,10 @@ This document describes a protocol for identifying automated
 traffic using {{HTTP-MESSAGE-SIGNATURES}}. The goal
 is to allow automated HTTP clients to cryptographically sign outbound
 requests, allowing HTTP servers to verify their identity with confidence.
+
+It defines the `Signature-Agent` header field for in-band key discovery, a
+key directory format based on JWKS, and a well-known URI at which that
+directory is served.
 
 
 --- middle
@@ -184,12 +197,11 @@ caching described in {{cache-behaviour}}.
 ## Binding a key to a Web origin {#origin-binding}
 
 By design, a key and its thumbprint form a stable identifier. When key material
-comes from the well-known directory defined in {{DIRECTORY}}, the verifier
+comes from the well-known directory defined in {{configuration}}, the verifier
 additionally learns which domain publishes the key. The TLS connection
 authenticates the domain serving the directory, and each advertised key signs
 the directory response, proving possession and preventing the key set from
-being re-served under a different authority (see "Binding keys to the
-directory authority" in {{DIRECTORY}}).
+being re-served under a different authority ({{directory-authority-binding}}).
 These signatures do not confer authority over the domain: that comes from the
 TLS connection alone. The binding is not exclusive: several domains may
 publish the same key. It attaches to the (key, domain) pair the verifier
@@ -201,7 +213,7 @@ In opaque mode, verification returns the key as its identifier. An Agent
 needs nothing more than a keypair. This document defines no rotation for this mode: a
 new key is a new identifier, though a future mechanism may provide rotation.
 In the domain binding mode, verification adds an authenticated domain-to-key
-binding. The binding exists only for keys published in the directory defined in {{DIRECTORY}}:
+binding. The binding exists only for keys published in the directory defined in {{configuration}}:
 an Agent presents a domain to verifiers by publishing its keys there.
 A verifier relying on the domain MUST validate the binding described
 above. A verifier using keys opaquely
@@ -288,7 +300,18 @@ It is RECOMMENDED the expiry to be no more than 24 hours.
 
 ### Signature-Agent {#signature-agent}
 
-`Signature-Agent` is an HTTP Method context header defined in Section 4.1 of {{DIRECTORY}}.
+`Signature-Agent` is a Dictionary Structured Header as defined in
+{{Section 3.2 of STRUCTURED-HEADERS}}. Its member values MUST be String Items
+that contain a {{URI}}, whose scheme MUST be `https`. If dictionary values are
+not valid URI-references, the entire header field MAY be ignored.
+
+Each member carries a `type` parameter, a Token Item as defined in
+{{Section 3.3.4 of STRUCTURED-HEADERS}}, naming the discovery mechanism that
+resolves the value to key material. {{key-distribution-and-discovery}} defines
+the types. When `type` is absent, its value is `directory`. A verifier that
+does not support a `type` value MUST ignore that member, and MUST NOT infer the
+mechanism from the URI path, media type, or response body.
+
 It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
 If the header is to be sent, one of its members MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
 The `Signature-Agent` member identifies where candidate key material can be found.
@@ -316,10 +339,8 @@ signer contributed to the request.
 
 This records which parties signed which fields. It does not, by itself, express
 authorization, delegation, or consent. Those meanings are deployment policy or
-are carried in separately signed fields. The delegation examples in
-{{DIRECTORY}} cover a different problem: how key material can show delegation.
-Multiple signatures only show which signatures were present and what they
-covered.
+are carried in separately signed fields. Multiple signatures only show which
+signatures were present and what they covered.
 
 ### Anti-replay {#anti-replay}
 
@@ -391,7 +412,7 @@ Additional requirements are placed on this validation:
 - During step 1 to 3 included, if the Origin fails to parse the provided `Signature`, `Signature-Input`, or `Signature-Agent` headers, it MAY respond with status code 400 Bad Request as defined in {{Section 15.5.1 of HTTP}}.
 - During step 4, the Origin MAY discard signatures for which the `tag` is not set to `web-bot-auth`.
 - During step 5, the Origin MAY discard signatures for which they do not know the `keyid`.
-- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in Section 4 of {{DIRECTORY}}. Fetching key material affects only whether verification is possible, not what a valid signature means ({{discovery-is-not-trust}}).
+- During step 5, if the keyid is unknown to the origin, they MAY fetch key material as indicated by the `Signature-Agent` header defined in {{signature-agent}}. Fetching key material affects only whether verification is possible, not what a valid signature means ({{discovery-is-not-trust}}).
 
 Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
@@ -400,13 +421,14 @@ Origin MAY require the `nonce` to satisfy certain constraints: be globally uniqu
 This section describes key discovery for the agent. Discovery provides key
 material; it does not confer trust ({{discovery-is-not-trust}}).
 
-The reference for discovery is a URL. It SHOULD be an HTTPS URL. The
-`Signature-Agent` header defines typed discovery. This protocol uses these
-types:
+The reference for discovery is an HTTPS URL, carried in a `Signature-Agent`
+member as defined in {{signature-agent}}. The member's `type` parameter names
+how the URL resolves to key material. This protocol defines three types:
 
 `directory`
-: Resolve the HTTP Message Signatures Directory at the well-known URI registered
-in {{DIRECTORY}}. This is the default when no `type` parameter is present.
+: Resolve the HTTP Message Signatures Directory at the well-known URI
+registered in {{wkuri-reg}}, at the origin named by the member value. This is
+the default when no `type` parameter is present.
 
 `jwks_uri`
 : Resolve the member value as a direct JWK Set URI.
@@ -419,14 +441,12 @@ Only the `directory` type establishes the domain binding in
 {{origin-binding}}. `jwks_uri` and `cimd` point to an arbitrary URL: TLS
 authenticates the host, not the path, no possession proof ties the
 keys to the URL, and nothing reserves the path to the origin's operator
-the way a {{WELLKNOWN-URI}} does. Under this protocol, these types provide
+the way a well-known URI does. Under this protocol, these types provide
 an opaque value: trust attaches to that value and the keys it resolves to
 ({{discovery-is-not-trust}}), and this document defines no binding for it.
 
 For all types, the key is selected using the `keyid` parameter in
 `Signature-Input`.
-
-Examples:
 
 ~~~
 Signature-Agent: sig1="https://signature-agent.test"
@@ -434,9 +454,32 @@ Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 ~~~
 
-Example:
+Deployments can also distribute keys without `Signature-Agent`, for example by
+submitting them to an origin out of band or publishing them in a shared list.
+Whether a verifier accepts such keys is local policy, and this document defines
+no format for it.
 
-~~~json
+### Directory format {#configuration}
+
+All three types resolve to a JSON Web Key Set (JWKS) as defined in
+{{Section 5 of JWK}}. The `alg` parameter is restricted to algorithms
+registered in the HTTP Signature Algorithms section of
+{{HTTP-MESSAGE-SIGNATURES-IANA}}.
+
+The directory MUST be served over HTTPS. A directory served at the well-known
+URI registered in {{wkuri-reg}} MUST be served with media type
+`application/http-message-signatures-directory+json`.
+
+A verifier SHOULD validate the directory format and reject malformed entries.
+
+~~~
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: example.com
+Accept: application/http-message-signatures-directory+json
+
+HTTP/1.1 200 OK
+Content-Type: application/http-message-signatures-directory+json
+Cache-Control: max-age=86400
 {
   "keys": [{
     "kty": "OKP",
@@ -450,14 +493,19 @@ Example:
 }
 ~~~
 
+### Key rotation {#key-rotation}
 
-### Out-of-band communication between client and origin
+Directory operators SHOULD rotate keys by publishing the old and the new key
+together, then removing the old one:
 
-A service submitting their key to an origin, or the origin manually adding a service to their trusted list.
+1. Add the new key to the directory before its intended use date
+2. Continue to include the old key until its expiration date
+3. Remove expired keys from the directory
 
-### Public list
-
-Could be a GitHub repository like the public suffix list. The issue is the gating of such repositories, and therefore its governance.
+Removing a key from the directory deactivates it. Verifiers stop accepting it
+once their cached copy expires, so the directory's cache lifetime bounds how
+long a removed key keeps verifying. Verifiers SHOULD cache the directory
+contents and refresh upon expiration, as described in {{cache-behaviour}}.
 
 ### Signature-Agent header {#signature-agent-header}
 
@@ -478,7 +526,50 @@ One approach: after successful signature verification, an origin issues a sessio
 
 The design of session protocols, including appropriate session lifetimes and binding mechanisms, is out of scope for this document.
 
-# Security Considerations
+# Security Considerations {#security-considerations}
+
+## Binding keys to the directory authority {#directory-authority-binding}
+
+To ensure the authenticity and integrity of the key material provided by the
+directory, verifiers SHOULD validate the directory's response.
+
+It is RECOMMENDED that a directory server construct and include one HTTP
+Message Signature per key with the response, as defined in
+{{HTTP-MESSAGE-SIGNATURES}}. Each key SHOULD be used to provide one signature.
+These signatures prove possession of the advertised keys and, by covering
+`@authority`, prevent the key set from being re-served under a different
+authority. They do not confer authority over the serving domain: that comes
+from the TLS connection alone.
+
+Directory server MUST include the following covered components:
+
+`@authority`
+: as defined in {{Section 2.2.3 of HTTP-MESSAGE-SIGNATURES}}. `req` flag defined in {{Section 2.4 of HTTP-MESSAGE-SIGNATURES}} MUST be set.
+
+`content-digest`
+: as defined in {{DIGEST-FIELDS}}.
+
+Directory server SHOULD include the following `@signature-params` as defined in
+{{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`created`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`expires`
+: as defined in {{Section 2.3 of HTTP-MESSAGE-SIGNATURES}}
+
+`keyid`
+: MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
+
+`tag`
+: MUST be `http-message-signatures-directory`
+
+Verifiers relying on the domain binding MUST validate these signatures
+using the keys provided by the directory, validate the `Content-Digest`
+field against the response body, and ignore keys that do not have a
+corresponding valid signature. Verifiers using keys opaquely MAY skip this
+validation, in which case they obtain no binding. This validation checks
+the integrity of the key set and binds it to the intended authority.
 
 ## Use of TLS
 
@@ -659,10 +750,113 @@ supported, and clients SHOULD take care to avoid signing information that
 could be used to correlate activity across contexts, especially where
 sensitive user data is involved.
 
+## Directory content and access patterns
+
+A key directory should only contain keys actively used for signing. Additional
+keys or metadata expose more about the signing service than verification
+requires. Verifiers fetching a directory also reveal something about their
+verification patterns, so directory servers should avoid logging personally
+identifiable information from directory requests.
+
 
 # IANA Considerations
 
-This document has no IANA actions.
+This section contains considerations for IANA.
+
+## Well-Known 'http-message-signatures-directory' URI {#wkuri-reg}
+
+This document updates the "Well-Known URIs" Registry {{WellKnownURIs}} with the
+following values.
+
+| URI Suffix  | Change Controller  | Reference | Status | Related information |
+|:------------|:-------------------|:----------|:-------|:--------------------|
+| http-message-signatures-directory | IETF | this document | permanent | None |
+{: #wellknownuri-values title="'http-message-signatures-directory' Well-Known URI"}
+
+## Media Types
+
+The following entries should be added to the IANA "media types"
+registry:
+
+- "application/http-message-signatures-directory+json"
+
+The templates for these entries are listed below and the
+reference should be this RFC.
+
+### "application/http-message-signatures-directory+json" media type
+
+Type name:
+
+: application
+
+Subtype name:
+
+: http-message-signatures-directory
+
+Required parameters:
+
+: N/A
+
+Optional parameters:
+
+: N/A
+
+Encoding considerations:
+
+: "binary"
+
+Security considerations:
+
+: see {{security-considerations}}
+
+Interoperability considerations:
+
+: N/A
+
+Published specification:
+
+: this specification
+
+Applications that use this media type:
+
+: Services that implement the signer role for HTTP Message
+  Signatures and verifiers that interact with the signer for
+  the purpose of validating signatures.
+
+
+Fragment identifier considerations:
+
+: N/A
+
+Additional information:
+
+: <dl spacing="compact">
+  <dt>Magic number(s):</dt><dd>N/A</dd>
+  <dt>Deprecated alias names for this type:</dt><dd>N/A</dd>
+  <dt>File extension(s):</dt><dd>N/A</dd>
+  <dt>Macintosh file type code(s):</dt><dd>N/A</dd>
+  </dl>
+
+Person and email address to contact for further information:
+
+: see Authors' Addresses section
+
+Intended usage:
+
+: COMMON
+
+Restrictions on usage:
+
+: N/A
+
+Author:
+
+: see Authors' Addresses section
+
+Change controller:
+
+: IETF
+{: spacing="compact"}
 
 
 --- back
@@ -785,6 +979,12 @@ Deployments should avoid:
 * relying on manual key rotation as the only revocation mechanism
 
 # Examples
+
+## Delegation and chaining
+
+Delegation and chaining are out of scope for this document and are expected
+to be specified separately. Input is welcome on the associated
+[GitHub issue](https://github.com/thibmeu/http-message-signatures-directory/issues/27).
 
 ## Multiple signatures with a remote browser {#example-multiple-signatures}
 
@@ -1115,6 +1315,8 @@ Marwan Fayed,
 Maxime Guerreiro,
 Scott Hendrickson,
 Jonathan Hoyland,
+Nikhil Kandoi,
+Akshat Mahajan,
 Mark Nottingham,
 Eugenio Panero,
 Lucas Pardue,

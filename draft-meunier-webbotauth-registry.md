@@ -41,7 +41,7 @@ normative:
   CDDL: RFC8610
   CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   DCR: RFC7591
-  DIRECTORY: I-D.draft-meunier-webbotauth-httpsig-directory
+  PROTOCOL: I-D.draft-meunier-webbotauth-httpsig-protocol
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP: RFC9110
   HTTP-CACHE: RFC9111
@@ -70,7 +70,7 @@ informative:
 --- abstract
 
 This document defines the "Signature Agent Card", a JSON metadata document that a
-signature agent using {{DIRECTORY}} publishes to describe itself: its identity,
+signature agent using {{PROTOCOL}} publishes to describe itself: its identity,
 purpose, rate expectations, and cryptographic keys. Its parameters are drawn from
 the OAuth Dynamic Client Registration Metadata registry {{DCR}}, the same
 namespace used by {{CIMD}}, extended with a single `web_bot_auth` object. This
@@ -83,7 +83,7 @@ members.
 
 Signature Agents are entities that originate or forward signed HTTP requests on behalf
 of users or services. They include bots developers, platforms providers,
-and other intermediaries using {{DIRECTORY}}. These agents often
+and other intermediaries using {{PROTOCOL}}. These agents often
 need to identify themselves, and establish
 trust with origin servers.
 
@@ -117,7 +117,7 @@ Because the card reuses the {{CIMD}} parameter namespace, an existing Client ID
 Metadata Document is a valid Signature Agent Card. A client that does not
 understand the `web_bot_auth` object ignores it.
 
-The Signature-Agent header is defined in {{Section 4.1 of DIRECTORY}}. A
+The Signature-Agent header is defined in {{Section 5.2.1 of PROTOCOL}}. A
 Signature Agent Card can be referenced from that header using `type=cimd`, as
 described in {{cimd-discovery}}.
 
