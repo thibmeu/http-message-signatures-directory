@@ -1654,7 +1654,7 @@ without losing continuity. It publishes the new key alongside the old one, then
 drops the old one (<a href="#key-rotation" class="auto internal xref">Section 5.5.2</a>). The URL does not change, so a verifier
 that recognised it before still recognises it after. No name and no third party
 are involved.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2"><code>keyid</code> selects which key verifies a given request. Verifiers CANNOT use it to
+<p id="section-4.2-2"><code>keyid</code> selects which key verifies a given request. Verifiers cannot use it to
 carry continuity across a rotation, as that value is derived from the key
 material.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3"><span>[<a href="#SIGNATURE-KEY" class="cite xref">SIGNATURE-KEY</a>]</span> takes a different approach, where a long-lived key signs
@@ -1856,8 +1856,8 @@ signature covering <code>@authority</code> alone verifies against any method, pa
 sent to that authority until it expires, so anyone who observes one request can
 reuse it against the same origin until then.
 <code>expires</code> bounds how long that lasts; the covered components bound what it
-reaches. Agents that want to narrow it <span class="bcp14">SHOULD</span> also cover <code>@method</code> and
-<code>@path</code>, or use <code>@target-uri</code>, as <a href="#example-multiple-signatures" class="auto internal xref">Appendix D.2</a> does. A signer that omits them remains conformant.<a href="#section-5.2-9" class="pilcrow">¶</a></p>
+reaches. Agents that want to narrow it <span class="bcp14">SHOULD</span> also cover <code>@method</code>, and
+either <code>@path</code> or <code>@target-uri</code>, as <a href="#example-multiple-signatures" class="auto internal xref">Appendix D.2</a> does. A signer that omits them remains conformant.<a href="#section-5.2-9" class="pilcrow">¶</a></p>
 <p id="section-5.2-10">No component covers the body. An Agent that needs one <span class="bcp14">MUST</span> send and cover
 <code>Content-Digest</code> <span>[<a href="#DIGEST-FIELDS" class="cite xref">DIGEST-FIELDS</a>]</span>. This document does not require it. Most
 automated traffic is <code>GET</code>, and a mandatory digest would force every Agent to
