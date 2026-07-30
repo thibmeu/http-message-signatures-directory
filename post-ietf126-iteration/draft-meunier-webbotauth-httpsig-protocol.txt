@@ -85,8 +85,7 @@ Table of Contents
      4.3.  When no URL is sent
      4.4.  What the URL endorses
      4.5.  Binding a key to a Web origin
-     4.6.  Relationship with anonymous bot authentication
-     4.7.  Out of scope
+     4.6.  Out of scope
    5.  Protocol Overview
      5.1.  Deployment Models
      5.2.  Generating HTTP Message Signature
@@ -295,26 +294,26 @@ Table of Contents
    keys it returns.  The identifier is the URL the verifier fetched,
    which for a directory member is the well-known URI rather than the
    value the client sent.  What the verifier ends up with is a pair:
-   that URL, and a key the URL endorses.  The URL is the anchor.
-   Origins can log, rate limit, allowlist, or block it the way they do
-   IP addresses and User-Agent today.
+   that URL, and a key the URL provides.  Origins can log, rate limit,
+   allowlist, or block the URL the way they do IP addresses and User-
+   Agent today.
 
    The URL on its own carries nothing.  A client picks the value it
    sends, so an unresolved Signature-Agent is a claim rather than an
    identity.  It becomes an identifier once the verifier fetches it and
-   finds that it endorses a key that verifies the request (Section 4.4).
+   finds that it provides a key that verifies the request (Section 4.4).
    Until then, verifiers MUST NOT attach policy to it.
 
    A valid signature over a resolved URL proves that the request came
-   from a holder of a key that URL publishes, and that requests naming
-   the same URL come from holders of keys that URL publishes.
-   Section 5.2.3 bounds reuse.  It says nothing about who operates the
-   Agent, whether the Agent is benign, or whether the request is
-   authorized.  Those are origin policy.
+   from a holder of a key that URL publishes, and that requests with the
+   same URL come from holders of keys that URL publishes.  Section 5.2.3
+   bounds reuse.  It says nothing about who operates the Agent, whether
+   the Agent is benign, or whether the request is authorized.  Those are
+   origin policy.
 
    Nothing stops an Agent from abandoning a URL and standing up another
-   one, and the protocol does not try to.  It targets honest clients
-   that want to be recognised across requests.
+   one, and the protocol does not try to prevent this.  It targets
+   honest clients that want to be recognised across requests.
 
 4.2.  Rotation
 
@@ -324,9 +323,9 @@ Table of Contents
    URL does not change, so a verifier that recognised it before still
    recognises it after.  No name and no third party are involved.
 
-   keyid selects which key verifies a given request.  It is not the
-   identifier, and verifiers SHOULD NOT use it to carry continuity
-   across a rotation.
+   keyid selects which key verifies a given request.  Verifiers CANNOT
+   use it to carry continuity across a rotation, as that value is
+   derived from the key material.
 
    [SIGNATURE-KEY] takes a different approach, where a long-lived key
    signs short-lived delegated keys.  Deployments MAY use it.  This
@@ -345,74 +344,45 @@ Table of Contents
 4.4.  What the URL endorses
 
    Resolving a Signature-Agent URL over TLS establishes that the host
-   named in the URL served this key set at fetch time.  Read as an
-   assertion, it is the URL endorsing the key: whoever controls that URL
-   says this key signs for it.  That is what makes the URL usable as an
-   identifier, and all it gives you.  It does not say that the operator
-   of that URL is honest, competent, or the same party as anyone else
-   the verifier knows about.
+   named in the URL served this key set at fetch time.  Whoever controls
+   that URL says this key signs for it.  That is what makes the URL
+   usable as an identifier, and all it gives you.  It does not say that
+   the operator of that URL is honest, or that is is the same party
+   everyone knows about.
 
-   What matters is not when the verifier resolved the URL, but that it
-   holds the association between a URL and the keys published there, so
-   a verifier that already holds it need not fetch.  A verifier MUST NOT
-   attribute a request to a Signature-Agent URL unless it holds that
-   association for the key the signature was verified with.  Evidence
-   comes either from resolving the URL itself, at request time or ahead
-   of it, or from Section 5.5.3.  Verifiers refetch to pick up key
-   additions and removals, bounded by Appendix C.4.
+   What matters is the association between a URL and the keys published
+   there.  A verifier that already holds the keys does not need to fetch
+   it.  A verifier MUST NOT attribute a request to a Signature-Agent URL
+   unless it made this ssociation.  This can be either by resolving the
+   URL itself, at request time or ahead of it, or from Section 5.5.3.
+   Verifiers may refetch a URL to handle up key additions and removals,
+   bounded by Appendix C.4.
 
-   Where a verifier holds the same pair from more than one source, the
-   newer evidence wins, including when it omits a key that older
-   evidence included.  Evidence is ordered by when it was produced, not
-   when the verifier obtained it: the created parameter for a directory
+   Where a verifier obtains the same pair from more than one source, the
+   newer pair wins, including when it omits a key that older resolution
+   included.  Pairs are ordered by when they were produced, not when the
+   verifier obtained them: the created parameter for a directory
    response signature (Appendix B), and the time of the fetch for a
-   directory the verifier resolved itself.  Ordering by acquisition
-   instead lets a list downloaded today carry an assertion older than
-   the verifier's own last poll, reinstating a key its operator removed.
+   directory the verifier resolved itself.
 
 4.5.  Binding a key to a Web origin
 
-   A well-known URL is a special case of the above, not a separate mode.
-   When a Signature-Agent value resolves through the directory type
-   (Section 5.5), the identifier is still the URL, but that URL now
-   names a domain rather than an arbitrary path on one.  [WELLKNOWN-URI]
-   reserves the path, so the domain operator stands behind the key set,
-   not whoever happens to be able to write a path under that host.
+   A well-known URL is a special case of the above.  When a Signature-
+   Agent value resolves through the directory type (Section 5.5), the
+   identifier is still the URL, but that URL now names a domain rather
+   than an arbitrary path on one.  [WELLKNOWN-URI] reserves the path, so
+   the domain operator stands behind the key set.
 
-   Reach for this when a verifier's decision consumes something the key
-   cannot carry by itself, which in practice means information an origin
-   already holds against that name.  Continuity and rotation do not need
-   it, so the mechanics live in Appendix B.  Nothing in a request
-   signals that a URL is well-known: a verifier that wants the domain
-   recognises the shape of the URL and applies those checks itself.
+   In practice, this is meant to allow additional information to be
+   carried against a name.  That mechanism lives in Appendix B.  A
+   verifier that wants to use this case may also recognise the shape of
+   the URL and apply those checks itself.
 
-4.6.  Relationship with anonymous bot authentication
-
-   Identifying an automated client is one of four positions in a space,
-   split by whether the claim is self-issued or made by a third party,
-   and by whether it carries a name a verifier can look up.
-
-   +================+==========================+=======================+
-   |                | Self-issued              | Third party claims    |
-   +================+==========================+=======================+
-   | No public name | Opaque value (pseudonym) | Anonymous             |
-   |                |                          | endorsement           |
-   +----------------+--------------------------+-----------------------+
-   | Name           | Domain binding           | Domain + additional   |
-   |                |                          | assertions            |
-   +----------------+--------------------------+-----------------------+
-
-            Table 1: Approaches to identifying automated clients
-
-   This document covers the self-issued column.  An Agent presents a URL
-   it controls, and no third party is involved.  The right-hand column
-   is the subject of separate work.
-
-4.7.  Out of scope
+4.6.  Out of scope
 
    This protocol does not authenticate human users, does not provide
    anonymous authentication, and does not define authorization or
-   delegation.  It does not define how reputation is computed, held, or
+   delegation.  It does not define how trust is accrued, held, or
    exchanged, and it defines no mechanism for one origin to convey an
    opinion about an Agent to another.  See Section 7.
 
@@ -494,8 +464,8 @@ Table of Contents
 
    No component covers the body.  An Agent that needs one MUST send and
    cover Content-Digest [DIGEST-FIELDS].  This document does not require
-   it: most automated traffic is GET, and a mandatory digest would force
-   every Agent to buffer request bodies it would otherwise stream.
+   it.  Most automated traffic is GET, and a mandatory digest would
+   force every Agent to buffer request bodies it would otherwise stream.
 
 5.2.1.  Signature-Agent
 
@@ -517,8 +487,8 @@ Table of Contents
    MAY accept that form and treat it as a dictionary with a single
    member whose key is the label of the signature covering it.  Signers
    MUST send the dictionary form.  The two are distinguishable on the
-   wire: a String Item begins with a double quote, a Dictionary member
-   key does not.
+   wire: a String Item begins with a double quote " while a Dictionary
+   member key does not.
 
    It is RECOMMENDED that the Agent sends requests with Signature-Agent
    header, as described in Section 5.2.5.  If the header is to be sent,
@@ -544,9 +514,11 @@ Table of Contents
    A signer MAY cover members from another signature label, which
    preserves evidence that another signer contributed to the request.  A
    signer that covers "signature";key=X MUST also cover "signature-
-   input";key=X, MUST cover "signature-agent";key=X when that member is
-   present, and MUST cover every component identifier listed in
+   input";key=X, and MUST cover every component identifier listed in
    "signature-input";key=X.
+
+   [[ editor's note: the following paragraph to be checked with Dennis
+   and Justin ]]
 
    A signature value on its own does not identify the message it was
    computed over, which is why Section 7.3.7 of
@@ -556,14 +528,15 @@ Table of Contents
    outer signature that named those identifiers without covering them
    would still verify after the whole header set was lifted onto a
    different message, the ambiguity Section 7.3.7 of
-   [HTTP-MESSAGE-SIGNATURES] describes.  Covering the union closes it:
-   the outer signer commits to a message on which the inner signature is
-   checkable, under which key, and over which validity window.
+   [HTTP-MESSAGE-SIGNATURES] describes.  Covering the union addresses
+   this: the outer signer commits to a message on which the inner
+   signature is checkable, under which key, and over which validity
+   window.
 
    A signer that cannot cover one of those components, because it
    changed the value the inner signature was computed over, MUST NOT
    cover the inner signature member.  It signs the request on its own
-   terms, and the inner signature travels as an ordinary field.
+   terms, and the inner signature is left untouched.
 
    Verifiers MUST validate each signature independently against its own
    covered components and its own key.  An outer signature that covers
@@ -677,10 +650,10 @@ Table of Contents
 
    Key lookup MUST be keyed on the (URL, key) pair, not on the key
    alone.  A verifier that indexes by keyid alone will verify a request
-   naming one URL with a key it learned from another, and attribute it
-   to the URL the client asserted.  The party whose URL is asserted
-   cannot detect or stop this: its own directory is never fetched, so no
-   rotation or removal has any effect.
+   as coming from one URL that provides a key it learned from another,
+   and attribute that request to the URL the client asserted.  The party
+   whose URL is asserted cannot detect or stop this: its own directory
+   is never fetched, so no rotation or removal has any effect.
 
    Origin MAY require the nonce to satisfy certain constraints: be
    globally unique using a global nonce store, be unique to a specific
@@ -719,23 +692,24 @@ Table of Contents
    could mint them at will.
 
    Identifiers are compared after normalization as described in
-   Section 6.2.2 of [URI] and Section 6.2.3 of [URI], which lowercases
-   the scheme and host, removes a default port, and resolves dot-
-   segments.  Two identifiers are the same when their normalized forms
-   are equal octet for octet.
+   Section 6.2.2 of [URI] and Section 6.2.3 of [URI].  Two identifiers
+   are the same when their normalized forms are equal octet for octet.
 
-   The types differ in what else that URL tells a verifier.  TLS
-   authenticates the host but not the path, and nothing reserves the
-   jwks_uri or cimd path to the host's operator.  The well-known URI is
-   reserved, so directory additionally names a domain (Section 4.5).
+   The types differ in what additional information the verifier learns
+   from the URL.  TLS authenticates the host but not the path, and
+   nothing reserves the jwks_uri or cimd path to the host's operator.
+   The well-known URI is reserved, so directory additionally names a
+   domain (Section 4.5).
 
    For all types, the key is selected using the keyid parameter in
-   Signature-Input.  A JWK served at the well-known URI registered in
-   Section 8.1 MUST carry a kid equal to the thumbprint defined in
-   Section 5.2, so a verifier selects a key by matching keyid against
-   kid.  Deriving kid from the key material keeps it globally unique and
-   lets a verifier check the directory's own labelling rather than
-   trusting it.
+   Signature-Input.
+
+   Note: when a JWK set is served at the well-known URI registered in
+   Section 8.1, JWK MAY carry a kid.  In this case, it MUST be set to
+   the thumbprint defined in Section 5.2, so a verifier selects a key by
+   matching keyid against kid.  Deriving kid from the key material keeps
+   it globally unique and lets a verifier check the directory's own
+   labelling rather than trusting it.
 
    jwks_uri and cimd resolve to key sets that may serve other consumers,
    where kid is an operator-chosen label.  A verifier that cannot match
@@ -795,20 +769,15 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    SHOULD cache the directory contents and refresh upon expiration, as
    described in Appendix C.4.
 
-   A verifier SHOULD NOT attribute a request to a URL (Section 4.1) on
-   key material older than seven days, so that removal deactivates a key
-   within a bounded time even where the directory asks to be cached for
-   longer.  This bounds attribution, not caching: [HTTP-CACHE] governs
-   the fetch.  It is not a revocation mechanism, and this document
-   defines none.
+   It is not a revocation mechanism, and this document does not define
+   any.
 
 5.5.3.  Redistributed key material
 
-   Bot allowlists are how this ecosystem works today, and they will
-   carry Web Bot Auth keys whether or not this document says so.  This
-   section says what a verifier may conclude from key material it did
-   not fetch itself.  Defining a format for redistribution is out of
-   scope.
+   IP addresses and user-agent have been aggregated and distributed via
+   lists.  This section says what a verifier may conclude from key
+   material it did not fetch itself.  Defining a format for
+   redistribution is out of scope.
 
    A verifier MUST NOT attribute a request to a Signature-Agent URL on
    the basis of redistributed key material unless it carries, for the
@@ -816,15 +785,13 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    Appendix B whose expires has not passed.  Without that proof the
    material stays usable for verifying signatures, but it carries no
    URL, so the identifier falls back to the key thumbprint
-   (Section 4.3).  Section 5.5.2 bounds attribution either way, anchored
-   here on when the operator signed rather than when the verifier
-   received it.
+   (Section 4.3).
 
-   The predicate is who terminated the TLS connection, not what
-   triggered the fetch.  A verifier polling a directory on its own
-   schedule is resolving it, as is a control plane polling on behalf of
-   the verifiers it serves, and neither is redistribution.  Nor is a
-   list that names directory URLs rather than embedding keys: [REGISTRY]
+   The main requirement is to terminate the TLS connection.  A verifier
+   polling a directory on its own schedule is resolving it.  So is a
+   control plane polling on behalf of the verifiers it serves.  None of
+   these options constitute redistribution.  Nor is a list that names
+   directory URLs rather than embedding keys.  For instance, [REGISTRY]
    works that way, and the verifier still resolves them.
 
 5.5.4.  Signature-Key header
@@ -1102,7 +1069,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    | directory     |            |           |           |             |
    +---------------+------------+-----------+-----------+-------------+
 
-       Table 2: 'http-message-signatures-directory' Well-Known URI
+       Table 1: 'http-message-signatures-directory' Well-Known URI
 
 8.2.  Media Types
 
@@ -1301,7 +1268,7 @@ Appendix A.  Use cases and what they need
    | information                 | alongside the identifier  |        |
    +-----------------------------+---------------------------+--------+
 
-             Table 3: Use cases and the identifier they need
+             Table 2: Use cases and the identifier they need
 
    The last two are the pattern from Section 4.5.  Both consume
    something held against a name rather than against the key: a

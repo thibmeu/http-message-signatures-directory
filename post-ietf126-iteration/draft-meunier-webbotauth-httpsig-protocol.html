@@ -1195,10 +1195,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-binding-a-key-to-a-web-orig" class="internal xref">Binding a key to a Web origin</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-relationship-with-anonymous" class="internal xref">Relationship with anonymous bot authentication</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-out-of-scope" class="internal xref">Out of scope</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-out-of-scope" class="internal xref">Out of scope</a></p>
 </li>
             </ul>
 </li>
@@ -1630,21 +1627,21 @@ in <code>Signature-Agent</code> (<a href="#signature-agent" class="auto internal
 value (<a href="#key-distribution-and-discovery" class="auto internal xref">Section 5.5</a>) and checks the signature against the
 keys it returns. The identifier is the URL the verifier fetched, which for a
 <code>directory</code> member is the well-known URI rather than the value the client sent.
-What the verifier ends up with is a pair: that URL, and a key the URL endorses.
-The URL is the anchor. Origins can log, rate limit, allowlist, or block it the
-way they do IP addresses and User-Agent today.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+What the verifier ends up with is a pair: that URL, and a key the URL provides.
+Origins can log, rate limit, allowlist, or block the URL the way they do IP
+addresses and User-Agent today.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">The URL on its own carries nothing. A client picks the value it sends, so an
 unresolved <code>Signature-Agent</code> is a claim rather than an identity. It becomes an
-identifier once the verifier fetches it and finds that it endorses a key that
+identifier once the verifier fetches it and finds that it provides a key that
 verifies the request (<a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a>). Until then, verifiers <span class="bcp14">MUST NOT</span> attach policy to it.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1-3">A valid signature over a resolved URL proves that the request came from a
-holder of a key that URL publishes, and that requests naming the same URL come
+holder of a key that URL publishes, and that requests with the same URL come
 from holders of keys that URL publishes. <a href="#anti-replay" class="auto internal xref">Section 5.2.3</a> bounds reuse. It says
 nothing about who operates the Agent, whether the Agent is benign, or whether
 the request is authorized. Those are origin policy.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <p id="section-4.1-4">Nothing stops an Agent from abandoning a URL and standing up another one, and
-the protocol does not try to. It targets honest clients that want to be
-recognised across requests.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+the protocol does not try to prevent this. It targets honest clients that want
+to be recognised across requests.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="rotation">
@@ -1657,8 +1654,9 @@ without losing continuity. It publishes the new key alongside the old one, then
 drops the old one (<a href="#key-rotation" class="auto internal xref">Section 5.5.2</a>). The URL does not change, so a verifier
 that recognised it before still recognises it after. No name and no third party
 are involved.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2"><code>keyid</code> selects which key verifies a given request. It is not the identifier,
-and verifiers <span class="bcp14">SHOULD NOT</span> use it to carry continuity across a rotation.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-2"><code>keyid</code> selects which key verifies a given request. Verifiers CANNOT use it to
+carry continuity across a rotation, as that value is derived from the key
+material.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3"><span>[<a href="#SIGNATURE-KEY" class="cite xref">SIGNATURE-KEY</a>]</span> takes a different approach, where a long-lived key signs
 short-lived delegated keys. Deployments <span class="bcp14">MAY</span> use it. This document does not
 define rotation that way.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
@@ -1683,27 +1681,22 @@ no way to connect the two.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-what-the-url-endorses" class="section-name selfRef">What the URL endorses</a>
         </h3>
 <p id="section-4.4-1">Resolving a <code>Signature-Agent</code> URL over TLS establishes that the host named in
-the URL served this key set at fetch time. Read as an assertion, it is the URL
-endorsing the key: whoever controls that URL says this key signs for it. That
+the URL served this key set at fetch time.
+Whoever controls that URL says this key signs for it. That
 is what makes the URL usable as an identifier, and all it gives you. It does
-not say that the operator of that URL is honest, competent, or the same party
-as anyone else the verifier knows about.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">What matters is not when the verifier resolved the URL, but that it holds the
-association between a URL and the keys published there, so a verifier that
-already holds it need not fetch. A verifier <span class="bcp14">MUST NOT</span> attribute a request to a
-<code>Signature-Agent</code> URL unless it holds that association for the key the
-signature was verified with. Evidence comes either from resolving the URL
-itself, at request time or ahead of it, or from
-<a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>. Verifiers refetch to pick up key additions and
-removals, bounded by <a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">Where a verifier holds the same pair from more than one source, the newer
-evidence wins, including when it omits a key that older evidence included.
-Evidence is ordered by when it was produced, not when the verifier obtained
-it: the <code>created</code> parameter for a directory response signature
+not say that the operator of that URL is honest, or that is is the same party
+everyone knows about.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">What matters is the association between a URL and the keys published there. A
+verifier that already holds the keys does not need to fetch it. A verifier <span class="bcp14">MUST NOT</span> attribute a request to a <code>Signature-Agent</code> URL unless it made this
+ssociation. This can be either by resolving the URL itself, at request time or
+ahead of it, or from <a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>. Verifiers may refetch a URL
+to handle up key additions and removals, bounded by <a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">Where a verifier obtains the same pair from more than one source, the newer
+pair wins, including when it omits a key that older resolution included.
+Pairs are ordered by when they were produced, not when the verifier obtained
+them: the <code>created</code> parameter for a directory response signature
 (<a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>), and the time of the fetch for a directory the
-verifier resolved itself. Ordering by acquisition instead lets a list
-downloaded today carry an assertion older than the verifier's own last poll,
-reinstating a key its operator removed.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+verifier resolved itself.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="origin-binding">
@@ -1711,72 +1704,31 @@ reinstating a key its operator removed.<a href="#section-4.4-3" class="pilcrow">
         <h3 id="name-binding-a-key-to-a-web-orig">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-binding-a-key-to-a-web-orig" class="section-name selfRef">Binding a key to a Web origin</a>
         </h3>
-<p id="section-4.5-1">A well-known URL is a special case of the above, not a separate mode. When a
+<p id="section-4.5-1">A well-known URL is a special case of the above. When a
 <code>Signature-Agent</code> value resolves through the <code>directory</code> type
 (<a href="#key-distribution-and-discovery" class="auto internal xref">Section 5.5</a>), the identifier is still the URL, but that
 URL now names a domain rather than an arbitrary path on one. <span>[<a href="#WELLKNOWN-URI" class="cite xref">WELLKNOWN-URI</a>]</span>
-reserves the path, so the domain operator stands behind the key set, not
-whoever happens to be able to write a path under that host.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.5-2">Reach for this when a verifier's decision consumes something the key cannot
-carry by itself, which in practice means information an origin already holds
-against that name. Continuity and rotation do not need it, so the mechanics live in
-<a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>. Nothing in a request signals that a URL is
-well-known: a verifier that wants the domain recognises the shape of the URL
-and applies those checks itself.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="relationship">
-<section id="section-4.6">
-        <h3 id="name-relationship-with-anonymous">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-relationship-with-anonymous" class="section-name selfRef">Relationship with anonymous bot authentication</a>
-        </h3>
-<p id="section-4.6-1">Identifying an automated client is one of four positions in a space, split by
-whether the claim is self-issued or made by a third party, and by whether it
-carries a name a verifier can look up.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
-<span id="name-approaches-to-identifying-a"></span><table class="center" id="table-1">
-          <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-approaches-to-identifying-a" class="selfRef">Approaches to identifying automated clients</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1"> </th>
-              <th class="text-left" rowspan="1" colspan="1">Self-issued</th>
-              <th class="text-left" rowspan="1" colspan="1">Third party claims</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">No public name</td>
-              <td class="text-left" rowspan="1" colspan="1">Opaque value (pseudonym)</td>
-              <td class="text-left" rowspan="1" colspan="1">Anonymous endorsement</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">Name</td>
-              <td class="text-left" rowspan="1" colspan="1">Domain binding</td>
-              <td class="text-left" rowspan="1" colspan="1">Domain + additional assertions</td>
-            </tr>
-          </tbody>
-        </table>
-<p id="section-4.6-3">This document covers the self-issued column. An Agent presents a URL it
-controls, and no third party is involved. The right-hand column is the subject
-of separate work.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+reserves the path, so the domain operator stands behind the key set.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-2">In practice, this is meant to allow additional information to be carried against
+a name. That mechanism lives in <a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>. A verifier that
+wants to use this case may also recognise the shape of the URL and apply those
+checks itself.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="out-of-scope">
-<section id="section-4.7">
+<section id="section-4.6">
         <h3 id="name-out-of-scope">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-out-of-scope" class="section-name selfRef">Out of scope</a>
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-out-of-scope" class="section-name selfRef">Out of scope</a>
         </h3>
-<p id="section-4.7-1">This protocol does not authenticate human users, does not provide anonymous
+<p id="section-4.6-1">This protocol does not authenticate human users, does not provide anonymous
 authentication, and does not define authorization or delegation. It does not
-define how reputation is computed, held, or exchanged, and it defines no
+define how trust is accrued, held, or exchanged, and it defines no
 mechanism for one origin to convey an opinion about an Agent to another. See
-<a href="#privacy-considerations" class="auto internal xref">Section 7</a>.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
-<p id="section-4.7-2">A client has a choice whether to sign its requests, and an origin has a choice
+<a href="#privacy-considerations" class="auto internal xref">Section 7</a>.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-2">A client has a choice whether to sign its requests, and an origin has a choice
 how it treats signed and unsigned requests. Multiple factors could influence
 either decision, but the decisions themselves are outside the scope of this
-document.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
+document.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1907,7 +1859,7 @@ reuse it against the same origin until then.
 reaches. Agents that want to narrow it <span class="bcp14">SHOULD</span> also cover <code>@method</code> and
 <code>@path</code>, or use <code>@target-uri</code>, as <a href="#example-multiple-signatures" class="auto internal xref">Appendix D.2</a> does. A signer that omits them remains conformant.<a href="#section-5.2-9" class="pilcrow">¶</a></p>
 <p id="section-5.2-10">No component covers the body. An Agent that needs one <span class="bcp14">MUST</span> send and cover
-<code>Content-Digest</code> <span>[<a href="#DIGEST-FIELDS" class="cite xref">DIGEST-FIELDS</a>]</span>. This document does not require it: most
+<code>Content-Digest</code> <span>[<a href="#DIGEST-FIELDS" class="cite xref">DIGEST-FIELDS</a>]</span>. This document does not require it. Most
 automated traffic is <code>GET</code>, and a mandatory digest would force every Agent to
 buffer request bodies it would otherwise stream.<a href="#section-5.2-10" class="pilcrow">¶</a></p>
 <div id="signature-agent">
@@ -1929,8 +1881,8 @@ mechanism from the URI path, media type, or response body.<a href="#section-5.2.
 and deployments still send it (<a href="#example-legacy" class="auto internal xref">Appendix E.1.3</a>). A verifier <span class="bcp14">MAY</span> accept that
 form and treat it as a dictionary with a single member whose key is the label
 of the signature covering it. Signers <span class="bcp14">MUST</span> send the dictionary form. The two
-are distinguishable on the wire: a String Item begins with a double quote, a
-Dictionary member key does not.<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
+are distinguishable on the wire: a String Item begins with a double quote <code>"</code>
+while a Dictionary member key does not.<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.2.1-4">It is <span class="bcp14">RECOMMENDED</span> that the Agent sends requests with <code>Signature-Agent</code> header, as described in <a href="#sending-request" class="auto internal xref">Section 5.2.5</a>.
 If the header is to be sent, one of its members <span class="bcp14">MUST</span> be signed as a component as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.1" class="relref">Section 2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 The <code>Signature-Agent</code> member identifies where candidate key material can be found.
@@ -1955,10 +1907,10 @@ identified by its HTTP Message Signatures label. When <code>Signature-Agent</cod
 present, each signer <span class="bcp14">SHOULD</span> provide a <code>Signature-Agent</code> member for its label.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-2">A signer <span class="bcp14">MAY</span> cover members from another signature label, which preserves
 evidence that another signer contributed to the request. A signer that covers
-<code>"signature";key=X</code> <span class="bcp14">MUST</span> also cover <code>"signature-input";key=X</code>, <span class="bcp14">MUST</span> cover
-<code>"signature-agent";key=X</code> when that member is present, and <span class="bcp14">MUST</span> cover every
-component identifier listed in <code>"signature-input";key=X</code>.<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-3">A signature value on its own does not identify the message it was computed
+<code>"signature";key=X</code> <span class="bcp14">MUST</span> also cover <code>"signature-input";key=X</code>, and <span class="bcp14">MUST</span> cover
+every component identifier listed in <code>"signature-input";key=X</code>.<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-3">[[ editor's note: the following paragraph to be checked with Dennis and Justin ]]<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-4">A signature value on its own does not identify the message it was computed
 over, which is why <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> recommends
 against signing one. Covering <code>signature-input</code> is not sufficient:
 it lists component identifiers, whose values resolve against whatever
@@ -1966,18 +1918,18 @@ message the verifier holds. An outer signature that named those identifiers
 without covering them would still verify after the whole header set was lifted
 onto a different message, the ambiguity
 <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> describes. Covering the union
-closes it: the outer signer commits to a message on which the inner signature
-is checkable, under which key, and over which validity window.<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-4">A signer that cannot cover one of those components, because it changed the
+addresses this: the outer signer commits to a message on which the inner signature
+is checkable, under which key, and over which validity window.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-5">A signer that cannot cover one of those components, because it changed the
 value the inner signature was computed over, <span class="bcp14">MUST NOT</span> cover the inner
 <code>signature</code> member. It signs the request on its own terms, and the inner
-signature travels as an ordinary field.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-5">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
+signature is left untouched.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-6">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
 components and its own key. An outer signature that covers an inner one is
 evidence that those bytes, over that set of components, were present. It does
 not make the inner signature valid, and it does not express authorization,
 delegation, or consent. Those meanings are deployment policy, or are carried in
-separately signed fields.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
+separately signed fields.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="anti-replay">
@@ -2115,8 +2067,8 @@ Similar to a regular User-Agent check, this happens at the HTTP layer, once head
 </li>
         </ul>
 <p id="section-5.4-4">Key lookup <span class="bcp14">MUST</span> be keyed on the (URL, key) pair, not on the key alone. A
-verifier that indexes by <code>keyid</code> alone will verify a request naming one URL
-with a key it learned from another, and attribute it to the URL the client
+verifier that indexes by <code>keyid</code> alone will verify a request as coming from one URL
+that provides a key it learned from another, and attribute that request to the URL the client
 asserted. The party whose URL is asserted cannot detect or stop this: its own
 directory is never fetched, so no rotation or removal has any effect.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
 <p id="section-5.4-5">Origin <span class="bcp14">MAY</span> require the <code>nonce</code> to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
@@ -2162,29 +2114,28 @@ fetches that value as sent, so the query is dropped from the identifier and not
 from the request. Otherwise one key set would yield an identifier per spelling,
 and an Agent could mint them at will.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
 <p id="section-5.5-5">Identifiers are compared after normalization as described in
-<span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.2" class="relref">Section 6.2.2</a> of [<a href="#URI" class="cite xref">URI</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.3" class="relref">Section 6.2.3</a> of [<a href="#URI" class="cite xref">URI</a>]</span>, which lowercases the
-scheme and host, removes a default port, and resolves dot-segments. Two
-identifiers are the same when their normalized forms are equal octet for octet.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
-<p id="section-5.5-6">The types differ in what else that URL tells a verifier. TLS authenticates the
-host but not the path, and nothing reserves the <code>jwks_uri</code> or <code>cimd</code> path to
-the host's operator. The well-known URI is reserved, so <code>directory</code>
+<span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.2" class="relref">Section 6.2.2</a> of [<a href="#URI" class="cite xref">URI</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.3" class="relref">Section 6.2.3</a> of [<a href="#URI" class="cite xref">URI</a>]</span>. Two identifiers are the
+same when their normalized forms are equal octet for octet.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.5-6">The types differ in what additional information the verifier learns from the URL.
+TLS authenticates the host but not the path, and nothing reserves the <code>jwks_uri</code> or <code>cimd</code> path to the host's operator. The well-known URI is reserved, so <code>directory</code>
 additionally names a domain (<a href="#origin-binding" class="auto internal xref">Section 4.5</a>).<a href="#section-5.5-6" class="pilcrow">¶</a></p>
 <p id="section-5.5-7">For all types, the key is selected using the <code>keyid</code> parameter in
-<code>Signature-Input</code>. A JWK served at the well-known URI registered in
-<a href="#wkuri-reg" class="auto internal xref">Section 8.1</a> <span class="bcp14">MUST</span> carry a <code>kid</code> equal to the thumbprint defined in
-<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>, so a verifier selects a key by matching
-<code>keyid</code> against <code>kid</code>. Deriving <code>kid</code> from the key material keeps it globally
-unique and lets a verifier check the directory's own labelling rather than
-trusting it.<a href="#section-5.5-7" class="pilcrow">¶</a></p>
-<p id="section-5.5-8"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
+<code>Signature-Input</code>.<a href="#section-5.5-7" class="pilcrow">¶</a></p>
+<p id="section-5.5-8">Note: when a JWK set is served at the well-known URI registered in
+<a href="#wkuri-reg" class="auto internal xref">Section 8.1</a>, JWK <span class="bcp14">MAY</span> carry a <code>kid</code>. In this case, it <span class="bcp14">MUST</span> be set to the
+thumbprint defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>, so a verifier
+selects a key by matching <code>keyid</code> against <code>kid</code>. Deriving <code>kid</code> from the key
+material keeps it globally unique and lets a verifier check the directory's own
+labelling rather than trusting it.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
+<p id="section-5.5-9"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
 <code>kid</code> is an operator-chosen label. A verifier that cannot match <code>keyid</code> against
-<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5-9">
+<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-10">
 <pre>
 Signature-Agent: sig1="https://signature-agent.test"
 Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
-</pre><a href="#section-5.5-9" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-10" class="pilcrow">¶</a>
 </div>
 <div id="configuration">
 <section id="section-5.5.1">
@@ -2245,11 +2196,7 @@ together, then removing the old one:<a href="#section-5.5.2-1" class="pilcrow">�
 once their cached copy expires, so the directory's cache lifetime bounds how
 long a removed key keeps verifying. Verifiers <span class="bcp14">SHOULD</span> cache the directory
 contents and refresh upon expiration, as described in <a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>.<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.5.2-4">A verifier <span class="bcp14">SHOULD NOT</span> attribute a request to a URL (<a href="#url-is-identifier" class="auto internal xref">Section 4.1</a>) on
-key material older than seven days, so that removal deactivates a key within a
-bounded time even where the directory asks to be cached for longer. This bounds
-attribution, not caching: <span>[<a href="#HTTP-CACHE" class="cite xref">HTTP-CACHE</a>]</span> governs the fetch. It is not a
-revocation mechanism, and this document defines none.<a href="#section-5.5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.5.2-4">It is not a revocation mechanism, and this document does not define any.<a href="#section-5.5.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="redistributed-key-material">
@@ -2257,23 +2204,21 @@ revocation mechanism, and this document defines none.<a href="#section-5.5.2-4" 
           <h4 id="name-redistributed-key-material">
 <a href="#section-5.5.3" class="section-number selfRef">5.5.3. </a><a href="#name-redistributed-key-material" class="section-name selfRef">Redistributed key material</a>
           </h4>
-<p id="section-5.5.3-1">Bot allowlists are how this ecosystem works today, and they will carry Web Bot
-Auth keys whether or not this document says so. This section says what a
-verifier may conclude from key material it did not fetch itself. Defining a
-format for redistribution is out of scope.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-1">IP addresses and user-agent have been aggregated and distributed via lists.
+This section says what a verifier may conclude from key material it did not
+fetch itself.
+Defining a format for redistribution is out of scope.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.5.3-2">A verifier <span class="bcp14">MUST NOT</span> attribute a request to a <code>Signature-Agent</code> URL on the basis
 of redistributed key material unless it carries, for the key in question, a
 valid directory response signature as described in <a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>
 whose <code>expires</code> has not passed. Without that proof the material stays usable
 for verifying signatures, but it carries no URL, so the identifier falls back
-to the key thumbprint (<a href="#no-url" class="auto internal xref">Section 4.3</a>). <a href="#key-rotation" class="auto internal xref">Section 5.5.2</a> bounds attribution either
-way, anchored here on when the operator signed rather than when the verifier
-received it.<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.3-3">The predicate is who terminated the TLS connection, not what triggered the
-fetch. A verifier polling a directory on its own schedule is resolving it, as
-is a control plane polling on behalf of the verifiers it serves, and neither is
-redistribution. Nor is a list that names directory URLs rather than embedding
-keys: <span>[<a href="#REGISTRY" class="cite xref">REGISTRY</a>]</span> works that way, and the verifier still resolves them.<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
+to the key thumbprint (<a href="#no-url" class="auto internal xref">Section 4.3</a>).<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-3">The main requirement is to terminate the TLS connection.
+A verifier polling a directory on its own schedule is resolving it. So is a
+control plane polling on behalf of the verifiers it serves. None of these options
+constitute redistribution. Nor is a list that names directory URLs rather than embedding
+keys. For instance, <span>[<a href="#REGISTRY" class="cite xref">REGISTRY</a>]</span> works that way, and the verifier still resolves them.<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="signature-key-header">
@@ -2598,9 +2543,9 @@ identifiable information from directory requests.<a href="#section-7.4-1" class=
 <p id="section-8.1-1">This document updates the "Well-Known URIs" Registry <span>[<a href="#WellKnownURIs" class="cite xref">WellKnownURIs</a>]</span> with the
 following values.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <span id="name-http-message-signatures-dir"></span><div id="wellknownuri-values">
-<table class="center" id="table-2">
+<table class="center" id="table-1">
           <caption>
-<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#table-1" class="selfRef">Table 1</a>:
 <a href="#name-http-message-signatures-dir" class="selfRef">'http-message-signatures-directory' Well-Known URI</a>
           </caption>
 <thead>
@@ -2880,9 +2825,9 @@ the purpose of validating signatures.<a href="#section-8.2.1-1.18.1" class="pilc
 <p id="appendix-A-1"><span>[<a href="#USE-CASES" class="cite xref">USE-CASES</a>]</span> collects the use cases this group has discussed. Most are served
 by the URL alone. The table below records which ones need the domain binding in
 <a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>, and why.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<span id="name-use-cases-and-the-identifie"></span><table class="center" id="table-3">
+<span id="name-use-cases-and-the-identifie"></span><table class="center" id="table-2">
         <caption>
-<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#table-2" class="selfRef">Table 2</a>:
 <a href="#name-use-cases-and-the-identifie" class="selfRef">Use cases and the identifier they need</a>
         </caption>
 <thead>
