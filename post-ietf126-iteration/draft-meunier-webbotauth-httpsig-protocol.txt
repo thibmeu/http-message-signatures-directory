@@ -1868,50 +1868,35 @@ Changelog
 
    draft-meunier-webbotauth-httpsig-protocol-02
 
-   *  Fold draft-meunier-webbotauth-httpsig-directory into this
-      document, with its well-known URI and media type registrations,
-      and change the intended status to Standards Track.
+   *  Fold draft-meunier-webbotauth-httpsig-directory into this document
+      with its IANA registrations, and move to Standards Track.
 
-   *  Anchor identity on the resolved Signature-Agent URL rather than on
-      the key.  Rotation is the same URL serving a new key, and the key
-      thumbprint is the identifier only when no URL is sent.
+   *  Anchor identity on the resolved Signature-Agent URL rather than
+      the key.  Rotation is the same URL serving a new key; the
+      thumbprint identifies only when no URL is sent.  A directory value
+      is an origin, identifiers are normalized before comparison, and
+      kid equals the key thumbprint.
 
-   *  Normalize the resolved URL before comparing identifiers, drop the
-      query and fragment from the identifier, and require a directory
-      member value to be the serialization of an origin.
+   *  Define attribution: lookup on the (URL, key) pair, what
+      redistributed key material must carry, which source wins when two
+      disagree, what a failed resolution means, a seven day bound on the
+      evidence behind it, and rejection of directory response signatures
+      dated in the future.
 
-   *  Key lookup is on the (URL, key) pair.  Define what redistributed
-      key material has to carry, which source wins when two disagree,
-      and what a failed resolution means.
+   *  When chaining, an outer signature covering an inner signature MUST
+      also cover its signature-input, signature-agent, and every
+      component the inner signature covered.  Verifiers validate each
+      signature independently.
 
-   *  Require kid to equal the key thumbprint in the well-known
-      directory, and reject a directory response signature whose created
-      is in the future.
+   *  Say what a signature does not reach: not the body without Content-
+      Digest, and not the method or path when only @authority is
+      covered.  Correct the relabeling guidance, and note how to migrate
+      from the sf-string form.
 
-   *  Bound how long attribution may rest on key material to seven days,
-      rather than overriding HTTP cache freshness.
-
-   *  Say what a verifier may conclude from an unsigned request, and
-      state the worst case for a compromised key.
-
-   *  Note how to migrate from the legacy sf-string Signature-Agent, and
-      correct the relabeling guidance: an intermediary cannot change a
-      covered member key.
-
-   *  When chaining, require an outer signature covering an inner
-      signature to also cover its signature-input, signature-agent, and
-      every component the inner signature covered, and require verifiers
-      to validate each signature independently.
-
-   *  Note that covering @authority alone leaves a signature reusable
-      across methods, paths, and bodies for its validity window, and
-      that no component covers the body unless the Agent sends and
-      covers Content-Digest.
-
-   *  Move the domain binding and the directory possession proof to an
-      appendix.  Add objectives and constraints, the relationship with
-      anonymous bot authentication, and a use case to identifier
-      mapping.
+   *  Move the domain binding to an appendix.  Add objectives, the
+      relationship with anonymous bot authentication, a use case to
+      identifier mapping, what an unsigned request tells a verifier, and
+      the worst case for a compromised key.
 
    draft-meunier-webbotauth-httpsig-protocol-01
 

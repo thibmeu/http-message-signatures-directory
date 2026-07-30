@@ -3663,56 +3663,35 @@ Tanya Verma.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
 <p id="appendix-H-1">draft-meunier-webbotauth-httpsig-protocol-02<a href="#appendix-H-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-2.1">
-          <p id="appendix-H-2.1.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document, with
-its well-known URI and media type registrations, and change the intended
-status to Standards Track.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.1.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document with its
+IANA registrations, and move to Standards Track.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.2">
-          <p id="appendix-H-2.2.1">Anchor identity on the resolved <code>Signature-Agent</code> URL rather than on the key.
-Rotation is the same URL serving a new key, and the key thumbprint is the
-identifier only when no URL is sent.<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.2.1">Anchor identity on the resolved <code>Signature-Agent</code> URL rather than the key.
+Rotation is the same URL serving a new key; the thumbprint identifies only
+when no URL is sent. A <code>directory</code> value is an origin, identifiers are
+normalized before comparison, and <code>kid</code> equals the key thumbprint.<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.3">
-          <p id="appendix-H-2.3.1">Normalize the resolved URL before comparing identifiers, drop the query and
-fragment from the identifier, and require a <code>directory</code> member value to be
-the serialization of an origin.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.3.1">Define attribution: lookup on the (URL, key) pair, what redistributed key
+material must carry, which source wins when two disagree, what a failed
+resolution means, a seven day bound on the evidence behind it, and rejection
+of directory response signatures dated in the future.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.4">
-          <p id="appendix-H-2.4.1">Key lookup is on the (URL, key) pair. Define what redistributed key material
-has to carry, which source wins when two disagree, and what a failed
-resolution means.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.4.1">When chaining, an outer signature covering an inner <code>signature</code> <span class="bcp14">MUST</span> also
+cover its <code>signature-input</code>, <code>signature-agent</code>, and every component the inner
+signature covered. Verifiers validate each signature independently.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.5">
-          <p id="appendix-H-2.5.1">Require <code>kid</code> to equal the key thumbprint in the well-known directory, and
-reject a directory response signature whose <code>created</code> is in the future.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.5.1">Say what a signature does not reach: not the body without <code>Content-Digest</code>,
+and not the method or path when only <code>@authority</code> is covered. Correct the
+relabeling guidance, and note how to migrate from the sf-string form.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.6">
-          <p id="appendix-H-2.6.1">Bound how long attribution may rest on key material to seven days, rather
-than overriding HTTP cache freshness.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.7">
-          <p id="appendix-H-2.7.1">Say what a verifier may conclude from an unsigned request, and state the
-worst case for a compromised key.<a href="#appendix-H-2.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.8">
-          <p id="appendix-H-2.8.1">Note how to migrate from the legacy sf-string <code>Signature-Agent</code>, and correct
-the relabeling guidance: an intermediary cannot change a covered member key.<a href="#appendix-H-2.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.9">
-          <p id="appendix-H-2.9.1">When chaining, require an outer signature covering an inner <code>signature</code> to
-also cover its <code>signature-input</code>, <code>signature-agent</code>, and every component the
-inner signature covered, and require verifiers to validate each signature
-independently.<a href="#appendix-H-2.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.10">
-          <p id="appendix-H-2.10.1">Note that covering <code>@authority</code> alone leaves a signature reusable across
-methods, paths, and bodies for its validity window, and that no component
-covers the body unless the Agent sends and covers <code>Content-Digest</code>.<a href="#appendix-H-2.10.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-2.11">
-          <p id="appendix-H-2.11.1">Move the domain binding and the directory possession proof to an appendix.
-Add objectives and constraints, the relationship with anonymous bot
-authentication, and a use case to identifier mapping.<a href="#appendix-H-2.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.6.1">Move the domain binding to an appendix. Add objectives, the relationship with
+anonymous bot authentication, a use case to identifier mapping, what an
+unsigned request tells a verifier, and the worst case for a compromised key.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-H-3">draft-meunier-webbotauth-httpsig-protocol-01<a href="#appendix-H-3" class="pilcrow">¶</a></p>
