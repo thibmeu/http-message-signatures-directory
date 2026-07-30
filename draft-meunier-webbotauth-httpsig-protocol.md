@@ -211,7 +211,7 @@ drops the old one ({{key-rotation}}). The URL does not change, so a verifier
 that recognised it before still recognises it after. No name and no third party
 are involved.
 
-`keyid` selects which key verifies a given request. Verifiers CANNOT use it to
+`keyid` selects which key verifies a given request. Verifiers cannot use it to
 carry continuity across a rotation, as that value is derived from the key
 material.
 
@@ -345,8 +345,8 @@ signature covering `@authority` alone verifies against any method, path, or body
 sent to that authority until it expires, so anyone who observes one request can
 reuse it against the same origin until then.
 `expires` bounds how long that lasts; the covered components bound what it
-reaches. Agents that want to narrow it SHOULD also cover `@method` and
-`@path`, or use `@target-uri`, as {{example-multiple-signatures}} does. A signer that omits them remains conformant.
+reaches. Agents that want to narrow it SHOULD also cover `@method`, and
+either `@path` or `@target-uri`, as {{example-multiple-signatures}} does. A signer that omits them remains conformant.
 
 No component covers the body. An Agent that needs one MUST send and cover
 `Content-Digest` {{DIGEST-FIELDS}}. This document does not require it. Most
