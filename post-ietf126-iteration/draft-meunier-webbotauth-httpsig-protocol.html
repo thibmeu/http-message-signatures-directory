@@ -2090,7 +2090,8 @@ how the URL resolves to key material. This protocol defines three types:<a href=
           <dd style="margin-left: 1.5em" id="section-5.5-3.2">
             <p id="section-5.5-3.2.1">The member value <span class="bcp14">MUST</span> be the ASCII serialization of an origin as defined in
 <span><a href="https://rfc-editor.org/rfc/rfc6454#section-6.2" class="relref">Section 6.2</a> of [<a href="#ORIGIN" class="cite xref">ORIGIN</a>]</span>, and a verifier <span class="bcp14">MUST</span> ignore a member carrying
-anything else. Resolve the HTTP Message Signatures Directory at the well-known
+anything else (an empty path <code>/</code> <span class="bcp14">MAY</span> be accepted though).
+Resolve the HTTP Message Signatures Directory at the well-known
 URI registered in <a href="#wkuri-reg" class="auto internal xref">Section 8.1</a>, at that origin. This is the default when no
 <code>type</code> parameter is present.<a href="#section-5.5-3.2.1" class="pilcrow">¶</a></p>
 </dd>
@@ -2288,8 +2289,8 @@ attacks that could give attackers unintended access.<a href="#section-6.1-1" cla
         </h3>
 <p id="section-6.4-1">This document defines no revocation. Removing a compromised key from the
 directory is the only remedy, and it takes effect at each verifier on its next
-refresh, so the key can keep verifying for as long as <a href="#key-rotation" class="auto internal xref">Section 5.5.2</a> allows:
-up to seven days. The protocol carries no channel back to verifiers, so an
+refresh, so the key can keep verifying for as long as <a href="#key-rotation" class="auto internal xref">Section 5.5.2</a> allows.
+The protocol carries no channel back to verifiers, so an
 Agent cannot reach them sooner. Signature lifetimes
 (<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>) are the only lever that acts faster.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 <p id="section-6.4-2">Agents <span class="bcp14">SHOULD</span> remove a compromised key and publish a replacement immediately.
@@ -2305,7 +2306,7 @@ patterns.<a href="#section-6.4-2" class="pilcrow">¶</a></p>
 <p id="section-6.5-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 Shared secrets break non-repudiation and make auditing
 difficult. Each automated client <span class="bcp14">SHOULD</span> use a unique asymmetric keypair to
-ensure attribution, support key rotation, and enable effective revocation if
+ensure attribution, support key rotation, and enable effective rotation if
 needed.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3620,7 +3621,7 @@ normalized before comparison, and <code>kid</code> equals the key thumbprint.<a 
         <li class="normal" id="appendix-H-2.3">
           <p id="appendix-H-2.3.1">Define attribution: lookup on the (URL, key) pair, what redistributed key
 material must carry, which source wins when two disagree, what a failed
-resolution means, a seven day bound on the evidence behind it, and rejection
+resolution means, a bound on the resolution behind it, and rejection
 of directory response signatures dated in the future.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.4">

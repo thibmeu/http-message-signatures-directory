@@ -672,10 +672,10 @@ Table of Contents
 
    directory  The member value MUST be the ASCII serialization of an
       origin as defined in Section 6.2 of [ORIGIN], and a verifier MUST
-      ignore a member carrying anything else.  Resolve the HTTP Message
-      Signatures Directory at the well-known URI registered in
-      Section 8.1, at that origin.  This is the default when no type
-      parameter is present.
+      ignore a member carrying anything else (an empty path / MAY be
+      accepted though).  Resolve the HTTP Message Signatures Directory
+      at the well-known URI registered in Section 8.1, at that origin.
+      This is the default when no type parameter is present.
 
    jwks_uri  Resolve the member value as a direct JWK Set URI.
 
@@ -859,10 +859,9 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    This document defines no revocation.  Removing a compromised key from
    the directory is the only remedy, and it takes effect at each
    verifier on its next refresh, so the key can keep verifying for as
-   long as Section 5.5.2 allows: up to seven days.  The protocol carries
-   no channel back to verifiers, so an Agent cannot reach them sooner.
-   Signature lifetimes (Section 5.2) are the only lever that acts
-   faster.
+   long as Section 5.5.2 allows.  The protocol carries no channel back
+   to verifiers, so an Agent cannot reach them sooner.  Signature
+   lifetimes (Section 5.2) are the only lever that acts faster.
 
    Agents SHOULD remove a compromised key and publish a replacement
    immediately.  Origins should support rapid key rotation and monitor
@@ -874,7 +873,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
    make auditing difficult.  Each automated client SHOULD use a unique
    asymmetric keypair to ensure attribution, support key rotation, and
-   enable effective revocation if needed.
+   enable effective rotation if needed.
 
 6.6.  Key Reuse Considered Harmful
 
@@ -1846,9 +1845,9 @@ Changelog
 
    *  Define attribution: lookup on the (URL, key) pair, what
       redistributed key material must carry, which source wins when two
-      disagree, what a failed resolution means, a seven day bound on the
-      evidence behind it, and rejection of directory response signatures
-      dated in the future.
+      disagree, what a failed resolution means, a bound on the
+      resolution behind it, and rejection of directory response
+      signatures dated in the future.
 
    *  When chaining, an outer signature covering an inner signature MUST
       also cover its signature-input, signature-agent, and every
