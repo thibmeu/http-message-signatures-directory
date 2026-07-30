@@ -519,7 +519,8 @@ how the URL resolves to key material. This protocol defines three types:
 `directory`
 : The member value MUST be the ASCII serialization of an origin as defined in
 {{Section 6.2 of ORIGIN}}, and a verifier MUST ignore a member carrying
-anything else. Resolve the HTTP Message Signatures Directory at the well-known
+anything else (an empty path `/` MAY be accepted though).
+Resolve the HTTP Message Signatures Directory at the well-known
 URI registered in {{wkuri-reg}}, at that origin. This is the default when no
 `type` parameter is present.
 
@@ -677,8 +678,8 @@ Different validation policies have different performance and operational conside
 
 This document defines no revocation. Removing a compromised key from the
 directory is the only remedy, and it takes effect at each verifier on its next
-refresh, so the key can keep verifying for as long as {{key-rotation}} allows:
-up to seven days. The protocol carries no channel back to verifiers, so an
+refresh, so the key can keep verifying for as long as {{key-rotation}} allows.
+The protocol carries no channel back to verifiers, so an
 Agent cannot reach them sooner. Signature lifetimes
 ({{generating-http-message-signature}}) are the only lever that acts faster.
 
@@ -691,7 +692,7 @@ patterns.
 Implementations MUST NOT use shared HMAC defined in {{Section 3.3.3 of HTTP-MESSAGE-SIGNATURES}}.
 Shared secrets break non-repudiation and make auditing
 difficult. Each automated client SHOULD use a unique asymmetric keypair to
-ensure attribution, support key rotation, and enable effective revocation if
+ensure attribution, support key rotation, and enable effective rotation if
 needed.
 
 ## Key Reuse Considered Harmful
@@ -1552,7 +1553,7 @@ draft-meunier-webbotauth-httpsig-protocol-02
   normalized before comparison, and `kid` equals the key thumbprint.
 - Define attribution: lookup on the (URL, key) pair, what redistributed key
   material must carry, which source wins when two disagree, what a failed
-  resolution means, a seven day bound on the evidence behind it, and rejection
+  resolution means, a bound on the resolution behind it, and rejection
   of directory response signatures dated in the future.
 - When chaining, an outer signature covering an inner `signature` MUST also
   cover its `signature-input`, `signature-agent`, and every component the inner
