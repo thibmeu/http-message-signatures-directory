@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 31 January 2027                                          Google
-                                                            30 July 2026
+Expires: 1 February 2027                                          Google
+                                                            31 July 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 January 2027.
+   This Internet-Draft will expire on 1 February 2027.
 
 Copyright Notice
 
@@ -101,7 +101,7 @@ Table of Contents
        5.5.2.  Key rotation
        5.5.3.  Redistributed key material
        5.5.4.  Signature-Key header
-     5.6.  Session Protocol Considerations
+     5.6.  Session considerations
    6.  Security Considerations
      6.1.  Use of TLS
      6.2.  Performance Impact
@@ -140,11 +140,12 @@ Table of Contents
      C.4.  Cache Behaviour
      C.5.  Negative Caching and Retry
      C.6.  Freshness and Replay
-     C.7.  Directory Response Signature Lifetimes
-     C.8.  Rollout and Fallback
-     C.9.  Proxies and Intermediaries
-     C.10. CORS
-     C.11. Deployment Anti-Patterns
+     C.7.  Field compression
+     C.8.  Directory Response Signature Lifetimes
+     C.9.  Rollout and Fallback
+     C.10. Proxies and Intermediaries
+     C.11. CORS
+     C.12. Deployment Anti-Patterns
    Appendix D.  Examples
      D.1.  Delegation and chaining
      D.2.  Multiple signatures with a remote browser
@@ -461,6 +462,7 @@ Table of Contents
    components bound what it reaches.  Agents that want to narrow it
    SHOULD also cover @method, and either @path or @target-uri, as
    Appendix D.2 does.  A signer that omits them remains conformant.
+   Appendix C.7 covers what that costs on the wire.
 
    No component covers the body.  An Agent that needs one MUST send and
    cover Content-Digest [DIGEST-FIELDS].  This document does not require
@@ -801,22 +803,19 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    model.  This protocol uses Signature-Agent as its default discovery
    mechanism.
 
-5.6.  Session Protocol Considerations
+5.6.  Session considerations
 
-   Per-request signature generation and verification may incur
-   computational overhead from cryptographic operations and key
-   discovery.  For high-frequency interactions, origins might establish
-   sessions to reduce repeated verification.
+   Per-request signing and verification costs CPU; uncached key
+   discovery adds latency.  For high request rates, an origin can verify
+   a request-specific signature once and issue a session credential for
+   later requests.  This can amortize asymmetric verification and reduce
+   bytes, but adds the risks of token theft and replay.
 
-   One approach: after successful signature verification, an origin
-   issues a session credential (e.g., an HTTP cookie) that subsequent
-   requests present in lieu of a full signature.  This trades
-   cryptographic verification costs for the security properties of
-   bearer tokens, including susceptibility to credential theft and
-   replay within the session lifetime.
-
-   The design of session protocols, including appropriate session
-   lifetimes and binding mechanisms, is out of scope for this document.
+   A reused signature already has token semantics until expires.  A
+   session established from one extends that window past expires unless
+   the credential is bounded to it: no longer-lived, and no wider in
+   scope than the components the signature covered.  Session
+   establishment and binding are out of scope.
 
 6.  Security Considerations
 
@@ -841,7 +840,9 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    requests and verification latency.  The choice of signing algorithm
    impacts CPU requirements.  Origins should monitor verification
    latency and set appropriate timeouts to maintain service levels under
-   load.
+   load.  See Section 5.6: a session amortizes that cost by replacing
+   verification with a bearer credential.  Appendix C.7 covers the byte
+   cost.
 
 6.3.  Nonce validation
 
@@ -1190,6 +1191,10 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 
 9.2.  Informative References
 
+   [HPACK]    Peon, R. and H. Ruellan, "HPACK: Header Compression for
+              HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7541>.
+
    [HTTP-BEST-PRACTICES]
               Nottingham, M., "Building Protocols with HTTP", BCP 56,
               RFC 9205, DOI 10.17487/RFC9205, June 2022,
@@ -1206,6 +1211,11 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
               Sheet", n.d.,
               <https://cheatsheetseries.owasp.org/cheatsheets/
               Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html>.
+
+   [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
+              Field Compression for HTTP/3", RFC 9204,
+              DOI 10.17487/RFC9204, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9204>.
 
    [REGISTRY] Guerreiro, M., Kirazci, U., and T. Meunier, "Registry and
               Signature Agent card for Web bot auth", Work in Progress,
@@ -1417,7 +1427,24 @@ C.6.  Freshness and Replay
    accepting signatures with freshness windows longer than their risk
    model permits.
 
-C.7.  Directory Response Signature Lifetimes
+C.7.  Field compression
+
+   Covering per-request components costs bytes when a connection is
+   reused.  HPACK [HPACK] and QPACK [QPACK] can index a repeated
+   Signature, Signature-Input, or Signature-Agent value, so a signature
+   reused across requests on one connection is sent once and referenced
+   afterwards.  A per-request value cannot be referenced; it is sent as
+   a literal every time.  Huffman coding and an indexed field name
+   reduce that literal, they do not replace the reference.
+
+   This is not a reason to widen the covered components.  The bytes
+   saved are the bytes of a credential anyone who observes it can replay
+   until expires (Section 5.2), and one static signature for many
+   requests is an anti-pattern (Appendix C.12).  An encoder that treats
+   a signature as a credential may also decline to index it
+   (Section 7.1.3 of [HPACK]).
+
+C.8.  Directory Response Signature Lifetimes
 
    Where the key set is redistributed, revocation latency is already
    floored by how often the redistributor republishes, so a short
@@ -1428,7 +1455,7 @@ C.7.  Directory Response Signature Lifetimes
    of any list they expect to appear in.  The lever for faster
    revocation is publishing more often, not signing shorter.
 
-C.8.  Rollout and Fallback
+C.9.  Rollout and Fallback
 
    Web Bot Auth deployments will coexist with existing bot
    identification signals during rollout.  Verifiers can continue to use
@@ -1439,7 +1466,7 @@ C.8.  Rollout and Fallback
    signature into a trusted identity.  It should leave the request in
    the origin's existing bot-management path.
 
-C.9.  Proxies and Intermediaries
+C.10.  Proxies and Intermediaries
 
    Proxies and intermediaries need to preserve the fields covered by a
    signature if the origin will verify that signature.  If a proxy
@@ -1451,7 +1478,7 @@ C.9.  Proxies and Intermediaries
    assertion is local policy; it is not a replacement for the original
    HTTP Message Signature.
 
-C.10.  CORS
+C.11.  CORS
 
    Key directories contain public key material.  If browser-based
    verifiers need to fetch them cross-origin, a directory server can use
@@ -1459,7 +1486,7 @@ C.10.  CORS
    without credentials.  CORS is not key authentication and does not
    replace signature validation.
 
-C.11.  Deployment Anti-Patterns
+C.12.  Deployment Anti-Patterns
 
    Deployments should avoid:
 
@@ -1832,7 +1859,13 @@ Acknowledgments
 
 Changelog
 
-   draft-meunier-webbotauth-httpsig-protocol-02
+   draft-meunier-webbotauth-httpsig-protocol-01
+
+   *  Add an Identifiers and Trust Model section: opaque and domain
+      binding modes.
+
+   *  Describe the document as a protocol throughout (was:
+      architecture).
 
    *  Fold draft-meunier-webbotauth-httpsig-directory into this document
       with its IANA registrations, and move to Standards Track.
@@ -1864,13 +1897,8 @@ Changelog
       identifier mapping, what an unsigned request tells a verifier, and
       the worst case for a compromised key.
 
-   draft-meunier-webbotauth-httpsig-protocol-01
-
-   *  Add an Identifiers and Trust Model section: opaque and domain
-      binding modes.
-
-   *  Describe the document as a protocol throughout (was:
-      architecture).
+   *  Note how field compression treats reused and per-request
+      signatures, and why that is not a reason to widen coverage.
 
    draft-meunier-webbotauth-httpsig-protocol-00
 
