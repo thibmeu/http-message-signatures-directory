@@ -53,8 +53,10 @@ normative:
 
 
 informative:
+  HPACK: RFC7541
   HTTP-BEST-PRACTICES: RFC9205
   OAUTH-BEARER: RFC6750
+  QPACK: RFC9204
   RFC8446:
   REGISTRY: I-D.draft-meunier-webbotauth-registry
   OWASP-SSRF:
@@ -347,6 +349,7 @@ reuse it against the same origin until then.
 `expires` bounds how long that lasts; the covered components bound what it
 reaches. Agents that want to narrow it SHOULD also cover `@method`, and
 either `@path` or `@target-uri`, as {{example-multiple-signatures}} does. A signer that omits them remains conformant.
+{{field-compression}} covers what that costs on the wire.
 
 No component covers the body. An Agent that needs one MUST send and cover
 `Content-Digest` {{DIGEST-FIELDS}}. This document does not require it. Most
@@ -642,13 +645,18 @@ keys. For instance, {{REGISTRY}} works that way, and the verifier still resolves
 Signatures. Deployments MAY use it when they need that model. This protocol
 uses `Signature-Agent` as its default discovery mechanism.
 
-## Session Protocol Considerations
+## Session considerations {#sessions}
 
-Per-request signature generation and verification may incur computational overhead from cryptographic operations and key discovery. For high-frequency interactions, origins might establish sessions to reduce repeated verification.
+Per-request signing and verification costs CPU; uncached key discovery adds
+latency. For high request rates, an origin can verify a request-specific
+signature once and issue a session credential for later requests. This can
+amortize asymmetric verification and reduce bytes, but adds the risks of token
+theft and replay.
 
-One approach: after successful signature verification, an origin issues a session credential (e.g., an HTTP cookie) that subsequent requests present in lieu of a full signature. This trades cryptographic verification costs for the security properties of bearer tokens, including susceptibility to credential theft and replay within the session lifetime.
-
-The design of session protocols, including appropriate session lifetimes and binding mechanisms, is out of scope for this document.
+A reused signature already has token semantics until `expires`. A session
+established from one extends that window past `expires` unless the credential is
+bounded to it: no longer-lived, and no wider in scope than the components the
+signature covered. Session establishment and binding are out of scope.
 
 # Security Considerations {#security-considerations}
 
@@ -667,6 +675,8 @@ An origin SHOULD refuse Signature headers when communicated over an unsecured ch
 ## Performance Impact
 
 Origins should account for the overhead of signature verification in their operations. A local cache of public keys reduces network requests and verification latency. The choice of signing algorithm impacts CPU requirements. Origins should monitor verification latency and set appropriate timeouts to maintain service levels under load.
+See {{sessions}}: a session amortizes that cost by replacing verification with a
+bearer credential. {{field-compression}} covers the byte cost.
 
 ## Nonce validation {#nonce-validation}
 
@@ -1125,6 +1135,23 @@ windows; others need strict {{nonce-validation}}.
 These choices are deployment policy. Verifiers should avoid accepting signatures
 with freshness windows longer than their risk model permits.
 
+## Field compression {#field-compression}
+
+Covering per-request components costs bytes when a connection is reused. HPACK
+{{HPACK}} and QPACK {{QPACK}} can index a repeated `Signature`,
+`Signature-Input`, or `Signature-Agent` value, so a signature reused across
+requests on one connection is sent once and referenced afterwards. A per-request
+value cannot be referenced; it is sent as a literal every time. Huffman coding
+and an indexed field name reduce that literal, they do not replace the
+reference.
+
+This is not a reason to widen the covered components. The bytes saved are the
+bytes of a credential anyone who observes it can replay until `expires`
+({{generating-http-message-signature}}), and one static signature for many
+requests is an anti-pattern ({{deployment-anti-patterns}}). An encoder that
+treats a signature as a credential may also decline to index it
+({{Section 7.1.3 of HPACK}}).
+
 ## Directory Response Signature Lifetimes
 
 Where the key set is redistributed, revocation latency is already floored by
@@ -1163,7 +1190,7 @@ fetch them cross-origin, a directory server can use a permissive CORS policy suc
 as `Access-Control-Allow-Origin: *` without credentials. CORS is not key
 authentication and does not replace signature validation.
 
-## Deployment Anti-Patterns
+## Deployment Anti-Patterns {#deployment-anti-patterns}
 
 Deployments should avoid:
 
@@ -1543,8 +1570,10 @@ Martin Thomson.
 # Changelog
 {:numbered="false"}
 
-draft-meunier-webbotauth-httpsig-protocol-02
+draft-meunier-webbotauth-httpsig-protocol-01
 
+- Add an Identifiers and Trust Model section: opaque and domain binding modes.
+- Describe the document as a protocol throughout (was: architecture).
 - Fold `draft-meunier-webbotauth-httpsig-directory` into this document with its
   IANA registrations, and move to Standards Track.
 - Anchor identity on the resolved `Signature-Agent` URL rather than the key.
@@ -1564,11 +1593,8 @@ draft-meunier-webbotauth-httpsig-protocol-02
 - Move the domain binding to an appendix. Add objectives, the relationship with
   anonymous bot authentication, a use case to identifier mapping, what an
   unsigned request tells a verifier, and the worst case for a compromised key.
-
-draft-meunier-webbotauth-httpsig-protocol-01
-
-- Add an Identifiers and Trust Model section: opaque and domain binding modes.
-- Describe the document as a protocol throughout (was: architecture).
+- Note how field compression treats reused and per-request signatures, and why
+  that is not a reason to widen coverage.
 
 draft-meunier-webbotauth-httpsig-protocol-00
 
