@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 30 January 2027                                          Amazon
+Expires: 6 February 2027                                          Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                            29 July 2026
+                                                           5 August 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -17,7 +17,7 @@ Expires: 30 January 2027                                          Amazon
 Abstract
 
    This document defines the "Signature Agent Card", a JSON metadata
-   document that a signature agent using [DIRECTORY] publishes to
+   document that a signature agent using [PROTOCOL] publishes to
    describe itself: its identity, purpose, rate expectations, and
    cryptographic keys.  Its parameters are drawn from the OAuth Dynamic
    Client Registration Metadata registry [DCR], the same namespace used
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 January 2027.
+   This Internet-Draft will expire on 6 February 2027.
 
 Copyright Notice
 
@@ -134,7 +134,7 @@ Table of Contents
    Signature Agents are entities that originate or forward signed HTTP
    requests on behalf of users or services.  They include bots
    developers, platforms providers, and other intermediaries using
-   [DIRECTORY].  These agents often need to identify themselves, and
+   [PROTOCOL].  These agents often need to identify themselves, and
    establish trust with origin servers.
 
    Today, the mechanisms for doing so are inconsistent: some rely on
@@ -174,7 +174,7 @@ Table of Contents
    Client ID Metadata Document is a valid Signature Agent Card.  A
    client that does not understand the web_bot_auth object ignores it.
 
-   The Signature-Agent header is defined in Section 4.1 of [DIRECTORY].
+   The Signature-Agent header is defined in Section 5.2.1 of [PROTOCOL].
    A Signature Agent Card can be referenced from that header using
    type=cimd, as described in Section 4.1.
 
@@ -935,13 +935,6 @@ Content-Digest: sha-256=:base64hash:
               RFC 7591, DOI 10.17487/RFC7591, July 2015,
               <https://www.rfc-editor.org/rfc/rfc7591>.
 
-   [DIRECTORY]
-              Meunier, T. and S. Major, "HTTP Message Signatures
-              Directory", Work in Progress, Internet-Draft, draft-
-              meunier-webbotauth-httpsig-directory-00, 26 June 2026,
-              <https://datatracker.ietf.org/doc/html/draft-meunier-
-              webbotauth-httpsig-directory-00>.
-
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
               DOI 10.17487/RFC9110, June 2022,
@@ -982,6 +975,12 @@ Content-Digest: sha-256=:base64hash:
               Jones, M. and N. Sakimura, "JSON Web Key (JWK)
               Thumbprint", RFC 7638, DOI 10.17487/RFC7638, September
               2015, <https://www.rfc-editor.org/rfc/rfc7638>.
+
+   [PROTOCOL] Meunier, T. and S. Major, "HTTP Message Signatures for
+              automated traffic", Work in Progress, Internet-Draft,
+              draft-meunier-webbotauth-httpsig-protocol-00, 26 June
+              2026, <https://datatracker.ietf.org/doc/html/draft-
+              meunier-webbotauth-httpsig-protocol-00>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
