@@ -1227,9 +1227,9 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    [SIGNATURE-KEY]
               Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
               Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-07, 4 July 2026,
+              key-08, 5 August 2026,
               <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-07>.
+              httpbis-signature-key-08>.
 
    [USE-CASES]
               Nottingham, M., "Use Cases for Authentication of Web

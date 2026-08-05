@@ -1054,9 +1054,9 @@ Content-Digest: sha-256=:base64hash:
    [SIGNATURE-KEY]
               Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
               Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-07, 4 July 2026,
+              key-08, 5 August 2026,
               <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-07>.
+              httpbis-signature-key-08>.
 
    [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
