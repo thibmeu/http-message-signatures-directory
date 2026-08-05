@@ -402,8 +402,6 @@ evidence that another signer contributed to the request. A signer that covers
 `"signature";key=X` MUST also cover `"signature-input";key=X`, and MUST cover
 every component identifier listed in `"signature-input";key=X`.
 
-[[ editor's note: the following paragraph to be checked with Dennis and Justin ]]
-
 A signature value on its own does not identify the message it was computed
 over, which is why {{Section 7.3.7 of HTTP-MESSAGE-SIGNATURES}} recommends
 against signing one. Covering `signature-input` is not sufficient:
