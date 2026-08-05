@@ -1,4 +1,4 @@
-<!-- regenerate: off (set to off if you edit this file) -->
+<!-- regenerate: on (set to off if you edit this file) -->
 
 # HTTP Message Signatures for Bots Drafts
 
