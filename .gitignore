@@ -1,9 +1,8 @@
 *~
 /*-[0-9][0-9].xml
 archive.json
-draft-meunier-http-message-signatures-directory.xml
-draft-meunier-signature-agent-rep.xml
-draft-meunier-web-bot-auth-architecture.xml
+draft-meunier-webbotauth-httpsig-protocol.xml
+draft-meunier-webbotauth-registry.xml
 Gemfile.lock
 /.gems/
 *.html
