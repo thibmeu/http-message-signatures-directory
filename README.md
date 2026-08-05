@@ -1,22 +1,22 @@
 <!-- regenerate: on (set to off if you edit this file) -->
 
-# HTTP Message Signatures for Bots Drafts
+# WEBBOTAUTH Drafts
 
 This is the working area for individual Internet-Drafts.
 
-## HTTP Message Signatures Directory
+## HTTP Message Signatures for automated traffic
 
-* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-http-message-signatures-directory.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-http-message-signatures-directory)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-http-message-signatures-directory)
-* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-http-message-signatures-directory.diff)
+* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-httpsig-protocol.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol)
+* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-httpsig-protocol.diff)
 
-## HTTP Message Signatures for automated traffic Architecture
+## Registry and Signature Agent card for Web bot auth
 
-* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-web-bot-auth-architecture.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-web-bot-auth-architecture)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-web-bot-auth-architecture)
-* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-web-bot-auth-architecture.diff)
+* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-registry.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-webbotauth-registry)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-registry)
+* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-registry.diff)
 
 
 ## Contributing
@@ -24,9 +24,8 @@ This is the working area for individual Internet-Drafts.
 See the
 [guidelines for contributions](https://github.com/thibmeu/http-message-signatures-directory/blob/main/CONTRIBUTING.md).
 
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
+The contributing file also has tips on how to make contributions, if you
+don't already know how to do that.
 
 ## Command Line Usage
 
