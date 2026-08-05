@@ -1913,8 +1913,7 @@ present, each signer <span class="bcp14">SHOULD</span> provide a <code>Signature
 evidence that another signer contributed to the request. A signer that covers
 <code>"signature";key=X</code> <span class="bcp14">MUST</span> also cover <code>"signature-input";key=X</code>, and <span class="bcp14">MUST</span> cover
 every component identifier listed in <code>"signature-input";key=X</code>.<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-3">[[ editor's note: the following paragraph to be checked with Dennis and Justin ]]<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-4">A signature value on its own does not identify the message it was computed
+<p id="section-5.2.2-3">A signature value on its own does not identify the message it was computed
 over, which is why <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> recommends
 against signing one. Covering <code>signature-input</code> is not sufficient:
 it lists component identifiers, whose values resolve against whatever
@@ -1923,17 +1922,17 @@ without covering them would still verify after the whole header set was lifted
 onto a different message, the ambiguity
 <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> describes. Covering the union
 addresses this: the outer signer commits to a message on which the inner signature
-is checkable, under which key, and over which validity window.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-5">A signer that cannot cover one of those components, because it changed the
+is checkable, under which key, and over which validity window.<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-4">A signer that cannot cover one of those components, because it changed the
 value the inner signature was computed over, <span class="bcp14">MUST NOT</span> cover the inner
 <code>signature</code> member. It signs the request on its own terms, and the inner
-signature is left untouched.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-6">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
+signature is left untouched.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-5">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
 components and its own key. An outer signature that covers an inner one is
 evidence that those bytes, over that set of components, were present. It does
 not make the inner signature valid, and it does not express authorization,
 delegation, or consent. Those meanings are deployment policy, or are carried in
-separately signed fields.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
+separately signed fields.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="anti-replay">
