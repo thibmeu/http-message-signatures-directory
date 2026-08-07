@@ -216,12 +216,15 @@ are involved.
 carry continuity across a rotation, as that value is derived from the key
 material.
 
-## When no URL is sent {#no-url}
+## When no URL is available {#no-url}
 
-`Signature-Agent` is RECOMMENDED but not required. Without it, a verifier has
-only the key, and the identifier is the `keyid` thumbprint defined in
-{{generating-http-message-signature}}. Verification still works, provided the
-verifier already holds that key.
+A signed request MUST carry `Signature-Agent` ({{signature-agent}}). A verifier
+can still be left with no URL to attribute to: discovery failed with nothing
+cached ({{discovery-failure}}), redistributed material carried no proof
+({{redistributed-key-material}}), or the header is absent. The identifier is
+then the `keyid` thumbprint defined in
+{{generating-http-message-signature}}. A verifier that already holds that key
+verifies the request, and attributes it no further than the holder of that key.
 
 This mode has no rotation. A new key is a new identifier, and the verifier has
 no way to connect the two.
@@ -374,8 +377,8 @@ of the signature covering it. Signers MUST send the dictionary form. The two
 are distinguishable on the wire: a String Item begins with a double quote `"`
 while a Dictionary member key does not.
 
-It is RECOMMENDED that the Agent sends requests with `Signature-Agent` header, as described in {{sending-request}}.
-If the header is to be sent, one of its members MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
+A signed request MUST carry the `Signature-Agent` header, as described in {{sending-request}}.
+Its member keyed to the signature label MUST be signed as a component as defined in {{Section 2.1 of HTTP-MESSAGE-SIGNATURES}}.
 The `Signature-Agent` member identifies where candidate key material can be found.
 The key used to verify the signature is selected by the `keyid` parameter of the
 corresponding `Signature-Input` member.
@@ -386,13 +389,12 @@ This results in the following components to be signed
 ("@authority" "signature-agent";key="sig1")
 ~~~
 
-It is RECOMMENDED that the `key` matches the signature label.
-
 ### Multiple signatures {#multiple-signatures}
 
 A request MAY contain more than one Web Bot Auth signature. Each signature is
-identified by its HTTP Message Signatures label. When `Signature-Agent` is
-present, each signer SHOULD provide a `Signature-Agent` member for its label.
+identified by its HTTP Message Signatures label. Each signer MUST provide a
+`Signature-Agent` member for its label. A verifier MUST NOT attribute a
+signature to a member that signature does not cover.
 
 A signer MAY cover members from another signature label, which preserves
 evidence that another signer contributed to the request. A signer that covers
@@ -462,14 +464,11 @@ Signature-Input: sig=("@authority" "signature-agent";key="sig");\
 Signature-Agent: sig="https://signer.example.com"
 ~~~
 
-The Agent SHOULD send requests with two headers
+A signed request carries three headers
 
 1. `Signature` defined in {{generating-http-message-signature}}
 2. `Signature-Input` defined in {{generating-http-message-signature}}
-
-As described in {{signature-agent}}, it is RECOMMENDED that the Agent also send
-the `Signature-Agent` header. Without it the Agent is identified by its key
-alone, with the consequences described in {{no-url}}.
+3. `Signature-Agent` defined in {{signature-agent}}
 
 The Origin learns the URL from the request, so it resolves keys after the
 first request rather than before it. Later requests verify from cache
@@ -1254,9 +1253,10 @@ does not say that Alice's agent authorized the remote browser to act for it.
 
 # Test Vectors
 
-These vectors exercise the minimum this document requires, so most of them
-cover `@authority` and nothing else, with an `expires` far enough out that they
-do not age. That combination is a parsing and verification exercise, not a
+Except where noted, these vectors exercise the minimum this document requires:
+`@authority` and a `Signature-Agent` member and nothing else, with an `expires`
+far enough out that they do not age. That combination is a parsing and
+verification exercise, not a
 configuration to copy: as {{generating-http-message-signature}} explains, a
 signature covering `@authority` alone is reusable against that authority for
 any method, path, and body until it expires. Deployments should cover more and
@@ -1266,41 +1266,6 @@ expire sooner.
 
 The test vectors in this section use the RSA-PSS key defined in {{Appendix B.1.2 of HTTP-MESSAGE-SIGNATURES}}.
 This section includes non-normative test vectors that may be used as test cases to validate implementation correctness.
-
-### Signature-Agent absent from the request
-
-This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request does not contain
-a `Signature-Agent` header.
-
-The corresponding signature base is:
-
-~~~
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-~~~
-
-This results in the following Signature-Input and Signature header fields being added to the message under the label `sig1`:
-
-~~~
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-Signature: sig1=:hWPaj85MWQiRkzU4jnIKvdPQiDfMCPIoxOP8nZveNc3aFQ7r/UmXWCwGNImw588iRvTFey5TR3fVEgnXpcttlyK+u5pN831z9Wlr+IMNfub4uEM3SuO+SKFygJZyLG0pf7OAiRcU4C0gyx1BS/+z9ydQTRzDLr88wCkBBRqwGRrSi8HTwxkqg1jugobh93hcnU6gV8MK1n+VnhRprIgl2RQSO6q5cfbB4OS8C4t/8ndW0lYmP2SWzKZJXnpX5Wrj17PuLqnVW6MO8pJnLAMXNvxUdx32KHeq/cHFrzZazZsua3UOoP+k+niHwoQ8bBWj1Vi4mM1mYJK+fk366cCLsQ==:
-~~~
 
 ### Signature-Agent included present on the request {#example-signature-agent-included}
 
@@ -1382,41 +1347,6 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 
 The test vectors in this section use the Ed25519 key defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
-
-### Signature-Agent absent from the request
-
-This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
-a `Signature-Agent` header.
-
-The corresponding signature base is:
-
-~~~
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-~~~
-
-This results in the following Signature-Input and Signature header fields being added to the message under the label `sig1`:
-
-~~~
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-Signature: sig1=:QKN4fTdIYfh82fvoZCQiQA1weuozfCS/Led2zTMbewMMqH8PI2Wsy/5c4ao6B6D09nraNQdBNOADg8aM1MqfCg==:
-~~~
 
 ### Signature-Agent included present on the request
 
