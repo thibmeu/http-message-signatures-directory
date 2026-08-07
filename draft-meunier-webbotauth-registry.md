@@ -64,7 +64,6 @@ informative:
   RATELIMIT-HEADER: I-D.draft-ietf-httpapi-ratelimit-headers
   RFC8446:
   ROBOTSTXT: RFC9309
-  SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
   UTF8: RFC3629
 
 --- abstract
@@ -503,15 +502,6 @@ When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
 via a `Signature-Agent` header member with `type=cimd`. The URI carried in that
 member is the `client_id` of a Signature Agent Card resolved as described in
 {{cimd-discovery}}.
-
-## Composable discovery with Signature-Key {#signature-key}
-
-The discovery in this document is anchored on the `client_id` URL and is
-independent of the header that carries it. {{SIGNATURE-KEY}} defines a composable
-`Signature-Key` header with an extensible registry of key-distribution schemes.
-A future scheme could carry a `client_id` URL, letting a verifier resolve a
-Signature Agent Card per-signature alongside the keying material. This document
-does not define such a scheme; it is noted as a possible composable carrier.
 
 ## Change Notification {#change-notification}
 

@@ -62,7 +62,6 @@ informative:
   OWASP-SSRF:
     title: OWASP Server-Side Request Forgery Prevention Cheat Sheet
     target: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
-  SIGNATURE-KEY: I-D.draft-hardt-httpbis-signature-key
   USE-CASES: I-D.draft-nottingham-webbotauth-use-cases
   WELLKNOWN-URI: RFC8615
 
@@ -216,10 +215,6 @@ are involved.
 `keyid` selects which key verifies a given request. Verifiers cannot use it to
 carry continuity across a rotation, as that value is derived from the key
 material.
-
-{{SIGNATURE-KEY}} takes a different approach, where a long-lived key signs
-short-lived delegated keys. Deployments MAY use it. This document does not
-define rotation that way.
 
 ## When no URL is sent {#no-url}
 
@@ -636,12 +631,6 @@ A verifier polling a directory on its own schedule is resolving it. So is a
 control plane polling on behalf of the verifiers it serves. None of these options
 constitute redistribution. Nor is a list that names directory URLs rather than embedding
 keys. For instance, {{REGISTRY}} works that way, and the verifier still resolves them.
-
-### Signature-Key header
-
-{{SIGNATURE-KEY}} defines a separate key discovery header for HTTP Message
-Signatures. Deployments MAY use it when they need that model. This protocol
-uses `Signature-Agent` as its default discovery mechanism.
 
 ## Session considerations {#sessions}
 
