@@ -1514,6 +1514,22 @@ Martin Thomson.
 # Changelog
 {:numbered="false"}
 
+draft-meunier-webbotauth-httpsig-protocol-02
+
+- Require `Signature-Agent` on every signed request, and require each signature
+  to cover the member keyed to its own label. Drop the test vectors that omitted
+  the header. Recast the no-URL identifier as a verifier state, not an Agent
+  mode.
+- Defer `Signature-Key` to draft-hardt-httpbis-signature-key.
+- List the components an Agent may cover beyond the required set.
+- Drop the 2119 keywords from the human binding guidance in Privacy
+  Considerations.
+- Redraw the figures. The overview figure now shows the architecture, naming
+  who publishes and who resolves, rather than a message order, and places the
+  Agent inside the User. The sending figure shows key resolution following the
+  first request, conditional on the keys not already being resolved, and the
+  request example moves out of it.
+
 draft-meunier-webbotauth-httpsig-protocol-01
 
 - Add an Identifiers and Trust Model section: opaque and domain binding modes.
