@@ -347,9 +347,16 @@ signature covering `@authority` alone verifies against any method, path, or body
 sent to that authority until it expires, so anyone who observes one request can
 reuse it against the same origin until then.
 `expires` bounds how long that lasts; the covered components bound what it
-reaches. Agents that want to narrow it SHOULD also cover `@method`, and
-either `@path` or `@target-uri`, as {{example-multiple-signatures}} does. A signer that omits them remains conformant.
-{{field-compression}} covers what that costs on the wire.
+reaches. {{field-compression}} covers what that costs on the wire.
+
+Agents that want to narrow it SHOULD also cover the following components. A
+signer that omits them remains conformant.
+
+`@method`
+: narrows the signature to one method.
+
+`@path` or `@target-uri`
+: narrows it to one resource. {{example-multiple-signatures}} covers both.
 
 No component covers the body. An Agent that needs one MUST send and cover
 `Content-Digest` {{DIGEST-FIELDS}}. This document does not require it. Most
