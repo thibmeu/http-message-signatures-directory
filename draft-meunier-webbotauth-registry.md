@@ -360,7 +360,7 @@ Example
 A Signature Agent Card is discovered by dereferencing its `client_id`, as
 described in {{cimd-discovery}}, or from a registry.
 
-A registry is a list of URLs, each refering to a signature agent card. An entry
+A registry is a list of URLs, each referring to a signature agent card. An entry
 MAY be the `client_id` of a Signature Agent Card.
 
 The URI scheme MUST be one of:

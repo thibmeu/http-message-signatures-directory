@@ -109,7 +109,7 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
     act as that agent. It is also overloaded - an agent may be using Chromium and
     wish to present itself as such to ensure rendering works, yet it still wants to
     differentiate its traffic to the site.
- 2. IP blocks alone can present a confusing story. IPs on cloud plaforms have
+ 2. IP blocks alone can present a confusing story. IPs on cloud platforms have
     layers of ownership - the platform owns the IP and registers it in their
     published IP blocks, only to be re-published by the agent with little to bind
     the publication to the actual service provider that may be renting infra. Purchasing
@@ -722,7 +722,7 @@ needed.
 ## Key Reuse Considered Harmful
 
 Implementations SHOULD NOT reuse a signing key for different purposes. For
-example, if an agent implementor has two agents they want to differentiate,
+example, if an agent implementer has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.
 
 ## Reverse proxy consideration {#reverse-proxy}
