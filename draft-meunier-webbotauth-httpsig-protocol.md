@@ -861,11 +861,10 @@ choice of protocol for it.
 
 ## No Human Correlation
 
-The key used for signing MUST NOT be tied to a specific human individual.
-Keys SHOULD represent a role, company, or automation identity (e.g., "news-aggregator-
-bot", "example-crawler-v1"). This avoids accidental exposure of personally
-identifiable information and prevents the misuse of keys for user tracking or
-profiling.
+A key tied to a specific human individual exposes personally identifiable
+information and makes the key usable for user tracking or profiling. A key that
+represents a role, company, or automation identity (e.g., "news-aggregator-bot",
+"example-crawler-v1") avoids this.
 
 ## Minimizing Tracking Risks
 
