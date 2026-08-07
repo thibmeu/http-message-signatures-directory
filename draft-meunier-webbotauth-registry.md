@@ -908,6 +908,10 @@ The editor would also like to thank the following individuals (listed in alphabe
 # Changelog
 {:numbered="false"}
 
+draft-meunier-webbotauth-registry-04
+
+- Defer `Signature-Key` to draft-hardt-httpbis-signature-key.
+
 draft-meunier-webbotauth-registry-03
 
 - Make the Signature Agent Card an OAuth client metadata document with a
