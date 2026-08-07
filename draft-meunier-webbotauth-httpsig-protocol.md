@@ -237,15 +237,15 @@ Resolving a `Signature-Agent` URL over TLS establishes that the host named in
 the URL served this key set at fetch time.
 Whoever controls that URL says this key signs for it. That
 is what makes the URL usable as an identifier, and all it gives you. It does
-not say that the operator of that URL is honest, or that is is the same party
+not say that the operator of that URL is honest, or that it is the same party
 everyone knows about.
 
 What matters is the association between a URL and the keys published there. A
 verifier that already holds the keys does not need to fetch it. A verifier MUST
 NOT attribute a request to a `Signature-Agent` URL unless it made this
-ssociation. This can be either by resolving the URL itself, at request time or
+association. This can be either by resolving the URL itself, at request time or
 ahead of it, or from {{redistributed-key-material}}. Verifiers may refetch a URL
-to handle up key additions and removals, bounded by {{cache-behaviour}}.
+to handle key additions and removals, bounded by {{cache-behaviour}}.
 
 Where a verifier obtains the same pair from more than one source, the newer
 pair wins, including when it omits a key that older resolution included.
