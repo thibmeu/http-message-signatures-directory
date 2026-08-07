@@ -278,17 +278,18 @@ document.
 # Protocol Overview
 
 ~~~aasvg
-+--------+               +---------+                           +----------+
-|        |               |         |         Exchange          |          |
-|        |               |         |<===== Cryptographic =====>|          |
-|        |               |         |         material          |          |
-|  User  +--- Request -->|  Agent  |                           |  Origin  |
-|        |               |         +--- Request + Signature -->|          |
-|        |               |         |<-------- Response --------+          |
-|        |<-- Response --+         |                           |          |
-|        |               |         |                           |          |
-+--------+               +---------+                           +----------+
++----------------+
+| User           |
+|     +-------+  |                                 +--------+
+|     | Agent +--+----- signed request + URL ----->| Origin |
+|     +---+---+  |                                 +---+----+
++---------+------+                                     |
+          |                                            |
+          |                +-----------+               |
+          +-- publishes -->| Directory |<-- resolves --+
+                           +-----------+
 ~~~
+{: title="Web Bot Auth architecture"}
 
 A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
@@ -296,6 +297,7 @@ and includes it in the request as defined in {{Section 3.1 of HTTP-MESSAGE-SIGNA
 along with the `Signature-Agent` header for discovery of its verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.
+How a User directs an Agent is outside the scope of this document.
 
 ## Deployment Models
 
@@ -444,24 +446,20 @@ and request a new signature, as described in {{requesting-message-signature}}.
 
 ### Sending a request {#sending-request}
 
-An Agent SHOULD send a request with the signature generated above. Updating the overview diagram, the flow looks as follow.
+An Agent SHOULD send a request with the signature generated above.
 
-~~~aasvg
-+---------+                                                                                  +----------+
-|         |                                     Exchange                                     |          |
-|         |<================================  Cryptographic  ===============================>|          |
-|         |                                     material                                     |          |
-|  Agent  |                                                                                  |  Origin  |
-|         |     .-------------------------------------------------------------------.        |          |
-|         +-----| GET /path/to/resource                                             |------->|          |
-|         |     | Signature: sig=abc==                                              |        |          |
-+---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
-                |                  created=1700000000;\                             |
-                |                  expires=1700011111;\                             |
-                |                  keyid="ba3e64==";\                               |
-                |                  tag="web-bot-auth"                               |
-                | Signature-Agent: sig="https://signer.example.com"                 |
-                '-------------------------------------------------------------------'
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+GET /path/to/resource HTTP/1.1
+Host: origin.example.com
+Signature: sig=abc==
+Signature-Input: sig=("@authority" "signature-agent";key="sig");\
+                 created=1700000000;\
+                 expires=1700011111;\
+                 keyid="ba3e64==";\
+                 tag="web-bot-auth"
+Signature-Agent: sig="https://signer.example.com"
 ~~~
 
 The Agent SHOULD send requests with two headers
@@ -472,6 +470,29 @@ The Agent SHOULD send requests with two headers
 As described in {{signature-agent}}, it is RECOMMENDED that the Agent also send
 the `Signature-Agent` header. Without it the Agent is identified by its key
 alone, with the consequences described in {{no-url}}.
+
+The Origin learns the URL from the request, so it resolves keys after the
+first request rather than before it. Later requests verify from cache
+({{cache-behaviour}}).
+
+~~~aasvg
++-------+                   +--------+     +-----------+
+| Agent |                   | Origin |     | Directory |
++---+---+                   +---+----+     +-----+-----+
+    |                           |                |
+    +== Signed request + URL ==>|                |
+    |                           |                |
+    |                       .-- if keys not resolved --.
+    |                       |   |                |     |
+    |                       |   +--- Resolve --->|     |
+    |                       |   |<---- Keys -----+     |
+    |                       |   |                |     |
+    |                       '--------------------------'
+    |                           |                |
+    |<======== Response ========+                |
+    |                           |                |
+~~~
+{: title="Key resolution follows the first request"}
 
 ## Requesting a Message signature {#requesting-message-signature}
 
