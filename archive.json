@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-06T02:40:27.356135+00:00",
+  "timestamp": "2026-08-09T01:49:49.960337+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1811,6 +1811,256 @@
           "body": "Should have been addressed in #106 \n\nIt clearly states that input has to be covered, not only signature-input but all components",
           "createdAt": "2026-08-05T11:54:36Z",
           "updatedAt": "2026-08-05T11:54:36Z"
+        }
+      ]
+    },
+    {
+      "number": 107,
+      "id": "I_kwDOOXJyWM8AAAABLxlXGw",
+      "title": "Order of key acquisition",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/107",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The signatures draft shows an exchange of keying material before any requests are initiated.  With the current design, the fetching of keys is almost certainly going to happen after the first interaction, because the URL will be unknown prior to that point.  It might pay to rearrange the presentation of [these](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5-1.1) [figures](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.2.5-2.1).\n\nBy the way, don't embed an example in the second of those figures.  That's not what diagrams are for.",
+      "createdAt": "2026-08-06T22:31:23Z",
+      "updatedAt": "2026-08-07T09:28:00Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This is a good observation, should the fetching of the key be blocking, or simply accumulated and performed async.",
+          "createdAt": "2026-08-07T09:28:00Z",
+          "updatedAt": "2026-08-07T09:28:00Z"
+        }
+      ]
+    },
+    {
+      "number": 108,
+      "id": "I_kwDOOXJyWM8AAAABLxmC0w",
+      "title": "Anti-replay requirement is backwards (and likely infeasible)",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/108",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "> Client[sic] MUST ensure that this nonce is unique for the validity window of the signature, as defined by created and expires attributes.\n\n-- https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.2.3-4\n\nThis is a fine requirement, but the real requirement is that the server maintain a strike register and reject requests with duplicate nonces.  That's a pretty tall ask, for something that is there primarily to protect the client.  Incentive alignment seems off.  Consider dropping this requirement.\n\nIf anti-theft is a desirable feature, the best idea I have is a TLS exporter binding.  That's not appreciably more feasible, of course.",
+      "createdAt": "2026-08-06T22:34:00Z",
+      "updatedAt": "2026-08-07T08:13:00Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This is the main reason why the sentence above is\n\n> Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a nonce to be added to the @signature-params.\n\nThis is an ask from the origin, as they get benefits. The section probably should be titled \"replay detection\" rather than \"anti-replay\" to help carry that framing.\n\nRe-reading, where I believe it reads wrong is that `Agents SHOULD [provide a nonce]` and right after `Clients MUST ensure that this nonce is unique`. This is similar in [section 6.3](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-nonce-validation). It is a confusion as the nonce is always optional for clients, and it's the origin that prompts it.\n\nTLS exporter binding was indeed considered in deployment but left out as a hard ask, especially as it would work poorly with intermediaries.\n\nGiven nonce is a parameter of RFC9421 already, this document may simply stands by section 7.2.2 of RFC9421 (signature replayability) and section 6.7 of the document (reverse proxy considerations). The addition by client and origin would remain out, possibly in a future document that would describe chaining, uniqueness, challenge/response in more details.",
+          "createdAt": "2026-08-07T08:13:00Z",
+          "updatedAt": "2026-08-07T08:13:00Z"
+        }
+      ]
+    },
+    {
+      "number": 109,
+      "id": "I_kwDOOXJyWM8AAAABLxnMmQ",
+      "title": "Key format",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/109",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Pick *one* please.  The idea that you might have multiple key formats in order to support different use cases is cute, but it doesn't foster interoperability.  The lessons of the Tower of Babel apply.  The JWKS format seems tolerable.",
+      "createdAt": "2026-08-06T22:38:10Z",
+      "updatedAt": "2026-08-07T08:55:06Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Just to confirm: are you discussing key format (as in the response that the verifier gets) or the `type`? `type` carries both a format and validation method.\n\n`directory` and `jwks_uri` share the same format already (as you observed in #116, and mentioned in [Section 5.5](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.5)): JWKS. CIMD is a format that requires one more resolution step (first the document, then the jwks_uri or inline jwks). I believe that moving its declaration to the registry draft, where it is actually used, makes more sense, and we can provide a uniform format this way (relates to #110).\n\nAs for validation, if we were to keep `jwks_uri` only (as it's more generic), the verifier would have to infer it based on the shape of the URI . When fetching `/.well-known/http-message-signatures-directory`, the verifier knows that there are certain validations to be made, and that's something the client controls. If the verifier receives an arbitrary path, it's automatically a JWKS URI.\n\nThe downside is that the well-known then has to be short, because it's included in every request (which goes into #116), and that the client has to infer validation based on pattern matching the URI instead of having a clear `type`.",
+          "createdAt": "2026-08-07T08:55:06Z",
+          "updatedAt": "2026-08-07T08:55:06Z"
+        }
+      ]
+    },
+    {
+      "number": 110,
+      "id": "I_kwDOOXJyWM8AAAABLxnbQA",
+      "title": "Drop the registry?",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/110",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The signatures draft seems to include a key resource format, which is sufficient.  Is the registry still useful if you have the definition for the key set?",
+      "createdAt": "2026-08-06T22:39:04Z",
+      "updatedAt": "2026-08-07T09:12:11Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "The registry draft is cited as informational by the protocol draft, and does not overlap with key format definition.\n\nThe draft serves two purposes, which are distinct from what the protocol draft aims to achieve\n\n1. provide a format to share multiple Signature-Agent URLs. Similar to IP lists, it allows for discovery of key directory ahead of time, instead of at request time. Cloudflare and AWS designed this format for interrop, and it has been reused by others since then.\n2. Register a `web_bot_auth` field within OAuth DCR so that CIMD can be used to provide information about webbotauth: IP list, rate limit, and future ones. This is not core to webbotauth (in my understanding) and therefore is a distinct draft.\n\nWe have not discussed the draft in the WG yet as most effort focus on the protocol (now including directory) draft.",
+          "createdAt": "2026-08-07T09:12:11Z",
+          "updatedAt": "2026-08-07T09:12:11Z"
+        }
+      ]
+    },
+    {
+      "number": 111,
+      "id": "I_kwDOOXJyWM8AAAABLxoN5Q",
+      "title": "Can't validate without a key",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/111",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "bug",
+        "protocol"
+      ],
+      "body": "> Signature-Agent is RECOMMENDED but not required. Without it, a verifier has only the key, and the identifier is the keyid thumbprint defined in [Section 5.2](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#generating-http-message-signature). Verification still works, provided the verifier already holds that key.\n\nIt's not really possible for the verifier to hold the key.  Because, without `Signature-Agent`, it has no idea what key to expect.  Even if it has the key, how can it be sure that it does? ",
+      "createdAt": "2026-08-06T22:42:05Z",
+      "updatedAt": "2026-08-07T09:21:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "That's a good observation. Especially now that the URL is the anchor. That's a bug in wording.\n\nAs of today, the best path would be to have Signature-Agent` as a must. Other discovery mechanism exist (Signature-Key, oob, etc), but that complicates the story, especially with the URL being the identifier. We can leave that to future documents. If a verifier has the key already, the request is verifiable, but possibly not attributable. The section probably should be reworded around that.",
+          "createdAt": "2026-08-07T09:21:44Z",
+          "updatedAt": "2026-08-07T09:21:44Z"
+        }
+      ]
+    },
+    {
+      "number": 112,
+      "id": "I_kwDOOXJyWM8AAAABLxoWQw",
+      "title": "Drop `Signature-Key`?",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/112",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol"
+      ],
+      "body": "There's a bunch of mentions of `Signature-Key`, but it's not clear that these are needed.  In the interests of focus, I suggest removing these.",
+      "createdAt": "2026-08-06T22:42:35Z",
+      "updatedAt": "2026-08-07T07:49:28Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This was done pre-IETF, and indeed the conclusion from the meeting was it's better to wait on progress within HTTPbis.",
+          "createdAt": "2026-08-07T07:49:20Z",
+          "updatedAt": "2026-08-07T07:49:20Z"
+        }
+      ]
+    },
+    {
+      "number": 113,
+      "id": "I_kwDOOXJyWM8AAAABLxp8jw",
+      "title": "Mention @method as optional signature coverage",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/113",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I don't know if this is essential, but it seems like it would be compatible with many usage models to have a single method (probably GET) covered.",
+      "createdAt": "2026-08-06T22:48:36Z",
+      "updatedAt": "2026-08-07T07:37:13Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "There is a mention that it's a `SHOULD` in [5.2](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-generating-http-message-sig:~:text=Agents%20that%20want%20to%20narrow%20it%20SHOULD%20also%20cover%20%40method%2C%20and%20either%20%40path%20or%20%40target%2Duri%2C%20as%20Appendix%20D%2E2%20does)\n\nThere is possibly a better presentation to make: having a list of \"optional\", similar to the list of \"MUST\" presented above. The protocol does not forbid additional coverage, but giving clearer indication helps.",
+          "createdAt": "2026-08-07T07:37:13Z",
+          "updatedAt": "2026-08-07T07:37:13Z"
+        }
+      ]
+    },
+    {
+      "number": 114,
+      "id": "I_kwDOOXJyWM8AAAABLxqZZA",
+      "title": "Binding to humans",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/114",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "> The key used for signing MUST NOT be tied to a specific human individual. \n\n-- https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-7.2-1\n\nThis seems like it might be impossible to enforce.  It's probably better not to say anything at all.",
+      "createdAt": "2026-08-06T22:50:20Z",
+      "updatedAt": "2026-08-07T09:26:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "It is impossible to enforce. Providing a guidance is still useful. It probably should not be a MUST though.",
+          "createdAt": "2026-08-07T09:26:09Z",
+          "updatedAt": "2026-08-07T09:26:09Z"
+        }
+      ]
+    },
+    {
+      "number": 115,
+      "id": "I_kwDOOXJyWM8AAAABLxrmbw",
+      "title": "Tracking text is backwards",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/115",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "enhancement",
+        "protocol"
+      ],
+      "body": "> To limit tracking risks, implementations SHOULD avoid long-lived, globally unique key identifiers unless strictly necessary. Key rotation SHOULD be supported, and clients SHOULD take care to avoid signing information that could be used to correlate activity across contexts, especially where sensitive user data is involved.\n\n-- https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-7.3-1\n\nThe thing is, the entire point of this mechanism is to provide a consistent, long-lived, globally-unique identifier for the client.  So this text is a bit weird.\n\nObviously, a single client can assume multiple identities over time, according to its own needs, which is maybe something you can directly acknowledge (or not, because people can work that out for themselves).  Other than that, just make it clear that the reason to use this mechanism is to enable tracking of requests in a verifiable way.  Clients / Agents choose to do that because they believe that it might allow them to build (or build upon) a positive reputation with servers.  And because they consider the value of that reputation to exceed the value of any privacy they might get from not being traceable in that way. That framing should be in the introduction, not Section 7.3, of course.",
+      "createdAt": "2026-08-06T22:54:52Z",
+      "updatedAt": "2026-08-07T09:25:35Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "The mechanism is indeed intended to provide such capabilities for client that want them. Key rotation is more of a security consideration (and is mentioned in 5.5.2) than an actual privacy consideration.\n\nThe privacy consideration with regards to tracking is more a matter of #114 I believe.",
+          "createdAt": "2026-08-07T09:25:29Z",
+          "updatedAt": "2026-08-07T09:25:29Z"
+        }
+      ]
+    },
+    {
+      "number": 116,
+      "id": "I_kwDOOXJyWM8AAAABLxtYVQ",
+      "title": "Shorter names \ud83d\udeb2\ud83c\udfe0",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/116",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "```\nGET /.well-known/http-message-signatures-directory HTTP/1.1\nHost: example.com\nAccept: application/http-message-signatures-directory+json\n```\n\nBoth the `/.well-known/` resource and the content type are very, very, very long strings.  Is there a shorter, more evocative name you can use?\n\nFor the resource, \"botkeys\" or \"agentkeys\" perhaps.\n\nFor the content type, isn't this just \"application/jwks+json\"?",
+      "createdAt": "2026-08-06T23:01:42Z",
+      "updatedAt": "2026-08-07T09:09:03Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "I agree the path and media type could be shorter, even if they are not _unreasonably_ long.\n\nThese names are what is deployed today. Migration is likely feasible, but there would be a cost for little gain.\nIf we were to move, I'd favor `botkeys` (even if i'm not a fan of `bot` in this context, names are hard). maybe `webbotauth-keys` to be more descriptive.\nAlso worth noting that this path is not on `Signature-agent`, so that's does not make a difference in term of bytes there.\n\nFor the media type, the registered one is `application/jwk-set+json`. The profile for the directory restrict permitted alg, and kid (with a JWK thumbprint). That might not be sufficient to warrant a content type, and the well-known could impose constraint by itself, similar to how it recommends the response to be signed.\n\nThese seems to be decision the group would made after adoption though.\n\n",
+          "createdAt": "2026-08-07T09:09:03Z",
+          "updatedAt": "2026-08-07T09:09:03Z"
         }
       ]
     }
@@ -4520,7 +4770,7 @@
       ],
       "body": "1 Rename \"Public list\" to \"Registry Endpoint\" given there's nothing mandating the format to be publicly exposed\r\n2. Add a section about optional authentication\r\n3. Discuss conditional GET (ETag/If-Modified-Since), and caching guidance\r\n4. Add \"Change Notification\" section: registry operators MAY push signed POST notifications to registered callbacks on entry add/remove. Pull remains authoritative\r\n5. Expand Security Considerations (registry integrity via Content-Digest + HTTP Message Signatures) and Privacy Considerations (access patterns)\r\n\r\nfyi @punkeel @ulaskira ",
       "createdAt": "2026-03-24T14:07:03Z",
-      "updatedAt": "2026-04-24T16:00:28Z",
+      "updatedAt": "2026-08-06T06:10:31Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "e590199b885371e9c5d5f25ee5df5ba6c58c546f",
@@ -5245,7 +5495,7 @@
       ],
       "body": "the text was neither a must nor a should. however, we could use a stronger wording around the fact that signature-agent should be used to retrieve key based on a specific policy, not trigger a fetch directly\r\n\r\nthis is the proposal from this change\r\n\r\nfyi @sandormajor",
       "createdAt": "2026-07-10T09:11:30Z",
-      "updatedAt": "2026-08-05T10:13:19Z",
+      "updatedAt": "2026-08-06T06:10:32Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "70803d8a87f93b48629fba6a88577f3f7512b98b",
