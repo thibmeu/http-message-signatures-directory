@@ -1052,7 +1052,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 11 February 2027</td>
+<td class="center">Expires 12 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <dd class="internet-draft">draft-meunier-webbotauth-httpsig-protocol-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-08-10" class="published">10 August 2026</time>
+<time datetime="2026-08-11" class="published">11 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-02-11">11 February 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-12">12 February 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1130,7 +1130,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1732,82 +1732,54 @@ document.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
       <h2 id="name-protocol-overview">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-protocol-overview" class="section-name selfRef">Protocol Overview</a>
       </h2>
-<span id="name-web-bot-auth-flow"></span><figure id="figure-1">
+<span id="name-web-bot-auth-architecture"></span><figure id="figure-1">
         <div id="section-5-1.1">
           <div class="alignLeft art-svg artwork" id="section-5-1.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="288" width="536" viewBox="0 0 536 288" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-              <path d="M 8,32 L 8,64" fill="none" stroke="black"></path>
-              <path d="M 40,64 L 40,256" fill="none" stroke="black"></path>
-              <path d="M 64,32 L 64,64" fill="none" stroke="black"></path>
-              <path d="M 120,32 L 120,64" fill="none" stroke="black"></path>
-              <path d="M 152,64 L 152,256" fill="none" stroke="black"></path>
-              <path d="M 184,32 L 184,64" fill="none" stroke="black"></path>
-              <path d="M 320,32 L 320,64" fill="none" stroke="black"></path>
-              <path d="M 328,144 L 328,192" fill="none" stroke="black"></path>
-              <path d="M 360,64 L 360,136" fill="none" stroke="black"></path>
-              <path d="M 360,152 L 360,184" fill="none" stroke="black"></path>
-              <path d="M 360,200 L 360,256" fill="none" stroke="black"></path>
-              <path d="M 392,32 L 392,64" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 432,64" fill="none" stroke="black"></path>
-              <path d="M 480,64 L 480,128" fill="none" stroke="black"></path>
-              <path d="M 480,160 L 480,176" fill="none" stroke="black"></path>
-              <path d="M 480,200 L 480,256" fill="none" stroke="black"></path>
-              <path d="M 520,144 L 520,192" fill="none" stroke="black"></path>
-              <path d="M 528,32 L 528,64" fill="none" stroke="black"></path>
-              <path d="M 8,32 L 64,32" fill="none" stroke="black"></path>
-              <path d="M 120,32 L 184,32" fill="none" stroke="black"></path>
-              <path d="M 320,32 L 392,32" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 528,32" fill="none" stroke="black"></path>
-              <path d="M 8,64 L 64,64" fill="none" stroke="black"></path>
-              <path d="M 120,64 L 184,64" fill="none" stroke="black"></path>
-              <path d="M 320,64 L 392,64" fill="none" stroke="black"></path>
-              <path d="M 432,64 L 528,64" fill="none" stroke="black"></path>
-              <path d="M 128,96 Q 130,92.8 132,96 Q 134,99.2 136,96 Q 138,92.8 140,96 Q 142,99.2 144,96" fill="none" stroke="black"></path>
-              <path d="M 152,110 L 184,110" fill="none" stroke="black"></path>
-              <path d="M 152,114 L 184,114" fill="none" stroke="black"></path>
-              <path d="M 320,110 L 352,110" fill="none" stroke="black"></path>
-              <path d="M 320,114 L 352,114" fill="none" stroke="black"></path>
-              <path d="M 328,144 L 344,144" fill="none" stroke="black"></path>
-              <path d="M 504,144 L 520,144" fill="none" stroke="black"></path>
-              <path d="M 360,160 L 376,160" fill="none" stroke="black"></path>
-              <path d="M 456,160 L 472,160" fill="none" stroke="black"></path>
-              <path d="M 368,176 L 392,176" fill="none" stroke="black"></path>
-              <path d="M 448,176 L 480,176" fill="none" stroke="black"></path>
-              <path d="M 328,192 L 520,192" fill="none" stroke="black"></path>
-              <path d="M 160,222 L 216,222" fill="none" stroke="black"></path>
-              <path d="M 160,226 L 216,226" fill="none" stroke="black"></path>
-              <path d="M 304,222 L 360,222" fill="none" stroke="black"></path>
-              <path d="M 304,226 L 360,226" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="480,160 468,154.4 468,165.6" fill="black" transform="rotate(0,472,160)"></polygon>
-              <polygon class="arrowhead" points="376,176 364,170.4 364,181.6" fill="black" transform="rotate(180,368,176)"></polygon>
-              <path class="jump" d="M 360,152 C 354,152 354,136 360,136" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="360,112 348,106.4 348,117.6" fill="black" transform="rotate(0,352,112)"></polygon>
-              <polygon class="arrowhead" points="168,224 156,218.4 156,229.6" fill="black" transform="rotate(180,160,224)"></polygon>
-              <polygon class="arrowhead" points="152,96 140,90.4 140,101.6" fill="black" transform="rotate(0,144,96)"></polygon>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="496" viewBox="0 0 496 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,32 L 8,112" fill="none" stroke="black"></path>
+              <path d="M 56,64 L 56,96" fill="none" stroke="black"></path>
+              <path d="M 88,96 L 88,160" fill="none" stroke="black"></path>
+              <path d="M 120,64 L 120,96" fill="none" stroke="black"></path>
+              <path d="M 144,32 L 144,112" fill="none" stroke="black"></path>
+              <path d="M 224,144 L 224,176" fill="none" stroke="black"></path>
+              <path d="M 320,144 L 320,176" fill="none" stroke="black"></path>
+              <path d="M 416,64 L 416,96" fill="none" stroke="black"></path>
+              <path d="M 448,96 L 448,160" fill="none" stroke="black"></path>
+              <path d="M 488,64 L 488,96" fill="none" stroke="black"></path>
+              <path d="M 8,32 L 144,32" fill="none" stroke="black"></path>
+              <path d="M 56,64 L 120,64" fill="none" stroke="black"></path>
+              <path d="M 416,64 L 488,64" fill="none" stroke="black"></path>
+              <path d="M 120,80 L 184,80" fill="none" stroke="black"></path>
+              <path d="M 368,80 L 408,80" fill="none" stroke="black"></path>
+              <path d="M 56,96 L 120,96" fill="none" stroke="black"></path>
+              <path d="M 416,96 L 488,96" fill="none" stroke="black"></path>
+              <path d="M 8,112 L 144,112" fill="none" stroke="black"></path>
+              <path d="M 224,144 L 320,144" fill="none" stroke="black"></path>
+              <path d="M 88,160 L 104,160" fill="none" stroke="black"></path>
+              <path d="M 200,160 L 216,160" fill="none" stroke="black"></path>
+              <path d="M 328,160 L 344,160" fill="none" stroke="black"></path>
+              <path d="M 432,160 L 448,160" fill="none" stroke="black"></path>
+              <path d="M 224,176 L 320,176" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="416,80 404,74.4 404,85.6" fill="black" transform="rotate(0,408,80)"></polygon>
+              <polygon class="arrowhead" points="336,160 324,154.4 324,165.6" fill="black" transform="rotate(180,328,160)"></polygon>
+              <polygon class="arrowhead" points="224,160 212,154.4 212,165.6" fill="black" transform="rotate(0,216,160)"></polygon>
               <g class="text">
                 <text x="36" y="52">User</text>
-                <text x="152" y="52">Agent</text>
-                <text x="356" y="52">Origin</text>
-                <text x="480" y="52">Directory</text>
-                <text x="48" y="100">~</text>
-                <text x="88" y="100">Request</text>
-                <text x="220" y="116">Signed</text>
-                <text x="280" y="116">request</text>
-                <text x="372" y="148">if</text>
-                <text x="400" y="148">not</text>
-                <text x="456" y="148">resolved)</text>
-                <text x="416" y="164">Resolve</text>
-                <text x="420" y="180">Keys</text>
-                <text x="260" y="228">Response</text>
-                <text x="52" y="244">&lt;~</text>
-                <text x="100" y="244">Response</text>
-                <text x="144" y="244">~</text>
+                <text x="88" y="84">Agent</text>
+                <text x="220" y="84">signed</text>
+                <text x="280" y="84">request</text>
+                <text x="320" y="84">+</text>
+                <text x="344" y="84">URL</text>
+                <text x="452" y="84">Origin</text>
+                <text x="152" y="164">publishes</text>
+                <text x="272" y="164">Directory</text>
+                <text x="388" y="164">resolves</text>
               </g>
             </svg><a href="#section-5-1.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-web-bot-auth-flow" class="selfRef">Web Bot Auth flow</a>
+<a href="#name-web-bot-auth-architecture" class="selfRef">Web Bot Auth architecture</a>
         </figcaption></figure>
 <p id="section-5-2">A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
@@ -1815,7 +1787,7 @@ and includes it in the request as defined in <span><a href="https://rfc-editor.o
 along with the <code>Signature-Agent</code> header for discovery of its verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
 validates the signature, and processes the request if the signature is valid.
-Exchanges drawn with <code>~</code> are outside the scope of this document.<a href="#section-5-2" class="pilcrow">¶</a></p>
+How a User directs an Agent is outside the scope of this document.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="deployment-models">
 <section id="section-5.1">
         <h3 id="name-deployment-models">
@@ -2038,64 +2010,62 @@ first request rather than before it. Later requests verify from cache
 <span id="name-key-resolution-follows-the-"></span><figure id="figure-2">
             <div id="section-5.2.5-6.1">
               <div class="alignLeft art-svg artwork" id="section-5.2.5-6.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="240" width="504" viewBox="0 0 504 240" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="456" viewBox="0 0 456 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,32 L 8,64" fill="none" stroke="black"></path>
-                  <path d="M 40,64 L 40,144" fill="none" stroke="black"></path>
-                  <path d="M 40,176 L 40,208" fill="none" stroke="black"></path>
+                  <path d="M 40,64 L 40,256" fill="none" stroke="black"></path>
                   <path d="M 72,32 L 72,64" fill="none" stroke="black"></path>
-                  <path d="M 216,32 L 216,64" fill="none" stroke="black"></path>
-                  <path d="M 256,64 L 256,144" fill="none" stroke="black"></path>
-                  <path d="M 256,176 L 256,208" fill="none" stroke="black"></path>
-                  <path d="M 288,32 L 288,64" fill="none" stroke="black"></path>
-                  <path d="M 400,32 L 400,64" fill="none" stroke="black"></path>
-                  <path d="M 448,64 L 448,144" fill="none" stroke="black"></path>
-                  <path d="M 448,176 L 448,208" fill="none" stroke="black"></path>
-                  <path d="M 496,32 L 496,64" fill="none" stroke="black"></path>
+                  <path d="M 232,32 L 232,64" fill="none" stroke="black"></path>
+                  <path d="M 232,128 L 232,208" fill="none" stroke="black"></path>
+                  <path d="M 264,64 L 264,112" fill="none" stroke="black"></path>
+                  <path d="M 264,144 L 264,200" fill="none" stroke="black"></path>
+                  <path d="M 264,216 L 264,256" fill="none" stroke="black"></path>
+                  <path d="M 304,32 L 304,64" fill="none" stroke="black"></path>
+                  <path d="M 352,32 L 352,64" fill="none" stroke="black"></path>
+                  <path d="M 400,64 L 400,112" fill="none" stroke="black"></path>
+                  <path d="M 400,144 L 400,200" fill="none" stroke="black"></path>
+                  <path d="M 400,216 L 400,256" fill="none" stroke="black"></path>
+                  <path d="M 448,32 L 448,64" fill="none" stroke="black"></path>
+                  <path d="M 448,128 L 448,208" fill="none" stroke="black"></path>
                   <path d="M 8,32 L 72,32" fill="none" stroke="black"></path>
-                  <path d="M 216,32 L 288,32" fill="none" stroke="black"></path>
-                  <path d="M 400,32 L 496,32" fill="none" stroke="black"></path>
+                  <path d="M 232,32 L 304,32" fill="none" stroke="black"></path>
+                  <path d="M 352,32 L 448,32" fill="none" stroke="black"></path>
                   <path d="M 8,64 L 72,64" fill="none" stroke="black"></path>
-                  <path d="M 216,64 L 288,64" fill="none" stroke="black"></path>
-                  <path d="M 400,64 L 496,64" fill="none" stroke="black"></path>
-                  <path d="M 40,94 L 72,94" fill="none" stroke="black"></path>
-                  <path d="M 40,98 L 72,98" fill="none" stroke="black"></path>
-                  <path d="M 208,94 L 248,94" fill="none" stroke="black"></path>
-                  <path d="M 208,98 L 248,98" fill="none" stroke="black"></path>
-                  <path d="M 256,112 L 304,112" fill="none" stroke="black"></path>
-                  <path d="M 384,112 L 440,112" fill="none" stroke="black"></path>
-                  <path d="M 264,128 L 328,128" fill="none" stroke="black"></path>
-                  <path d="M 384,128 L 448,128" fill="none" stroke="black"></path>
-                  <path d="M 48,142 L 104,142" fill="none" stroke="black"></path>
-                  <path d="M 48,146 L 104,146" fill="none" stroke="black"></path>
-                  <path d="M 192,142 L 256,142" fill="none" stroke="black"></path>
-                  <path d="M 192,146 L 256,146" fill="none" stroke="black"></path>
-                  <path d="M 16,160 Q 18,156.8 20,160 Q 22,163.2 24,160 Q 26,156.8 28,160 Q 30,163.2 32,160 Q 34,156.8 36,160 Q 38,163.2 40,160 Q 42,156.8 44,160 Q 46,163.2 48,160 Q 50,156.8 52,160 Q 54,163.2 56,160 Q 58,156.8 60,160 Q 62,163.2 64,160 Q 66,156.8 68,160 Q 70,163.2 72,160 Q 74,156.8 76,160 Q 78,163.2 80,160 Q 82,156.8 84,160 Q 86,163.2 88,160 Q 90,156.8 92,160 Q 94,163.2 96,160 Q 98,156.8 100,160 Q 102,163.2 104,160 Q 106,156.8 108,160 Q 110,163.2 112,160 Q 114,156.8 116,160 Q 118,163.2 120,160 Q 122,156.8 124,160 Q 126,163.2 128,160 Q 130,156.8 132,160 Q 134,163.2 136,160 Q 138,156.8 140,160 Q 142,163.2 144,160 Q 146,156.8 148,160 Q 150,163.2 152,160 Q 154,156.8 156,160 Q 158,163.2 160,160 Q 162,156.8 164,160 Q 166,163.2 168,160 Q 170,156.8 172,160 Q 174,163.2 176,160 Q 178,156.8 180,160 Q 182,163.2 184,160 Q 186,156.8 188,160 Q 190,163.2 192,160 Q 194,156.8 196,160 Q 198,163.2 200,160 Q 202,156.8 204,160 Q 206,163.2 208,160 Q 210,156.8 212,160 Q 214,163.2 216,160 Q 218,156.8 220,160 Q 222,163.2 224,160 Q 226,156.8 228,160 Q 230,163.2 232,160 Q 234,156.8 236,160 Q 238,163.2 240,160 Q 242,156.8 244,160 Q 246,163.2 248,160 Q 250,156.8 252,160 Q 254,163.2 256,160 Q 258,156.8 260,160 Q 262,163.2 264,160 Q 266,156.8 268,160 Q 270,163.2 272,160 Q 274,156.8 276,160 Q 278,163.2 280,160 Q 282,156.8 284,160 Q 286,163.2 288,160 Q 290,156.8 292,160 Q 294,163.2 296,160 Q 298,156.8 300,160 Q 302,163.2 304,160 Q 306,156.8 308,160 Q 310,163.2 312,160 Q 314,156.8 316,160 Q 318,163.2 320,160 Q 322,156.8 324,160 Q 326,163.2 328,160 Q 330,156.8 332,160 Q 334,163.2 336,160 Q 338,156.8 340,160 Q 342,163.2 344,160 Q 346,156.8 348,160 Q 350,163.2 352,160 Q 354,156.8 356,160 Q 358,163.2 360,160 Q 362,156.8 364,160 Q 366,163.2 368,160 Q 370,156.8 372,160 Q 374,163.2 376,160 Q 378,156.8 380,160 Q 382,163.2 384,160 Q 386,156.8 388,160 Q 390,163.2 392,160 Q 394,156.8 396,160 Q 398,163.2 400,160 Q 402,156.8 404,160 Q 406,163.2 408,160 Q 410,156.8 412,160 Q 414,163.2 416,160 Q 418,156.8 420,160 Q 422,163.2 424,160 Q 426,156.8 428,160 Q 430,163.2 432,160 Q 434,156.8 436,160 Q 438,163.2 440,160 Q 442,156.8 444,160 Q 446,163.2 448,160 Q 450,156.8 452,160 Q 454,163.2 456,160 Q 458,156.8 460,160 Q 462,163.2 464,160" fill="none" stroke="black"></path>
-                  <path d="M 40,174 L 72,174" fill="none" stroke="black"></path>
-                  <path d="M 40,178 L 72,178" fill="none" stroke="black"></path>
-                  <path d="M 208,174 L 248,174" fill="none" stroke="black"></path>
-                  <path d="M 208,178 L 248,178" fill="none" stroke="black"></path>
-                  <path d="M 48,190 L 104,190" fill="none" stroke="black"></path>
-                  <path d="M 48,194 L 104,194" fill="none" stroke="black"></path>
-                  <path d="M 192,190 L 256,190" fill="none" stroke="black"></path>
-                  <path d="M 192,194 L 256,194" fill="none" stroke="black"></path>
-                  <polygon class="arrowhead" points="448,112 436,106.4 436,117.6" fill="black" transform="rotate(0,440,112)"></polygon>
-                  <polygon class="arrowhead" points="272,128 260,122.4 260,133.6" fill="black" transform="rotate(180,264,128)"></polygon>
-                  <polygon class="arrowhead" points="256,176 244,170.4 244,181.6" fill="black" transform="rotate(0,248,176)"></polygon>
-                  <polygon class="arrowhead" points="256,96 244,90.4 244,101.6" fill="black" transform="rotate(0,248,96)"></polygon>
-                  <polygon class="arrowhead" points="56,192 44,186.4 44,197.6" fill="black" transform="rotate(180,48,192)"></polygon>
-                  <polygon class="arrowhead" points="56,144 44,138.4 44,149.6" fill="black" transform="rotate(180,48,144)"></polygon>
+                  <path d="M 232,64 L 304,64" fill="none" stroke="black"></path>
+                  <path d="M 352,64 L 448,64" fill="none" stroke="black"></path>
+                  <path d="M 40,94 L 56,94" fill="none" stroke="black"></path>
+                  <path d="M 40,98 L 56,98" fill="none" stroke="black"></path>
+                  <path d="M 240,94 L 256,94" fill="none" stroke="black"></path>
+                  <path d="M 240,98 L 256,98" fill="none" stroke="black"></path>
+                  <path d="M 232,128 L 248,128" fill="none" stroke="black"></path>
+                  <path d="M 432,128 L 448,128" fill="none" stroke="black"></path>
+                  <path d="M 264,160 L 288,160" fill="none" stroke="black"></path>
+                  <path d="M 368,160 L 392,160" fill="none" stroke="black"></path>
+                  <path d="M 272,176 L 304,176" fill="none" stroke="black"></path>
+                  <path d="M 360,176 L 400,176" fill="none" stroke="black"></path>
+                  <path d="M 232,208 L 448,208" fill="none" stroke="black"></path>
+                  <path d="M 48,238 L 112,238" fill="none" stroke="black"></path>
+                  <path d="M 48,242 L 112,242" fill="none" stroke="black"></path>
+                  <path d="M 200,238 L 264,238" fill="none" stroke="black"></path>
+                  <path d="M 200,242 L 264,242" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="400,160 388,154.4 388,165.6" fill="black" transform="rotate(0,392,160)"></polygon>
+                  <polygon class="arrowhead" points="280,176 268,170.4 268,181.6" fill="black" transform="rotate(180,272,176)"></polygon>
+                  <polygon class="arrowhead" points="264,96 252,90.4 252,101.6" fill="black" transform="rotate(0,256,96)"></polygon>
+                  <polygon class="arrowhead" points="56,240 44,234.4 44,245.6" fill="black" transform="rotate(180,48,240)"></polygon>
                   <g class="text">
                     <text x="40" y="52">Agent</text>
-                    <text x="252" y="52">Origin</text>
-                    <text x="448" y="52">Directory</text>
-                    <text x="108" y="100">Signed</text>
-                    <text x="168" y="100">request</text>
-                    <text x="344" y="116">Resolve</text>
-                    <text x="356" y="132">Keys</text>
-                    <text x="148" y="148">Response</text>
-                    <text x="108" y="180">Signed</text>
-                    <text x="168" y="180">request</text>
-                    <text x="148" y="196">Response</text>
+                    <text x="268" y="52">Origin</text>
+                    <text x="400" y="52">Directory</text>
+                    <text x="92" y="100">Signed</text>
+                    <text x="152" y="100">request</text>
+                    <text x="192" y="100">+</text>
+                    <text x="216" y="100">URL</text>
+                    <text x="268" y="132">if</text>
+                    <text x="300" y="132">keys</text>
+                    <text x="336" y="132">not</text>
+                    <text x="388" y="132">resolved</text>
+                    <text x="328" y="164">Resolve</text>
+                    <text x="332" y="180">Keys</text>
+                    <text x="156" y="244">Response</text>
                   </g>
                 </svg><a href="#section-5.2.5-6.1.1" class="pilcrow">¶</a>
 </div>
@@ -3644,8 +3614,11 @@ mode.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
 Considerations.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.5">
-          <p id="appendix-H-2.5.1">Redraw the figures so key resolution follows the first request, and move the
-request example out of the sending figure.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.5.1">Redraw the figures. The overview figure now shows the architecture, naming
+who publishes and who resolves, rather than a message order, and places the
+Agent inside the User. The sending figure shows key resolution following the
+first request, conditional on the keys not already being resolved, and the
+request example moves out of it.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-H-3">draft-meunier-webbotauth-httpsig-protocol-01<a href="#appendix-H-3" class="pilcrow">¶</a></p>

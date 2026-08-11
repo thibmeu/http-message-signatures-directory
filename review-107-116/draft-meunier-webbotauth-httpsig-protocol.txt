@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 11 February 2027                                         Google
-                                                          10 August 2026
+Expires: 12 February 2027                                         Google
+                                                          11 August 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 February 2027.
+   This Internet-Draft will expire on 12 February 2027.
 
 Copyright Notice
 
@@ -390,23 +390,18 @@ Table of Contents
 
 5.  Protocol Overview
 
-      +------+      +-------+                +--------+    +-----------+
-      | User |      | Agent |                | Origin |    | Directory |
-      +---+--+      +---+---+                +----+---+    +-----+-----+
-          |             |                         |              |
-          +~ Request ~~>|                         |              |
-          |             +==== Signed request ====>|              |
-          |             |                         |              |
-          |             |                     .-- (if not resolved) --.
-          |             |                     |   +-- Resolve -->|    |
-          |             |                     |   |<--- Keys ----+    |
-          |             |                     '-----------------------'
-          |             |                         |              |
-          |             |<======= Response =======+              |
-          |<~ Response ~+                         |              |
-          |             |                         |              |
+   +----------------+
+   | User           |
+   |     +-------+  |                                 +--------+
+   |     | Agent +--+----- signed request + URL ----->| Origin |
+   |     +---+---+  |                                 +---+----+
+   +---------+------+                                     |
+             |                                            |
+             |                +-----------+               |
+             +-- publishes -->| Directory |<-- resolves --+
+                              +-----------+
 
-                        Figure 1: Web Bot Auth flow
+                    Figure 1: Web Bot Auth architecture
 
    A User initiates an action requiring the Agent to perform an HTTP
    request.  The Agent constructs the request, generates a signature
@@ -415,8 +410,8 @@ Table of Contents
    Agent header for discovery of its verification key.  Upon receiving
    the request, the Origin ensures it has the verification key for the
    Agent, validates the signature, and processes the request if the
-   signature is valid.  Exchanges drawn with ~ are outside the scope of
-   this document.
+   signature is valid.  How a User directs an Agent is outside the scope
+   of this document.
 
 5.1.  Deployment Models
 
@@ -610,18 +605,21 @@ Table of Contents
    the first request rather than before it.  Later requests verify from
    cache (Appendix C.4).
 
-      +-------+                 +--------+             +-----------+
-      | Agent |                 | Origin |             | Directory |
-      +---+---+                 +----+---+             +-----+-----+
-          |                          |                       |
-          +==== Signed request =====>|                       |
-          |                          +------ Resolve ------->|
-          |                          |<-------- Keys --------+
-          |<======= Response ========+                       |
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          +==== Signed request =====>|                       |
-          |<======= Response ========+                       |
-          |                          |                       |
+   +-------+                   +--------+     +-----------+
+   | Agent |                   | Origin |     | Directory |
+   +---+---+                   +---+----+     +-----+-----+
+       |                           |                |
+       +== Signed request + URL ==>|                |
+       |                           |                |
+       |                       .-- if keys not resolved --.
+       |                       |   |                |     |
+       |                       |   +--- Resolve --->|     |
+       |                       |   |<---- Keys -----+     |
+       |                       |   |                |     |
+       |                       '--------------------------'
+       |                           |                |
+       |<======== Response ========+                |
+       |                           |                |
 
              Figure 2: Key resolution follows the first request
 
@@ -1812,8 +1810,12 @@ Changelog
    *  Drop the 2119 keywords from the human binding guidance in Privacy
       Considerations.
 
-   *  Redraw the figures so key resolution follows the first request,
-      and move the request example out of the sending figure.
+   *  Redraw the figures.  The overview figure now shows the
+      architecture, naming who publishes and who resolves, rather than a
+      message order, and places the Agent inside the User.  The sending
+      figure shows key resolution following the first request,
+      conditional on the keys not already being resolved, and the
+      request example moves out of it.
 
    draft-meunier-webbotauth-httpsig-protocol-01
 
