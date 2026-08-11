@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-09T01:49:49.960337+00:00",
+  "timestamp": "2026-08-11T01:50:17.448688+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1332,7 +1332,7 @@
       ],
       "body": "Per Section [2.1.2 of RFC9421](https://www.rfc-editor.org/rfc/rfc9421.html#name-dictionary-structured-field), when indicating a single key of a dictionary type field, the component identifier includes the key as a parameter to the string, and the value of the component is the key value alone. \n\nCurrently the example signature bases in A and B are of the form:\n\n```\n...\n\"signature-agent\": sig2=\"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nHowever, to sign the `sig2` key of the `signature-agent` field, it should instead be:\n\n```\n...\n\"signature-agent\";key=\"sig2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"sig2\")\\\n...\n```\n\nThis same error is repeated in every test vector that uses the `key` modifier for the signed dictionary.",
       "createdAt": "2025-11-04T19:47:50Z",
-      "updatedAt": "2026-08-05T16:43:18Z",
+      "updatedAt": "2026-08-10T19:06:03Z",
       "closedAt": "2026-08-05T16:43:18Z",
       "comments": [
         {
@@ -1362,6 +1362,13 @@
           "body": "This has been addressed in the last iteration",
           "createdAt": "2026-08-05T16:43:18Z",
           "updatedAt": "2026-08-05T16:43:18Z"
+        },
+        {
+          "author": "positiveblue",
+          "authorAssociation": "NONE",
+          "body": "Thank you @thibmeu !",
+          "createdAt": "2026-08-10T19:06:03Z",
+          "updatedAt": "2026-08-10T19:06:03Z"
         }
       ]
     },
@@ -1874,7 +1881,7 @@
       "labels": [],
       "body": "Pick *one* please.  The idea that you might have multiple key formats in order to support different use cases is cute, but it doesn't foster interoperability.  The lessons of the Tower of Babel apply.  The JWKS format seems tolerable.",
       "createdAt": "2026-08-06T22:38:10Z",
-      "updatedAt": "2026-08-07T08:55:06Z",
+      "updatedAt": "2026-08-10T22:59:10Z",
       "closedAt": null,
       "comments": [
         {
@@ -1883,6 +1890,27 @@
           "body": "Just to confirm: are you discussing key format (as in the response that the verifier gets) or the `type`? `type` carries both a format and validation method.\n\n`directory` and `jwks_uri` share the same format already (as you observed in #116, and mentioned in [Section 5.5](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.5)): JWKS. CIMD is a format that requires one more resolution step (first the document, then the jwks_uri or inline jwks). I believe that moving its declaration to the registry draft, where it is actually used, makes more sense, and we can provide a uniform format this way (relates to #110).\n\nAs for validation, if we were to keep `jwks_uri` only (as it's more generic), the verifier would have to infer it based on the shape of the URI . When fetching `/.well-known/http-message-signatures-directory`, the verifier knows that there are certain validations to be made, and that's something the client controls. If the verifier receives an arbitrary path, it's automatically a JWKS URI.\n\nThe downside is that the well-known then has to be short, because it's included in every request (which goes into #116), and that the client has to infer validation based on pattern matching the URI instead of having a clear `type`.",
           "createdAt": "2026-08-07T08:55:06Z",
           "updatedAt": "2026-08-07T08:55:06Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "NONE",
+          "body": "I refer to both.  The `type` parameter indicates that the resource has multiple potential formats.  That leads to verifiers having to implement ALL of those formats if they want to be interoperable, which isn't particularly friendly in terms of getting interoperability.  It makes implementation a bigger ask of verifiers.\n\nNot sure what you are saying about what verifiers infer.  That's a separable issue, but the concern I continue to have with \"http-message-signatures-directory\" (aside from its length, #116) is that it doesn't convey semantics.  The name says that this conveys a directory of signatures, but what you really want is a name that says what this is: a directory of keys for agents that are identifying themselves with a signature.",
+          "createdAt": "2026-08-10T02:45:50Z",
+          "updatedAt": "2026-08-10T02:45:50Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Let's imagine we only keep `jwks_uri`. The point about inferring is that when presented with the two URLs\n\n```\nA: https://example.com/.well-known/jwks.json\nB: https://example.com/.well-known/http-message-signatures-directory\n```\n\nThe first one fetches the JWKS resource, and that's it.\nThe second one is recognisable as a registered well-known. The verifier can therefore perform a domain binding by validating the directory response accordingly.\n\nThe property would therefore be inferred from the URL shape rather than from a specific `type`.\n\n_Note: i agree that having a clearer name for the endpoint could help to be more descriptive_\n\nOne point if we remove `type`: that's a breaking change for `Signature-Agent` (we have done that with structured field directory, so it's doable, but worth noting)",
+          "createdAt": "2026-08-10T08:18:38Z",
+          "updatedAt": "2026-08-10T08:18:38Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "NONE",
+          "body": "Understand that my tolerance for pushback on the basis that something was shipped is very low.  I suspect others will vary, but my general feedback is that if you ship something prior to having these sorts of discussions, expect that changes will need to follow.  (A new name is always a choice that is available.)",
+          "createdAt": "2026-08-10T22:59:10Z",
+          "updatedAt": "2026-08-10T22:59:10Z"
         }
       ]
     },
