@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-11T01:50:17.448688+00:00",
+  "timestamp": "2026-08-13T02:04:38.905130+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -1017,7 +1017,7 @@
       ],
       "body": "Both [HTTP Message Signatures for automated traffic Architecture](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html) and [HTTP Message Signatures Directory](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-http-message-signatures-directory.html) says\n\n> `keyid` MUST be a base64url JWK SHA-256 Thumbprint as defined in [Section 3.2](https://rfc-editor.org/rfc/rfc7638#section-3.2) of [[JWK-THUMBPRINT](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-THUMBPRINT)] for RSA and EC, and in [Appendix A.3](https://rfc-editor.org/rfc/rfc8037#appendix-A.3) of [[JWK-OKP](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-web-bot-auth-architecture.html#JWK-OKP)] for ed25519\n\nI would change \"MUST\" here to \"MAY\". Key management systems often have IDs for their keys already so they could just print them here from a DB, instead of constructing and serializing a temporary JWK into a json and hashing that per rfc7638, then adding it back to the structure and serializing again. The Tink library also seems to have a notion of a [Key ID](https://developers.google.com/tink/wire-format#tink_output_prefix), and I also like that it's 4 bytes, instead of 32 like the SHA256. People might also use dates or other examples used in the rfc7638 or rfc9421, I think that's fine as long as it helps finding the key in the dictionary.\n\nThe specs could also say that `keyid` and `kid` should match between an entry of the JWKS and the`Signature-Input`, to speed up verification, otherwise verifiers might drop the request.",
       "createdAt": "2025-09-20T04:11:00Z",
-      "updatedAt": "2026-08-05T17:03:57Z",
+      "updatedAt": "2026-08-11T15:15:56Z",
       "closedAt": null,
       "comments": [
         {
@@ -1061,6 +1061,13 @@
           "body": "The latest iteration of the draft in #106 gets us closer to supporting that pattern, with `(URL, keyid)` being the identifier, and the domain binding being used to port trust from one identifier to the next.\n\nIs this still something that'd you would use?\n\nI have not seen implementation with such a pattern, but that is a feature tht keeps being brought up",
           "createdAt": "2026-08-05T17:03:40Z",
           "updatedAt": "2026-08-05T17:03:40Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Note that this has popped up on the [mailarchive](https://mailarchive.ietf.org/arch/msg/web-bot-auth/RRHGvYAou5chgIwDRSDo6rRyEu0/): JWK thumbprint is mentioned as being the kid",
+          "createdAt": "2026-08-11T15:15:56Z",
+          "updatedAt": "2026-08-11T15:15:56Z"
         }
       ]
     },
@@ -1881,7 +1888,7 @@
       "labels": [],
       "body": "Pick *one* please.  The idea that you might have multiple key formats in order to support different use cases is cute, but it doesn't foster interoperability.  The lessons of the Tower of Babel apply.  The JWKS format seems tolerable.",
       "createdAt": "2026-08-06T22:38:10Z",
-      "updatedAt": "2026-08-10T22:59:10Z",
+      "updatedAt": "2026-08-11T05:45:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -1911,6 +1918,13 @@
           "body": "Understand that my tolerance for pushback on the basis that something was shipped is very low.  I suspect others will vary, but my general feedback is that if you ship something prior to having these sorts of discussions, expect that changes will need to follow.  (A new name is always a choice that is available.)",
           "createdAt": "2026-08-10T22:59:10Z",
           "updatedAt": "2026-08-10T22:59:10Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Totally get that. The note was mostly that when we address the issue, the braking change should be clear on the changelog.\n\nThe previous comment was to run through what such a change would look like.",
+          "createdAt": "2026-08-11T05:45:41Z",
+          "updatedAt": "2026-08-11T05:45:41Z"
         }
       ]
     },
@@ -2091,6 +2105,54 @@
           "updatedAt": "2026-08-07T09:09:03Z"
         }
       ]
+    },
+    {
+      "number": 118,
+      "id": "I_kwDOOXJyWM8AAAABMUXyaQ",
+      "title": "Better explain what a verifier should do when a well-known is not signed",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/118",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "There are only a few directories that follow [Appendix B Validating a directory response](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-validating-the-domain-bindi). The appendix should better explain what verifier should do in the absence of a binding: either enforce strict signing or ignore it.",
+      "createdAt": "2026-08-11T15:09:23Z",
+      "updatedAt": "2026-08-11T15:09:23Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 119,
+      "id": "I_kwDOOXJyWM8AAAABMUaaJA",
+      "title": "301 on a Signature-Agent",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/119",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Taking the example of `shopify.com/.well-known/http-message-signatures-directory` which 301 to `www.shopify.com` (has been noted by Nick Mathews on [mailarchive](https://mailarchive.ietf.org/arch/msg/web-bot-auth/RRHGvYAou5chgIwDRSDo6rRyEu0/)).\n\nHaving a clear mention in section 4 seems important: what about cross-origin, inclusion of non-https URI, etc.",
+      "createdAt": "2026-08-11T15:14:00Z",
+      "updatedAt": "2026-08-11T15:14:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 120,
+      "id": "I_kwDOOXJyWM8AAAABMWIXDw",
+      "title": "Test vectors for signed directory",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/120",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "We should provide test vectors for directory signing. Relates to #11, but only for valid tests here.",
+      "createdAt": "2026-08-11T18:44:42Z",
+      "updatedAt": "2026-08-11T18:44:42Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -5654,6 +5716,37 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 117,
+      "id": "PR_kwDOOXJyWM79ZnG8",
+      "title": "Mandatory signature-agent and deferring certain primitives",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/117",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "enhancement",
+        "protocol"
+      ],
+      "body": "[iddiff](https://author-tools.ietf.org/api/iddiff?url_1=https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.txt&url_2=https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [text](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [html](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.html)\r\n\r\nThis change is based on review of a number of issues opened by mt, from 107 to 116. It changes\r\n\r\n1. Signature-Agent from recommended to mandatory with a MUST. This allows to remove some text and test vectors as well.\r\n2. reframe human consideration to be a guidance, given it cannot be enforced. it's still present as a consideration #114 \r\n3. defer signature-key to a future wg item. per vienna comment: we should wait on httpbis here. #112 \r\n4. Optional parameters (method, path, ...) are presented in a list to match the MUST parameters #113\r\n5. changes diagrams to make them highlight the system rather than a specific example (mentioned in #107)\r\n6. corrects some typos\r\n\r\nnote done in this commit but worth considering: moving the declaration of `type` and associated `cimd` into the registry draft, and consolidate signature-agent around jwks_uri. I'm in favor of having a distinct release for it (and will be a distinct PR. #109 for discussion)\r\n\r\n@sandormajor",
+      "createdAt": "2026-08-11T08:05:48Z",
+      "updatedAt": "2026-08-11T18:13:09Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "review-107-116",
+      "headRefOid": "904736f32986a3205a54dfbd6709115d9b83ce32",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
