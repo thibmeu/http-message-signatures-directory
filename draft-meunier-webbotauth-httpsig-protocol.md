@@ -1433,6 +1433,69 @@ Signature-Input: sig2=("@authority" "signature-agent")\
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
 ~~~
 
+### Signed directory response
+
+This example presents the possession proof described in
+{{origin-binding-appendix}}, using the ed25519 algorithm. The directory server
+signs its own response with the key it publishes. The signature covers
+`@authority` from the request that fetched the directory, so the key set cannot
+be re-served under another authority, and `content-digest` over the response
+body, so the key set cannot be swapped under a captured signature.
+
+The proof is bound to the request that fetched the directory:
+
+~~~
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: signature-agent.test
+Accept: application/http-message-signatures-directory+json
+~~~
+
+The response body is the following JSON Web Key Set, signed exactly as shown,
+with no trailing newline:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+{"keys":[{"kty":"OKP","crv":"Ed25519","kid":"poqkLGiymh_W0uP6PZFw-\
+ dvez3QJT5SolqXBCW38r0U","x":"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw\
+ 3c5D0bs","use":"sig"}]}
+~~~
+
+Those bytes give the following `Content-Digest` field value:
+
+~~~
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+~~~
+
+The corresponding signature base is:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority";req: signature-agent.test
+"content-digest": sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+"@signature-params": ("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+~~~
+
+This results in the following Content-Digest, Signature-Input and Signature
+header fields being added to the response under the label `binding`:
+
+~~~
+NOTE: '\' line wrapping per RFC 8792
+
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+Signature-Input: binding=("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+Signature: binding=:l6P8R67tm3kujAxbHWio7ll01qrEZ0dKD/WWlGhNYEmTnFZM8Wt0VQ9zqGfvo7T/UMkBxsigzChM1Gpz7gOVBg==:
+~~~
+
 # Implementations
 
 This draft has a couple of public implementations. A demonstration server has been deployed to [https://http-message-signatures-example.research.cloudflare.com/](https://http-message-signatures-example.research.cloudflare.com/).
