@@ -3015,11 +3015,14 @@ consuming it through <a href="#redistributed-key-material" class="auto internal 
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="appendix-B.1-8">A verifier relying on the domain <span class="bcp14">MUST</span> validate these signatures using the keys
-provided by the directory, <span class="bcp14">MUST</span> validate the <code>Content-Digest</code> field against the
-response body, and <span class="bcp14">MUST</span> ignore keys that do not have a corresponding valid
-signature. A verifier <span class="bcp14">MUST</span> reject a directory response signature whose
-<code>created</code> is in the future, as it would a certificate that is not yet valid.
+<p id="appendix-B.1-8">A verifier using a corresponding directory response signature as proof <span class="bcp14">MUST</span>
+validate it using the key provided by the directory and <span class="bcp14">MUST</span> validate the
+<code>Content-Digest</code> field against the response body. If either validation fails,
+the proof is invalid. A verifier <span class="bcp14">MAY</span> use a key obtained by resolving the
+directory itself whether or not it has valid proof. Attribution from
+redistributed key material is governed by <a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>. A
+verifier <span class="bcp14">MUST</span> reject a directory response signature whose <code>created</code> is in the
+future, as it would a certificate that is not yet valid.
 <a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a> orders competing evidence by <code>created</code>, so a
 future-dated signature would outrank every later fetch.<a href="#appendix-B.1-8" class="pilcrow">¶</a></p>
 </section>
