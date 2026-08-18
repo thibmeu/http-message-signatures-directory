@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 12 February 2027                                         Google
-                                                          11 August 2026
+Expires: 19 February 2027                                         Google
+                                                          18 August 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 February 2027.
+   This Internet-Draft will expire on 19 February 2027.
 
 Copyright Notice
 
@@ -461,13 +461,24 @@ Table of Contents
    components bound what it reaches.  Appendix C.7 covers what that
    costs on the wire.
 
-   Agents that want to narrow it SHOULD also cover the following
-   components.  A signer that omits them remains conformant.
+   Agents that want to narrow the scope of their signature SHOULD also
+   cover the following components.  A signer that omits them remains
+   conformant.
 
-   @method  narrows the signature to one method.
+   @method  narrows the signature to one method.  Defined in
+      Section 2.2.1 of [HTTP-MESSAGE-SIGNATURES]
 
-   @path or @target-uri  narrows it to one resource.  Appendix D.2
-      covers both.
+   @path  narrows the signature to one resource.  Appendix D.2 shows it
+      in use.  Defined in Section 2.2.6 of [HTTP-MESSAGE-SIGNATURES].
+
+   @target-uri  narrows the signature to one resource, including the
+      query string.  The signature is invalidated by intermediary
+      reordering, which might happen for caching purposes for instance.
+      Defined in Section 2.2.2 of [HTTP-MESSAGE-SIGNATURES].
+
+   @query-param  narrows the signature to individual query parameters.
+      This is a more robust alternative to cover query parameters.
+      Defined in Section 2.2.8 of [HTTP-MESSAGE-SIGNATURES].
 
    No component covers the body.  An Agent that needs one MUST send and
    cover Content-Digest [DIGEST-FIELDS].  This document does not require
