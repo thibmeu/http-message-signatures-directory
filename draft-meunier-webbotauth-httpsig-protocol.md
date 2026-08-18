@@ -194,11 +194,12 @@ identifier once the verifier fetches it and finds that it provides a key that
 verifies the request ({{discovery-is-not-trust}}). Until then, verifiers MUST
 NOT attach policy to it.
 
-A valid signature over a resolved URL proves that the request came from a
-holder of a key that URL publishes, and that requests with the same URL come
-from holders of keys that URL publishes. {{anti-replay}} bounds reuse. It says
-nothing about who operates the Agent, whether the Agent is benign, or whether
-the request is authorized. Those are origin policy.
+A valid signature over a resolved URL proves that a holder of a key that URL
+publishes signed the covered message. The message can still be replayed.
+Signature lifetimes and covered components bound the duration and scope of that
+replay ({{generating-http-message-signature}}). It says nothing about who
+operates the Agent, whether the Agent is benign, or whether the request is
+authorized. Those are origin policy.
 
 Nothing stops an Agent from abandoning a URL and standing up another one, and
 the protocol does not try to prevent this. It targets honest clients that want
@@ -442,17 +443,11 @@ not make the inner signature valid, and it does not express authorization,
 delegation, or consent. Those meanings are deployment policy, or are carried in
 separately signed fields.
 
-### Anti-replay {#anti-replay}
+### Replay protection
 
-Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a `nonce` to be added to the `@signature-params`.
-This is described in {{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}.
-
-Agents SHOULD extend `@signature-parameters` defined in {{generating-http-message-signature}} as follows:
-
-`nonce`
-: base64url encoded random byte array. It is RECOMMENDED to use a 64-byte array.
-
-Client MUST ensure that this `nonce` is unique for the validity window of the signature, as defined by created and expires attributes.
+Replay protection, including use of the `nonce` signature parameter, is
+described in {{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}. This document defines
+no additional nonce requirements.
 
 ### Additional headers
 
@@ -514,11 +509,15 @@ first request rather than before it. Later requests verify from cache
 ## Requesting a Message signature {#requesting-message-signature}
 
 {{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin.
-An Origin MAY choose to request signatures from clients that did not initially provide them. If requesting, Origins MUST use the same parameters as those defined by the {{generating-http-message-signature}}.
+An Origin MAY choose to request signatures from clients that did not initially
+provide them. A resulting signature MUST satisfy this profile. The Origin MAY
+request additional parameters defined by {{HTTP-MESSAGE-SIGNATURES}}, including
+`nonce`.
 The status code SHOULD be 403 Forbidden as defined in {{Section 15.5.4 of HTTP}}.
 
-Origin MAY request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.
-The status code SHOULD be 429 Too Many Requests as defined in {{Section 4 of HTTP-MORE-STATUS-CODE}}.
+An Origin that detects a signature or nonce has been used more often than its
+policy permits MAY request a new signature and respond with 429 Too Many
+Requests as defined in {{Section 4 of HTTP-MORE-STATUS-CODE}}.
 
 ## Validating Message signature
 
@@ -537,8 +536,6 @@ verifier that indexes by `keyid` alone will verify a request as coming from one 
 that provides a key it learned from another, and attribute that request to the URL the client
 asserted. The party whose URL is asserted cannot detect or stop this: its own
 directory is never fetched, so no rotation or removal has any effect.
-
-Origin MAY require the `nonce` to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.
 
 ## Key Distribution and Discovery {#key-distribution-and-discovery}
 
@@ -703,12 +700,6 @@ Origins should account for the overhead of signature verification in their opera
 See {{sessions}}: a session amortizes that cost by replacing verification with a
 bearer credential. {{field-compression}} covers the byte cost.
 
-## Nonce validation {#nonce-validation}
-
-Clients control the nonce. While {{anti-replay}} mandates that clients MUST provide a globally unique nonce, it is the origin's responsibility to enforce it.
-
-Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.
-
 ## Key Compromise Response
 
 This document defines no revocation. Removing a compromised key from the
@@ -745,16 +736,6 @@ requests.
 
 A proxy SHOULD NOT replay signatures against other reverse proxies used by the
 origin, as this allows impersonation of the principal signature agent.
-
-Origins MAY require a specific nonce policy to prevent such malicious behaviour
-and decide to validate the signature themselves. This has to be done in
-accordance with {{nonce-validation}}. For example, an origin could
-require a nonce derived from public information (such as the current date),
-mandate nonce chaining (where each nonce is the hash of the previous one),
-or provide its own nonce in an `Accept-Signature` response to challenge the agent.
-
-Such policies MAY incur additional round-trip between the client and the origin
-to convey `accept-signature` header, or deployment specific exchanges.
 
 ### Signature-Agent labeling
 
@@ -1152,12 +1133,16 @@ exponential backoff and jitter. When a directory response includes
 ## Freshness and Replay
 
 Shorter signature lifetimes reduce replay risk but increase sensitivity to clock
-skew and signing failures. Nonces provide stronger replay defense, but require
-state at the verifier. Some deployments can tolerate bounded replay for short
-windows; others need strict {{nonce-validation}}.
+skew and signing failures. Whether a verifier requires and enforces nonces is
+deployment policy. Rejecting duplicate nonces requires an atomic check-and-record
+across the enforcement scope. Verifiers need to bound retention and admission of
+nonce state. If that state is unavailable, the verifier should not treat
+signature validation as evidence that replay was detected or prevented. Replay
+protection is described in
+{{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}.
 
-These choices are deployment policy. Verifiers should avoid accepting signatures
-with freshness windows longer than their risk model permits.
+Verifiers should avoid accepting signatures with freshness windows longer than
+their risk model permits.
 
 ## Field compression {#field-compression}
 
