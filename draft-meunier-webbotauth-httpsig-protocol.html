@@ -1426,6 +1426,9 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.2">
                     <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#appendix-E.2.2" class="auto internal xref">E.2.2</a>.  <a href="#name-legacy-signature-agent-sf-st" class="internal xref">Legacy Signature-Agent, sf-string</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.3">
+                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#appendix-E.2.3" class="auto internal xref">E.2.3</a>.  <a href="#name-signed-directory-response" class="internal xref">Signed directory response</a></p>
+</li>
                 </ul>
 </li>
             </ul>
@@ -3472,6 +3475,73 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;tag="web-bot-auth"
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
 </pre><a href="#appendix-E.2.2-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="signed-directory-response">
+<section id="appendix-E.2.3">
+          <h4 id="name-signed-directory-response">
+<a href="#appendix-E.2.3" class="section-number selfRef">E.2.3. </a><a href="#name-signed-directory-response" class="section-name selfRef">Signed directory response</a>
+          </h4>
+<p id="appendix-E.2.3-1">This example presents the possession proof described in
+<a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>, using the ed25519 algorithm. The directory server
+signs its own response with the key it publishes. The signature covers
+<code>@authority</code> from the request that fetched the directory, so the key set cannot
+be re-served under another authority, and <code>content-digest</code> over the response
+body, so the key set cannot be swapped under a captured signature.<a href="#appendix-E.2.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-E.2.3-2">The proof is bound to the request that fetched the directory:<a href="#appendix-E.2.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-3">
+<pre>
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: signature-agent.test
+Accept: application/http-message-signatures-directory+json
+</pre><a href="#appendix-E.2.3-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-4">The response body is the following JSON Web Key Set, signed exactly as shown,
+with no trailing newline:<a href="#appendix-E.2.3-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+{"keys":[{"kty":"OKP","crv":"Ed25519","kid":"poqkLGiymh_W0uP6PZFw-\
+ dvez3QJT5SolqXBCW38r0U","x":"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw\
+ 3c5D0bs","use":"sig"}]}
+</pre><a href="#appendix-E.2.3-5" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-6">Those bytes give the following <code>Content-Digest</code> field value:<a href="#appendix-E.2.3-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-7">
+<pre>
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+</pre><a href="#appendix-E.2.3-7" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-8">The corresponding signature base is:<a href="#appendix-E.2.3-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-9">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority";req: signature-agent.test
+"content-digest": sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+"@signature-params": ("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+</pre><a href="#appendix-E.2.3-9" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-10">This results in the following Content-Digest, Signature-Input and Signature
+header fields being added to the response under the label <code>binding</code>:<a href="#appendix-E.2.3-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-11">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+Signature-Input: binding=("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+Signature: binding=:l6P8R67tm3kujAxbHWio7ll01qrEZ0dKD/WWlGhNYEmTnFZM8Wt0VQ9zqGfvo7T/UMkBxsigzChM1Gpz7gOVBg==:
+</pre><a href="#appendix-E.2.3-11" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
