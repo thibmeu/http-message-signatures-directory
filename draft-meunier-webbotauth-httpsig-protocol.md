@@ -1590,6 +1590,11 @@ draft-meunier-webbotauth-httpsig-protocol-02
 - List the components an Agent may cover beyond the required set.
 - Drop the 2119 keywords from the human binding guidance in Privacy
   Considerations.
+- Require discovery to return `200 (OK)` and prohibit redirects.
+- Make directory response signatures optional for directly resolved keys.
+- Defer replay protection, including nonce handling, to
+  {{HTTP-MESSAGE-SIGNATURES}}.
+- Add a signed directory response test vector.
 - Redraw the figures. The overview figure now shows the architecture, naming
   who publishes and who resolves, rather than a message order, and places the
   Agent inside the User. The sending figure shows key resolution following the
