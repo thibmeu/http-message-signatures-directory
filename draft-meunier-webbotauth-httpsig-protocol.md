@@ -349,14 +349,25 @@ reuse it against the same origin until then.
 `expires` bounds how long that lasts; the covered components bound what it
 reaches. {{field-compression}} covers what that costs on the wire.
 
-Agents that want to narrow it SHOULD also cover the following components. A
-signer that omits them remains conformant.
+Agents that want to narrow the scope of their signature SHOULD also cover the
+following components. A signer that omits them remains conformant.
 
 `@method`
-: narrows the signature to one method.
+: narrows the signature to one method. Defined in {{Section 2.2.1 of HTTP-MESSAGE-SIGNATURES}}
 
-`@path` or `@target-uri`
-: narrows it to one resource. {{example-multiple-signatures}} covers both.
+`@path`
+: narrows the signature to one resource. {{example-multiple-signatures}} shows
+it in use. Defined in {{Section 2.2.6 of HTTP-MESSAGE-SIGNATURES}}.
+
+`@target-uri`
+: narrows the signature to one resource, including the query string. The
+signature is invalidated by intermediary reordering, which might happen for
+caching purposes for instance. Defined in {{Section 2.2.2 of HTTP-MESSAGE-SIGNATURES}}.
+
+`@query-param`
+: narrows the signature to individual query parameters. This is a more robust
+alternative to cover query parameters. Defined in {{Section 2.2.8 of HTTP-MESSAGE-SIGNATURES}}.
+
 
 No component covers the body. An Agent that needs one MUST send and cover
 `Content-Digest` {{DIGEST-FIELDS}}. This document does not require it. Most
