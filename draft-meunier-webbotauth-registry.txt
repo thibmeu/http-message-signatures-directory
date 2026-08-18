@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 6 February 2027                                          Amazon
+Expires: 19 February 2027                                         Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                           5 August 2026
+                                                          18 August 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 February 2027.
+   This Internet-Draft will expire on 19 February 2027.
 
 Copyright Notice
 
@@ -103,12 +103,11 @@ Table of Contents
        4.4.2.  Efficient Polling with Conditional Requests
        4.4.3.  Caching
      4.5.  Signature-Agent header
-     4.6.  Composable discovery with Signature-Key
-     4.7.  Change Notification
-       4.7.1.  Advertising the Notification Endpoint
-       4.7.2.  Callback Registration
-       4.7.3.  Notification Requests
-       4.7.4.  Notification Processing
+     4.6.  Change Notification
+       4.6.1.  Advertising the Notification Endpoint
+       4.6.2.  Callback Registration
+       4.6.3.  Notification Requests
+       4.6.4.  Notification Processing
    5.  Security Considerations
      5.1.  Registry Integrity
      5.2.  Binding Delegated Keys to the Directory Authority
@@ -429,7 +428,7 @@ Table of Contents
    A Signature Agent Card is discovered by dereferencing its client_id,
    as described in Section 4.1, or from a registry.
 
-   A registry is a list of URLs, each refering to a signature agent
+   A registry is a list of URLs, each referring to a signature agent
    card.  An entry MAY be the client_id of a Signature Agent Card.
 
    The URI scheme MUST be one of:
@@ -572,24 +571,14 @@ Content-Type: application/json
    URI carried in that member is the client_id of a Signature Agent Card
    resolved as described in Section 4.1.
 
-4.6.  Composable discovery with Signature-Key
-
-   The discovery in this document is anchored on the client_id URL and
-   is independent of the header that carries it.  [SIGNATURE-KEY]
-   defines a composable Signature-Key header with an extensible registry
-   of key-distribution schemes.  A future scheme could carry a client_id
-   URL, letting a verifier resolve a Signature Agent Card per-signature
-   alongside the keying material.  This document does not define such a
-   scheme; it is noted as a possible composable carrier.
-
-4.7.  Change Notification
+4.6.  Change Notification
 
    Pull-based consumption with conditional requests is sufficient for
    most deployments.  When lower notification latency is required (e.g.,
    to promptly act on entry removal), a registry operator MAY implement
    a push-based change notification mechanism.
 
-4.7.1.  Advertising the Notification Endpoint
+4.6.1.  Advertising the Notification Endpoint
 
    A registry operator that supports change notifications SHOULD
    advertise its notification endpoint in the registry HTTP response
@@ -603,14 +592,14 @@ Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
    TODO: Register the registry-changes link relation with IANA, or
    replace it with an extension relation URI.
 
-4.7.2.  Callback Registration
+4.6.2.  Callback Registration
 
    Registration of a client callback URL with the registry operator is
    performed out of band.  No specific registration protocol is defined
    by this document.  An unsubscribe mechanism SHOULD be considered, and
    MAY also be out of band.
 
-4.7.3.  Notification Requests
+4.6.3.  Notification Requests
 
    When an entry is added to or removed from the registry, the registry
    operator MUST send an HTTP request to each registered callback URL.
@@ -653,7 +642,7 @@ Content-Digest: sha-256=:base64hash:
   "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
 }
 
-4.7.4.  Notification Processing
+4.6.4.  Notification Processing
 
    Upon receiving a notification, the client MUST verify the HTTP
    Message Signature against the registry operator's key, discovered via
@@ -978,9 +967,9 @@ Content-Digest: sha-256=:base64hash:
 
    [PROTOCOL] Meunier, T. and S. Major, "HTTP Message Signatures for
               automated traffic", Work in Progress, Internet-Draft,
-              draft-meunier-webbotauth-httpsig-protocol-00, 26 June
+              draft-meunier-webbotauth-httpsig-protocol-01, 5 August
               2026, <https://datatracker.ietf.org/doc/html/draft-
-              meunier-webbotauth-httpsig-protocol-00>.
+              meunier-webbotauth-httpsig-protocol-01>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1051,13 +1040,6 @@ Content-Digest: sha-256=:base64hash:
               DOI 10.17487/RFC9309, September 2022,
               <https://www.rfc-editor.org/rfc/rfc9309>.
 
-   [SIGNATURE-KEY]
-              Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
-              Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-08, 5 August 2026,
-              <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-08>.
-
    [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
               2003, <https://www.rfc-editor.org/rfc/rfc3629>.
@@ -1079,6 +1061,10 @@ Acknowledgments
    this document -
 
 Changelog
+
+   draft-meunier-webbotauth-registry-04
+
+   *  Defer Signature-Key to draft-hardt-httpbis-signature-key.
 
    draft-meunier-webbotauth-registry-03
 

@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 6 February 2027                                          Google
-                                                           5 August 2026
+Expires: 19 February 2027                                         Google
+                                                          18 August 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 February 2027.
+   This Internet-Draft will expire on 19 February 2027.
 
 Copyright Notice
 
@@ -82,7 +82,7 @@ Table of Contents
    4.  Identifiers and Trust Model
      4.1.  The Signature-Agent URL is the identifier
      4.2.  Rotation
-     4.3.  When no URL is sent
+     4.3.  When no URL is available
      4.4.  What the URL endorses
      4.5.  Binding a key to a Web origin
      4.6.  Out of scope
@@ -100,7 +100,6 @@ Table of Contents
        5.5.1.  Directory format
        5.5.2.  Key rotation
        5.5.3.  Redistributed key material
-       5.5.4.  Signature-Key header
      5.6.  Session considerations
    6.  Security Considerations
      6.1.  Use of TLS
@@ -151,13 +150,11 @@ Table of Contents
      D.2.  Multiple signatures with a remote browser
    Appendix E.  Test Vectors
      E.1.  RSASSA-PSS Using SHA-512
-       E.1.1.  Signature-Agent absent from the request
-       E.1.2.  Signature-Agent included present on the request
-       E.1.3.  Legacy Signature-Agent, sf-string
+       E.1.1.  Signature-Agent included present on the request
+       E.1.2.  Legacy Signature-Agent, sf-string
      E.2.  EdDSA Using Curve edwards25519
-       E.2.1.  Signature-Agent absent from the request
-       E.2.2.  Signature-Agent included present on the request
-       E.2.3.  Legacy Signature-Agent, sf-string
+       E.2.1.  Signature-Agent included present on the request
+       E.2.2.  Legacy Signature-Agent, sf-string
    Appendix F.  Implementations
      F.1.  Clients
      F.2.  Servers
@@ -206,7 +203,7 @@ Table of Contents
        traffic to the site.
 
    2.  IP blocks alone can present a confusing story.  IPs on cloud
-       plaforms have layers of ownership - the platform owns the IP and
+       platforms have layers of ownership - the platform owns the IP and
        registers it in their published IP blocks, only to be re-
        published by the agent with little to bind the publication to the
        actual service provider that may be renting infra.  Purchasing
@@ -328,16 +325,15 @@ Table of Contents
    use it to carry continuity across a rotation, as that value is
    derived from the key material.
 
-   [SIGNATURE-KEY] takes a different approach, where a long-lived key
-   signs short-lived delegated keys.  Deployments MAY use it.  This
-   document does not define rotation that way.
+4.3.  When no URL is available
 
-4.3.  When no URL is sent
-
-   Signature-Agent is RECOMMENDED but not required.  Without it, a
-   verifier has only the key, and the identifier is the keyid thumbprint
-   defined in Section 5.2.  Verification still works, provided the
-   verifier already holds that key.
+   A signed request MUST carry Signature-Agent (Section 5.2.1).  A
+   verifier can still be left with no URL to attribute to: discovery
+   failed with nothing cached (Section 6.11), redistributed material
+   carried no proof (Section 5.5.3), or the header is absent.  The
+   identifier is then the keyid thumbprint defined in Section 5.2.  A
+   verifier that already holds that key verifies the request, and
+   attributes it no further than the holder of that key.
 
    This mode has no rotation.  A new key is a new identifier, and the
    verifier has no way to connect the two.
@@ -348,15 +344,15 @@ Table of Contents
    named in the URL served this key set at fetch time.  Whoever controls
    that URL says this key signs for it.  That is what makes the URL
    usable as an identifier, and all it gives you.  It does not say that
-   the operator of that URL is honest, or that is is the same party
+   the operator of that URL is honest, or that it is the same party
    everyone knows about.
 
    What matters is the association between a URL and the keys published
    there.  A verifier that already holds the keys does not need to fetch
    it.  A verifier MUST NOT attribute a request to a Signature-Agent URL
-   unless it made this ssociation.  This can be either by resolving the
+   unless it made this association.  This can be either by resolving the
    URL itself, at request time or ahead of it, or from Section 5.5.3.
-   Verifiers may refetch a URL to handle up key additions and removals,
+   Verifiers may refetch a URL to handle key additions and removals,
    bounded by Appendix C.4.
 
    Where a verifier obtains the same pair from more than one source, the
@@ -394,16 +390,18 @@ Table of Contents
 
 5.  Protocol Overview
 
-+--------+               +---------+                           +----------+
-|        |               |         |         Exchange          |          |
-|        |               |         |<===== Cryptographic =====>|          |
-|        |               |         |         material          |          |
-|  User  +--- Request -->|  Agent  |                           |  Origin  |
-|        |               |         +--- Request + Signature -->|          |
-|        |               |         |<-------- Response --------+          |
-|        |<-- Response --+         |                           |          |
-|        |               |         |                           |          |
-+--------+               +---------+                           +----------+
+   +----------------+
+   | User           |
+   |     +-------+  |                                 +--------+
+   |     | Agent +--+----- signed request + URL ----->| Origin |
+   |     +---+---+  |                                 +---+----+
+   +---------+------+                                     |
+             |                                            |
+             |                +-----------+               |
+             +-- publishes -->| Directory |<-- resolves --+
+                              +-----------+
+
+                    Figure 1: Web Bot Auth architecture
 
    A User initiates an action requiring the Agent to perform an HTTP
    request.  The Agent constructs the request, generates a signature
@@ -412,7 +410,8 @@ Table of Contents
    Agent header for discovery of its verification key.  Upon receiving
    the request, the Origin ensures it has the verification key for the
    Agent, validates the signature, and processes the request if the
-   signature is valid.
+   signature is valid.  How a User directs an Agent is outside the scope
+   of this document.
 
 5.1.  Deployment Models
 
@@ -459,10 +458,27 @@ Table of Contents
    method, path, or body sent to that authority until it expires, so
    anyone who observes one request can reuse it against the same origin
    until then. expires bounds how long that lasts; the covered
-   components bound what it reaches.  Agents that want to narrow it
-   SHOULD also cover @method, and either @path or @target-uri, as
-   Appendix D.2 does.  A signer that omits them remains conformant.
-   Appendix C.7 covers what that costs on the wire.
+   components bound what it reaches.  Appendix C.7 covers what that
+   costs on the wire.
+
+   Agents that want to narrow the scope of their signature SHOULD also
+   cover the following components.  A signer that omits them remains
+   conformant.
+
+   @method  narrows the signature to one method.  Defined in
+      Section 2.2.1 of [HTTP-MESSAGE-SIGNATURES]
+
+   @path  narrows the signature to one resource.  Appendix D.2 shows it
+      in use.  Defined in Section 2.2.6 of [HTTP-MESSAGE-SIGNATURES].
+
+   @target-uri  narrows the signature to one resource, including the
+      query string.  The signature is invalidated by intermediary
+      reordering, which might happen for caching purposes for instance.
+      Defined in Section 2.2.2 of [HTTP-MESSAGE-SIGNATURES].
+
+   @query-param  narrows the signature to individual query parameters.
+      This is a more robust alternative to cover query parameters.
+      Defined in Section 2.2.8 of [HTTP-MESSAGE-SIGNATURES].
 
    No component covers the body.  An Agent that needs one MUST send and
    cover Content-Digest [DIGEST-FIELDS].  This document does not require
@@ -485,33 +501,32 @@ Table of Contents
    infer the mechanism from the URI path, media type, or response body.
 
    Earlier versions of this protocol defined Signature-Agent as a bare
-   String, and deployments still send it (Appendix E.1.3).  A verifier
+   String, and deployments still send it (Appendix E.1.2).  A verifier
    MAY accept that form and treat it as a dictionary with a single
    member whose key is the label of the signature covering it.  Signers
    MUST send the dictionary form.  The two are distinguishable on the
    wire: a String Item begins with a double quote " while a Dictionary
    member key does not.
 
-   It is RECOMMENDED that the Agent sends requests with Signature-Agent
-   header, as described in Section 5.2.5.  If the header is to be sent,
-   one of its members MUST be signed as a component as defined in
-   Section 2.1 of [HTTP-MESSAGE-SIGNATURES].  The Signature-Agent member
-   identifies where candidate key material can be found.  The key used
-   to verify the signature is selected by the keyid parameter of the
-   corresponding Signature-Input member.
+   A signed request MUST carry the Signature-Agent header, as described
+   in Section 5.2.5.  Its member keyed to the signature label MUST be
+   signed as a component as defined in Section 2.1 of
+   [HTTP-MESSAGE-SIGNATURES].  The Signature-Agent member identifies
+   where candidate key material can be found.  The key used to verify
+   the signature is selected by the keyid parameter of the corresponding
+   Signature-Input member.
 
    This results in the following components to be signed
 
    ("@authority" "signature-agent";key="sig1")
 
-   It is RECOMMENDED that the key matches the signature label.
-
 5.2.2.  Multiple signatures
 
    A request MAY contain more than one Web Bot Auth signature.  Each
-   signature is identified by its HTTP Message Signatures label.  When
-   Signature-Agent is present, each signer SHOULD provide a Signature-
-   Agent member for its label.
+   signature is identified by its HTTP Message Signatures label.  Each
+   signer MUST provide a Signature-Agent member for its label.  A
+   verifier MUST NOT attribute a signature to a member that signature
+   does not cover.
 
    A signer MAY cover members from another signature label, which
    preserves evidence that another signer contributed to the request.  A
@@ -576,33 +591,48 @@ Table of Contents
 5.2.5.  Sending a request
 
    An Agent SHOULD send a request with the signature generated above.
-   Updating the overview diagram, the flow looks as follow.
 
-+---------+                                                                                  +----------+
-|         |                                     Exchange                                     |          |
-|         |<================================  Cryptographic  ===============================>|          |
-|         |                                     material                                     |          |
-|  Agent  |                                                                                  |  Origin  |
-|         |     .-------------------------------------------------------------------.        |          |
-|         +-----| GET /path/to/resource                                             |------->|          |
-|         |     | Signature: sig=abc==                                              |        |          |
-+---------+     | Signature-Input: sig=("@authority" "signature-agent";key="sig");\ |        +----------+
-                |                  created=1700000000;\                             |
-                |                  expires=1700011111;\                             |
-                |                  keyid="ba3e64==";\                               |
-                |                  tag="web-bot-auth"                               |
-                | Signature-Agent: sig="https://signer.example.com"                 |
-                '-------------------------------------------------------------------'
+   NOTE: '\' line wrapping per RFC 8792
 
-   The Agent SHOULD send requests with two headers
+   GET /path/to/resource HTTP/1.1
+   Host: origin.example.com
+   Signature: sig=abc==
+   Signature-Input: sig=("@authority" "signature-agent";key="sig");\
+                    created=1700000000;\
+                    expires=1700011111;\
+                    keyid="ba3e64==";\
+                    tag="web-bot-auth"
+   Signature-Agent: sig="https://signer.example.com"
+
+   A signed request carries three headers
 
    1.  Signature defined in Section 5.2
 
    2.  Signature-Input defined in Section 5.2
 
-   As described in Section 5.2.1, it is RECOMMENDED that the Agent also
-   send the Signature-Agent header.  Without it the Agent is identified
-   by its key alone, with the consequences described in Section 4.3.
+   3.  Signature-Agent defined in Section 5.2.1
+
+   The Origin learns the URL from the request, so it resolves keys after
+   the first request rather than before it.  Later requests verify from
+   cache (Appendix C.4).
+
+   +-------+                   +--------+     +-----------+
+   | Agent |                   | Origin |     | Directory |
+   +---+---+                   +---+----+     +-----+-----+
+       |                           |                |
+       +== Signed request + URL ==>|                |
+       |                           |                |
+       |                       .-- if keys not resolved --.
+       |                       |   |                |     |
+       |                       |   +--- Resolve --->|     |
+       |                       |   |<---- Keys -----+     |
+       |                       |   |                |     |
+       |                       '--------------------------'
+       |                           |                |
+       |<======== Response ========+                |
+       |                           |                |
+
+             Figure 2: Key resolution follows the first request
 
 5.3.  Requesting a Message signature
 
@@ -793,13 +823,6 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    directory URLs rather than embedding keys.  For instance, [REGISTRY]
    works that way, and the verifier still resolves them.
 
-5.5.4.  Signature-Key header
-
-   [SIGNATURE-KEY] defines a separate key discovery header for HTTP
-   Message Signatures.  Deployments MAY use it when they need that
-   model.  This protocol uses Signature-Agent as its default discovery
-   mechanism.
-
 5.6.  Session considerations
 
    Per-request signing and verification costs CPU; uncached key
@@ -876,7 +899,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 6.6.  Key Reuse Considered Harmful
 
    Implementations SHOULD NOT reuse a signing key for different
-   purposes.  For example, if an agent implementor has two agents they
+   purposes.  For example, if an agent implementer has two agents they
    want to differentiate, these should use distinct signing keys and
    signing key directories.
 
@@ -1025,11 +1048,11 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 
 7.2.  No Human Correlation
 
-   The key used for signing MUST NOT be tied to a specific human
-   individual.  Keys SHOULD represent a role, company, or automation
-   identity (e.g., "news-aggregator- bot", "example-crawler-v1").  This
-   avoids accidental exposure of personally identifiable information and
-   prevents the misuse of keys for user tracking or profiling.
+   A key tied to a specific human individual exposes personally
+   identifiable information and makes the key usable for user tracking
+   or profiling.  A key that represents a role, company, or automation
+   identity (e.g., "news-aggregator-bot", "example-crawler-v1") avoids
+   this.
 
 7.3.  Minimizing Tracking Risks
 
@@ -1223,13 +1246,6 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
-
-   [SIGNATURE-KEY]
-              Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
-              Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-08, 5 August 2026,
-              <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-08>.
 
    [USE-CASES]
               Nottingham, M., "Use Cases for Authentication of Web
@@ -1544,13 +1560,14 @@ D.2.  Multiple signatures with a remote browser
 
 Appendix E.  Test Vectors
 
-   These vectors exercise the minimum this document requires, so most of
-   them cover @authority and nothing else, with an expires far enough
-   out that they do not age.  That combination is a parsing and
-   verification exercise, not a configuration to copy: as Section 5.2
-   explains, a signature covering @authority alone is reusable against
-   that authority for any method, path, and body until it expires.
-   Deployments should cover more and expire sooner.
+   Except where noted, these vectors exercise the minimum this document
+   requires: @authority and a Signature-Agent member and nothing else,
+   with an expires far enough out that they do not age.  That
+   combination is a parsing and verification exercise, not a
+   configuration to copy: as Section 5.2 explains, a signature covering
+   @authority alone is reusable against that authority for any method,
+   path, and body until it expires.  Deployments should cover more and
+   expire sooner.
 
 E.1.  RSASSA-PSS Using SHA-512
 
@@ -1559,40 +1576,7 @@ E.1.  RSASSA-PSS Using SHA-512
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
-E.1.1.  Signature-Agent absent from the request
-
-   This example presents a minimal signature using the rsa-pss-sha512
-   algorithm over test-request.  The request does not contain a
-   Signature-Agent header.
-
-   The corresponding signature base is:
-
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-
-   This results in the following Signature-Input and Signature header
-   fields being added to the message under the label sig1:
-
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-Signature: sig1=:hWPaj85MWQiRkzU4jnIKvdPQiDfMCPIoxOP8nZveNc3aFQ7r/UmXWCwGNImw588iRvTFey5TR3fVEgnXpcttlyK+u5pN831z9Wlr+IMNfub4uEM3SuO+SKFygJZyLG0pf7OAiRcU4C0gyx1BS/+z9ydQTRzDLr88wCkBBRqwGRrSi8HTwxkqg1jugobh93hcnU6gV8MK1n+VnhRprIgl2RQSO6q5cfbB4OS8C4t/8ndW0lYmP2SWzKZJXnpX5Wrj17PuLqnVW6MO8pJnLAMXNvxUdx32KHeq/cHFrzZazZsua3UOoP+k+niHwoQ8bBWj1Vi4mM1mYJK+fk366cCLsQ==:
-
-E.1.2.  Signature-Agent included present on the request
+E.1.1.  Signature-Agent included present on the request
 
    This example presents a minimal signature using the rsa-pss-sha512
    algorithm over test-request.  The request contains a Signature-Agent
@@ -1627,7 +1611,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;tag="web-bot-auth"
 Signature: sig2=:gHzpLNeHaHIO19NaJH9YMW5dcVSi2s0wOMBr6p18vcofS106sfC4KBIS0/szPlBBd1vIcyQ88B6CTEWIhRAiVrb9zfX0mx1aG12CSGWcYkSirHeyTxhbuJvXd27ed6skWoy4PjXItq38936ivUQjfdIwXh1aX6HxkAC3vRnEdSNfntkLWeEuIQ5BLIOBGE39fSwg27Qjq6OVWYas/9/aFUr3HA34MXWYdp+//cvlEKDp3kRoLOw9ro0AOr6srHrTeEtxon2afcws1aZVSlPdd2fZSEIGmw9HAHLDCEkFTERu1gH2k/zIEqgy7CAYXI9E5slog0cLg/Vc6+f8gih33g==:
 
-E.1.3.  Legacy Signature-Agent, sf-string
+E.1.2.  Legacy Signature-Agent, sf-string
 
    Retained for implementers migrating to the dictionary form
    (Section 5.2.1).  Do not copy it into new deployments.
@@ -1672,40 +1656,7 @@ E.2.  EdDSA Using Curve edwards25519
    non-normative test vectors that may be used as test cases to validate
    implementation correctness.
 
-E.2.1.  Signature-Agent absent from the request
-
-   This example presents a minimal signature using the ed25519 algorithm
-   over test-request.  The request does not contain a Signature-Agent
-   header.
-
-   The corresponding signature base is:
-
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-
-   This results in the following Signature-Input and Signature header
-   fields being added to the message under the label sig1:
-
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-Signature: sig1=:QKN4fTdIYfh82fvoZCQiQA1weuozfCS/Led2zTMbewMMqH8PI2Wsy/5c4ao6B6D09nraNQdBNOADg8aM1MqfCg==:
-
-E.2.2.  Signature-Agent included present on the request
+E.2.1.  Signature-Agent included present on the request
 
    This example presents a minimal signature using the ed25519 algorithm
    over test-request.  The request contains a Signature-Agent header.
@@ -1739,7 +1690,7 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;tag="web-bot-auth"
 Signature: sig2=:RdNFx5Bj6au3YgAMQL/RzmUlZE8QZLIaXGRpw985hWnwPfMxT228NMk6ehRS1PSl4e8PhbNZACSanGdhEwYCCg==:
 
-E.2.3.  Legacy Signature-Agent, sf-string
+E.2.2.  Legacy Signature-Agent, sf-string
 
    Retained for implementers migrating to the dictionary form
    (Section 5.2.1).  Do not copy it into new deployments.
@@ -1855,6 +1806,27 @@ Acknowledgments
    Verma.
 
 Changelog
+
+   draft-meunier-webbotauth-httpsig-protocol-02
+
+   *  Require Signature-Agent on every signed request, and require each
+      signature to cover the member keyed to its own label.  Drop the
+      test vectors that omitted the header.  Recast the no-URL
+      identifier as a verifier state, not an Agent mode.
+
+   *  Defer Signature-Key to draft-hardt-httpbis-signature-key.
+
+   *  List the components an Agent may cover beyond the required set.
+
+   *  Drop the 2119 keywords from the human binding guidance in Privacy
+      Considerations.
+
+   *  Redraw the figures.  The overview figure now shows the
+      architecture, naming who publishes and who resolves, rather than a
+      message order, and places the Agent inside the User.  The sending
+      figure shows key resolution following the first request,
+      conditional on the keys not already being resolved, and the
+      request example moves out of it.
 
    draft-meunier-webbotauth-httpsig-protocol-01
 
