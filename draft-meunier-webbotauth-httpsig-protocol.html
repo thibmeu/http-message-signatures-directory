@@ -2165,35 +2165,38 @@ document then provides key material through <code>jwks</code> or <code>jwks_uri<
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-5.5-4">All three types produce an identifier: the URL the verifier resolved, with any
+<p id="section-5.5-4">Each resource fetched under this section <span class="bcp14">MUST</span> be served with a <code>200 (OK)</code> HTTP
+status code. A verifier <span class="bcp14">MUST</span> treat all other HTTP status codes as discovery
+failures and <span class="bcp14">MUST NOT</span> automatically follow HTTP redirects.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.5-5">All three types produce an identifier: the URL the verifier resolved, with any
 query and fragment discarded. For <code>directory</code> that is the well-known URI, one
 per origin. For <code>jwks_uri</code> and <code>cimd</code> it is the member value; the verifier
 fetches that value as sent, so the query is dropped from the identifier and not
 from the request. Otherwise one key set would yield an identifier per spelling,
-and an Agent could mint them at will.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
-<p id="section-5.5-5">Identifiers are compared after normalization as described in
+and an Agent could mint them at will.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.5-6">Identifiers are compared after normalization as described in
 <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.2" class="relref">Section 6.2.2</a> of [<a href="#URI" class="cite xref">URI</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.3" class="relref">Section 6.2.3</a> of [<a href="#URI" class="cite xref">URI</a>]</span>. Two identifiers are the
-same when their normalized forms are equal octet for octet.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
-<p id="section-5.5-6">The types differ in what additional information the verifier learns from the URL.
+same when their normalized forms are equal octet for octet.<a href="#section-5.5-6" class="pilcrow">¶</a></p>
+<p id="section-5.5-7">The types differ in what additional information the verifier learns from the URL.
 TLS authenticates the host but not the path, and nothing reserves the <code>jwks_uri</code> or <code>cimd</code> path to the host's operator. The well-known URI is reserved, so <code>directory</code>
-additionally names a domain (<a href="#origin-binding" class="auto internal xref">Section 4.5</a>).<a href="#section-5.5-6" class="pilcrow">¶</a></p>
-<p id="section-5.5-7">For all types, the key is selected using the <code>keyid</code> parameter in
-<code>Signature-Input</code>.<a href="#section-5.5-7" class="pilcrow">¶</a></p>
-<p id="section-5.5-8">Note: when a JWK set is served at the well-known URI registered in
+additionally names a domain (<a href="#origin-binding" class="auto internal xref">Section 4.5</a>).<a href="#section-5.5-7" class="pilcrow">¶</a></p>
+<p id="section-5.5-8">For all types, the key is selected using the <code>keyid</code> parameter in
+<code>Signature-Input</code>.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
+<p id="section-5.5-9">Note: when a JWK set is served at the well-known URI registered in
 <a href="#wkuri-reg" class="auto internal xref">Section 8.1</a>, JWK <span class="bcp14">MAY</span> carry a <code>kid</code>. In this case, it <span class="bcp14">MUST</span> be set to the
 thumbprint defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>, so a verifier
 selects a key by matching <code>keyid</code> against <code>kid</code>. Deriving <code>kid</code> from the key
 material keeps it globally unique and lets a verifier check the directory's own
-labelling rather than trusting it.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
-<p id="section-5.5-9"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
+labelling rather than trusting it.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
+<p id="section-5.5-10"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
 <code>kid</code> is an operator-chosen label. A verifier that cannot match <code>keyid</code> against
-<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5-10">
+<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-11">
 <pre>
 Signature-Agent: sig1="https://signature-agent.test"
 Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
-</pre><a href="#section-5.5-10" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-11" class="pilcrow">¶</a>
 </div>
 <div id="configuration">
 <section id="section-5.5.1">
