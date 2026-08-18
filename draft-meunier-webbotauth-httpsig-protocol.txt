@@ -91,7 +91,7 @@ Table of Contents
      5.2.  Generating HTTP Message Signature
        5.2.1.  Signature-Agent
        5.2.2.  Multiple signatures
-       5.2.3.  Anti-replay
+       5.2.3.  Replay protection
        5.2.4.  Additional headers
        5.2.5.  Sending a request
      5.3.  Requesting a Message signature
@@ -104,17 +104,16 @@ Table of Contents
    6.  Security Considerations
      6.1.  Use of TLS
      6.2.  Performance Impact
-     6.3.  Nonce validation
-     6.4.  Key Compromise Response
-     6.5.  Shared Secrets Considered Harmful
-     6.6.  Key Reuse Considered Harmful
-     6.7.  Reverse proxy consideration
-       6.7.1.  Signature-Agent labeling
-     6.8.  Server-Side Request Forgery (SSRF)
-     6.9.  Test and Demonstration Keys
-     6.10. Static Signatures
-     6.11. Discovery Failure
-     6.12. Unsigned requests
+     6.3.  Key Compromise Response
+     6.4.  Shared Secrets Considered Harmful
+     6.5.  Key Reuse Considered Harmful
+     6.6.  Reverse proxy consideration
+       6.6.1.  Signature-Agent labeling
+     6.7.  Server-Side Request Forgery (SSRF)
+     6.8.  Test and Demonstration Keys
+     6.9.  Static Signatures
+     6.10. Discovery Failure
+     6.11. Unsigned requests
    7.  Privacy Considerations
      7.1.  Public Identity
      7.2.  No Human Correlation
@@ -302,12 +301,12 @@ Table of Contents
    finds that it provides a key that verifies the request (Section 4.4).
    Until then, verifiers MUST NOT attach policy to it.
 
-   A valid signature over a resolved URL proves that the request came
-   from a holder of a key that URL publishes, and that requests with the
-   same URL come from holders of keys that URL publishes.  Section 5.2.3
-   bounds reuse.  It says nothing about who operates the Agent, whether
-   the Agent is benign, or whether the request is authorized.  Those are
-   origin policy.
+   A valid signature over a resolved URL proves that a holder of a key
+   that URL publishes signed the covered message.  The message can still
+   be replayed.  Signature lifetimes and covered components bound the
+   duration and scope of that replay (Section 5.2).  It says nothing
+   about who operates the Agent, whether the Agent is benign, or whether
+   the request is authorized.  Those are origin policy.
 
    Nothing stops an Agent from abandoning a URL and standing up another
    one, and the protocol does not try to prevent this.  It targets
@@ -329,7 +328,7 @@ Table of Contents
 
    A signed request MUST carry Signature-Agent (Section 5.2.1).  A
    verifier can still be left with no URL to attribute to: discovery
-   failed with nothing cached (Section 6.11), redistributed material
+   failed with nothing cached (Section 6.10), redistributed material
    carried no proof (Section 5.5.3), or the header is absent.  The
    identifier is then the keyid thumbprint defined in Section 5.2.  A
    verifier that already holds that key verifies the request, and
@@ -560,21 +559,11 @@ Table of Contents
    Those meanings are deployment policy, or are carried in separately
    signed fields.
 
-5.2.3.  Anti-replay
+5.2.3.  Replay protection
 
-   Origins MAY want to prevent signatures from being spoofed or used
-   multiple times by bad actors and thus require a nonce to be added to
-   the @signature-params.  This is described in Section 7.2.2 of
-   [HTTP-MESSAGE-SIGNATURES].
-
-   Agents SHOULD extend @signature-parameters defined in Section 5.2 as
-   follows:
-
-   nonce  base64url encoded random byte array.  It is RECOMMENDED to use
-      a 64-byte array.
-
-   Client MUST ensure that this nonce is unique for the validity window
-   of the signature, as defined by created and expires attributes.
+   Replay protection, including use of the nonce signature parameter, is
+   described in Section 7.2.2 of [HTTP-MESSAGE-SIGNATURES].  This
+   document defines no additional nonce requirements.
 
 5.2.4.  Additional headers
 
@@ -639,16 +628,16 @@ Table of Contents
    Section 5 of [HTTP-MESSAGE-SIGNATURES] defines the Accept-Signature
    field which can be used to request a Message Signature from a client
    by an origin.  An Origin MAY choose to request signatures from
-   clients that did not initially provide them.  If requesting, Origins
-   MUST use the same parameters as those defined by the Section 5.2.
+   clients that did not initially provide them.  A resulting signature
+   MUST satisfy this profile.  The Origin MAY request additional
+   parameters defined by [HTTP-MESSAGE-SIGNATURES], including nonce.
    The status code SHOULD be 403 Forbidden as defined in Section 15.5.4
    of [HTTP].
 
-   Origin MAY request a new signature with tag "web-bot-auth" even if a
-   nonce is provided, for example if it believes the nonce is a replay,
-   or if it doesn't store nonces and thus requests new signatures every
-   time.  The status code SHOULD be 429 Too Many Requests as defined in
-   Section 4 of [HTTP-MORE-STATUS-CODE].
+   An Origin that detects a signature or nonce has been used more often
+   than its policy permits MAY request a new signature and respond with
+   429 Too Many Requests as defined in Section 4 of
+   [HTTP-MORE-STATUS-CODE].
 
 5.4.  Validating Message signature
 
@@ -683,10 +672,6 @@ Table of Contents
    and attribute that request to the URL the client asserted.  The party
    whose URL is asserted cannot detect or stop this: its own directory
    is never fetched, so no rotation or removal has any effect.
-
-   Origin MAY require the nonce to satisfy certain constraints: be
-   globally unique using a global nonce store, be unique to a specific
-   location or time window using a local cache, or no constraint at all.
 
 5.5.  Key Distribution and Discovery
 
@@ -853,7 +838,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    attackers unintended access.
 
    This include reverse proxy and their consideration presented in
-   Section 6.7.
+   Section 6.6.
 
    An origin SHOULD refuse Signature headers when communicated over an
    unsecured channel.
@@ -869,18 +854,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    verification with a bearer credential.  Appendix C.7 covers the byte
    cost.
 
-6.3.  Nonce validation
-
-   Clients control the nonce.  While Section 5.2.3 mandates that clients
-   MUST provide a globally unique nonce, it is the origin's
-   responsibility to enforce it.
-
-   Different validation policies have different performance and
-   operational considerations.  Global uniqueness requires a global
-   nonce store.  Some origins may find that their use case can tolerate
-   sharding on location, timing, or other properties.
-
-6.4.  Key Compromise Response
+6.3.  Key Compromise Response
 
    This document defines no revocation.  Removing a compromised key from
    the directory is the only remedy, and it takes effect at each
@@ -893,7 +867,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    immediately.  Origins should support rapid key rotation and monitor
    for suspicious signature patterns.
 
-6.5.  Shared Secrets Considered Harmful
+6.4.  Shared Secrets Considered Harmful
 
    Implementations MUST NOT use shared HMAC defined in Section 3.3.3 of
    [HTTP-MESSAGE-SIGNATURES].  Shared secrets break non-repudiation and
@@ -901,14 +875,14 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    asymmetric keypair to ensure attribution, support key rotation, and
    enable effective rotation if needed.
 
-6.6.  Key Reuse Considered Harmful
+6.5.  Key Reuse Considered Harmful
 
    Implementations SHOULD NOT reuse a signing key for different
    purposes.  For example, if an agent implementer has two agents they
    want to differentiate, these should use distinct signing keys and
    signing key directories.
 
-6.7.  Reverse proxy consideration
+6.6.  Reverse proxy consideration
 
    An origin may be placed behind a reverse proxy, which means the proxy
    will see the Signature and Signature-Agent headers before the origin
@@ -919,19 +893,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    used by the origin, as this allows impersonation of the principal
    signature agent.
 
-   Origins MAY require a specific nonce policy to prevent such malicious
-   behaviour and decide to validate the signature themselves.  This has
-   to be done in accordance with Section 6.3.  For example, an origin
-   could require a nonce derived from public information (such as the
-   current date), mandate nonce chaining (where each nonce is the hash
-   of the previous one), or provide its own nonce in an Accept-Signature
-   response to challenge the agent.
-
-   Such policies MAY incur additional round-trip between the client and
-   the origin to convey accept-signature header, or deployment specific
-   exchanges.
-
-6.7.1.  Signature-Agent labeling
+6.6.1.  Signature-Agent labeling
 
    Section 7.2.5 of [HTTP-MESSAGE-SIGNATURES] allows an intermediary to
    relabel a signature, because the label of a Signature dictionary
@@ -948,7 +910,7 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    A signer acting as an intermediary on its own signature is not
    restricted by this, since it can sign the result.
 
-6.8.  Server-Side Request Forgery (SSRF)
+6.7.  Server-Side Request Forgery (SSRF)
 
    As described in Section 5.5, verifiers may fetch key directories
    based on the value conveyed in Signature-Agent when included in a
@@ -979,14 +941,14 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    Application Security Project (OWASP) SSRF Prevention Cheat Sheet
    [OWASP-SSRF].
 
-6.9.  Test and Demonstration Keys
+6.8.  Test and Demonstration Keys
 
    Test keys, including the example keys in [HTTP-MESSAGE-SIGNATURES],
    MUST NOT be used in production.  Verifiers SHOULD reject known test
    keys when they are detected in key directories or out-of-band
    configuration.
 
-6.10.  Static Signatures
+6.9.  Static Signatures
 
    Deployments MUST NOT treat a precomputed Web Bot Auth signature as a
    long-lived access credential.  A reusable static signature has
@@ -997,12 +959,12 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    bounded created and expires values.  Long expiration windows increase
    replay risk.
 
-6.11.  Discovery Failure
+6.10.  Discovery Failure
 
    Resolving a Signature-Agent URL can fail in several ways: the name
    does not resolve, the connection or TLS handshake fails, the response
    is not a directory or contains no key matching keyid, or the fetch is
-   refused by the verifier's own limits (Section 6.8).  All have the
+   refused by the verifier's own limits (Section 6.7).  All have the
    same outcome for the request in hand.  The verifier holds no
    association between that URL and the signing key, so under
    Section 4.4 it MUST NOT attribute the request to that URL.  It may
@@ -1027,13 +989,13 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
    every request naming it at once, across every verifier whose cache
    expires in the same window.
 
-6.12.  Unsigned requests
+6.11.  Unsigned requests
 
    Most HTTP requests carry no signature.  A verifier that sees none has
    learned nothing about the sender: not that it is automated, not that
    it is human, not that it is evading anything.  Absence of a signal is
    not evidence about the party that did not send it, in the same way
-   that a failed fetch (Section 6.11) is not evidence about the signer.
+   that a failed fetch (Section 6.10) is not evidence about the signer.
 
    What an origin does with a request it cannot attribute is its own
    decision, as it was before this protocol existed.  This document
@@ -1405,7 +1367,7 @@ C.2.  Directory Availability
 C.3.  Bounded Directory Fetches
 
    Verifiers fetch directories named by untrusted requests, and should
-   bound those fetches as described in Section 6.8.
+   bound those fetches as described in Section 6.7.
 
    Verifiers should also coalesce concurrent fetches for the same
    directory and apply per-directory or per-origin concurrency limits.
@@ -1438,14 +1400,17 @@ C.5.  Negative Caching and Retry
 C.6.  Freshness and Replay
 
    Shorter signature lifetimes reduce replay risk but increase
-   sensitivity to clock skew and signing failures.  Nonces provide
-   stronger replay defense, but require state at the verifier.  Some
-   deployments can tolerate bounded replay for short windows; others
-   need strict Section 6.3.
+   sensitivity to clock skew and signing failures.  Whether a verifier
+   requires and enforces nonces is deployment policy.  Rejecting
+   duplicate nonces requires an atomic check-and-record across the
+   enforcement scope.  Verifiers need to bound retention and admission
+   of nonce state.  If that state is unavailable, the verifier should
+   not treat signature validation as evidence that replay was detected
+   or prevented.  Replay protection is described in Section 7.2.2 of
+   [HTTP-MESSAGE-SIGNATURES].
 
-   These choices are deployment policy.  Verifiers should avoid
-   accepting signatures with freshness windows longer than their risk
-   model permits.
+   Verifiers should avoid accepting signatures with freshness windows
+   longer than their risk model permits.
 
 C.7.  Field compression
 
