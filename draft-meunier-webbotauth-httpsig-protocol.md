@@ -1072,11 +1072,14 @@ consuming it through {{redistributed-key-material}}.
 `tag`
 : MUST be `http-message-signatures-directory`
 
-A verifier relying on the domain MUST validate these signatures using the keys
-provided by the directory, MUST validate the `Content-Digest` field against the
-response body, and MUST ignore keys that do not have a corresponding valid
-signature. A verifier MUST reject a directory response signature whose
-`created` is in the future, as it would a certificate that is not yet valid.
+A verifier using a corresponding directory response signature as proof MUST
+validate it using the key provided by the directory and MUST validate the
+`Content-Digest` field against the response body. If either validation fails,
+the proof is invalid. A verifier MAY use a key obtained by resolving the
+directory itself whether or not it has valid proof. Attribution from
+redistributed key material is governed by {{redistributed-key-material}}. A
+verifier MUST reject a directory response signature whose `created` is in the
+future, as it would a certificate that is not yet valid.
 {{discovery-is-not-trust}} orders competing evidence by `created`, so a
 future-dated signature would outrank every later fetch.
 
