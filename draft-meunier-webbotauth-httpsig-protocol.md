@@ -565,6 +565,10 @@ URI registered in {{wkuri-reg}}, at that origin. This is the default when no
 : Resolve the member value as a Client ID Metadata Document {{CIMD}} URI. The
 document then provides key material through `jwks` or `jwks_uri`.
 
+Each resource fetched under this section MUST be served with a `200 (OK)` HTTP
+status code. A verifier MUST treat all other HTTP status codes as discovery
+failures and MUST NOT automatically follow HTTP redirects.
+
 All three types produce an identifier: the URL the verifier resolved, with any
 query and fragment discarded. For `directory` that is the well-known URI, one
 per origin. For `jwks_uri` and `cimd` it is the member value; the verifier
