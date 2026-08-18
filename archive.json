@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-16T01:21:59.157666+00:00",
+  "timestamp": "2026-08-18T01:17:27.521630+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -5734,7 +5734,7 @@
       ],
       "body": "[iddiff](https://author-tools.ietf.org/api/iddiff?url_1=https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.txt&url_2=https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [text](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [html](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.html)\r\n\r\nThis change is based on review of a number of issues opened by mt, from 107 to 116. It changes\r\n\r\n1. Signature-Agent from recommended to mandatory with a MUST. This allows to remove some text and test vectors as well.\r\n2. reframe human consideration to be a guidance, given it cannot be enforced. it's still present as a consideration #114 \r\n3. defer signature-key to a future wg item. per vienna comment: we should wait on httpbis here. #112 \r\n4. Optional parameters (method, path, ...) are presented in a list to match the MUST parameters #113\r\n5. changes diagrams to make them highlight the system rather than a specific example (mentioned in #107)\r\n6. corrects some typos\r\n\r\nnote done in this commit but worth considering: moving the declaration of `type` and associated `cimd` into the registry draft, and consolidate signature-agent around jwks_uri. I'm in favor of having a distinct release for it (and will be a distinct PR. #109 for discussion)\r\n\r\n@sandormajor",
       "createdAt": "2026-08-11T08:05:48Z",
-      "updatedAt": "2026-08-11T18:13:09Z",
+      "updatedAt": "2026-08-17T21:05:41Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
@@ -5746,7 +5746,88 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ0L_-Q",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-17T18:59:34Z",
+          "updatedAt": "2026-08-17T18:59:34Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "This is somewhat unrelated to this PR but since we're touching this section it might make sense to include `Repr-Digest` and add a note that encoding of the HTTP message should be considered when using these headers.\nEncoding can break the signature in unexpected ways \u2013 e.g. a developer signs the request leaving their service w/ a digest, unaware of a proxy that compresses their request, changing the digest",
+              "createdAt": "2026-08-17T18:59:34Z",
+              "updatedAt": "2026-08-17T18:59:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ08AMg",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-17T20:49:57Z",
+          "updatedAt": "2026-08-17T20:49:57Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "nit: replacing \"it\" with \"the scope of the signature\" or something along the lines",
+              "createdAt": "2026-08-17T20:49:57Z",
+              "updatedAt": "2026-08-17T20:49:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ0_SNg",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-17T20:57:46Z",
+          "updatedAt": "2026-08-17T20:57:46Z",
+          "comments": [
+            {
+              "originalPosition": 113,
+              "body": "Someone gave us feedback today that CDNs often sort/reorder the query params to optimize caching. Per RFC 9421, changing the order of query params breaks the signature. `@target-uri` contains the query params so including it in a \"SHOULD\" section might lead to a lot of breakage.\nI'm wondering if WBA should override the rules of RFC 9421 and order params alphabetically? Or advise agains signing over the query params.\n\nThere's also some complication around URL encoding and percent encoding of stuff in the query params, so that might make sense to highlight or reiterate here as well, and/or adding test vectors for that.",
+              "createdAt": "2026-08-17T20:57:46Z",
+              "updatedAt": "2026-08-17T20:57:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ1Ch3w",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-17T21:05:41Z",
+          "updatedAt": "2026-08-17T21:05:41Z",
+          "comments": [
+            {
+              "originalPosition": 113,
+              "body": "Found the relevant parts of 9421:\n* [2.2.7 Query](https://datatracker.ietf.org/doc/html/rfc9421#section-2.2.7)\n* [2.2.8 Query Parameters](https://datatracker.ietf.org/doc/html/rfc9421#section-2.2.8)\n\nSo maybe linking these could help, or advising agains signing the query.\nOne more option could be recommending signing individual \"`query-params`\", which is generally more robust",
+              "createdAt": "2026-08-17T21:05:41Z",
+              "updatedAt": "2026-08-17T21:07:55Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 121,
