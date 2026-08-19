@@ -246,7 +246,7 @@ defined in {{iana}}. Members for which the value is unknown MUST be ignored.
 
 The members defined by this document are below.
 
-### Expected user agent {#signature-agent-parameter-user-agent}
+### Expected User Agent {#signature-agent-parameter-user-agent}
 
 The `expected-user-agent` parameter specifies one or more `User-Agent` strings as defined in {{Section 10.1.5 of HTTP}}
 or prefix matches. Prefixes MAY use `*` as a wildcard.
@@ -255,7 +255,7 @@ Example
 
 * `Mozilla/5.0 ExampleBot`
 
-### robots.txt product token {#signature-agent-parameter-robotstxt-token}
+### robots.txt Product Token {#signature-agent-parameter-robotstxt-token}
 
 The `rfc9309-product-token` parameter specifies the product token used for
 `robots.txt` directives per {{Section 2.2.1 of ROBOTSTXT}}.
@@ -264,7 +264,7 @@ Example
 
 * `ExampleBot`
 
-### robots.txt compliance {#signature-agent-parameter-robotstxt-compliance}
+### robots.txt Compliance {#signature-agent-parameter-robotstxt-compliance}
 
 The `rfc9309-compliance` parameter lists directives from `robots.txt` that the
 agent implements.
@@ -293,7 +293,7 @@ Example
 * `search`
 * `tdm`
 
-### Targeted content {#signature-agent-parameter-targeted-content}
+### Targeted Content {#signature-agent-parameter-targeted-content}
 
 The `targeted-content` parameter specifies the type of data the agent seeks.
 Its format is arbitrary UTF-8 encoded string.
@@ -304,7 +304,7 @@ Example
 * `Vulnerability scanning`
 * `Ads verification`
 
-### Rate control {#signature-agent-parameter-rate-control}
+### Rate Control {#signature-agent-parameter-rate-control}
 
 The `rate-control` parameter indicates how origins can influence the agent’s
 request rate.
@@ -317,7 +317,7 @@ Example
 * Custom tool
 * 429 + {{RATELIMIT-HEADER}}
 
-### Rate expectation {#signature-agent-parameter-rate-expectation}
+### Rate Expectation {#signature-agent-parameter-rate-expectation}
 
 The `rate-expectation` parameter specifies anticipated request volume or
 burstiness.
@@ -368,7 +368,7 @@ The URI scheme MUST be one of:
 * https: Points to an HTTPS resource serving a signature agent card
 * data: Contains an inline signature agent card
 
-## CIMD-based discovery {#cimd-discovery}
+## CIMD-Based Discovery {#cimd-discovery}
 
 A Signature Agent advertises its identity through a resolvable `client_id` URL,
 as defined in {{CIMD}}. A consumer discovers the agent's metadata and keys as
@@ -453,7 +453,7 @@ UTF8-4 = %xF0 %x90-BF 2UTF8-tail / %xF1-F3 3UTF8-tail /
 UTF8-tail = %x80-BF
 ~~~
 
-## Out-of-band communication between client and origin
+## Out-of-Band Communication between Client and Origin
 
 A signature agent MAY submit their signature agent card to an origin, or the
 origin MAY manually add them to their local registry.
@@ -496,7 +496,7 @@ defined in {{HTTP-CACHE}} to communicate the intended freshness lifetime of the
 registry content. Clients SHOULD respect these cache directives and SHOULD NOT
 poll more frequently than indicated.
 
-## Signature-Agent header {#signature-agent-header}
+## Signature-Agent Header {#signature-agent-header}
 
 When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
 via a `Signature-Agent` header member with `type=cimd`. The URI carried in that
@@ -680,7 +680,7 @@ IANA is requested to create the "Web Bot Auth Metadata Parameters" registry. Thi
 registry governs the members of the `web_bot_auth` object defined in
 {{web-bot-auth-extension}}.
 
-### Registration template
+### Registration Template
 
 New registrations need to list the following attributes:
 
@@ -711,7 +711,7 @@ registration policy ({{!RFC8126, Section 4.6}}). Designated experts can reject
 registrations on the basis that they do not meet the security and privacy
 requirements defined in TODO.
 
-### Initial Registry content
+### Initial Registry Content
 
 This section registers the `web_bot_auth` member names defined
 in {{web-bot-auth-extension}} in this registry.
@@ -818,7 +818,7 @@ in {{web-bot-auth-extension}} in this registry.
 **Notes:**
 : N/A
 
-#### Rate control Parameter
+#### Rate Control Parameter
 
 **Parameter Name:**
 : rate-control
@@ -835,7 +835,7 @@ in {{web-bot-auth-extension}} in this registry.
 **Notes:**
 : N/A
 
-#### Rate expectation Parameter
+#### Rate Expectation Parameter
 
 **Parameter Name:**
 : rate-expectation
