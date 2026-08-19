@@ -125,7 +125,7 @@ monitor and rate limit per agent operator. However, these mechanisms have drawba
 Using well-established cryptography, we can instead define a simple and secure
 mechanism that empowers small and large agents to share their identity.
 
-## Objectives and constraints {#objectives}
+## Objectives and Constraints {#objectives}
 
 This protocol has two objectives:
 
@@ -144,7 +144,7 @@ onboarding. The first is a statement about operational cost on both ends: a
 site today greps its logs for an IP address and a User-Agent, and with this
 protocol it greps for a handle it can verify.
 
-## HTTP layer choice
+## HTTP Layer Choice
 
 This protocol operates solely at the HTTP layer.
 It allows signatures to be generated and
@@ -217,7 +217,7 @@ are involved.
 carry continuity across a rotation, as that value is derived from the key
 material.
 
-## When no URL is available {#no-url}
+## When No URL Is Available {#no-url}
 
 A signed request MUST carry `Signature-Agent` ({{signature-agent}}). A verifier
 can still be left with no URL to attribute to: discovery failed with nothing
@@ -230,7 +230,7 @@ verifies the request, and attributes it no further than the holder of that key.
 This mode has no rotation. A new key is a new identifier, and the verifier has
 no way to connect the two.
 
-## What the URL endorses {#discovery-is-not-trust}
+## What the URL Endorses {#discovery-is-not-trust}
 
 Resolving a `Signature-Agent` URL over TLS establishes that the host named in
 the URL served this key set at fetch time.
@@ -253,7 +253,7 @@ them: the `created` parameter for a directory response signature
 ({{origin-binding-appendix}}), and the time of the fetch for a directory the
 verifier resolved itself.
 
-## Binding a key to a Web origin {#origin-binding}
+## Binding a Key to a Web Origin {#origin-binding}
 
 A well-known URL is a special case of the above. When a
 `Signature-Agent` value resolves through the `directory` type
@@ -266,7 +266,7 @@ a name. That mechanism lives in {{origin-binding-appendix}}. A verifier that
 wants to use this case may also recognise the shape of the URL and apply those
 checks itself.
 
-## Out of scope
+## Out of Scope
 
 This protocol does not authenticate human users, does not provide anonymous
 authentication, and does not define authorization or delegation. It does not
@@ -408,7 +408,7 @@ This results in the following components to be signed
 ("@authority" "signature-agent";key="sig1")
 ~~~
 
-### Multiple signatures {#multiple-signatures}
+### Multiple Signatures {#multiple-signatures}
 
 A request MAY contain more than one Web Bot Auth signature. Each signature is
 identified by its HTTP Message Signatures label. Each signer MUST provide a
@@ -443,13 +443,13 @@ not make the inner signature valid, and it does not express authorization,
 delegation, or consent. Those meanings are deployment policy, or are carried in
 separately signed fields.
 
-### Replay protection
+### Replay Protection
 
 Replay protection, including use of the `nonce` signature parameter, is
 described in {{Section 7.2.2 of HTTP-MESSAGE-SIGNATURES}}. This document defines
 no additional nonce requirements.
 
-### Additional headers
+### Additional Headers
 
 Agents MAY include additional components, such as specific HTTP headers, in the signature.
 This can be prompted by the origin requesting additional headers, as described in {{requesting-message-signature}},
@@ -459,7 +459,7 @@ For example, an agent might include an HTTP header expressing its intent and sig
 Origins MAY ignore certain headers at their own discretion,
 and request a new signature, as described in {{requesting-message-signature}}.
 
-### Sending a request {#sending-request}
+### Sending a Request {#sending-request}
 
 An Agent SHOULD send a request with the signature generated above.
 
@@ -506,7 +506,7 @@ first request rather than before it. Later requests verify from cache
 ~~~
 {: title="Key resolution follows the first request"}
 
-## Requesting a Message signature {#requesting-message-signature}
+## Requesting a Message Signature {#requesting-message-signature}
 
 {{Section 5 of HTTP-MESSAGE-SIGNATURES}} defines the `Accept-Signature` field which can be used to request a Message Signature from a client by an origin.
 An Origin MAY choose to request signatures from clients that did not initially
@@ -519,7 +519,7 @@ An Origin that detects a signature or nonce has been used more often than its
 policy permits MAY request a new signature and respond with 429 Too Many
 Requests as defined in {{Section 4 of HTTP-MORE-STATUS-CODE}}.
 
-## Validating Message signature
+## Validating Message Signature
 
 Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in {{Section 3.2 of HTTP-MESSAGE-SIGNATURES}}.
 Similar to a regular User-Agent check, this happens at the HTTP layer, once headers are received.
@@ -601,7 +601,7 @@ Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 ~~~
 
-### Directory format {#configuration}
+### Directory Format {#configuration}
 
 All three types resolve to a JSON Web Key Set (JWKS) as defined in
 {{Section 5 of JWK}}. The `alg` parameter is restricted to algorithms
@@ -635,7 +635,7 @@ Cache-Control: max-age=86400
 }
 ~~~
 
-### Key rotation {#key-rotation}
+### Key Rotation {#key-rotation}
 
 Directory operators SHOULD rotate keys by publishing the old and the new key
 together, then removing the old one:
@@ -651,7 +651,7 @@ contents and refresh upon expiration, as described in {{cache-behaviour}}.
 
 It is not a revocation mechanism, and this document does not define any.
 
-### Redistributed key material {#redistributed-key-material}
+### Redistributed Key Material {#redistributed-key-material}
 
 IP addresses and user-agent have been aggregated and distributed via lists.
 This section says what a verifier may conclude from key material it did not
@@ -671,7 +671,7 @@ control plane polling on behalf of the verifiers it serves. None of these option
 constitute redistribution. Nor is a list that names directory URLs rather than embedding
 keys. For instance, {{REGISTRY}} works that way, and the verifier still resolves them.
 
-## Session considerations {#sessions}
+## Session Considerations {#sessions}
 
 Per-request signing and verification costs CPU; uncached key discovery adds
 latency. For high request rates, an origin can verify a request-specific
@@ -731,7 +731,7 @@ Implementations SHOULD NOT reuse a signing key for different purposes. For
 example, if an agent implementer has two agents they want to differentiate,
 these should use distinct signing keys and signing key directories.
 
-## Reverse proxy consideration {#reverse-proxy}
+## Reverse Proxy Consideration {#reverse-proxy}
 
 An origin may be placed behind a reverse proxy, which means the proxy will see
 the `Signature` and `Signature-Agent` headers before the origin does.
@@ -741,7 +741,7 @@ requests.
 A proxy SHOULD NOT replay signatures against other reverse proxies used by the
 origin, as this allows impersonation of the principal signature agent.
 
-### Signature-Agent labeling
+### Signature-Agent Labeling
 
 {{Section 7.2.5 of HTTP-MESSAGE-SIGNATURES}} allows an intermediary to relabel
 a signature, because the label of a `Signature` dictionary member is not part
@@ -832,7 +832,7 @@ Verifiers should also expect failures to be correlated: a single operator's
 directory going down takes out every request naming it at once, across every
 verifier whose cache expires in the same window.
 
-## Unsigned requests {#unsigned-requests}
+## Unsigned Requests {#unsigned-requests}
 
 Most HTTP requests carry no signature. A verifier that sees none has learned
 nothing about the sender: not that it is automated, not that it is human, not
@@ -870,7 +870,7 @@ supported, and clients SHOULD take care to avoid signing information that
 could be used to correlate activity across contexts, especially where
 sensitive user data is involved.
 
-## Directory content and access patterns
+## Directory Content and Access Patterns
 
 A key directory should only contain keys actively used for signing. Additional
 keys or metadata expose more about the signing service than verification
@@ -903,7 +903,7 @@ registry:
 The templates for these entries are listed below and the
 reference should be this RFC.
 
-### "application/http-message-signatures-directory+json" media type
+### "application/http-message-signatures-directory+json" Media Type
 
 Type name:
 
@@ -981,7 +981,7 @@ Change controller:
 
 --- back
 
-# Use cases and what they need {#use-cases}
+# Use Cases and What They Need {#use-cases}
 
 {{USE-CASES}} collects the use cases this group has discussed. Most are served
 by the URL alone. The table below records which ones need the domain binding in
@@ -1004,7 +1004,7 @@ held against a name rather than against the key: a robots.txt file names
 crawlers, and contextual assertions are only worth as much as the party making
 them. End-user authentication and anonymous authentication are out of scope.
 
-# Validating the domain binding {#origin-binding-appendix}
+# Validating the Domain Binding {#origin-binding-appendix}
 
 This appendix describes what a verifier checks when it wants the domain a key
 is published under, rather than the URL on its own. It applies to the
@@ -1015,7 +1015,7 @@ needs the URL as an identifier can skip the whole appendix.
 Authority over the domain comes from the TLS connection to the directory.
 Nothing below adds to that.
 
-## Possession proof on the directory response
+## Possession Proof on the Directory Response
 
 It is RECOMMENDED that a directory server construct and include one HTTP
 Message Signature per key with the response, as defined in
@@ -1064,7 +1064,7 @@ future, as it would a certificate that is not yet valid.
 {{discovery-is-not-trust}} orders competing evidence by `created`, so a
 future-dated signature would outrank every later fetch.
 
-## What the binding attaches to
+## What the Binding Attaches To
 
 The binding is not exclusive. Several domains may publish the same key, and the
 binding attaches to the pair the verifier validated, not to the key on its own.
@@ -1151,7 +1151,7 @@ protection is described in
 Verifiers should avoid accepting signatures with freshness windows longer than
 their risk model permits.
 
-## Field compression {#field-compression}
+## Field Compression {#field-compression}
 
 Covering per-request components costs bytes when a connection is reused. HPACK
 {{HPACK}} and QPACK {{QPACK}} can index a repeated `Signature`,
@@ -1218,13 +1218,13 @@ Deployments should avoid:
 
 # Examples
 
-## Delegation and chaining
+## Delegation and Chaining
 
 Delegation and chaining are out of scope for this document and are expected
 to be specified separately. Input is welcome on the associated
 [GitHub issue](https://github.com/thibmeu/http-message-signatures-directory/issues/27).
 
-## Multiple signatures with a remote browser {#example-multiple-signatures}
+## Multiple Signatures with a Remote Browser {#example-multiple-signatures}
 
 This example shows Alice's agent using a remote browser to fetch a resource. The
 agent signs selected request fields. The remote browser signs the request it
@@ -1276,7 +1276,7 @@ expire sooner.
 The test vectors in this section use the RSA-PSS key defined in {{Appendix B.1.2 of HTTP-MESSAGE-SIGNATURES}}.
 This section includes non-normative test vectors that may be used as test cases to validate implementation correctness.
 
-### Signature-Agent included present on the request {#example-signature-agent-included}
+### Signature-Agent Included Present on the Request {#example-signature-agent-included}
 
 This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -1357,7 +1357,7 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
 The test vectors in this section use the Ed25519 key defined in {{Appendix B.1.4 of HTTP-MESSAGE-SIGNATURES}}.
 This section include non-normative test vectors that may be used as test cases to validate implementation correctness.
 
-### Signature-Agent included present on the request
+### Signature-Agent Included Present on the Request
 
 This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
 a `Signature-Agent` header.
@@ -1433,7 +1433,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
 ~~~
 
-### Signed directory response
+### Signed Directory Response
 
 This example presents the possession proof described in
 {{origin-binding-appendix}}, using the ed25519 algorithm. The directory server
@@ -1542,7 +1542,7 @@ draft-meunier-web-bot-auth-architecture-03
 
 * [Apache module](https://github.com/garyillyes/web-bot-auth-apache) (C)
 
-## Test vectors
+## Test Vectors
 
 * In [JSON format](https://github.com/cloudflare/web-bot-auth/blob/main/packages/web-bot-auth/test/test_data/web_bot_auth_architecture_v2.json)
 
