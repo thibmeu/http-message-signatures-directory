@@ -323,7 +323,9 @@ Table of Contents
 
    The rfc9309-compliance parameter is a boolean indicating whether the
    agent claims compliance with [ROBOTSTXT].  A false value indicates
-   that origins cannot assume its rules are followed.
+   that origins cannot assume robots.txt is followed.
+
+   When undefined, the value defaults to false.
 
    Example
 
