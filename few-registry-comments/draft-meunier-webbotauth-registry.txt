@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 15 February 2027                                         Amazon
+Expires: 21 February 2027                                         Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                          14 August 2026
+                                                          20 August 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 February 2027.
+   This Internet-Draft will expire on 21 February 2027.
 
 Copyright Notice
 
@@ -84,26 +84,25 @@ Table of Contents
        3.1.2.  JWKS URI
        3.1.3.  JWKS
      3.2.  Web Bot Auth Extension
-       3.2.1.  Expected user agent
-       3.2.2.  robots.txt product token
-       3.2.3.  robots.txt compliance
+       3.2.1.  Expected User Agent
+       3.2.2.  robots.txt Product Token
+       3.2.3.  robots.txt Compliance
        3.2.4.  Trigger
        3.2.5.  Purpose
-       3.2.6.  Targeted content
-       3.2.7.  Rate control
-       3.2.8.  Rate expectation
+       3.2.6.  Targeted Content
+       3.2.7.  Rate Control
+       3.2.8.  Rate Expectation
        3.2.9.  Known URLs
        3.2.10. IP Address List URI
    4.  Discovery
-     4.1.  CIMD-based discovery
+     4.1.  CIMD-Based Discovery
      4.2.  Formal Syntax
-     4.3.  Out-of-band communication between client and origin
+     4.3.  Out-of-Band Communication between Client and Origin
      4.4.  Registry Endpoint
        4.4.1.  Authentication
        4.4.2.  Efficient Polling with Conditional Requests
        4.4.3.  Caching
-     4.5.  Signature-Agent header
-     4.6.  Composable discovery with Signature-Key
+     4.5.  Signature-Agent Header
    5.  Security Considerations
      5.1.  Registry Integrity
      5.2.  Binding Delegated Keys to the Directory Authority
@@ -113,8 +112,8 @@ Table of Contents
    7.  IANA Considerations
      7.1.  OAuth Dynamic Client Registration Metadata Registration
      7.2.  Web Bot Auth Metadata Parameters Registry
-       7.2.1.  Registration template
-       7.2.2.  Initial Registry content
+       7.2.1.  Registration Template
+       7.2.2.  Initial Registry Content
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -301,7 +300,7 @@ Table of Contents
 
    The members defined by this document are below.
 
-3.2.1.  Expected user agent
+3.2.1.  Expected User Agent
 
    The expected-user-agent parameter specifies one or more User-Agent
    strings as defined in Section 10.1.5 of [HTTP] or prefix matches.
@@ -311,7 +310,7 @@ Table of Contents
 
    *  Mozilla/5.0 ExampleBot
 
-3.2.2.  robots.txt product token
+3.2.2.  robots.txt Product Token
 
    The rfc9309-product-token parameter specifies the product token used
    for robots.txt directives per Section 2.2.1 of [ROBOTSTXT].
@@ -320,7 +319,7 @@ Table of Contents
 
    *  ExampleBot
 
-3.2.3.  robots.txt compliance
+3.2.3.  robots.txt Compliance
 
    The rfc9309-compliance parameter is a boolean indicating whether the
    agent claims compliance with [ROBOTSTXT].  A false value indicates
@@ -352,7 +351,7 @@ Table of Contents
 
    *  search
 
-3.2.6.  Targeted content
+3.2.6.  Targeted Content
 
    The targeted-content parameter specifies the type of data the agent
    seeks.  Its format is arbitrary UTF-8 encoded string.
@@ -365,7 +364,7 @@ Table of Contents
 
    *  Ads verification
 
-3.2.7.  Rate control
+3.2.7.  Rate Control
 
    The rate-control parameter indicates how origins can influence the
    agent’s request rate.
@@ -380,7 +379,7 @@ Table of Contents
 
    *  429 + [RATELIMIT-HEADER]
 
-3.2.8.  Rate expectation
+3.2.8.  Rate Expectation
 
    The rate-expectation parameter specifies anticipated request volume
    or burstiness.
@@ -431,7 +430,7 @@ Table of Contents
    A Signature Agent Card is discovered by dereferencing its client_id,
    as described in Section 4.1, or from a registry.
 
-   A registry is a list of URLs, each refering to a signature agent
+   A registry is a list of URLs, each referring to a signature agent
    card.  An entry MAY be the client_id of a Signature Agent Card.
 
    The URI scheme MUST be one of:
@@ -440,7 +439,7 @@ Table of Contents
 
    *  data: Contains an inline signature agent card
 
-4.1.  CIMD-based discovery
+4.1.  CIMD-Based Discovery
 
    A Signature Agent advertises its identity through a resolvable
    client_id URL, as defined in [CIMD].  A consumer discovers the
@@ -523,7 +522,7 @@ Content-Type: application/json
 
    UTF8-tail = %x80-BF
 
-4.3.  Out-of-band communication between client and origin
+4.3.  Out-of-Band Communication between Client and Origin
 
    A signature agent MAY submit their signature agent card to an origin,
    or the origin MAY manually add them to their local registry.
@@ -567,22 +566,12 @@ Content-Type: application/json
    lifetime of the registry content.  Clients SHOULD respect these cache
    directives and SHOULD NOT poll more frequently than indicated.
 
-4.5.  Signature-Agent header
+4.5.  Signature-Agent Header
 
    When used for HTTP Message Signatures, a Signature Agent Card MAY be
    discovered via a Signature-Agent header member with type=cimd.  The
    URI carried in that member is the client_id of a Signature Agent Card
    resolved as described in Section 4.1.
-
-4.6.  Composable discovery with Signature-Key
-
-   The discovery in this document is anchored on the client_id URL and
-   is independent of the header that carries it.  [SIGNATURE-KEY]
-   defines a composable Signature-Key header with an extensible registry
-   of key-distribution schemes.  A future scheme could carry a client_id
-   URL, letting a verifier resolve a Signature Agent Card per-signature
-   alongside the keying material.  This document does not define such a
-   scheme; it is noted as a possible composable carrier.
 
 5.  Security Considerations
 
@@ -664,7 +653,7 @@ Content-Type: application/json
    registry.  This registry governs the members of the web_bot_auth
    object defined in Section 3.2.
 
-7.2.1.  Registration template
+7.2.1.  Registration Template
 
    New registrations need to list the following attributes:
 
@@ -685,7 +674,7 @@ Content-Type: application/json
    experts can reject registrations on the basis that they do not meet
    the security and privacy requirements defined in TODO.
 
-7.2.2.  Initial Registry content
+7.2.2.  Initial Registry Content
 
    This section registers the web_bot_auth member names defined in
    Section 3.2 in this registry.
@@ -764,7 +753,7 @@ Content-Type: application/json
 
    *Notes:*  N/A
 
-7.2.2.7.  Rate control Parameter
+7.2.2.7.  Rate Control Parameter
 
    *Parameter Name:*  rate-control
 
@@ -776,7 +765,7 @@ Content-Type: application/json
 
    *Notes:*  N/A
 
-7.2.2.8.  Rate expectation Parameter
+7.2.2.8.  Rate Expectation Parameter
 
    *Parameter Name:*  rate-expectation
 
@@ -876,9 +865,9 @@ Content-Type: application/json
 
    [PROTOCOL] Meunier, T. and S. Major, "HTTP Message Signatures for
               automated traffic", Work in Progress, Internet-Draft,
-              draft-meunier-webbotauth-httpsig-protocol-01, 5 August
+              draft-meunier-webbotauth-httpsig-protocol-02, 18 August
               2026, <https://datatracker.ietf.org/doc/html/draft-
-              meunier-webbotauth-httpsig-protocol-01>.
+              meunier-webbotauth-httpsig-protocol-02>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -904,9 +893,9 @@ Content-Type: application/json
    [AIPREF-VOCAB]
               Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
               Usage Preferences", Work in Progress, Internet-Draft,
-              draft-ietf-aipref-vocab-06, 27 April 2026,
+              draft-ietf-aipref-vocab-07, 18 August 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
-              vocab-06>.
+              vocab-07>.
 
    [CBCP]     Illyes, G., Kühlewind, M., and K. Aj, "Crawler best
               practices", Work in Progress, Internet-Draft, draft-
@@ -956,13 +945,6 @@ Content-Type: application/json
               "Robots Exclusion Protocol", RFC 9309,
               DOI 10.17487/RFC9309, September 2022,
               <https://www.rfc-editor.org/rfc/rfc9309>.
-
-   [SIGNATURE-KEY]
-              Hardt, D. and T. Meunier, "HTTP Signature Keys", Work in
-              Progress, Internet-Draft, draft-hardt-httpbis-signature-
-              key-08, 5 August 2026,
-              <https://datatracker.ietf.org/doc/html/draft-hardt-
-              httpbis-signature-key-08>.
 
    [UTF8]     Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
@@ -1082,6 +1064,8 @@ Acknowledgments
 Changelog
 
    draft-meunier-webbotauth-registry-04
+
+   *  Defer Signature-Key to draft-hardt-httpbis-signature-key.
 
    *  Make rfc9309-compliance a boolean.
 
