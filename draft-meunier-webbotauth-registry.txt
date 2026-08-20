@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 20 February 2027                                         Amazon
+Expires: 21 February 2027                                         Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                          19 August 2026
+                                                          20 August 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 February 2027.
+   This Internet-Draft will expire on 21 February 2027.
 
 Copyright Notice
 
@@ -103,11 +103,6 @@ Table of Contents
        4.4.2.  Efficient Polling with Conditional Requests
        4.4.3.  Caching
      4.5.  Signature-Agent Header
-     4.6.  Change Notification
-       4.6.1.  Advertising the Notification Endpoint
-       4.6.2.  Callback Registration
-       4.6.3.  Notification Requests
-       4.6.4.  Notification Processing
    5.  Security Considerations
      5.1.  Registry Integrity
      5.2.  Binding Delegated Keys to the Directory Authority
@@ -124,6 +119,11 @@ Table of Contents
      8.2.  Informative References
    Appendix A.  Test Vectors
    Appendix B.  Implementations
+   Appendix C.  Change notification
+     C.1.  Advertising the notification endpoint
+     C.2.  Callback registration
+     C.3.  Notification requests
+     C.4.  Notification processing
    Acknowledgments
    Changelog
    Authors' Addresses
@@ -187,9 +187,9 @@ Table of Contents
   "web_bot_auth": {
     "expected-user-agent": "Mozilla/5.0 ExampleBot",
     "rfc9309-product-token": "ExampleBot",
-    "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
+    "rfc9309-compliance": false,
     "trigger": "fetcher",
-    "purpose": "tdm",
+    "purpose": "search",
     "targeted-content": "Cat pictures",
     "rate-control": "429",
     "rate-expectation": "avg=10rps;max=100rps",
@@ -321,14 +321,17 @@ Table of Contents
 
 3.2.3.  robots.txt Compliance
 
-   The rfc9309-compliance parameter lists directives from robots.txt
-   that the agent implements.
+   The rfc9309-compliance parameter is a boolean indicating whether the
+   agent claims compliance with [ROBOTSTXT].  A false value indicates
+   that origins cannot assume robots.txt is followed.
+
+   When undefined, the value defaults to false.
 
    Example
 
-   *  ["User-Agent", "Disallow"]
+   *  true
 
-   *  ["User-Agent", "Disallow", "CrawlDelay"]
+   *  false
 
 3.2.4.  Trigger
 
@@ -343,14 +346,12 @@ Table of Contents
 3.2.5.  Purpose
 
    The purpose parameter describes the intended use of collected data.
-   Values SHOULD be drawn from a controlled vocabulary, such as
-   [AIPREF-VOCAB].
+
+   TODO: consider an array; [AIPREF-VOCAB] is one possible vocabulary.
 
    Example
 
    *  search
-
-   *  tdm
 
 3.2.6.  Targeted Content
 
@@ -419,6 +420,9 @@ Table of Contents
 
    The URI scheme MUST be https.
 
+   This allows discovery without a fixed location and does not preclude
+   [JAFAR] from defining one.
+
    Example
 
    *  https://example.com/ips.json
@@ -470,7 +474,7 @@ Content-Type: application/json
   "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
   "web_bot_auth": {
     "trigger": "fetcher",
-    "purpose": "tdm"
+    "purpose": "search"
   }
 }
 
@@ -570,97 +574,6 @@ Content-Type: application/json
    discovered via a Signature-Agent header member with type=cimd.  The
    URI carried in that member is the client_id of a Signature Agent Card
    resolved as described in Section 4.1.
-
-4.6.  Change Notification
-
-   Pull-based consumption with conditional requests is sufficient for
-   most deployments.  When lower notification latency is required (e.g.,
-   to promptly act on entry removal), a registry operator MAY implement
-   a push-based change notification mechanism.
-
-4.6.1.  Advertising the Notification Endpoint
-
-   A registry operator that supports change notifications SHOULD
-   advertise its notification endpoint in the registry HTTP response
-   using a Link header field as defined in [WEB-LINKING]:
-
-Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
-
-   The registry-changes link relation identifies an endpoint to which
-   clients may register callbacks out of band.
-
-   TODO: Register the registry-changes link relation with IANA, or
-   replace it with an extension relation URI.
-
-4.6.2.  Callback Registration
-
-   Registration of a client callback URL with the registry operator is
-   performed out of band.  No specific registration protocol is defined
-   by this document.  An unsubscribe mechanism SHOULD be considered, and
-   MAY also be out of band.
-
-4.6.3.  Notification Requests
-
-   When an entry is added to or removed from the registry, the registry
-   operator MUST send an HTTP request to each registered callback URL.
-
-   The format in [CDDL] is as follows:
-
-   Action = "put" / "delete"
-
-   Notification = {
-     action: Action,
-     signature-agent: tstr
-   }
-
-   TODO: should we use application/json, a new media-type, permit binary
-   encoding?  TODO: should signature-agent be an array?
-
-   action denotes the operation performed on the registry: 1. put when a
-   new entry has been added, 2. delete when an entry has been removed.
-
-   The request MUST use POST.  It MUST be signed using
-   [HTTP-MESSAGE-SIGNATURES] with a key present in the registry
-   operator's existing signature agent card.  This is the signature
-   agent card associated with the registry operator during out-of-band
-   callback registration.
-
-   The Content-Type SHOULD be application/json.
-
-   Example notification for an added entry:
-
-POST /registry-callback HTTP/1.1
-Host: origin.example
-Content-Type: application/json
-Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
-  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
-Signature: sig1=:base64signature:
-Content-Digest: sha-256=:base64hash:
-
-{
-  "action": "put",
-  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
-}
-
-4.6.4.  Notification Processing
-
-   Upon receiving a notification, the client MUST verify the HTTP
-   Message Signature against the registry operator's key, discovered via
-   the registry operator's signature-agent card.  Notifications with
-   missing or invalid signatures MUST be rejected.
-
-   A notification is advisory only.  The registry endpoint remains the
-   authoritative source of truth.  After verifying a put notification,
-   clients SHOULD re-fetch the affected signature agent card to obtain
-   current metadata.
-
-   For delete notifications, clients SHOULD confirm the removal by re-
-   fetching the full registry.  This confirmation does not need to
-   happen synchronously with notification processing.
-
-   Registry operators SHOULD retry delivery of failed notifications with
-   exponential backoff.  Clients that miss notifications will recover on
-   their next conditional pull from the registry endpoint.
 
 5.  Security Considerations
 
@@ -797,8 +710,8 @@ Content-Digest: sha-256=:base64hash:
 
    *Parameter Name:*  rfc9309-compliance
 
-   *Parameter Description:*  Does your signature-agent respect
-      robots.txt.
+   *Parameter Description:*  Boolean indicating whether the signature
+      agent claims compliance with [ROBOTSTXT].
 
    *Change Controller:*  IETF
 
@@ -900,19 +813,6 @@ Content-Digest: sha-256=:base64hash:
               DOI 10.17487/RFC5234, January 2008,
               <https://www.rfc-editor.org/rfc/rfc5234>.
 
-   [AIPREF-VOCAB]
-              Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
-              Usage Preferences", Work in Progress, Internet-Draft,
-              draft-ietf-aipref-vocab-07, 18 August 2026,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
-              vocab-07>.
-
-   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
-              Definition Language (CDDL): A Notational Convention to
-              Express Concise Binary Object Representation (CBOR) and
-              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
-              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
-
    [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
               Document", Work in Progress, Internet-Draft, draft-ietf-
               oauth-client-id-metadata-document-02, 6 July 2026,
@@ -990,18 +890,26 @@ Content-Digest: sha-256=:base64hash:
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [WEB-LINKING]
-              Nottingham, M., "Web Linking", RFC 8288,
-              DOI 10.17487/RFC8288, October 2017,
-              <https://www.rfc-editor.org/rfc/rfc8288>.
-
 8.2.  Informative References
+
+   [AIPREF-VOCAB]
+              Keller, P. and M. Thomson, "A Vocabulary For Expressing AI
+              Usage Preferences", Work in Progress, Internet-Draft,
+              draft-ietf-aipref-vocab-07, 18 August 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-aipref-
+              vocab-07>.
 
    [CBCP]     Illyes, G., Kühlewind, M., and K. Aj, "Crawler best
               practices", Work in Progress, Internet-Draft, draft-
               illyes-webbotauth-cbcp-00, 21 April 2026,
               <https://datatracker.ietf.org/doc/html/draft-illyes-
               webbotauth-cbcp-00>.
+
+   [CDDL]     Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
    [DATAURL]  Masinter, L., "The "data" URL scheme", RFC 2397,
               DOI 10.17487/RFC2397, August 1998,
@@ -1044,6 +952,11 @@ Content-Digest: sha-256=:base64hash:
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
               2003, <https://www.rfc-editor.org/rfc/rfc3629>.
 
+   [WEB-LINKING]
+              Nottingham, M., "Web Linking", RFC 8288,
+              DOI 10.17487/RFC8288, October 2017,
+              <https://www.rfc-editor.org/rfc/rfc8288>.
+
 Appendix A.  Test Vectors
 
    TODO
@@ -1051,6 +964,96 @@ Appendix A.  Test Vectors
 Appendix B.  Implementations
 
    TODO
+
+Appendix C.  Change notification
+
+   This appendix is non-normative.
+
+      TODO(thibault): may be a dedicated draft.
+
+   Pull-based consumption with conditional requests is sufficient for
+   most deployments.  Fetching a large changed registry can be
+   expensive.  A registry operator may instead implement push-based
+   change notification.
+
+C.1.  Advertising the notification endpoint
+
+   A registry operator that supports change notifications should
+   advertise its notification endpoint in the registry HTTP response
+   using a Link header field as defined in [WEB-LINKING]:
+
+Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
+
+   The registry-changes link relation identifies an endpoint to which
+   clients may register callbacks out of band.
+
+   TODO: Register the registry-changes link relation with IANA, or
+   replace it with an extension relation URI.
+
+C.2.  Callback registration
+
+   Registration of a client callback URL with the registry operator is
+   performed out of band.  No specific registration protocol is defined
+   by this document.  An unsubscribe mechanism should be considered, and
+   may also be out of band.
+
+C.3.  Notification requests
+
+   When an entry is added to or removed from the registry, the registry
+   operator sends an HTTP request to each registered callback URL.
+
+   The format in [CDDL] is as follows:
+
+   Action = "put" / "delete"
+
+   Notification = {
+     action: Action,
+     signature-agent: tstr
+   }
+
+   TODO: should we use application/json, a new media-type, permit binary
+   encoding?  TODO: should signature-agent be an array?
+
+   action denotes the operation performed on the registry: 1. put when a
+   new entry has been added, 2. delete when an entry has been removed.
+
+   The request uses POST and is signed using [HTTP-MESSAGE-SIGNATURES]
+   with a key present in the registry operator's existing signature
+   agent card.  This is the card associated with the registry operator
+   during out-of-band callback registration.
+
+   The Content-Type is application/json.
+
+   Example notification for an added entry:
+
+POST /registry-callback HTTP/1.1
+Host: origin.example
+Content-Type: application/json
+Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
+  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
+Signature: sig1=:base64signature:
+Content-Digest: sha-256=:base64hash:
+
+{
+  "action": "put",
+  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
+}
+
+C.4.  Notification processing
+
+   The client verifies the HTTP Message Signature against the registry
+   operator's key, discovered via the registry operator's signature
+   agent card.  Notifications with missing or invalid signatures are
+   rejected.
+
+   A notification is advisory only.  The registry endpoint remains
+   authoritative.  After verifying a put notification, clients re-fetch
+   the affected signature agent card.  For delete notifications, clients
+   confirm the removal by re-fetching the registry.
+
+   Registry operators should retry failed deliveries with exponential
+   backoff.  Clients that miss notifications recover on their next
+   conditional pull.
 
 Acknowledgments
 
@@ -1065,6 +1068,14 @@ Changelog
    draft-meunier-webbotauth-registry-04
 
    *  Defer Signature-Key to draft-hardt-httpbis-signature-key.
+
+   *  Make rfc9309-compliance a boolean.
+
+   *  Keep purpose open for further discussion.
+
+   *  Clarify ips_uri discovery.
+
+   *  Move change notifications to a non-normative appendix.
 
    draft-meunier-webbotauth-registry-03
 
