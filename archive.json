@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-18T01:17:27.521630+00:00",
+  "timestamp": "2026-08-20T01:18:13.094859+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -35,15 +35,15 @@
       "id": "I_kwDOOXJyWM6ywrL-",
       "title": "Discuss tradeoff between replay resistance and efficiency",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jhoyla",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "When loading a single website it's not uncommon to have dozens, if not hundreds, of requests to the same FQDN. Creating and verifying dozens of signed requests that only differ in the nonce almost simultaneously would be very inefficient, but not requiring a nonce (and thus allowing the signature to be cached) allows for replays. Perhaps the draft should discuss options for balancing these two.\nSome options include:\n1. Allow small numbers of replays. This probably requires state on the server side, but given that we need to store nonces to enforce them this might not be too bad.\n2. Allow replays but only for signatures with very short (e.g. 5 second) lifetimes. This still lets a malicious client do less work than the server (unless the server caches the verification result I guess), but given that this is non-repudiatable, I don't think it's a significant risk. \n3. Enforcing nonces strictly, but providing a cookie along with each response to a signed request. The client can send a few signed requests in parallel, and once the first one has a response switch to using the cookie. The downside of this is that if an adversary gets a signed request they can exchange it for a cookie, which can then be replayed, but this can be managed through cookie mechanisms.\n",
       "createdAt": "2025-04-16T09:52:49Z",
-      "updatedAt": "2026-08-05T16:55:26Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T16:00:12Z",
+      "closedAt": "2026-08-18T16:00:11Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -86,6 +86,13 @@
           "body": "These have been added to the draft (at least the one in this repo, not cut yet) https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.html\n\nThere are the following sections:\n1. sessions\n2. freshness and replay\n3. field compression\n\ni believe this closes the issue, and we can open dedicated issues to improve the wording. leaving open until I cut the draft though",
           "createdAt": "2026-08-05T16:55:26Z",
           "updatedAt": "2026-08-05T16:55:26Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Draft has been cut and feedback on the mailing seems positive. I'm closing the issue as complete",
+          "createdAt": "2026-08-18T16:00:11Z",
+          "updatedAt": "2026-08-18T16:00:11Z"
         }
       ]
     },
@@ -237,7 +244,7 @@
       "id": "I_kwDOOXJyWM60P0gW",
       "title": "Relation to OAuth 2",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/13",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -246,8 +253,8 @@
       ],
       "body": "There has been a couple of feedback about why not use OAuth 2, DPoP, maybe OIDC in general. We should consider having a section in the appendix to address that.\n\nFrom the top of my head:\n* This is similar indeed: one standard which we scope specifically for bots, with a tag/purpose, key ID definition\n* HTTP Message Signatures provides @authority derived component\n* The use of JWK Thumbprint as keyid is sufficient. No need for DPoP\n* DPoP is specifically addressing replay and access refresh\n* The Authorization server is the client, which seems to be closer to HTTP Message Signatures design\n* Extensibility to allow request integrity and non-repudiability with HTTP Message Signatures, possibly with mulitple ones\n",
       "createdAt": "2025-04-28T07:55:30Z",
-      "updatedAt": "2025-06-26T16:47:09Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T16:00:36Z",
+      "closedAt": "2026-08-18T16:00:36Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -255,6 +262,13 @@
           "body": "From @garyillyes on the [mailing list](https://mailarchive.ietf.org/arch/msg/web-bot-auth/JHZcHwwYlOt_y1T_YcENGP5yAnM/): consideration about [SPIFFE](https://spiffe.io/). Trying to recall the differences from the top of my head before i log out for the day and reply on the mailing:\n\n1. I understand SPIFFE as being based on trust domain. Signature-Agent helps with that discovery to avoid a central registry for a public web.\n2. Transitivity is a nice property of HTTP Sigs\n3. There is no binding to a specific authority, or headers, like with HTTP Sigs. This is a nice to have\n4. There is an ongoing thread on [oauth mailing list](https://mailarchive.ietf.org/arch/msg/oauth/3dpBuZqHRxlx33AyTZNUqofnM_0/) about dynamic registration with OAuth using SPIFFE sharing some of the properties\n\nTLDR is registration is covered with Signature-Agent allowing for multiple trust domains. SPIFFE would be interesting to provide that unique workload URL, and possibly identify a specific workload instead of their principals.",
           "createdAt": "2025-06-26T16:36:35Z",
           "updatedAt": "2025-06-26T16:47:09Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "won't do",
+          "createdAt": "2026-08-18T16:00:36Z",
+          "updatedAt": "2026-08-18T16:00:36Z"
         }
       ]
     },
@@ -420,15 +434,15 @@
       "id": "I_kwDOOXJyWM63J7x-",
       "title": "Clarify the motivation for a company/agent to identify themselves",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "An assumption in the motivation is that a server WANTS to have a stable identity, given they do already with IP/User-Agents. Cutting out a specific section in the introduction could be relevant around having a stable identity. Note that the mention of rotation does not preclude this, given the identity is the `Signature-Agent`, not the `keyid` derived for the signature.\n\nComment from @martinthomson\n\n> The reason that the server might want to have a stable identity for the agent is another important question to address.  What possible purpose would be served by that?   You need to address that question more directly.\n>\n> One potential answer here is that continuity of identity for the same server allows that server to build up a history of good (or bad) behaviour on behalf of a given agent.  One that acts in a manner that respects server resources and does not attempt attacks might be given more favourable treatment as it builds up that history with the server.\n>\n> Another is that continuity of identity across servers allows agents to build up a reputation across servers.  If the agent is known to one server as being well-behaved, that server can tell other servers and they can collectively treat it better.\n>\n> Both require that the agent identity not be closely correlated with the identity of a person, or we enable tracking.",
       "createdAt": "2025-05-19T07:34:19Z",
-      "updatedAt": "2026-08-05T16:49:19Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:59:37Z",
+      "closedAt": "2026-08-18T15:59:37Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -436,6 +450,13 @@
           "body": "This was the constructoin of #104 and refined further in #106. A clear threat model has been added, and the merge with directory should help. I'm not closing it yet, but I consider this is addressed.",
           "createdAt": "2026-08-05T16:49:19Z",
           "updatedAt": "2026-08-05T16:49:19Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "there is a full section for it now",
+          "createdAt": "2026-08-18T15:59:37Z",
+          "updatedAt": "2026-08-18T15:59:37Z"
         }
       ]
     },
@@ -653,7 +674,7 @@
       "id": "I_kwDOOXJyWM67YoAW",
       "title": "Security consideration regarding semantically equivalent field values",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/43",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -662,8 +683,8 @@
       ],
       "body": "HTTP Message Signatures relies on strwuctured field to canonicalise an HTTP request.\nStructured fields allow for two different inputs to be canonicalised to the same string.\n\nThere are considerations around this in HTTP Message Signatures [RFC 9421, Section 7.5.2](https://www.rfc-editor.org/rfc/rfc9421#section-7.5.2).\n\nAt minimum, the architecture draft has to restate these.\n\nThere is an open question if the architecture should place additional rules which are not part of HTTP Message Signatures.",
       "createdAt": "2025-06-13T14:37:28Z",
-      "updatedAt": "2025-06-13T14:37:28Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T16:01:39Z",
+      "closedAt": "2026-08-18T16:01:39Z",
       "comments": []
     },
     {
@@ -946,7 +967,7 @@
       "id": "I_kwDOOXJyWM7KmVue",
       "title": "Nonce negotiation",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/61",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -955,9 +976,17 @@
       ],
       "body": "Consider having a protocol to negotiate nonce between client and server",
       "createdAt": "2025-09-09T15:59:05Z",
-      "updatedAt": "2025-09-09T15:59:05Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-08-18T15:59:17Z",
+      "closedAt": "2026-08-18T15:59:17Z",
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Nonce requirements have been dropped",
+          "createdAt": "2026-08-18T15:59:17Z",
+          "updatedAt": "2026-08-18T15:59:17Z"
+        }
+      ]
     },
     {
       "number": 62,
@@ -1076,7 +1105,7 @@
       "id": "I_kwDOOXJyWM7NreWl",
       "title": "Interesting (mis)use of Web Bot Auth",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/68",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sandormajor",
       "authorAssociation": "NONE",
       "assignees": [],
@@ -1085,8 +1114,8 @@
       ],
       "body": "I ran across [this article](https://chrisleverseo.com/blog/how-to-fix-shopify-crawl-issues-in-screaming-frog-and-sitebulb-using-web-bot-auth/). This might be the first attempt of someone implementing delegation.\n\nShopify [uses](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store) WBA to allow crawlers back to stores hosted by Shopify itself. This doesn't seem to be better than using oldschool API keys, but introduces a lot of unnecessary payload and extra hops to fetch Shopify's own public key (that will not change ever anyway because everyone will hardcode the signatures in the requests of their 3P tools).\n\nI think WBA's goal in a scenario like this should be to identify the crawler (e.g. \"screamingfrog.co.uk\", or \"sitebulb.com\") and not Shopify itself. The user could then select on the Shopify UI which bots to allow, without all the manual copy-pasting and hardcoding signatures. The signatures meant to be short lived and ideally used once. The signatures issued by Shopify have no expiry and no nonce, a leaked signature can be used forever to crawl a store. Even if the user manually rotates the signatures, thinking it's kind of a token, the verification will succeed until the public key is rotated. And the signing key can leak too, so rotating it is required. WBA provides a nice key-publishing mechanism through the .well-known file, but updating that now would mean that Shopify will need to break all the integrations of all their customers. All users would need to go back and manually generate a new signature using the new key and update them at all their 3Ps. The `exp` of [their key](https://www.shopify.com/.well-known/http-message-signatures-directory) is July next year so they might have a breakage around that time.\n\nI think to avoid such misuse the spec should say that the signing agent MUST rotate the keys at least daily, and signatures MUST have an expiry shorter than X \u2013\u00a0e.g. 5 minutes.\n\nIf the goal of Shopify here was to kind of \"approve\" a request sent by someone else, then issuing a certificate for the crawler and then letting the crawler sign the request with their own signing key would be a better approach, but I'm not sure if that's even necessary here.\n\nEdit: There might be some expiry on the signature, I realized it's masked out on the screenshot, and the [docs](https://help.shopify.com/en/manual/promoting-marketing/seo/crawling-your-store#:~:text=Set%20signatures%20to%20expire%20after%20a%20specific%20period.%20The%20maximum%20period%20is%203%20months) say \"Set signatures to expire after a specific period. The maximum period is 3 months\". Which is a bit odd because the users will need to manually rotate these signatures. And I think 3 months is too long.",
       "createdAt": "2025-09-24T19:46:19Z",
-      "updatedAt": "2026-08-05T16:53:28Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:58:55Z",
+      "closedAt": "2026-08-18T15:58:55Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -1122,6 +1151,13 @@
           "body": "Note: the latest draft is adding guidance here, specifically with regards to [static signatures](https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.html#name-static-signatures).\n\nThis issue was open a year ago. Since then, I'd be curious where we stand on the tooling. There has been more integrations, and a pre-generated signature may not be that much of a blocker. ",
           "createdAt": "2026-08-05T16:53:28Z",
           "updatedAt": "2026-08-05T16:53:28Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Seems fine to close as the draft has been cut with dedicated text. Happy to reopen if the text does not address all concerns",
+          "createdAt": "2026-08-18T15:58:55Z",
+          "updatedAt": "2026-08-18T15:58:55Z"
         }
       ]
     },
@@ -1833,15 +1869,15 @@
       "id": "I_kwDOOXJyWM8AAAABLxlXGw",
       "title": "Order of key acquisition",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/107",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The signatures draft shows an exchange of keying material before any requests are initiated.  With the current design, the fetching of keys is almost certainly going to happen after the first interaction, because the URL will be unknown prior to that point.  It might pay to rearrange the presentation of [these](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5-1.1) [figures](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.2.5-2.1).\n\nBy the way, don't embed an example in the second of those figures.  That's not what diagrams are for.",
       "createdAt": "2026-08-06T22:31:23Z",
-      "updatedAt": "2026-08-07T09:28:00Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-19T04:53:05Z",
+      "closedAt": "2026-08-18T15:40:08Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -1849,6 +1885,20 @@
           "body": "This is a good observation, should the fetching of the key be blocking, or simply accumulated and performed async.",
           "createdAt": "2026-08-07T09:28:00Z",
           "updatedAt": "2026-08-07T09:28:00Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Both the exchange of key material, and the diagrams have been updated. For the diagrams, happy to have your eyes on them. They are in section 5 and 5.2.5.\n\nClosing the issue. We can always open a new one down the line if there are more changes.",
+          "createdAt": "2026-08-18T15:40:08Z",
+          "updatedAt": "2026-08-18T15:40:08Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "NONE",
+          "body": "The pictures are much clearer, thanks.\n\nI prefer to reserve the double lines for actions that involve multiple messages or back-and-forth, so you probably don't need to use those in 5.2.5.",
+          "createdAt": "2026-08-19T04:53:05Z",
+          "updatedAt": "2026-08-19T04:53:05Z"
         }
       ]
     },
@@ -1857,15 +1907,15 @@
       "id": "I_kwDOOXJyWM8AAAABLxmC0w",
       "title": "Anti-replay requirement is backwards (and likely infeasible)",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/108",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "> Client[sic] MUST ensure that this nonce is unique for the validity window of the signature, as defined by created and expires attributes.\n\n-- https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-5.2.3-4\n\nThis is a fine requirement, but the real requirement is that the server maintain a strike register and reject requests with duplicate nonces.  That's a pretty tall ask, for something that is there primarily to protect the client.  Incentive alignment seems off.  Consider dropping this requirement.\n\nIf anti-theft is a desirable feature, the best idea I have is a TLS exporter binding.  That's not appreciably more feasible, of course.",
       "createdAt": "2026-08-06T22:34:00Z",
-      "updatedAt": "2026-08-07T08:13:00Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:38:01Z",
+      "closedAt": "2026-08-18T15:38:01Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -1873,6 +1923,13 @@
           "body": "This is the main reason why the sentence above is\n\n> Origins MAY want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a nonce to be added to the @signature-params.\n\nThis is an ask from the origin, as they get benefits. The section probably should be titled \"replay detection\" rather than \"anti-replay\" to help carry that framing.\n\nRe-reading, where I believe it reads wrong is that `Agents SHOULD [provide a nonce]` and right after `Clients MUST ensure that this nonce is unique`. This is similar in [section 6.3](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-nonce-validation). It is a confusion as the nonce is always optional for clients, and it's the origin that prompts it.\n\nTLS exporter binding was indeed considered in deployment but left out as a hard ask, especially as it would work poorly with intermediaries.\n\nGiven nonce is a parameter of RFC9421 already, this document may simply stands by section 7.2.2 of RFC9421 (signature replayability) and section 6.7 of the document (reverse proxy considerations). The addition by client and origin would remain out, possibly in a future document that would describe chaining, uniqueness, challenge/response in more details.",
           "createdAt": "2026-08-07T08:13:00Z",
           "updatedAt": "2026-08-07T08:13:00Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "commit #123 removes constraints and solely references 7.2.2 from RFC 9421",
+          "createdAt": "2026-08-18T15:38:01Z",
+          "updatedAt": "2026-08-18T15:38:01Z"
         }
       ]
     },
@@ -1888,7 +1945,7 @@
       "labels": [],
       "body": "Pick *one* please.  The idea that you might have multiple key formats in order to support different use cases is cute, but it doesn't foster interoperability.  The lessons of the Tower of Babel apply.  The JWKS format seems tolerable.",
       "createdAt": "2026-08-06T22:38:10Z",
-      "updatedAt": "2026-08-11T05:45:41Z",
+      "updatedAt": "2026-08-19T04:42:56Z",
       "closedAt": null,
       "comments": [
         {
@@ -1925,6 +1982,13 @@
           "body": "Totally get that. The note was mostly that when we address the issue, the braking change should be clear on the changelog.\n\nThe previous comment was to run through what such a change would look like.",
           "createdAt": "2026-08-11T05:45:41Z",
           "updatedAt": "2026-08-11T05:45:41Z"
+        },
+        {
+          "author": "AVAVERIFY",
+          "authorAssociation": "NONE",
+          "body": "Verifier implementer input, from re-pinning to -02 today: support for\nJWKS-only as the single format. Two notes from deployed reality. First,\nalg: our parser accepts alg-absent, the registry form (ed25519), and the\nJOSE names case-insensitively, because all three occur in the wild; per\nJoshua's WebCrypto finding, guidance to omit alg (the algorithm already\nrides in Signature-Input) seems right, with verifier tolerance for the\nJOSE names. Second, at least one production directory (shopify.com) serves\na bare JWK rather than a JWK Set today, so a JWKS-only rule would benefit\nfrom one migration sentence telling verifiers whether to tolerate or\nreject the bare form during transition. We currently normalize it and\nrecord the divergence.",
+          "createdAt": "2026-08-19T04:42:56Z",
+          "updatedAt": "2026-08-19T04:42:56Z"
         }
       ]
     },
@@ -1957,7 +2021,7 @@
       "id": "I_kwDOOXJyWM8AAAABLxoN5Q",
       "title": "Can't validate without a key",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/111",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [],
@@ -1967,8 +2031,8 @@
       ],
       "body": "> Signature-Agent is RECOMMENDED but not required. Without it, a verifier has only the key, and the identifier is the keyid thumbprint defined in [Section 5.2](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#generating-http-message-signature). Verification still works, provided the verifier already holds that key.\n\nIt's not really possible for the verifier to hold the key.  Because, without `Signature-Agent`, it has no idea what key to expect.  Even if it has the key, how can it be sure that it does? ",
       "createdAt": "2026-08-06T22:42:05Z",
-      "updatedAt": "2026-08-07T09:21:49Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:57:23Z",
+      "closedAt": "2026-08-18T15:57:23Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -1976,6 +2040,13 @@
           "body": "That's a good observation. Especially now that the URL is the anchor. That's a bug in wording.\n\nAs of today, the best path would be to have Signature-Agent` as a must. Other discovery mechanism exist (Signature-Key, oob, etc), but that complicates the story, especially with the URL being the identifier. We can leave that to future documents. If a verifier has the key already, the request is verifiable, but possibly not attributable. The section probably should be reworded around that.",
           "createdAt": "2026-08-07T09:21:44Z",
           "updatedAt": "2026-08-07T09:21:44Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Signature-Agent has been moved to a MUST. Will be part of -02",
+          "createdAt": "2026-08-18T15:57:23Z",
+          "updatedAt": "2026-08-18T15:57:23Z"
         }
       ]
     },
@@ -1984,7 +2055,7 @@
       "id": "I_kwDOOXJyWM8AAAABLxoWQw",
       "title": "Drop `Signature-Key`?",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/112",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [
@@ -1995,8 +2066,8 @@
       ],
       "body": "There's a bunch of mentions of `Signature-Key`, but it's not clear that these are needed.  In the interests of focus, I suggest removing these.",
       "createdAt": "2026-08-06T22:42:35Z",
-      "updatedAt": "2026-08-07T07:49:28Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:36:52Z",
+      "closedAt": "2026-08-18T15:36:52Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -2004,6 +2075,13 @@
           "body": "This was done pre-IETF, and indeed the conclusion from the meeting was it's better to wait on progress within HTTPbis.",
           "createdAt": "2026-08-07T07:49:20Z",
           "updatedAt": "2026-08-07T07:49:20Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "will be cut in -02. I suspect that #109 may also be relevant as its resolution will be to alter the discovery method",
+          "createdAt": "2026-08-18T15:36:52Z",
+          "updatedAt": "2026-08-18T15:36:52Z"
         }
       ]
     },
@@ -2012,15 +2090,15 @@
       "id": "I_kwDOOXJyWM8AAAABLxp8jw",
       "title": "Mention @method as optional signature coverage",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/113",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "I don't know if this is essential, but it seems like it would be compatible with many usage models to have a single method (probably GET) covered.",
       "createdAt": "2026-08-06T22:48:36Z",
-      "updatedAt": "2026-08-07T07:37:13Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:35:52Z",
+      "closedAt": "2026-08-18T15:35:52Z",
       "comments": [
         {
           "author": "thibmeu",
@@ -2028,6 +2106,13 @@
           "body": "There is a mention that it's a `SHOULD` in [5.2](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-generating-http-message-sig:~:text=Agents%20that%20want%20to%20narrow%20it%20SHOULD%20also%20cover%20%40method%2C%20and%20either%20%40path%20or%20%40target%2Duri%2C%20as%20Appendix%20D%2E2%20does)\n\nThere is possibly a better presentation to make: having a list of \"optional\", similar to the list of \"MUST\" presented above. The protocol does not forbid additional coverage, but giving clearer indication helps.",
           "createdAt": "2026-08-07T07:37:13Z",
           "updatedAt": "2026-08-07T07:37:13Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "This has been added along with a list, and will be cut in -02. as discussed above, this is now a list as well which makes it esier to mention optional parameters if relevant",
+          "createdAt": "2026-08-18T15:35:52Z",
+          "updatedAt": "2026-08-18T15:35:52Z"
         }
       ]
     },
@@ -2043,7 +2128,7 @@
       "labels": [],
       "body": "> The key used for signing MUST NOT be tied to a specific human individual. \n\n-- https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#section-7.2-1\n\nThis seems like it might be impossible to enforce.  It's probably better not to say anything at all.",
       "createdAt": "2026-08-06T22:50:20Z",
-      "updatedAt": "2026-08-07T09:26:09Z",
+      "updatedAt": "2026-08-19T05:55:30Z",
       "closedAt": null,
       "comments": [
         {
@@ -2052,6 +2137,41 @@
           "body": "It is impossible to enforce. Providing a guidance is still useful. It probably should not be a MUST though.",
           "createdAt": "2026-08-07T09:26:09Z",
           "updatedAt": "2026-08-07T09:26:09Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Text has been updated to the following\n\n> A key tied to a specific human individual exposes personally identifiable information and makes the key usable for user tracking or profiling. A key that represents a role, company, or automation identity (e.g., \"news-aggregator-bot\", \"example-crawler-v1\") avoids this.\n\nThis removes the unenforceable MUST. Is this a section that should be included: TBD. Leaving this issues open to capture future discussion ",
+          "createdAt": "2026-08-18T15:42:53Z",
+          "updatedAt": "2026-08-18T15:42:53Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "NONE",
+          "body": "It doesn't avoid tracking generally, does it?  A consistent identifier allows for correlation of actions over time, that's the entire point.  The point is that we might not *care* when the subject that the identifier is associated with is not a human.  The opposite: that can be useful.",
+          "createdAt": "2026-08-19T04:54:46Z",
+          "updatedAt": "2026-08-19T04:54:46Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "It doesn't avoid tracking beyond guidance, given the fact that the draft uses an identifier anyway.\n\nTherefore it's a guidance and nothing we can enforce.\n\nCan that be useful when bound to a human: yes, and there's been use cases associated. Thing is, the draft targets automated clients and I feel that going beyond would need specific considerations despite the same protocol being used for both.",
+          "createdAt": "2026-08-19T05:01:27Z",
+          "updatedAt": "2026-08-19T05:01:27Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "NONE",
+          "body": "Maybe I should be more direct :)\n\nSay directly that this is for tracking.  That means that it is probably not suitable for use when the key identifies something that might not want to be tracked, such as a human being.",
+          "createdAt": "2026-08-19T05:49:47Z",
+          "updatedAt": "2026-08-19T05:49:47Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Noted. In my mind that would be in #115, but this indeed impacts the guidance set into this ticket (which could be removed with a more direct wording around tracking)",
+          "createdAt": "2026-08-19T05:55:30Z",
+          "updatedAt": "2026-08-19T05:55:30Z"
         }
       ]
     },
@@ -2111,15 +2231,15 @@
       "id": "I_kwDOOXJyWM8AAAABMUXyaQ",
       "title": "Better explain what a verifier should do when a well-known is not signed",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/118",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "There are only a few directories that follow [Appendix B Validating a directory response](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01#name-validating-the-domain-bindi). The appendix should better explain what verifier should do in the absence of a binding: either enforce strict signing or ignore it.",
       "createdAt": "2026-08-11T15:09:23Z",
-      "updatedAt": "2026-08-11T15:09:23Z",
-      "closedAt": null,
+      "updatedAt": "2026-08-18T15:34:51Z",
+      "closedAt": "2026-08-18T15:34:51Z",
       "comments": []
     },
     {
@@ -2134,24 +2254,97 @@
       "labels": [],
       "body": "Taking the example of `shopify.com/.well-known/http-message-signatures-directory` which 301 to `www.shopify.com` (has been noted by Nick Mathews on [mailarchive](https://mailarchive.ietf.org/arch/msg/web-bot-auth/RRHGvYAou5chgIwDRSDo6rRyEu0/)).\n\nHaving a clear mention in section 4 seems important: what about cross-origin, inclusion of non-https URI, etc.",
       "createdAt": "2026-08-11T15:14:00Z",
-      "updatedAt": "2026-08-11T15:14:00Z",
+      "updatedAt": "2026-08-19T08:28:43Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Added a sentence to clarify the behaviour here",
+          "createdAt": "2026-08-18T15:34:44Z",
+          "updatedAt": "2026-08-18T15:34:44Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Reopenning based on discussion from the mailing list https://mailarchive.ietf.org/arch/msg/web-bot-auth/sZUxltGc7LuFYApy_hTkLjnqVm4/\n\nInstead of prohibitting redirection, allowing it but making it clear that the delagation does not confer trust, and the identifier remains what the client provided via signature-agent\n\nWe should add constraints, such as using TLS on every hop and recommending limiting the depth of redirection in deployment considerations",
+          "createdAt": "2026-08-19T08:28:43Z",
+          "updatedAt": "2026-08-19T08:28:43Z"
+        }
+      ]
     },
     {
       "number": 120,
       "id": "I_kwDOOXJyWM8AAAABMWIXDw",
       "title": "Test vectors for signed directory",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/120",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "We should provide test vectors for directory signing. Relates to #11, but only for valid tests here.",
       "createdAt": "2026-08-11T18:44:42Z",
-      "updatedAt": "2026-08-11T18:44:42Z",
+      "updatedAt": "2026-08-18T15:34:24Z",
+      "closedAt": "2026-08-18T15:34:24Z",
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "Thanks @AVAVERIFY for adding them",
+          "createdAt": "2026-08-18T15:34:22Z",
+          "updatedAt": "2026-08-18T15:34:22Z"
+        }
+      ]
+    },
+    {
+      "number": 126,
+      "id": "I_kwDOOXJyWM8AAAABNPTIHw",
+      "title": "[protocol] `Unencoded-Digest` vs `Content-Digest`",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/126",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "protocol"
+      ],
+      "body": "The protocol specification suggest to sign `Content-Digest`. This is affected by encoding.\n\nWe may suggest using `Unencoded-Digest` which is introduced by https://datatracker.ietf.org/doc/draft-ietf-httpbis-unencoded-digest/\n\n@sandormajor",
+      "createdAt": "2026-08-18T15:20:21Z",
+      "updatedAt": "2026-08-18T15:20:32Z",
       "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 128,
+      "id": "I_kwDOOXJyWM8AAAABNUnZoQ",
+      "title": "5.2.1 label-keying MUST vs the Appendix E vectors, and whether 5.2.2 already carries the property",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/128",
+      "state": "OPEN",
+      "author": "AVAVERIFY",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Implementing -02 in our merchant-side verifier surfaced a conflict Joshua\nAshcroft's implementer's report also touches (his finding 1): 5.2.1\nrequires the Signature-Agent member keyed to the signature label to be\ncovered, but E.1.1 and E.2.1 label the signature sig2 while keying the\nmember agent2. A strict 5.2.1 reading rejects the document's own vectors.\n\nTwo possible fixes, and they differ in reach. Re-keying the vector members\nto their signature labels closes the fixture inconsistency. But it may be\nworth asking whether 5.2.1's label-matching requirement is itself stronger\nthan needed: 5.2.2 already requires resolving the member the signature\nactually covers, which is the security-relevant property, and matching the\nlabel on top of that adds bookkeeping without adding security. Our verifier\nimplements the 5.2.2 rule (attribute to the covered member, whatever its\nkey), passes both the E.2.1 request vector and the E.2.3 directory vector\nthat way, and we have documented it as a retained deviation from a strict\n5.2.1 reading.\n\nHappy to PR either direction once the intended rule is settled.",
+      "createdAt": "2026-08-19T04:44:03Z",
+      "updatedAt": "2026-08-19T04:44:03Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 129,
+      "id": "I_kwDOOXJyWM8AAAABNU_jSw",
+      "title": "Title Case or Sentence case?",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/issues/129",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The titles of sections are not consistent about this choice.",
+      "createdAt": "2026-08-19T05:53:45Z",
+      "updatedAt": "2026-08-19T15:54:54Z",
+      "closedAt": "2026-08-19T15:54:54Z",
       "comments": []
     }
   ],
@@ -5722,7 +5915,7 @@
       "id": "PR_kwDOOXJyWM79ZnG8",
       "title": "Mandatory signature-agent and deferring certain primitives",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/117",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -5734,18 +5927,28 @@
       ],
       "body": "[iddiff](https://author-tools.ietf.org/api/iddiff?url_1=https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.txt&url_2=https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [text](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.txt) - [html](https://thibmeu.github.io/http-message-signatures-directory/review-107-116/draft-meunier-webbotauth-httpsig-protocol.html)\r\n\r\nThis change is based on review of a number of issues opened by mt, from 107 to 116. It changes\r\n\r\n1. Signature-Agent from recommended to mandatory with a MUST. This allows to remove some text and test vectors as well.\r\n2. reframe human consideration to be a guidance, given it cannot be enforced. it's still present as a consideration #114 \r\n3. defer signature-key to a future wg item. per vienna comment: we should wait on httpbis here. #112 \r\n4. Optional parameters (method, path, ...) are presented in a list to match the MUST parameters #113\r\n5. changes diagrams to make them highlight the system rather than a specific example (mentioned in #107)\r\n6. corrects some typos\r\n\r\nnote done in this commit but worth considering: moving the declaration of `type` and associated `cimd` into the registry draft, and consolidate signature-agent around jwks_uri. I'm in favor of having a distinct release for it (and will be a distinct PR. #109 for discussion)\r\n\r\n@sandormajor",
       "createdAt": "2026-08-11T08:05:48Z",
-      "updatedAt": "2026-08-17T21:05:41Z",
+      "updatedAt": "2026-08-18T15:31:26Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "review-107-116",
-      "headRefOid": "904736f32986a3205a54dfbd6709115d9b83ce32",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "24fd1a5628822f79caed6a9a59c9ec33277b1ed7",
+      "closedAt": "2026-08-18T09:58:40Z",
+      "mergedAt": "2026-08-18T09:58:40Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "fb7ca5a19ca51a10765e532c0f0e91568a0aa401"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "merged. in all cases, we can make future PRs to update the text again",
+          "createdAt": "2026-08-18T09:59:03Z",
+          "updatedAt": "2026-08-18T09:59:03Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOOXJyWM8AAAABJ0L_-Q",
@@ -5826,6 +6029,59 @@
               "updatedAt": "2026-08-17T21:07:55Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ5Z-Sg",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-18T08:48:43Z",
+          "updatedAt": "2026-08-18T08:48:44Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "if i recall, we removed repr-digest in a previous iteration to simply mention a digest that people likely want and can safely use.",
+              "createdAt": "2026-08-18T08:48:43Z",
+              "updatedAt": "2026-08-18T08:48:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ5bJsw",
+          "commit": {
+            "abbreviatedOid": "904736f"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-18T08:50:40Z",
+          "updatedAt": "2026-08-18T08:50:40Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "good call. i've updated it to \"the scope of their signature\"",
+              "createdAt": "2026-08-18T08:50:40Z",
+              "updatedAt": "2026-08-18T08:50:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ88Kjw",
+          "commit": {
+            "abbreviatedOid": "24fd1a5"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-08-18T15:31:25Z",
+          "updatedAt": "2026-08-18T15:31:26Z",
+          "comments": []
         }
       ]
     },
@@ -5834,26 +6090,53 @@
       "id": "PR_kwDOOXJyWM7-12Lf",
       "title": "Add test vectors for signed directory responses (#120)",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/121",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "AVAVERIFY",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "enhancement",
+        "protocol"
+      ],
       "body": "Closes the request in #120: test vectors for directory signing, valid cases only.\r\n\r\n**What this adds.** One new subsection, E.2.4, giving a worked example of the\r\npossession proof on the directory response from Appendix B.1. It shows the fetch\r\nrequest, the JWK Set response body byte for byte, the resulting `Content-Digest`,\r\nthe full signature base, and the `Signature-Input` and `Signature` response\r\nfields. `created` and `expires` are the fixed constants Appendix E already uses,\r\n1735689600 and 4889289600, so the example does not age; a long `expires` is also\r\nwhat the Directory Response Signature Lifetimes guidance asks for. Ed25519 only.\r\nIssue #11 covers the negative cases, and I have left those alone.\r\n\r\n**Key material.** The Ed25519 key from RFC 9421 Appendix B.1.4, the same key\r\nAppendix E already uses, under the same keyid\r\n`poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U`. Nothing new is introduced.\r\n\r\n**How it was produced and checked.** Every byte is generated, none hand written,\r\nand the two paths do not share code:\r\n\r\n1. Generation signs through our Web Bot Auth implementation, so the vector is\r\n   what a running verifier produces.\r\n2. Verification is a standalone script that imports nothing from that\r\n   implementation. It recomputes `Content-Digest` from the body, rebuilds the\r\n   signature base from the covered component list parsed out of the published\r\n   `Signature-Input`, recomputes the JWK thumbprint to select the key, and\r\n   verifies with node crypto. It reads those inputs back out of the rendered\r\n   draft after RFC 8792 unfolding, so what gets verified is what the document\r\n   prints.\r\n\r\nCross checks: the published `kid` equals the thumbprint computed from the key\r\nitself; the same signature does not verify over a modified body; and, as a\r\ncontrol on the key material, re-signing the existing E.2.1 base reproduces its\r\npublished signature byte for byte. Generator and verifier live at\r\nhttps://github.com/AVA-PAY/ava-pay/tree/main/scripts, given only as provenance.\r\n\r\n**One caveat, and it matters.** The draft has no worked example for Appendix B.1\r\ntoday, so this vector necessarily encodes one reading of the normative text:\r\ncovered components `(\"@authority\";req \"content-digest\")` in that order, with\r\n`created`, `expires`, a thumbprint `keyid`, and\r\n`tag=\"http-message-signatures-directory\"`. It carries no `alg` parameter, since\r\nB.1 does not list one. If the working group intends a different construction, say\r\nso and I will regenerate. This is material for the question rather than an answer\r\nto it.\r\n\r\nThese came out of implementing a merchant side verifier against -01, which is why\r\nthe missing example was noticeable.",
       "createdAt": "2026-08-13T22:59:06Z",
-      "updatedAt": "2026-08-13T22:59:07Z",
+      "updatedAt": "2026-08-18T15:32:55Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
       "headRepository": "AVAVERIFY/http-message-signatures-directory",
       "headRefName": "test-vectors-signed-directory",
       "headRefOid": "e645e3c8c07777caa5a655da5f84fa86fa9af77f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2026-08-18T15:32:55Z",
+      "mergedAt": "2026-08-18T15:32:55Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "1fe64b98189cfee47e2135ce0c57dedf139c3eb6"
+      },
+      "comments": [
+        {
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "body": "For what I've tested, these vectors pass on cloudflare/web-bot-auth implementation. soi no bloicker to merge for me.\r\n\r\nfyi @sandormajor",
+          "createdAt": "2026-08-18T12:40:49Z",
+          "updatedAt": "2026-08-18T12:40:49Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ88hAA",
+          "commit": {
+            "abbreviatedOid": "e645e3c"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-08-18T15:32:02Z",
+          "updatedAt": "2026-08-18T15:32:02Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 122,
@@ -5885,6 +6168,208 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 123,
+      "id": "PR_kwDOOXJyWM8AAAABAKWOiA",
+      "title": "[protocol] defer replay protection to RFC 9421",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/123",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol"
+      ],
+      "body": "remove the additional constraint on replay protection, given signatures are likely to be replayed\r\n\r\ndiscussed in #108 \r\n\r\n@sandormajor",
+      "createdAt": "2026-08-18T15:00:18Z",
+      "updatedAt": "2026-08-18T15:32:42Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "fb7ca5a19ca51a10765e532c0f0e91568a0aa401",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "issue-108-replay-detection",
+      "headRefOid": "bc4ac67a3014dfe709ca56c0ac39c121b5bf0d9d",
+      "closedAt": "2026-08-18T15:32:39Z",
+      "mergedAt": "2026-08-18T15:32:39Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "465f6dce34f825ad3574e4819d9a311c884190e4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABJ88ehA",
+          "commit": {
+            "abbreviatedOid": "bc4ac67"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-08-18T15:31:58Z",
+          "updatedAt": "2026-08-18T15:31:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 124,
+      "id": "PR_kwDOOXJyWM8AAAABAKWi_A",
+      "title": "[protocol] clarify optional directory response proof",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/124",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol"
+      ],
+      "body": "clearly mention how to treat unsigned directory response\r\n\r\ndiscussed in #118 \r\n\r\n@sandormajor",
+      "createdAt": "2026-08-18T15:00:56Z",
+      "updatedAt": "2026-08-18T15:29:25Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "fb7ca5a19ca51a10765e532c0f0e91568a0aa401",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "issue-118-unsigned-directory",
+      "headRefOid": "fabb928e96c995e55ebdee4d1f78e24c02419d71",
+      "closedAt": "2026-08-18T15:29:21Z",
+      "mergedAt": "2026-08-18T15:29:21Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "7cbccf32df0f58deb254ae4ce7c7321677d5d535"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 125,
+      "id": "PR_kwDOOXJyWM8AAAABAKWuuA",
+      "title": "[protocol] prohibit discovery redirects",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/125",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol"
+      ],
+      "body": "Address #119\r\n\r\n@sandormajor",
+      "createdAt": "2026-08-18T15:01:17Z",
+      "updatedAt": "2026-08-18T15:29:12Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "fb7ca5a19ca51a10765e532c0f0e91568a0aa401",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "issue-119-signature-agent-redirects",
+      "headRefOid": "7888c59e69ca24bacfb4a60e67ffcaf633c72b0a",
+      "closedAt": "2026-08-18T15:29:08Z",
+      "mergedAt": "2026-08-18T15:29:08Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "f4b27e6f08b4d8fc526206785592c5d2a2a4f89a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 127,
+      "id": "PR_kwDOOXJyWM8AAAABALTIMw",
+      "title": "[protocol] update -02 changelog",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/127",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol"
+      ],
+      "body": "fyi @sandormajor. this is to get the draft clean before publishing",
+      "createdAt": "2026-08-18T17:17:08Z",
+      "updatedAt": "2026-08-18T17:37:10Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "1fe64b98189cfee47e2135ce0c57dedf139c3eb6",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "protocol-02-changelog",
+      "headRefOid": "47b16a9769ba83c01a45c6045fcb80bc31632acb",
+      "closedAt": "2026-08-18T17:37:05Z",
+      "mergedAt": "2026-08-18T17:37:05Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "416ec9ba782ff8f503ab8b7966576fe4a3b7a8f0"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 130,
+      "id": "PR_kwDOOXJyWM8AAAABASGkKQ",
+      "title": "Use title case for section headings",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/130",
+      "state": "MERGED",
+      "author": "thibmeu",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thibmeu"
+      ],
+      "labels": [
+        "protocol",
+        "registry"
+      ],
+      "body": "Closes #129. Uses title case for consistency, retaining sentence case for sentence-form headings.\r\n\r\nBoth for the registry and protocol draft\r\n\r\nfuyi @sandormajor @punkeel @ulaskira ",
+      "createdAt": "2026-08-19T12:58:57Z",
+      "updatedAt": "2026-08-19T15:54:57Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "416ec9ba782ff8f503ab8b7966576fe4a3b7a8f0",
+      "headRepository": "thibmeu/http-message-signatures-directory",
+      "headRefName": "issue-129-title-case",
+      "headRefOid": "a4ee73bd37b5924b7c79cca15c2aff37f46a2f4d",
+      "closedAt": "2026-08-19T15:54:53Z",
+      "mergedAt": "2026-08-19T15:54:53Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "e9195f41a809b543d9ceff437ddfa50002c045e7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABKHgJXg",
+          "commit": {
+            "abbreviatedOid": "a4ee73b"
+          },
+          "author": "slpcdr",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Thank you!",
+          "createdAt": "2026-08-19T15:35:09Z",
+          "updatedAt": "2026-08-19T15:35:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABKHotMw",
+          "commit": {
+            "abbreviatedOid": "a4ee73b"
+          },
+          "author": "sandormajor",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-08-19T15:49:19Z",
+          "updatedAt": "2026-08-19T15:49:19Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
