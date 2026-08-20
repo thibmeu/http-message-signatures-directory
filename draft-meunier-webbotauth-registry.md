@@ -37,8 +37,6 @@ author:
 
 normative:
   ABNF: RFC5234
-  AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
-  CDDL: RFC8610
   CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   DCR: RFC7591
   PROTOCOL: I-D.draft-meunier-webbotauth-httpsig-protocol
@@ -50,11 +48,12 @@ normative:
   JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
-  WEB-LINKING: RFC8288
 
 
 informative:
+  AIPREF-VOCAB: I-D.draft-ietf-aipref-vocab
   CBCP: I-D.draft-illyes-webbotauth-cbcp
+  CDDL: RFC8610
   DATAURL: RFC2397
   OAUTH-BEARER: RFC6750
   OPENID-CONNECT-DISCOVERY:
@@ -65,6 +64,7 @@ informative:
   RFC8446:
   ROBOTSTXT: RFC9309
   UTF8: RFC3629
+  WEB-LINKING: RFC8288
 
 --- abstract
 
@@ -131,9 +131,9 @@ described in {{cimd-discovery}}.
   "web_bot_auth": {
     "expected-user-agent": "Mozilla/5.0 ExampleBot",
     "rfc9309-product-token": "ExampleBot",
-    "rfc9309-compliance": ["User-Agent", "Allow", "Disallow", "Content-Usage"],
+    "rfc9309-compliance": false,
     "trigger": "fetcher",
-    "purpose": "tdm",
+    "purpose": "search",
     "targeted-content": "Cat pictures",
     "rate-control": "429",
     "rate-expectation": "avg=10rps;max=100rps",
@@ -266,13 +266,16 @@ Example
 
 ### robots.txt Compliance {#signature-agent-parameter-robotstxt-compliance}
 
-The `rfc9309-compliance` parameter lists directives from `robots.txt` that the
-agent implements.
+The `rfc9309-compliance` parameter is a boolean indicating whether the agent
+claims compliance with {{ROBOTSTXT}}.
+A false value indicates that origins cannot assume robots.txt is followed.
+
+When undefined, the value defaults to false.
 
 Example
 
-* `["User-Agent", "Disallow"]`
-* `["User-Agent", "Disallow", "CrawlDelay"]`
+* `true`
+* `false`
 
 ### Trigger {#signature-agent-parameter-trigger}
 
@@ -285,13 +288,13 @@ Valid values:
 
 ### Purpose {#signature-agent-parameter-purpose}
 
-The `purpose` parameter describes the intended use of collected data. Values
-SHOULD be drawn from a controlled vocabulary, such as {{AIPREF-VOCAB}}.
+The `purpose` parameter describes the intended use of collected data.
+
+TODO: consider an array; {{AIPREF-VOCAB}} is one possible vocabulary.
 
 Example
 
 * `search`
-* `tdm`
 
 ### Targeted Content {#signature-agent-parameter-targeted-content}
 
@@ -351,6 +354,9 @@ IP address list as defined in {{JAFAR}}.
 
 The URI scheme MUST be `https`.
 
+This allows discovery without a fixed location and does not preclude {{JAFAR}}
+from defining one.
+
 Example
 
 * `https://example.com/ips.json`
@@ -399,7 +405,7 @@ Content-Type: application/json
   "jwks_uri": "https://example.com/.well-known/http-message-signatures-directory",
   "web_bot_auth": {
     "trigger": "fetcher",
-    "purpose": "tdm"
+    "purpose": "search"
   }
 }
 ~~~
@@ -502,102 +508,6 @@ When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
 via a `Signature-Agent` header member with `type=cimd`. The URI carried in that
 member is the `client_id` of a Signature Agent Card resolved as described in
 {{cimd-discovery}}.
-
-## Change Notification {#change-notification}
-
-Pull-based consumption with conditional requests is sufficient for most
-deployments. When lower notification latency is required (e.g., to promptly
-act on entry removal), a registry operator MAY implement a push-based change
-notification mechanism.
-
-### Advertising the Notification Endpoint {#notification-advertisement}
-
-A registry operator that supports change notifications SHOULD advertise its
-notification endpoint in the registry HTTP response using a `Link` header field
-as defined in {{WEB-LINKING}}:
-
-~~~
-Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
-~~~
-
-The `registry-changes` link relation identifies an endpoint to which clients
-may register callbacks out of band.
-
-TODO: Register the `registry-changes` link relation with IANA, or replace it
-with an extension relation URI.
-
-### Callback Registration {#notification-registration}
-
-Registration of a client callback URL with the registry operator is performed
-out of band. No specific registration protocol is defined by this document.
-An unsubscribe mechanism SHOULD be considered, and MAY also be out of band.
-
-### Notification Requests {#notification-requests}
-
-When an entry is added to or removed from the registry, the registry operator
-MUST send an HTTP request to each registered callback URL.
-
-The format in {{CDDL}} is as follows:
-
-~~~cddl
-Action = "put" / "delete"
-
-Notification = {
-  action: Action,
-  signature-agent: tstr
-}
-~~~
-
-TODO: should we use application/json, a new media-type, permit binary encoding?
-TODO: should signature-agent be an array?
-
-`action` denotes the operation performed on the registry:
-1. `put` when a new entry has been added,
-2. `delete` when an entry has been removed.
-
-The request MUST use `POST`.
-It MUST be signed using {{HTTP-MESSAGE-SIGNATURES}} with a key present in the
-registry operator's existing signature agent card. This is the signature agent
-card associated with the registry operator during out-of-band callback
-registration.
-
-The `Content-Type` SHOULD be `application/json`.
-
-Example notification for an added entry:
-
-~~~
-POST /registry-callback HTTP/1.1
-Host: origin.example
-Content-Type: application/json
-Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
-  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
-Signature: sig1=:base64signature:
-Content-Digest: sha-256=:base64hash:
-
-{
-  "action": "put",
-  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
-}
-~~~
-
-### Notification Processing {#notification-processing}
-
-Upon receiving a notification, the client MUST verify the HTTP Message
-Signature against the registry operator's key, discovered via the registry
-operator's signature-agent card. Notifications with missing or invalid
-signatures MUST be rejected.
-
-A notification is advisory only. The registry endpoint remains the authoritative
-source of truth. After verifying a `put` notification, clients SHOULD re-fetch
-the affected signature agent card to obtain current metadata.
-
-For `delete` notifications, clients SHOULD confirm the removal by re-fetching
-the full registry. This confirmation does not need to happen synchronously with
-notification processing.
-
-Registry operators SHOULD retry delivery of failed notifications with
-exponential backoff. Clients that miss notifications will recover on their next
-conditional pull from the registry endpoint.
 
 # Security Considerations
 
@@ -756,7 +666,8 @@ in {{web-bot-auth-extension}} in this registry.
 : rfc9309-compliance
 
 **Parameter Description:**
-: Does your signature-agent respect robots.txt.
+: Boolean indicating whether the signature agent claims compliance with
+{{ROBOTSTXT}}.
 
 **Change Controller:**
 : IETF
@@ -896,6 +807,99 @@ TODO
 
 TODO
 
+# Change notification {#change-notification}
+
+This appendix is non-normative.
+
+> TODO(thibault): may be a dedicated draft.
+
+Pull-based consumption with conditional requests is sufficient for most
+deployments. Fetching a large changed registry can be expensive. A registry
+operator may instead implement push-based change notification.
+
+## Advertising the notification endpoint {#notification-advertisement}
+
+A registry operator that supports change notifications should advertise its
+notification endpoint in the registry HTTP response using a `Link` header field
+as defined in {{WEB-LINKING}}:
+
+~~~
+Link: <https://registry.example/v1/registry-changes>; rel="registry-changes"
+~~~
+
+The `registry-changes` link relation identifies an endpoint to which clients
+may register callbacks out of band.
+
+TODO: Register the `registry-changes` link relation with IANA, or replace it
+with an extension relation URI.
+
+## Callback registration {#notification-registration}
+
+Registration of a client callback URL with the registry operator is performed
+out of band. No specific registration protocol is defined by this document.
+An unsubscribe mechanism should be considered, and may also be out of band.
+
+## Notification requests {#notification-requests}
+
+When an entry is added to or removed from the registry, the registry operator
+sends an HTTP request to each registered callback URL.
+
+The format in {{CDDL}} is as follows:
+
+~~~cddl
+Action = "put" / "delete"
+
+Notification = {
+  action: Action,
+  signature-agent: tstr
+}
+~~~
+
+TODO: should we use application/json, a new media-type, permit binary encoding?
+TODO: should signature-agent be an array?
+
+`action` denotes the operation performed on the registry:
+1. `put` when a new entry has been added,
+2. `delete` when an entry has been removed.
+
+The request uses `POST` and is signed using {{HTTP-MESSAGE-SIGNATURES}} with a
+key present in the registry operator's existing signature agent card. This is
+the card associated with the registry operator during out-of-band callback
+registration.
+
+The `Content-Type` is `application/json`.
+
+Example notification for an added entry:
+
+~~~
+POST /registry-callback HTTP/1.1
+Host: origin.example
+Content-Type: application/json
+Signature-Input: sig1=("@method" "@authority" "@path" "content-digest"); \
+  created=1741046400; keyid="NFcWBst6DXG-N35nHdzMrioWntdzNZghQSkjHNMMSjw"
+Signature: sig1=:base64signature:
+Content-Digest: sha-256=:base64hash:
+
+{
+  "action": "put",
+  "signature-agent": "https://abc123.registry.example/.well-known/signature-agent-card"
+}
+~~~
+
+## Notification processing {#notification-processing}
+
+The client verifies the HTTP Message Signature against the registry operator's
+key, discovered via the registry operator's signature agent card. Notifications
+with missing or invalid signatures are rejected.
+
+A notification is advisory only. The registry endpoint remains authoritative.
+After verifying a `put` notification, clients re-fetch the affected signature
+agent card. For `delete` notifications, clients confirm the removal by
+re-fetching the registry.
+
+Registry operators should retry failed deliveries with exponential backoff.
+Clients that miss notifications recover on their next conditional pull.
+
 
 # Acknowledgments
 {:numbered="false"}
@@ -911,6 +915,10 @@ The editor would also like to thank the following individuals (listed in alphabe
 draft-meunier-webbotauth-registry-04
 
 - Defer `Signature-Key` to draft-hardt-httpbis-signature-key.
+- Make `rfc9309-compliance` a boolean.
+- Keep `purpose` open for further discussion.
+- Clarify `ips_uri` discovery.
+- Move change notifications to a non-normative appendix.
 
 draft-meunier-webbotauth-registry-03
 
