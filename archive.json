@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-20T01:18:13.094859+00:00",
+  "timestamp": "2026-08-23T01:23:57.803196+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -6143,7 +6143,7 @@
       "id": "PR_kwDOOXJyWM7_C7NH",
       "title": "[registry] clarify fields that are still up for discussion",
       "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/122",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thibmeu",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -6155,19 +6155,62 @@
       ],
       "body": "that's generally true for the draft. this aims to make this clearer. some fields have also been modified, such as `rfc9309-compliance` to already incorporate feedback.\r\n\r\nThis change also moves notification to an appendix as it's not _core_ to the draft and implementations we've seen so far. This is the longest change in diff, but mostly due to a section move rather than a text change.\r\n\r\nfyi @punkeel @ulaskira",
       "createdAt": "2026-08-14T10:21:13Z",
-      "updatedAt": "2026-08-14T10:21:13Z",
+      "updatedAt": "2026-08-20T09:55:17Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
-      "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
+      "baseRefOid": "e9195f41a809b543d9ceff437ddfa50002c045e7",
       "headRepository": "thibmeu/http-message-signatures-directory",
       "headRefName": "few-registry-comments",
-      "headRefOid": "30196d05ca05a500a20366542cb4aa42d467b208",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "42baccb82ef9da884d35cf32dd3f8baa7dcbb861",
+      "closedAt": "2026-08-20T09:55:14Z",
+      "mergedAt": "2026-08-20T09:55:14Z",
+      "mergedBy": "thibmeu",
+      "mergeCommit": {
+        "oid": "a28dfe8a5b58a7deb6e44cdc98b7e42df2fabf5a"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABKOki0g",
+          "commit": {
+            "abbreviatedOid": "9913647"
+          },
+          "author": "punkeel",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-08-20T09:46:44Z",
+          "updatedAt": "2026-08-20T09:47:20Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "false is also the default value when missing, right?",
+              "createdAt": "2026-08-20T09:46:44Z",
+              "updatedAt": "2026-08-20T09:47:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOXJyWM8AAAABKOoDCw",
+          "commit": {
+            "abbreviatedOid": "9913647"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-08-20T09:53:39Z",
+          "updatedAt": "2026-08-20T09:53:39Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "added that precision. and yes. not sure that's the right call, but at least it's deterministic",
+              "createdAt": "2026-08-20T09:53:39Z",
+              "updatedAt": "2026-08-20T09:53:40Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 123,
