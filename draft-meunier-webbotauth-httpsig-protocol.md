@@ -1007,15 +1007,20 @@ them. End-user authentication and anonymous authentication are out of scope.
 # Validating the Domain Binding {#origin-binding-appendix}
 
 This appendix describes what a verifier checks when it wants the domain a key
-is published under, rather than the URL on its own. It applies to the
-`directory` type in {{key-distribution-and-discovery}}. Verification,
-rotation, and continuity do not depend on any of it, and a verifier that only
-needs the URL as an identifier can skip the whole appendix.
+is published under, rather than the URL on its own. The domain binding
+described here applies to the `directory` type in
+{{key-distribution-and-discovery}}. The possession proof in
+{{possession-proof}} is not specific to that type: it covers `@authority` and
+`content-digest`, and applies to any response that serves key material,
+including one reached through `jwks_uri` or `cimd`. A verifier MAY consume it
+under {{redistributed-key-material}}. Verification, rotation, and continuity
+do not depend on any of it, and a verifier that only needs the URL as an
+identifier can skip the whole appendix.
 
 Authority over the domain comes from the TLS connection to the directory.
 Nothing below adds to that.
 
-## Possession Proof on the Directory Response
+## Possession Proof on the Directory Response {#possession-proof}
 
 It is RECOMMENDED that a directory server construct and include one HTTP
 Message Signature per key with the response, as defined in
@@ -1051,7 +1056,9 @@ consuming it through {{redistributed-key-material}}.
 : MUST be a base64url JWK SHA-256 Thumbprint as defined in {{Section 3.2 of JWK-THUMBPRINT}} for RSA and EC, and in {{Appendix A.3 of JWK-OKP}} for ed25519.
 
 `tag`
-: MUST be `http-message-signatures-directory`
+: MUST be `http-message-signatures-directory`. The value names the proof
+  mechanism rather than the resource type, and is unchanged when the proof
+  accompanies a response reached through `jwks_uri` or `cimd`.
 
 A verifier using a corresponding directory response signature as proof MUST
 validate it using the key provided by the directory and MUST validate the
