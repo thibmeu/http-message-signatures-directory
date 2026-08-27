@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-25T01:19:20.631603+00:00",
+  "timestamp": "2026-08-27T08:02:38.509341+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -202,9 +202,17 @@
       ],
       "body": "This relates to https://github.com/cloudflareresearch/web-bot-auth/issues/4\n\nIt should be fine to limit these vectors to Ed25519 initially.",
       "createdAt": "2025-04-25T07:36:43Z",
-      "updatedAt": "2025-05-06T17:12:22Z",
+      "updatedAt": "2026-08-26T17:10:26Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "AVAVERIFY",
+          "authorAssociation": "NONE",
+          "body": "Support for doing this, and for the shape proposed on the list: one fault per vector, with the request, the expected outcome, and the expected reason, against the B.1.4 key.\n\nSecond implementer datapoint on the structure. Our merchant-side verifier ships a typed reason vocabulary in production, currently 35 names, and every reason carries a conclusive flag: whether the check completed and failed, or could not complete. That is the 19/17 split from ParallaxGrain's message and Appendix C.1's invalid and unverified one level down, arrived at independently. Two implementations converging on the same two-layer structure from opposite sides of the fence suggests the structure is the part worth standardizing: outcome from C.1, then a named reason beneath it. The names can be argued; the layering has held up under production traffic on one side and the autonomous-agent experiment on the other.\n\nTwo guardrails from the merchant seat worth building into the vector schema. First, the boundary between the layers is load-bearing: a reason that means the verifier could not decide must never appear under an invalid outcome, because downstream software switches on the outcome and will treat the pair as a rejection. Our schema enforces that pairing, and the vector schema should too, so no vector can state an incoherent outcome and reason combination. Second, the vectors should define what a verifier concludes and stay silent on what it discloses. Named reasons to a legitimate operator are exactly the debugging value the agent datapoint shows; the same names returned unconditionally are a probing oracle for a forger. Conclude versus disclose is a policy line each deployment draws, and the vector set should not draw it for them.\n\nOur reason names and their conclusive flags are public in the verifier source (github.com/AVA-PAY/ava-pay, src/verifier). Happy to contribute them as input alongside the 36 when the set is drafted, and to wire the resulting vectors into our suite the way we did E.2.3, so the set ships tested against at least two independent implementations from day one.",
+          "createdAt": "2026-08-26T17:10:26Z",
+          "updatedAt": "2026-08-26T17:10:26Z"
+        }
+      ]
     },
     {
       "number": 12,
@@ -6107,7 +6115,7 @@
       ],
       "body": "Closes the request in #120: test vectors for directory signing, valid cases only.\r\n\r\n**What this adds.** One new subsection, E.2.4, giving a worked example of the\r\npossession proof on the directory response from Appendix B.1. It shows the fetch\r\nrequest, the JWK Set response body byte for byte, the resulting `Content-Digest`,\r\nthe full signature base, and the `Signature-Input` and `Signature` response\r\nfields. `created` and `expires` are the fixed constants Appendix E already uses,\r\n1735689600 and 4889289600, so the example does not age; a long `expires` is also\r\nwhat the Directory Response Signature Lifetimes guidance asks for. Ed25519 only.\r\nIssue #11 covers the negative cases, and I have left those alone.\r\n\r\n**Key material.** The Ed25519 key from RFC 9421 Appendix B.1.4, the same key\r\nAppendix E already uses, under the same keyid\r\n`poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U`. Nothing new is introduced.\r\n\r\n**How it was produced and checked.** Every byte is generated, none hand written,\r\nand the two paths do not share code:\r\n\r\n1. Generation signs through our Web Bot Auth implementation, so the vector is\r\n   what a running verifier produces.\r\n2. Verification is a standalone script that imports nothing from that\r\n   implementation. It recomputes `Content-Digest` from the body, rebuilds the\r\n   signature base from the covered component list parsed out of the published\r\n   `Signature-Input`, recomputes the JWK thumbprint to select the key, and\r\n   verifies with node crypto. It reads those inputs back out of the rendered\r\n   draft after RFC 8792 unfolding, so what gets verified is what the document\r\n   prints.\r\n\r\nCross checks: the published `kid` equals the thumbprint computed from the key\r\nitself; the same signature does not verify over a modified body; and, as a\r\ncontrol on the key material, re-signing the existing E.2.1 base reproduces its\r\npublished signature byte for byte. Generator and verifier live at\r\nhttps://github.com/AVA-PAY/ava-pay/tree/main/scripts, given only as provenance.\r\n\r\n**One caveat, and it matters.** The draft has no worked example for Appendix B.1\r\ntoday, so this vector necessarily encodes one reading of the normative text:\r\ncovered components `(\"@authority\";req \"content-digest\")` in that order, with\r\n`created`, `expires`, a thumbprint `keyid`, and\r\n`tag=\"http-message-signatures-directory\"`. It carries no `alg` parameter, since\r\nB.1 does not list one. If the working group intends a different construction, say\r\nso and I will regenerate. This is material for the question rather than an answer\r\nto it.\r\n\r\nThese came out of implementing a merchant side verifier against -01, which is why\r\nthe missing example was noticeable.",
       "createdAt": "2026-08-13T22:59:06Z",
-      "updatedAt": "2026-08-18T15:32:55Z",
+      "updatedAt": "2026-08-26T17:07:58Z",
       "baseRepository": "thibmeu/http-message-signatures-directory",
       "baseRefName": "main",
       "baseRefOid": "83a5cd92182b49a0f0c7984f8e008eae86c06d74",
@@ -6127,6 +6135,13 @@
           "body": "For what I've tested, these vectors pass on cloudflare/web-bot-auth implementation. soi no bloicker to merge for me.\r\n\r\nfyi @sandormajor",
           "createdAt": "2026-08-18T12:40:49Z",
           "updatedAt": "2026-08-18T12:40:49Z"
+        },
+        {
+          "author": "AVAVERIFY",
+          "authorAssociation": "NONE",
+          "body": "Coming back to this after -02: the content landed as Appendix E.2.3, and I see the vectors were also taken into cloudflare/web-bot-auth#130, so this PR has served its purpose on both sides. One ask: an Acknowledgments entry for the directory response vectors, if that is appropriate. Either way, thanks for testing against the Cloudflare implementation before merging and for taking the content.",
+          "createdAt": "2026-08-26T17:03:20Z",
+          "updatedAt": "2026-08-26T17:07:58Z"
         }
       ],
       "reviews": [
@@ -6420,6 +6435,47 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 131,
+      "id": "PR_kwDOOXJyWM8AAAABA63eOg",
+      "title": "Separate the possession proof from the domain binding in Appendix B",
+      "url": "https://github.com/thibmeu/http-message-signatures-directory/pull/131",
+      "state": "OPEN",
+      "author": "shivdeep1",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Follows the discussion on #100 and the current list thread on Appendix B scope. Text only, no mechanism change.\n\n## What this fixes\n\nAppendix B holds two properties that behave differently. The **domain binding** is genuinely `directory`-only, because the well-known URI is reserved and an arbitrary path is not. The **possession proof** in B.1 is not: it covers `@authority` and `content-digest` and works on any response that serves key material.\n\nThe appendix opens with \"It applies to the `directory` type\", which is correct for the binding and reads as covering the proof too.\n\nSection 5.5 already draws the distinction this PR carries into the appendix:\n\n> TLS authenticates the host but not the path, and nothing reserves the `jwks_uri` or `cimd` path to the host's operator. The well-known URI is reserved, so `directory` additionally names a domain.\n\nSo this is a consistency fix rather than a new proposal.\n\n## Why the reading matters\n\nUnder the narrow reading a `jwks_uri` or `cimd` operator cannot produce a conformant proof, since `tag` is pinned to `http-message-signatures-directory`. Two consequences follow:\n\n- 5.5.3 will not attribute redistributed key material to their URL, so the identifier falls back to the thumbprint of 4.3, which does not survive rotation.\n- Joshua Ashcroft noted on the list that Cloudflare's documentation instructs signing the directory response with one signature per key. If that artifact is required to enrol, operators on `jwks_uri` cannot produce it. I have not tested whether enrolment rejects an unsigned directory, so that is his report rather than a verified claim.\n\nThe second matters more in practice. Wenchong Dong's measurement of 11 August found no origin fetched a published directory across 294,898 signed requests, and concluded that \"an allowlist is an enrolment gate under another name\". If enrolment is the gate that decides who can usefully sign, an operator who cannot produce the artifact it asks for is excluded structurally rather than by choice.\n\n## Evidence that the broad reading was intended\n\n- #98 (merged 19 June): \"We still strongly suggest that jwks_uri response is signed to bound keys to a domain.\"\n- On #100, @thibmeu wrote that a signature over the requested authority \"applies both to the delegated and same-origin\", and \"I would not scope the signing recommendation only to cross-origin/delegated discovery. Would that fit better?\" That question was asked in June and picked up this week.\n- The -01 changelog records \"Move the domain binding to an appendix\". The proof travelled with the binding and inherited a scope written for it.\n\n## Implementer reports\n\nTwo independent implementers said on the list this week that they apply B.1 to `directory` responses only, because that is what the text licenses: @AVAVERIFY (merchant-side verifier, author of the E.2.3 vectors in #121) and Joshua Ashcroft (two production directories). Neither read it as a design decision.\n\n## Changes\n\n1. Scope paragraph: separate the binding from the proof.\n2. Add `{#possession-proof}` so the scope paragraph can reference the section.\n3. `tag`: a sentence saying the value names the mechanism rather than the resource type.\n\n## The `tag`\n\nI opened this as the part I was least sure about. RFC 9421 Section 2.3 defines it as \"An application-specific tag for the signature as a String value. This value is used by applications to help identify signatures relevant for specific applications or protocols.\" That ties the tag to the protocol rather than to the resource being served, so one value across response types is the reading that fits rather than a stretch of what `tag` is for. @AVAVERIFY takes the same position below on interop grounds: two values would imply two validation procedures that do not exist. Still your call if you read it differently.\n\nTwo further notes. The proof stays **MAY** for non-`directory` types, since 5.5 observes those key sets may serve other consumers and mandating signatures over shared key material would be a real burden. And @AVAVERIFY has offered to extend the E.2.3 vectors to cover the proof on a `jwks_uri` response if the separation is adopted, so the type-generic claim would ship with an executable example on each side.\n",
+      "createdAt": "2026-08-25T10:09:29Z",
+      "updatedAt": "2026-08-25T21:34:09Z",
+      "baseRepository": "thibmeu/http-message-signatures-directory",
+      "baseRefName": "main",
+      "baseRefOid": "a28dfe8a5b58a7deb6e44cdc98b7e42df2fabf5a",
+      "headRepository": "shivdeep1/http-message-signatures-directory",
+      "headRefName": "appendix-b-possession-proof-scope",
+      "headRefOid": "640c2a2326a670219481f12e689b7affef4a20d7",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "AVAVERIFY",
+          "authorAssociation": "NONE",
+          "body": "Support, as one of the two implementers cited. The characterization is accurate: we implemented directory-only because that is what the text licensed, not as a design decision, and this separation makes the text say what the repo history shows was always meant.\r\n\r\nOn the tag, implementer position: keep the single value, with your sentence that it names the mechanism rather than the resource type. The tag's job at verification time is to select the validation procedure, and the procedure is identical across response types: same covered components, same required parameters. Two values would imply two procedures that do not exist, and would add an interop failure mode, a verifier rejecting a valid proof on tag mismatch, with no security gain. The binding property never came from the tag in either reading: it comes from the reserved well-known path, exactly as the scope paragraph now states. That leaves the word \"directory\" in the value as cosmetic debt, and RFC 9421 tags are opaque identifiers, not descriptions. One clarifying sentence is cheaper than a registry fork, and every deployed proof today stays valid.\r\n\r\nOn vectors: the E.2.3 extension covering the proof on a jwks_uri response is underway on our side, and I will open it as a companion PR the day this merges, so the type-generic claim lands with an executable example on each side of the split. If the tag resolution changes the wire form, the vectors follow whatever lands.",
+          "createdAt": "2026-08-25T17:41:44Z",
+          "updatedAt": "2026-08-25T17:41:44Z"
+        },
+        {
+          "author": "shivdeep1",
+          "authorAssociation": "NONE",
+          "body": "Thanks, that settles the tag for me.\n\nRFC 9421 Section 2.3 defines it as \"An application-specific tag for the signature as a String value. This value is used by applications to help identify signatures relevant for specific applications or protocols.\" That ties the tag to the protocol rather than to the resource being served, so one value across response types is the reading that fits rather than a stretch of what `tag` is for. I have updated the PR body and dropped it from the open questions.\n\nOne fix to the body while I was there: the `@nickmathews` I mentioned is an unrelated account. Corrected to @AVAVERIFY, who authored the E.2.3 vectors in #121, so the support above is that implementer rather than a third report.\n",
+          "createdAt": "2026-08-25T21:34:09Z",
+          "updatedAt": "2026-08-25T21:34:09Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
