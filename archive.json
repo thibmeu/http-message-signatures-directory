@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-08-27T08:02:38.509341+00:00",
+  "timestamp": "2026-09-01T04:02:36.906273+00:00",
   "repo": "thibmeu/http-message-signatures-directory",
   "labels": [
     {
@@ -202,7 +202,7 @@
       ],
       "body": "This relates to https://github.com/cloudflareresearch/web-bot-auth/issues/4\n\nIt should be fine to limit these vectors to Ed25519 initially.",
       "createdAt": "2025-04-25T07:36:43Z",
-      "updatedAt": "2026-08-26T17:10:26Z",
+      "updatedAt": "2026-08-31T14:15:01Z",
       "closedAt": null,
       "comments": [
         {
@@ -211,6 +211,13 @@
           "body": "Support for doing this, and for the shape proposed on the list: one fault per vector, with the request, the expected outcome, and the expected reason, against the B.1.4 key.\n\nSecond implementer datapoint on the structure. Our merchant-side verifier ships a typed reason vocabulary in production, currently 35 names, and every reason carries a conclusive flag: whether the check completed and failed, or could not complete. That is the 19/17 split from ParallaxGrain's message and Appendix C.1's invalid and unverified one level down, arrived at independently. Two implementations converging on the same two-layer structure from opposite sides of the fence suggests the structure is the part worth standardizing: outcome from C.1, then a named reason beneath it. The names can be argued; the layering has held up under production traffic on one side and the autonomous-agent experiment on the other.\n\nTwo guardrails from the merchant seat worth building into the vector schema. First, the boundary between the layers is load-bearing: a reason that means the verifier could not decide must never appear under an invalid outcome, because downstream software switches on the outcome and will treat the pair as a rejection. Our schema enforces that pairing, and the vector schema should too, so no vector can state an incoherent outcome and reason combination. Second, the vectors should define what a verifier concludes and stay silent on what it discloses. Named reasons to a legitimate operator are exactly the debugging value the agent datapoint shows; the same names returned unconditionally are a probing oracle for a forger. Conclude versus disclose is a policy line each deployment draws, and the vector set should not draw it for them.\n\nOur reason names and their conclusive flags are public in the verifier source (github.com/AVA-PAY/ava-pay, src/verifier). Happy to contribute them as input alongside the 36 when the set is drafted, and to wire the resulting vectors into our suite the way we did E.2.3, so the set ships tested against at least two independent implementations from day one.",
           "createdAt": "2026-08-26T17:10:26Z",
           "updatedAt": "2026-08-26T17:10:26Z"
+        },
+        {
+          "author": "ParallaxGrain",
+          "authorAssociation": "NONE",
+          "body": "Here's the set: https://github.com/ParallaxGrain/webbotauth-negative-vectors\n\n17 vectors, one fault per vector, on the B.1.4 key from RFC 9421 since the draft already uses it. Each one gives the request, the outcome it should get from Appendix C.1, and a suggested reason underneath. If the reason vocabulary isn't useful to you, check the outcome and ignore the rest.\n\nCOVERAGE.md goes through all 37 failures my verifier can report and says what became of each: 17 are vectors, 20 are not. The count quoted earlier in this thread is out of date. Building the vectors settled two classifications against the text and turned up one condition that had no name yet, so it is 37 now, split 19/18.\n\nOne thing I could not write a vector for. Section 5.2 makes tag=\"web-bot-auth\" a MUST for signers, RFC 9421 3.2.1 says verification MUST fail when an application's own requirements are not met, and 5.4 says the Origin MAY discard a foreign tag instead. Those are two different answers to the same request, and one of them is not an outcome Appendix C.1 defines, so I had nothing to put in the expected field. Written up in COVERAGE.md.\n\n@AVAVERIFY I did both the things you suggested. Outcome and reason are checked against each other twice, and the generator won't write a vector where the two disagree. Conclude vs disclose has its own section, with your comment linked.\n\nIssues and PRs welcome, especially if a vector expects the wrong reason.",
+          "createdAt": "2026-08-31T14:15:01Z",
+          "updatedAt": "2026-08-31T14:15:01Z"
         }
       ]
     },
