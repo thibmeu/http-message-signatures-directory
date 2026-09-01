@@ -18,23 +18,23 @@ directory is served.
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="not-yet" name="keyword">
-<meta content="draft-meunier-webbotauth-httpsig-protocol-latest" name="ietf.draft">
+<meta content="draft-ietf-webbotauth-httpsig-protocol-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.0
-    Python 3.14.5
+    Python 3.14.7
     ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.1
+    platformdirs 4.11.5
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
     wcwidth 0.8.2
 -->
-<link href="draft-meunier-webbotauth-httpsig-protocol.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-ietf-webbotauth-httpsig-protocol.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1048,11 +1048,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Message Signatures for Bots</td>
-<td class="right">July 2026</td>
+<td class="right">September 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Meunier &amp; Major</td>
-<td class="center">Expires 1 February 2027</td>
+<td class="center">Expires 5 March 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1062,15 +1062,15 @@ svg {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Web Bot Auth</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-meunier-webbotauth-httpsig-protocol-latest</dd>
+<dd class="internet-draft">draft-ietf-webbotauth-httpsig-protocol-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-31" class="published">31 July 2026</time>
+<time datetime="2026-09-01" class="published">1 September 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-02-01">1 February 2027</time></dd>
+<dd class="expires"><time datetime="2027-03-05">5 March 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1101,8 +1101,8 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.html">https://thibmeu.github.io/http-message-signatures-directory/draft-meunier-webbotauth-httpsig-protocol.html</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol/">https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        The latest revision of this draft can be found at <span><a href="https://thibmeu.github.io/http-message-signatures-directory/draft-ietf-webbotauth-httpsig-protocol.html">https://thibmeu.github.io/http-message-signatures-directory/draft-ietf-webbotauth-httpsig-protocol.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/">https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
         Web Bot Auth Working Group mailing list (<span><a href="mailto:web-bot-auth@ietf.org">mailto:web-bot-auth@ietf.org</a></span>),
@@ -1130,7 +1130,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 1 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,10 +1166,10 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-motivation" class="internal xref">Motivation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-objectives-and-constraints" class="internal xref">Objectives and constraints</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-objectives-and-constraints" class="internal xref">Objectives and Constraints</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-http-layer-choice" class="internal xref">HTTP layer choice</a></p>
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-http-layer-choice" class="internal xref">HTTP Layer Choice</a></p>
 </li>
             </ul>
 </li>
@@ -1186,16 +1186,16 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-rotation" class="internal xref">Rotation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-when-no-url-is-sent" class="internal xref">When no URL is sent</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-when-no-url-is-available" class="internal xref">When No URL Is Available</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-what-the-url-endorses" class="internal xref">What the URL endorses</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-what-the-url-endorses" class="internal xref">What the URL Endorses</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-binding-a-key-to-a-web-orig" class="internal xref">Binding a key to a Web origin</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-binding-a-key-to-a-web-orig" class="internal xref">Binding a Key to a Web Origin</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-out-of-scope" class="internal xref">Out of scope</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-out-of-scope" class="internal xref">Out of Scope</a></p>
 </li>
             </ul>
 </li>
@@ -1212,44 +1212,41 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                     <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-signature-agent" class="internal xref">Signature-Agent</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
-                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-multiple-signatures" class="internal xref">Multiple signatures</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-multiple-signatures" class="internal xref">Multiple Signatures</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.3">
-                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="auto internal xref">5.2.3</a>.  <a href="#name-anti-replay" class="internal xref">Anti-replay</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="auto internal xref">5.2.3</a>.  <a href="#name-replay-protection" class="internal xref">Replay Protection</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.4">
-                    <p id="section-toc.1-1.5.2.2.2.4.1"><a href="#section-5.2.4" class="auto internal xref">5.2.4</a>.  <a href="#name-additional-headers" class="internal xref">Additional headers</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.4.1"><a href="#section-5.2.4" class="auto internal xref">5.2.4</a>.  <a href="#name-additional-headers" class="internal xref">Additional Headers</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.5">
-                    <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="auto internal xref">5.2.5</a>.  <a href="#name-sending-a-request" class="internal xref">Sending a request</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="auto internal xref">5.2.5</a>.  <a href="#name-sending-a-request" class="internal xref">Sending a Request</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-requesting-a-message-signat" class="internal xref">Requesting a Message signature</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-requesting-a-message-signat" class="internal xref">Requesting a Message Signature</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-validating-message-signatur" class="internal xref">Validating Message signature</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-validating-message-signatur" class="internal xref">Validating Message Signature</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-key-distribution-and-discov" class="internal xref">Key Distribution and Discovery</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
-                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-directory-format" class="internal xref">Directory format</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-directory-format" class="internal xref">Directory Format</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.2">
-                    <p id="section-toc.1-1.5.2.5.2.2.1"><a href="#section-5.5.2" class="auto internal xref">5.5.2</a>.  <a href="#name-key-rotation" class="internal xref">Key rotation</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.2.1"><a href="#section-5.5.2" class="auto internal xref">5.5.2</a>.  <a href="#name-key-rotation" class="internal xref">Key Rotation</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.3">
-                    <p id="section-toc.1-1.5.2.5.2.3.1"><a href="#section-5.5.3" class="auto internal xref">5.5.3</a>.  <a href="#name-redistributed-key-material" class="internal xref">Redistributed key material</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.4">
-                    <p id="section-toc.1-1.5.2.5.2.4.1"><a href="#section-5.5.4" class="auto internal xref">5.5.4</a>.  <a href="#name-signature-key-header" class="internal xref">Signature-Key header</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.3.1"><a href="#section-5.5.3" class="auto internal xref">5.5.3</a>.  <a href="#name-redistributed-key-material" class="internal xref">Redistributed Key Material</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-session-considerations" class="internal xref">Session considerations</a></p>
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-session-considerations" class="internal xref">Session Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1263,39 +1260,36 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-performance-impact" class="internal xref">Performance Impact</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-nonce-validation" class="internal xref">Nonce validation</a></p>
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-key-compromise-response" class="internal xref">Key Compromise Response</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-key-compromise-response" class="internal xref">Key Compromise Response</a></p>
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-shared-secrets-considered-h" class="internal xref">Shared Secrets Considered Harmful</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5">
-                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-shared-secrets-considered-h" class="internal xref">Shared Secrets Considered Harmful</a></p>
+                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-key-reuse-considered-harmfu" class="internal xref">Key Reuse Considered Harmful</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.6">
-                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="auto internal xref">6.6</a>.  <a href="#name-key-reuse-considered-harmfu" class="internal xref">Key Reuse Considered Harmful</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7">
-                <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="auto internal xref">6.7</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse proxy consideration</a></p>
+                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="auto internal xref">6.6</a>.  <a href="#name-reverse-proxy-consideration" class="internal xref">Reverse Proxy Consideration</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7.2.1">
-                    <p id="section-toc.1-1.6.2.7.2.1.1"><a href="#section-6.7.1" class="auto internal xref">6.7.1</a>.  <a href="#name-signature-agent-labeling" class="internal xref">Signature-Agent labeling</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.6.2.1">
+                    <p id="section-toc.1-1.6.2.6.2.1.1"><a href="#section-6.6.1" class="auto internal xref">6.6.1</a>.  <a href="#name-signature-agent-labeling" class="internal xref">Signature-Agent Labeling</a></p>
 </li>
                 </ul>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7">
+                <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="auto internal xref">6.7</a>.  <a href="#name-server-side-request-forgery" class="internal xref">Server-Side Request Forgery (SSRF)</a></p>
+</li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.8">
-                <p id="section-toc.1-1.6.2.8.1"><a href="#section-6.8" class="auto internal xref">6.8</a>.  <a href="#name-server-side-request-forgery" class="internal xref">Server-Side Request Forgery (SSRF)</a></p>
+                <p id="section-toc.1-1.6.2.8.1"><a href="#section-6.8" class="auto internal xref">6.8</a>.  <a href="#name-test-and-demonstration-keys" class="internal xref">Test and Demonstration Keys</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.9">
-                <p id="section-toc.1-1.6.2.9.1"><a href="#section-6.9" class="auto internal xref">6.9</a>.  <a href="#name-test-and-demonstration-keys" class="internal xref">Test and Demonstration Keys</a></p>
+                <p id="section-toc.1-1.6.2.9.1"><a href="#section-6.9" class="auto internal xref">6.9</a>.  <a href="#name-static-signatures" class="internal xref">Static Signatures</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.10">
-                <p id="section-toc.1-1.6.2.10.1"><a href="#section-6.10" class="auto internal xref">6.10</a>. <a href="#name-static-signatures" class="internal xref">Static Signatures</a></p>
+                <p id="section-toc.1-1.6.2.10.1"><a href="#section-6.10" class="auto internal xref">6.10</a>. <a href="#name-discovery-failure" class="internal xref">Discovery Failure</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.11">
-                <p id="section-toc.1-1.6.2.11.1"><a href="#section-6.11" class="auto internal xref">6.11</a>. <a href="#name-discovery-failure" class="internal xref">Discovery Failure</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.12">
-                <p id="section-toc.1-1.6.2.12.1"><a href="#section-6.12" class="auto internal xref">6.12</a>. <a href="#name-unsigned-requests" class="internal xref">Unsigned requests</a></p>
+                <p id="section-toc.1-1.6.2.11.1"><a href="#section-6.11" class="auto internal xref">6.11</a>. <a href="#name-unsigned-requests" class="internal xref">Unsigned Requests</a></p>
 </li>
             </ul>
 </li>
@@ -1312,7 +1306,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-minimizing-tracking-risks" class="internal xref">Minimizing Tracking Risks</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-directory-content-and-acces" class="internal xref">Directory content and access patterns</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-directory-content-and-acces" class="internal xref">Directory Content and Access Patterns</a></p>
 </li>
             </ul>
 </li>
@@ -1326,7 +1320,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-media-types" class="internal xref">Media Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.1">
-                    <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#section-8.2.1" class="auto internal xref">8.2.1</a>.  <a href="#name-application-http-message-si" class="internal xref">"application/http-message-signatures-directory+json" media type</a></p>
+                    <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#section-8.2.1" class="auto internal xref">8.2.1</a>.  <a href="#name-application-http-message-si" class="internal xref">"application/http-message-signatures-directory+json" Media Type</a></p>
 </li>
                 </ul>
 </li>
@@ -1344,16 +1338,16 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-use-cases-and-what-they-nee" class="internal xref">Use cases and what they need</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-use-cases-and-what-they-nee" class="internal xref">Use Cases and What They Need</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-validating-the-domain-bindi" class="internal xref">Validating the domain binding</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-validating-the-domain-bindi" class="internal xref">Validating the Domain Binding</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-possession-proof-on-the-dir" class="internal xref">Possession proof on the directory response</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-possession-proof-on-the-dir" class="internal xref">Possession Proof on the Directory Response</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-what-the-binding-attaches-t" class="internal xref">What the binding attaches to</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-what-the-binding-attaches-t" class="internal xref">What the Binding Attaches To</a></p>
 </li>
             </ul>
 </li>
@@ -1379,7 +1373,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-C.6" class="auto internal xref">C.6</a>.  <a href="#name-freshness-and-replay" class="internal xref">Freshness and Replay</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7">
-                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-C.7" class="auto internal xref">C.7</a>.  <a href="#name-field-compression" class="internal xref">Field compression</a></p>
+                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-C.7" class="auto internal xref">C.7</a>.  <a href="#name-field-compression" class="internal xref">Field Compression</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.8">
                 <p id="section-toc.1-1.12.2.8.1"><a href="#appendix-C.8" class="auto internal xref">C.8</a>.  <a href="#name-directory-response-signatur" class="internal xref">Directory Response Signature Lifetimes</a></p>
@@ -1402,10 +1396,10 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-D.1" class="auto internal xref">D.1</a>.  <a href="#name-delegation-and-chaining" class="internal xref">Delegation and chaining</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-D.1" class="auto internal xref">D.1</a>.  <a href="#name-delegation-and-chaining" class="internal xref">Delegation and Chaining</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
-                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-D.2" class="auto internal xref">D.2</a>.  <a href="#name-multiple-signatures-with-a-" class="internal xref">Multiple signatures with a remote browser</a></p>
+                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-D.2" class="auto internal xref">D.2</a>.  <a href="#name-multiple-signatures-with-a-" class="internal xref">Multiple Signatures with a Remote Browser</a></p>
 </li>
             </ul>
 </li>
@@ -1416,13 +1410,10 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rsassa-pss-using-sha-512" class="internal xref">RSASSA-PSS Using SHA-512</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.1">
-                    <p id="section-toc.1-1.14.2.1.2.1.1"><a href="#appendix-E.1.1" class="auto internal xref">E.1.1</a>.  <a href="#name-signature-agent-absent-from" class="internal xref">Signature-Agent absent from the request</a></p>
+                    <p id="section-toc.1-1.14.2.1.2.1.1"><a href="#appendix-E.1.1" class="auto internal xref">E.1.1</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent Included Present on the Request</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.2">
-                    <p id="section-toc.1-1.14.2.1.2.2.1"><a href="#appendix-E.1.2" class="auto internal xref">E.1.2</a>.  <a href="#name-signature-agent-included-pr" class="internal xref">Signature-Agent included present on the request</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.3">
-                    <p id="section-toc.1-1.14.2.1.2.3.1"><a href="#appendix-E.1.3" class="auto internal xref">E.1.3</a>.  <a href="#name-legacy-signature-agent-sf-s" class="internal xref">Legacy Signature-Agent, sf-string</a></p>
+                    <p id="section-toc.1-1.14.2.1.2.2.1"><a href="#appendix-E.1.2" class="auto internal xref">E.1.2</a>.  <a href="#name-legacy-signature-agent-sf-s" class="internal xref">Legacy Signature-Agent, sf-string</a></p>
 </li>
                 </ul>
 </li>
@@ -1430,13 +1421,13 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-eddsa-using-curve-edwards25" class="internal xref">EdDSA Using Curve edwards25519</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.1">
-                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#appendix-E.2.1" class="auto internal xref">E.2.1</a>.  <a href="#name-signature-agent-absent-from-" class="internal xref">Signature-Agent absent from the request</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#appendix-E.2.1" class="auto internal xref">E.2.1</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent Included Present on the Request</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.2">
-                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#appendix-E.2.2" class="auto internal xref">E.2.2</a>.  <a href="#name-signature-agent-included-pre" class="internal xref">Signature-Agent included present on the request</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#appendix-E.2.2" class="auto internal xref">E.2.2</a>.  <a href="#name-legacy-signature-agent-sf-st" class="internal xref">Legacy Signature-Agent, sf-string</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.3">
-                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#appendix-E.2.3" class="auto internal xref">E.2.3</a>.  <a href="#name-legacy-signature-agent-sf-st" class="internal xref">Legacy Signature-Agent, sf-string</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#appendix-E.2.3" class="auto internal xref">E.2.3</a>.  <a href="#name-signed-directory-response" class="internal xref">Signed Directory Response</a></p>
 </li>
                 </ul>
 </li>
@@ -1452,7 +1443,7 @@ directory is served.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.15.2.2.1"><a href="#appendix-F.2" class="auto internal xref">F.2</a>.  <a href="#name-servers" class="internal xref">Servers</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.3">
-                <p id="section-toc.1-1.15.2.3.1"><a href="#appendix-F.3" class="auto internal xref">F.3</a>.  <a href="#name-test-vectors-2" class="internal xref">Test vectors</a></p>
+                <p id="section-toc.1-1.15.2.3.1"><a href="#appendix-F.3" class="auto internal xref">F.3</a>.  <a href="#name-test-vectors-2" class="internal xref">Test Vectors</a></p>
 </li>
             </ul>
 </li>
@@ -1517,7 +1508,7 @@ wish to present itself as such to ensure rendering works, yet it still wants to
 differentiate its traffic to the site.<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-2-2.2">
-          <p id="section-2-2.2.1">IP blocks alone can present a confusing story. IPs on cloud plaforms have
+          <p id="section-2-2.2.1">IP blocks alone can present a confusing story. IPs on cloud platforms have
 layers of ownership - the platform owns the IP and registers it in their
 published IP blocks, only to be re-published by the agent with little to bind
 the publication to the actual service provider that may be renting infra. Purchasing
@@ -1538,7 +1529,7 @@ mechanism that empowers small and large agents to share their identity.<a href="
 <div id="objectives">
 <section id="section-2.1">
         <h3 id="name-objectives-and-constraints">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-objectives-and-constraints" class="section-name selfRef">Objectives and constraints</a>
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-objectives-and-constraints" class="section-name selfRef">Objectives and Constraints</a>
         </h3>
 <p id="section-2.1-1">This protocol has two objectives:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-2.1-2">
@@ -1569,7 +1560,7 @@ protocol it greps for a handle it can verify.<a href="#section-2.1-5" class="pil
 <div id="http-layer-choice">
 <section id="section-2.2">
         <h3 id="name-http-layer-choice">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-http-layer-choice" class="section-name selfRef">HTTP layer choice</a>
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-http-layer-choice" class="section-name selfRef">HTTP Layer Choice</a>
         </h3>
 <p id="section-2.2-1">This protocol operates solely at the HTTP layer.
 It allows signatures to be generated and
@@ -1637,11 +1628,12 @@ addresses and User-Agent today.<a href="#section-4.1-1" class="pilcrow">¶</a></
 unresolved <code>Signature-Agent</code> is a claim rather than an identity. It becomes an
 identifier once the verifier fetches it and finds that it provides a key that
 verifies the request (<a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a>). Until then, verifiers <span class="bcp14">MUST NOT</span> attach policy to it.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">A valid signature over a resolved URL proves that the request came from a
-holder of a key that URL publishes, and that requests with the same URL come
-from holders of keys that URL publishes. <a href="#anti-replay" class="auto internal xref">Section 5.2.3</a> bounds reuse. It says
-nothing about who operates the Agent, whether the Agent is benign, or whether
-the request is authorized. Those are origin policy.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">A valid signature over a resolved URL proves that a holder of a key that URL
+publishes signed the covered message. The message can still be replayed.
+Signature lifetimes and covered components bound the duration and scope of that
+replay (<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>). It says nothing about who
+operates the Agent, whether the Agent is benign, or whether the request is
+authorized. Those are origin policy.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <p id="section-4.1-4">Nothing stops an Agent from abandoning a URL and standing up another one, and
 the protocol does not try to prevent this. It targets honest clients that want
 to be recognised across requests.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
@@ -1660,20 +1652,20 @@ are involved.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2"><code>keyid</code> selects which key verifies a given request. Verifiers cannot use it to
 carry continuity across a rotation, as that value is derived from the key
 material.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3"><span>[<a href="#SIGNATURE-KEY" class="cite xref">SIGNATURE-KEY</a>]</span> takes a different approach, where a long-lived key signs
-short-lived delegated keys. Deployments <span class="bcp14">MAY</span> use it. This document does not
-define rotation that way.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="no-url">
 <section id="section-4.3">
-        <h3 id="name-when-no-url-is-sent">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-when-no-url-is-sent" class="section-name selfRef">When no URL is sent</a>
+        <h3 id="name-when-no-url-is-available">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-when-no-url-is-available" class="section-name selfRef">When No URL Is Available</a>
         </h3>
-<p id="section-4.3-1"><code>Signature-Agent</code> is <span class="bcp14">RECOMMENDED</span> but not required. Without it, a verifier has
-only the key, and the identifier is the <code>keyid</code> thumbprint defined in
-<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>. Verification still works, provided the
-verifier already holds that key.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">A signed request <span class="bcp14">MUST</span> carry <code>Signature-Agent</code> (<a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>). A verifier
+can still be left with no URL to attribute to: discovery failed with nothing
+cached (<a href="#discovery-failure" class="auto internal xref">Section 6.10</a>), redistributed material carried no proof
+(<a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>), or the header is absent. The identifier is
+then the <code>keyid</code> thumbprint defined in
+<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>. A verifier that already holds that key
+verifies the request, and attributes it no further than the holder of that key.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">This mode has no rotation. A new key is a new identifier, and the verifier has
 no way to connect the two.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 </section>
@@ -1681,19 +1673,19 @@ no way to connect the two.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <div id="discovery-is-not-trust">
 <section id="section-4.4">
         <h3 id="name-what-the-url-endorses">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-what-the-url-endorses" class="section-name selfRef">What the URL endorses</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-what-the-url-endorses" class="section-name selfRef">What the URL Endorses</a>
         </h3>
 <p id="section-4.4-1">Resolving a <code>Signature-Agent</code> URL over TLS establishes that the host named in
 the URL served this key set at fetch time.
 Whoever controls that URL says this key signs for it. That
 is what makes the URL usable as an identifier, and all it gives you. It does
-not say that the operator of that URL is honest, or that is is the same party
+not say that the operator of that URL is honest, or that it is the same party
 everyone knows about.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">What matters is the association between a URL and the keys published there. A
 verifier that already holds the keys does not need to fetch it. A verifier <span class="bcp14">MUST NOT</span> attribute a request to a <code>Signature-Agent</code> URL unless it made this
-ssociation. This can be either by resolving the URL itself, at request time or
+association. This can be either by resolving the URL itself, at request time or
 ahead of it, or from <a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>. Verifiers may refetch a URL
-to handle up key additions and removals, bounded by <a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+to handle key additions and removals, bounded by <a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">Where a verifier obtains the same pair from more than one source, the newer
 pair wins, including when it omits a key that older resolution included.
 Pairs are ordered by when they were produced, not when the verifier obtained
@@ -1705,7 +1697,7 @@ verifier resolved itself.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <div id="origin-binding">
 <section id="section-4.5">
         <h3 id="name-binding-a-key-to-a-web-orig">
-<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-binding-a-key-to-a-web-orig" class="section-name selfRef">Binding a key to a Web origin</a>
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-binding-a-key-to-a-web-orig" class="section-name selfRef">Binding a Key to a Web Origin</a>
         </h3>
 <p id="section-4.5-1">A well-known URL is a special case of the above. When a
 <code>Signature-Agent</code> value resolves through the <code>directory</code> type
@@ -1721,7 +1713,7 @@ checks itself.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 <div id="out-of-scope">
 <section id="section-4.6">
         <h3 id="name-out-of-scope">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-out-of-scope" class="section-name selfRef">Out of scope</a>
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-out-of-scope" class="section-name selfRef">Out of Scope</a>
         </h3>
 <p id="section-4.6-1">This protocol does not authenticate human users, does not provide anonymous
 authentication, and does not define authorization or delegation. It does not
@@ -1741,62 +1733,62 @@ document.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
       <h2 id="name-protocol-overview">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-protocol-overview" class="section-name selfRef">Protocol Overview</a>
       </h2>
-<div id="section-5-1">
-        <div class="alignLeft art-svg artwork" id="section-5-1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="608" viewBox="0 0 608 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-            <path d="M 8,32 L 8,176" fill="none" stroke="black"></path>
-            <path d="M 80,32 L 80,176" fill="none" stroke="black"></path>
-            <path d="M 208,32 L 208,176" fill="none" stroke="black"></path>
-            <path d="M 288,32 L 288,176" fill="none" stroke="black"></path>
-            <path d="M 512,32 L 512,176" fill="none" stroke="black"></path>
-            <path d="M 600,32 L 600,176" fill="none" stroke="black"></path>
-            <path d="M 8,32 L 80,32" fill="none" stroke="black"></path>
-            <path d="M 208,32 L 288,32" fill="none" stroke="black"></path>
-            <path d="M 512,32 L 600,32" fill="none" stroke="black"></path>
-            <path d="M 296,62 L 336,62" fill="none" stroke="black"></path>
-            <path d="M 296,66 L 336,66" fill="none" stroke="black"></path>
-            <path d="M 464,62 L 504,62" fill="none" stroke="black"></path>
-            <path d="M 464,66 L 504,66" fill="none" stroke="black"></path>
-            <path d="M 80,96 L 104,96" fill="none" stroke="black"></path>
-            <path d="M 184,96 L 200,96" fill="none" stroke="black"></path>
-            <path d="M 288,112 L 312,112" fill="none" stroke="black"></path>
-            <path d="M 488,112 L 504,112" fill="none" stroke="black"></path>
-            <path d="M 296,128 L 360,128" fill="none" stroke="black"></path>
-            <path d="M 448,128 L 512,128" fill="none" stroke="black"></path>
-            <path d="M 88,144 L 104,144" fill="none" stroke="black"></path>
-            <path d="M 192,144 L 208,144" fill="none" stroke="black"></path>
-            <path d="M 8,176 L 80,176" fill="none" stroke="black"></path>
-            <path d="M 208,176 L 288,176" fill="none" stroke="black"></path>
-            <path d="M 512,176 L 600,176" fill="none" stroke="black"></path>
-            <polygon class="arrowhead" points="512,112 500,106.4 500,117.6" fill="black" transform="rotate(0,504,112)"></polygon>
-            <polygon class="arrowhead" points="512,64 500,58.4 500,69.6" fill="black" transform="rotate(0,504,64)"></polygon>
-            <polygon class="arrowhead" points="304,128 292,122.4 292,133.6" fill="black" transform="rotate(180,296,128)"></polygon>
-            <polygon class="arrowhead" points="304,64 292,58.4 292,69.6" fill="black" transform="rotate(180,296,64)"></polygon>
-            <polygon class="arrowhead" points="208,96 196,90.4 196,101.6" fill="black" transform="rotate(0,200,96)"></polygon>
-            <polygon class="arrowhead" points="96,144 84,138.4 84,149.6" fill="black" transform="rotate(180,88,144)"></polygon>
-            <g class="text">
-              <text x="396" y="52">Exchange</text>
-              <text x="400" y="68">Cryptographic</text>
-              <text x="396" y="84">material</text>
-              <text x="44" y="100">User</text>
-              <text x="144" y="100">Request</text>
-              <text x="248" y="100">Agent</text>
-              <text x="556" y="100">Origin</text>
-              <text x="352" y="116">Request</text>
-              <text x="392" y="116">+</text>
-              <text x="440" y="116">Signature</text>
-              <text x="404" y="132">Response</text>
-              <text x="148" y="148">Response</text>
-            </g>
-          </svg><a href="#section-5-1.1" class="pilcrow">¶</a>
+<span id="name-web-bot-auth-architecture"></span><figure id="figure-1">
+        <div id="section-5-1.1">
+          <div class="alignLeft art-svg artwork" id="section-5-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="496" viewBox="0 0 496 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,32 L 8,112" fill="none" stroke="black"></path>
+              <path d="M 56,64 L 56,96" fill="none" stroke="black"></path>
+              <path d="M 88,96 L 88,160" fill="none" stroke="black"></path>
+              <path d="M 120,64 L 120,96" fill="none" stroke="black"></path>
+              <path d="M 144,32 L 144,112" fill="none" stroke="black"></path>
+              <path d="M 224,144 L 224,176" fill="none" stroke="black"></path>
+              <path d="M 320,144 L 320,176" fill="none" stroke="black"></path>
+              <path d="M 416,64 L 416,96" fill="none" stroke="black"></path>
+              <path d="M 448,96 L 448,160" fill="none" stroke="black"></path>
+              <path d="M 488,64 L 488,96" fill="none" stroke="black"></path>
+              <path d="M 8,32 L 144,32" fill="none" stroke="black"></path>
+              <path d="M 56,64 L 120,64" fill="none" stroke="black"></path>
+              <path d="M 416,64 L 488,64" fill="none" stroke="black"></path>
+              <path d="M 120,80 L 184,80" fill="none" stroke="black"></path>
+              <path d="M 368,80 L 408,80" fill="none" stroke="black"></path>
+              <path d="M 56,96 L 120,96" fill="none" stroke="black"></path>
+              <path d="M 416,96 L 488,96" fill="none" stroke="black"></path>
+              <path d="M 8,112 L 144,112" fill="none" stroke="black"></path>
+              <path d="M 224,144 L 320,144" fill="none" stroke="black"></path>
+              <path d="M 88,160 L 104,160" fill="none" stroke="black"></path>
+              <path d="M 200,160 L 216,160" fill="none" stroke="black"></path>
+              <path d="M 328,160 L 344,160" fill="none" stroke="black"></path>
+              <path d="M 432,160 L 448,160" fill="none" stroke="black"></path>
+              <path d="M 224,176 L 320,176" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="416,80 404,74.4 404,85.6" fill="black" transform="rotate(0,408,80)"></polygon>
+              <polygon class="arrowhead" points="336,160 324,154.4 324,165.6" fill="black" transform="rotate(180,328,160)"></polygon>
+              <polygon class="arrowhead" points="224,160 212,154.4 212,165.6" fill="black" transform="rotate(0,216,160)"></polygon>
+              <g class="text">
+                <text x="36" y="52">User</text>
+                <text x="88" y="84">Agent</text>
+                <text x="220" y="84">signed</text>
+                <text x="280" y="84">request</text>
+                <text x="320" y="84">+</text>
+                <text x="344" y="84">URL</text>
+                <text x="452" y="84">Origin</text>
+                <text x="152" y="164">publishes</text>
+                <text x="272" y="164">Directory</text>
+                <text x="388" y="164">resolves</text>
+              </g>
+            </svg><a href="#section-5-1.1.1" class="pilcrow">¶</a>
 </div>
 </div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-web-bot-auth-architecture" class="selfRef">Web Bot Auth architecture</a>
+        </figcaption></figure>
 <p id="section-5-2">A User initiates an action requiring the Agent to perform an HTTP request.
 The Agent constructs the request, generates a signature using its signing key,
 and includes it in the request as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.1" class="relref">Section 3.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>
 along with the <code>Signature-Agent</code> header for discovery of its verification key.
 Upon receiving the request, the Origin ensures it has the verification key for the Agent,
-validates the signature, and processes the request if the signature is valid.<a href="#section-5-2" class="pilcrow">¶</a></p>
+validates the signature, and processes the request if the signature is valid.
+How a User directs an Agent is outside the scope of this document.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="deployment-models">
 <section id="section-5.1">
         <h3 id="name-deployment-models">
@@ -1859,13 +1851,39 @@ signature covering <code>@authority</code> alone verifies against any method, pa
 sent to that authority until it expires, so anyone who observes one request can
 reuse it against the same origin until then.
 <code>expires</code> bounds how long that lasts; the covered components bound what it
-reaches. Agents that want to narrow it <span class="bcp14">SHOULD</span> also cover <code>@method</code>, and
-either <code>@path</code> or <code>@target-uri</code>, as <a href="#example-multiple-signatures" class="auto internal xref">Appendix D.2</a> does. A signer that omits them remains conformant.
-<a href="#field-compression" class="auto internal xref">Appendix C.7</a> covers what that costs on the wire.<a href="#section-5.2-9" class="pilcrow">¶</a></p>
-<p id="section-5.2-10">No component covers the body. An Agent that needs one <span class="bcp14">MUST</span> send and cover
+reaches. <a href="#field-compression" class="auto internal xref">Appendix C.7</a> covers what that costs on the wire.<a href="#section-5.2-9" class="pilcrow">¶</a></p>
+<p id="section-5.2-10">Agents that want to narrow the scope of their signature <span class="bcp14">SHOULD</span> also cover the
+following components. A signer that omits them remains conformant.<a href="#section-5.2-10" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.2-11">
+          <dt id="section-5.2-11.1"><code>@method</code></dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-11.2">
+            <p id="section-5.2-11.2.1">narrows the signature to one method. Defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span><a href="#section-5.2-11.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-5.2-11.3"><code>@path</code></dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-11.4">
+            <p id="section-5.2-11.4.1">narrows the signature to one resource. <a href="#example-multiple-signatures" class="auto internal xref">Appendix D.2</a> shows
+it in use. Defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.6" class="relref">Section 2.2.6</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-5.2-11.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-5.2-11.5"><code>@target-uri</code></dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-11.6">
+            <p id="section-5.2-11.6.1">narrows the signature to one resource, including the query string. The
+signature is invalidated by intermediary reordering, which might happen for
+caching purposes for instance. Defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.2" class="relref">Section 2.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-5.2-11.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-5.2-11.7"><code>@query-param</code></dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-11.8">
+            <p id="section-5.2-11.8.1">narrows the signature to individual query parameters. This is a more robust
+alternative to cover query parameters. Defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.2.8" class="relref">Section 2.2.8</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-5.2-11.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-5.2-12">No component covers the body. An Agent that needs one <span class="bcp14">MUST</span> send and cover
 <code>Content-Digest</code> <span>[<a href="#DIGEST-FIELDS" class="cite xref">DIGEST-FIELDS</a>]</span>. This document does not require it. Most
 automated traffic is <code>GET</code>, and a mandatory digest would force every Agent to
-buffer request bodies it would otherwise stream.<a href="#section-5.2-10" class="pilcrow">¶</a></p>
+buffer request bodies it would otherwise stream.<a href="#section-5.2-12" class="pilcrow">¶</a></p>
 <div id="signature-agent">
 <section id="section-5.2.1">
           <h4 id="name-signature-agent">
@@ -1882,13 +1900,13 @@ the types. When <code>type</code> is absent, its value is <code>directory</code>
 does not support a <code>type</code> value <span class="bcp14">MUST</span> ignore that member, and <span class="bcp14">MUST NOT</span> infer the
 mechanism from the URI path, media type, or response body.<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.1-3">Earlier versions of this protocol defined <code>Signature-Agent</code> as a bare String,
-and deployments still send it (<a href="#example-legacy" class="auto internal xref">Appendix E.1.3</a>). A verifier <span class="bcp14">MAY</span> accept that
+and deployments still send it (<a href="#example-legacy" class="auto internal xref">Appendix E.1.2</a>). A verifier <span class="bcp14">MAY</span> accept that
 form and treat it as a dictionary with a single member whose key is the label
 of the signature covering it. Signers <span class="bcp14">MUST</span> send the dictionary form. The two
 are distinguishable on the wire: a String Item begins with a double quote <code>"</code>
 while a Dictionary member key does not.<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.1-4">It is <span class="bcp14">RECOMMENDED</span> that the Agent sends requests with <code>Signature-Agent</code> header, as described in <a href="#sending-request" class="auto internal xref">Section 5.2.5</a>.
-If the header is to be sent, one of its members <span class="bcp14">MUST</span> be signed as a component as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.1" class="relref">Section 2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<p id="section-5.2.1-4">A signed request <span class="bcp14">MUST</span> carry the <code>Signature-Agent</code> header, as described in <a href="#sending-request" class="auto internal xref">Section 5.2.5</a>.
+Its member keyed to the signature label <span class="bcp14">MUST</span> be signed as a component as defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-2.1" class="relref">Section 2.1</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 The <code>Signature-Agent</code> member identifies where candidate key material can be found.
 The key used to verify the signature is selected by the <code>keyid</code> parameter of the
 corresponding <code>Signature-Input</code> member.<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
@@ -1898,23 +1916,22 @@ corresponding <code>Signature-Input</code> member.<a href="#section-5.2.1-4" cla
 ("@authority" "signature-agent";key="sig1")
 </pre><a href="#section-5.2.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.1-7">It is <span class="bcp14">RECOMMENDED</span> that the <code>key</code> matches the signature label.<a href="#section-5.2.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="multiple-signatures">
 <section id="section-5.2.2">
           <h4 id="name-multiple-signatures">
-<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-multiple-signatures" class="section-name selfRef">Multiple signatures</a>
+<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-multiple-signatures" class="section-name selfRef">Multiple Signatures</a>
           </h4>
 <p id="section-5.2.2-1">A request <span class="bcp14">MAY</span> contain more than one Web Bot Auth signature. Each signature is
-identified by its HTTP Message Signatures label. When <code>Signature-Agent</code> is
-present, each signer <span class="bcp14">SHOULD</span> provide a <code>Signature-Agent</code> member for its label.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
+identified by its HTTP Message Signatures label. Each signer <span class="bcp14">MUST</span> provide a
+<code>Signature-Agent</code> member for its label. A verifier <span class="bcp14">MUST NOT</span> attribute a
+signature to a member that signature does not cover.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-2">A signer <span class="bcp14">MAY</span> cover members from another signature label, which preserves
 evidence that another signer contributed to the request. A signer that covers
 <code>"signature";key=X</code> <span class="bcp14">MUST</span> also cover <code>"signature-input";key=X</code>, and <span class="bcp14">MUST</span> cover
 every component identifier listed in <code>"signature-input";key=X</code>.<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-3">[[ editor's note: the following paragraph to be checked with Dennis and Justin ]]<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-4">A signature value on its own does not identify the message it was computed
+<p id="section-5.2.2-3">A signature value on its own does not identify the message it was computed
 over, which is why <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> recommends
 against signing one. Covering <code>signature-input</code> is not sufficient:
 it lists component identifiers, whose values resolve against whatever
@@ -1923,41 +1940,33 @@ without covering them would still verify after the whole header set was lifted
 onto a different message, the ambiguity
 <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.3.7" class="relref">Section 7.3.7</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> describes. Covering the union
 addresses this: the outer signer commits to a message on which the inner signature
-is checkable, under which key, and over which validity window.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-5">A signer that cannot cover one of those components, because it changed the
+is checkable, under which key, and over which validity window.<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-4">A signer that cannot cover one of those components, because it changed the
 value the inner signature was computed over, <span class="bcp14">MUST NOT</span> cover the inner
 <code>signature</code> member. It signs the request on its own terms, and the inner
-signature is left untouched.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-6">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
+signature is left untouched.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-5">Verifiers <span class="bcp14">MUST</span> validate each signature independently against its own covered
 components and its own key. An outer signature that covers an inner one is
 evidence that those bytes, over that set of components, were present. It does
 not make the inner signature valid, and it does not express authorization,
 delegation, or consent. Those meanings are deployment policy, or are carried in
-separately signed fields.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
+separately signed fields.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="anti-replay">
+<div id="replay-protection">
 <section id="section-5.2.3">
-          <h4 id="name-anti-replay">
-<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-anti-replay" class="section-name selfRef">Anti-replay</a>
+          <h4 id="name-replay-protection">
+<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-replay-protection" class="section-name selfRef">Replay Protection</a>
           </h4>
-<p id="section-5.2.3-1">Origins <span class="bcp14">MAY</span> want to prevent signatures from being spoofed or used multiple times by bad actors and thus require a <code>nonce</code> to be added to the <code>@signature-params</code>.
-This is described in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.2" class="relref">Section 7.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-2">Agents <span class="bcp14">SHOULD</span> extend <code>@signature-parameters</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a> as follows:<a href="#section-5.2.3-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.2.3-3">
-            <dt id="section-5.2.3-3.1"><code>nonce</code></dt>
-            <dd style="margin-left: 1.5em" id="section-5.2.3-3.2">
-              <p id="section-5.2.3-3.2.1">base64url encoded random byte array. It is <span class="bcp14">RECOMMENDED</span> to use a 64-byte array.<a href="#section-5.2.3-3.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
-<p id="section-5.2.3-4">Client <span class="bcp14">MUST</span> ensure that this <code>nonce</code> is unique for the validity window of the signature, as defined by created and expires attributes.<a href="#section-5.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.3-1">Replay protection, including use of the <code>nonce</code> signature parameter, is
+described in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.2" class="relref">Section 7.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>. This document defines
+no additional nonce requirements.<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="additional-headers">
 <section id="section-5.2.4">
           <h4 id="name-additional-headers">
-<a href="#section-5.2.4" class="section-number selfRef">5.2.4. </a><a href="#name-additional-headers" class="section-name selfRef">Additional headers</a>
+<a href="#section-5.2.4" class="section-number selfRef">5.2.4. </a><a href="#name-additional-headers" class="section-name selfRef">Additional Headers</a>
           </h4>
 <p id="section-5.2.4-1">Agents <span class="bcp14">MAY</span> include additional components, such as specific HTTP headers, in the signature.
 This can be prompted by the origin requesting additional headers, as described in <a href="#requesting-message-signature" class="auto internal xref">Section 5.3</a>,
@@ -1970,57 +1979,25 @@ and request a new signature, as described in <a href="#requesting-message-signat
 <div id="sending-request">
 <section id="section-5.2.5">
           <h4 id="name-sending-a-request">
-<a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-sending-a-request" class="section-name selfRef">Sending a request</a>
+<a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-sending-a-request" class="section-name selfRef">Sending a Request</a>
           </h4>
-<p id="section-5.2.5-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above. Updating the overview diagram, the flow looks as follow.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
-<div id="section-5.2.5-2">
-            <div class="alignLeft art-svg artwork" id="section-5.2.5-2.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="848" viewBox="0 0 848 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,32 L 8,160" fill="none" stroke="black"></path>
-                <path d="M 88,32 L 88,160" fill="none" stroke="black"></path>
-                <path d="M 136,112 L 136,256" fill="none" stroke="black"></path>
-                <path d="M 680,112 L 680,256" fill="none" stroke="black"></path>
-                <path d="M 752,32 L 752,160" fill="none" stroke="black"></path>
-                <path d="M 840,32 L 840,160" fill="none" stroke="black"></path>
-                <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
-                <path d="M 752,32 L 840,32" fill="none" stroke="black"></path>
-                <path d="M 96,62 L 352,62" fill="none" stroke="black"></path>
-                <path d="M 96,66 L 352,66" fill="none" stroke="black"></path>
-                <path d="M 496,62 L 744,62" fill="none" stroke="black"></path>
-                <path d="M 496,66 L 744,66" fill="none" stroke="black"></path>
-                <path d="M 136,112 L 680,112" fill="none" stroke="black"></path>
-                <path d="M 88,128 L 128,128" fill="none" stroke="black"></path>
-                <path d="M 688,128 L 744,128" fill="none" stroke="black"></path>
-                <path d="M 8,160 L 88,160" fill="none" stroke="black"></path>
-                <path d="M 752,160 L 840,160" fill="none" stroke="black"></path>
-                <path d="M 136,256 L 680,256" fill="none" stroke="black"></path>
-                <polygon class="arrowhead" points="752,128 740,122.4 740,133.6" fill="black" transform="rotate(0,744,128)"></polygon>
-                <polygon class="arrowhead" points="752,64 740,58.4 740,69.6" fill="black" transform="rotate(0,744,64)"></polygon>
-                <polygon class="arrowhead" points="104,64 92,58.4 92,69.6" fill="black" transform="rotate(180,96,64)"></polygon>
-                <g class="text">
-                  <text x="420" y="52">Exchange</text>
-                  <text x="424" y="68">Cryptographic</text>
-                  <text x="420" y="84">material</text>
-                  <text x="48" y="100">Agent</text>
-                  <text x="796" y="100">Origin</text>
-                  <text x="160" y="132">GET</text>
-                  <text x="248" y="132">/path/to/resource</text>
-                  <text x="188" y="148">Signature:</text>
-                  <text x="272" y="148">sig=abc==</text>
-                  <text x="212" y="164">Signature-Input:</text>
-                  <text x="352" y="164">sig=("@authority"</text>
-                  <text x="548" y="164">"signature-agent";key="sig");\</text>
-                  <text x="364" y="180">created=1700000000;\</text>
-                  <text x="364" y="196">expires=1700011111;\</text>
-                  <text x="356" y="212">keyid="ba3e64==";\</text>
-                  <text x="356" y="228">tag="web-bot-auth"</text>
-                  <text x="212" y="244">Signature-Agent:</text>
-                  <text x="412" y="244">sig="https://signer.example.com"</text>
-                </g>
-              </svg><a href="#section-5.2.5-2.1" class="pilcrow">¶</a>
+<p id="section-5.2.5-1">An Agent <span class="bcp14">SHOULD</span> send a request with the signature generated above.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.5-2">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+GET /path/to/resource HTTP/1.1
+Host: origin.example.com
+Signature: sig=abc==
+Signature-Input: sig=("@authority" "signature-agent";key="sig");\
+                 created=1700000000;\
+                 expires=1700011111;\
+                 keyid="ba3e64==";\
+                 tag="web-bot-auth"
+Signature-Agent: sig="https://signer.example.com"
+</pre><a href="#section-5.2.5-2" class="pilcrow">¶</a>
 </div>
-</div>
-<p id="section-5.2.5-3">The Agent <span class="bcp14">SHOULD</span> send requests with two headers<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.5-3">A signed request carries three headers<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.2.5-4">
 <li id="section-5.2.5-4.1">
               <p id="section-5.2.5-4.1.1"><code>Signature</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a><a href="#section-5.2.5-4.1.1" class="pilcrow">¶</a></p>
@@ -2028,10 +2005,79 @@ and request a new signature, as described in <a href="#requesting-message-signat
             <li id="section-5.2.5-4.2">
               <p id="section-5.2.5-4.2.1"><code>Signature-Input</code> defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a><a href="#section-5.2.5-4.2.1" class="pilcrow">¶</a></p>
 </li>
+            <li id="section-5.2.5-4.3">
+              <p id="section-5.2.5-4.3.1"><code>Signature-Agent</code> defined in <a href="#signature-agent" class="auto internal xref">Section 5.2.1</a><a href="#section-5.2.5-4.3.1" class="pilcrow">¶</a></p>
+</li>
           </ol>
-<p id="section-5.2.5-5">As described in <a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>, it is <span class="bcp14">RECOMMENDED</span> that the Agent also send
-the <code>Signature-Agent</code> header. Without it the Agent is identified by its key
-alone, with the consequences described in <a href="#no-url" class="auto internal xref">Section 4.3</a>.<a href="#section-5.2.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.5-5">The Origin learns the URL from the request, so it resolves keys after the
+first request rather than before it. Later requests verify from cache
+(<a href="#cache-behaviour" class="auto internal xref">Appendix C.4</a>).<a href="#section-5.2.5-5" class="pilcrow">¶</a></p>
+<span id="name-key-resolution-follows-the-"></span><figure id="figure-2">
+            <div id="section-5.2.5-6.1">
+              <div class="alignLeft art-svg artwork" id="section-5.2.5-6.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="456" viewBox="0 0 456 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,32 L 8,64" fill="none" stroke="black"></path>
+                  <path d="M 40,64 L 40,256" fill="none" stroke="black"></path>
+                  <path d="M 72,32 L 72,64" fill="none" stroke="black"></path>
+                  <path d="M 232,32 L 232,64" fill="none" stroke="black"></path>
+                  <path d="M 232,128 L 232,208" fill="none" stroke="black"></path>
+                  <path d="M 264,64 L 264,112" fill="none" stroke="black"></path>
+                  <path d="M 264,144 L 264,200" fill="none" stroke="black"></path>
+                  <path d="M 264,216 L 264,256" fill="none" stroke="black"></path>
+                  <path d="M 304,32 L 304,64" fill="none" stroke="black"></path>
+                  <path d="M 352,32 L 352,64" fill="none" stroke="black"></path>
+                  <path d="M 400,64 L 400,112" fill="none" stroke="black"></path>
+                  <path d="M 400,144 L 400,200" fill="none" stroke="black"></path>
+                  <path d="M 400,216 L 400,256" fill="none" stroke="black"></path>
+                  <path d="M 448,32 L 448,64" fill="none" stroke="black"></path>
+                  <path d="M 448,128 L 448,208" fill="none" stroke="black"></path>
+                  <path d="M 8,32 L 72,32" fill="none" stroke="black"></path>
+                  <path d="M 232,32 L 304,32" fill="none" stroke="black"></path>
+                  <path d="M 352,32 L 448,32" fill="none" stroke="black"></path>
+                  <path d="M 8,64 L 72,64" fill="none" stroke="black"></path>
+                  <path d="M 232,64 L 304,64" fill="none" stroke="black"></path>
+                  <path d="M 352,64 L 448,64" fill="none" stroke="black"></path>
+                  <path d="M 40,94 L 56,94" fill="none" stroke="black"></path>
+                  <path d="M 40,98 L 56,98" fill="none" stroke="black"></path>
+                  <path d="M 240,94 L 256,94" fill="none" stroke="black"></path>
+                  <path d="M 240,98 L 256,98" fill="none" stroke="black"></path>
+                  <path d="M 232,128 L 248,128" fill="none" stroke="black"></path>
+                  <path d="M 432,128 L 448,128" fill="none" stroke="black"></path>
+                  <path d="M 264,160 L 288,160" fill="none" stroke="black"></path>
+                  <path d="M 368,160 L 392,160" fill="none" stroke="black"></path>
+                  <path d="M 272,176 L 304,176" fill="none" stroke="black"></path>
+                  <path d="M 360,176 L 400,176" fill="none" stroke="black"></path>
+                  <path d="M 232,208 L 448,208" fill="none" stroke="black"></path>
+                  <path d="M 48,238 L 112,238" fill="none" stroke="black"></path>
+                  <path d="M 48,242 L 112,242" fill="none" stroke="black"></path>
+                  <path d="M 200,238 L 264,238" fill="none" stroke="black"></path>
+                  <path d="M 200,242 L 264,242" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="400,160 388,154.4 388,165.6" fill="black" transform="rotate(0,392,160)"></polygon>
+                  <polygon class="arrowhead" points="280,176 268,170.4 268,181.6" fill="black" transform="rotate(180,272,176)"></polygon>
+                  <polygon class="arrowhead" points="264,96 252,90.4 252,101.6" fill="black" transform="rotate(0,256,96)"></polygon>
+                  <polygon class="arrowhead" points="56,240 44,234.4 44,245.6" fill="black" transform="rotate(180,48,240)"></polygon>
+                  <g class="text">
+                    <text x="40" y="52">Agent</text>
+                    <text x="268" y="52">Origin</text>
+                    <text x="400" y="52">Directory</text>
+                    <text x="92" y="100">Signed</text>
+                    <text x="152" y="100">request</text>
+                    <text x="192" y="100">+</text>
+                    <text x="216" y="100">URL</text>
+                    <text x="268" y="132">if</text>
+                    <text x="300" y="132">keys</text>
+                    <text x="336" y="132">not</text>
+                    <text x="388" y="132">resolved</text>
+                    <text x="328" y="164">Resolve</text>
+                    <text x="332" y="180">Keys</text>
+                    <text x="156" y="244">Response</text>
+                  </g>
+                </svg><a href="#section-5.2.5-6.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-key-resolution-follows-the-" class="selfRef">Key resolution follows the first request</a>
+            </figcaption></figure>
 </section>
 </div>
 </section>
@@ -2039,19 +2085,23 @@ alone, with the consequences described in <a href="#no-url" class="auto internal
 <div id="requesting-message-signature">
 <section id="section-5.3">
         <h3 id="name-requesting-a-message-signat">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-requesting-a-message-signat" class="section-name selfRef">Requesting a Message signature</a>
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-requesting-a-message-signat" class="section-name selfRef">Requesting a Message Signature</a>
         </h3>
 <p id="section-5.3-1"><span><a href="https://rfc-editor.org/rfc/rfc9421#section-5" class="relref">Section 5</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> defines the <code>Accept-Signature</code> field which can be used to request a Message Signature from a client by an origin.
-An Origin <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially provide them. If requesting, Origins <span class="bcp14">MUST</span> use the same parameters as those defined by the <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>.
+An Origin <span class="bcp14">MAY</span> choose to request signatures from clients that did not initially
+provide them. A resulting signature <span class="bcp14">MUST</span> satisfy this profile. The Origin <span class="bcp14">MAY</span>
+request additional parameters defined by <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>, including
+<code>nonce</code>.
 The status code <span class="bcp14">SHOULD</span> be 403 Forbidden as defined in <span><a href="https://rfc-editor.org/rfc/rfc9110#section-15.5.4" class="relref">Section 15.5.4</a> of [<a href="#HTTP" class="cite xref">HTTP</a>]</span>.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">Origin <span class="bcp14">MAY</span> request a new signature with tag "web-bot-auth" even if a nonce is provided, for example if it believes the nonce is a replay, or if it doesn't store nonces and thus requests new signatures every time.
-The status code <span class="bcp14">SHOULD</span> be 429 Too Many Requests as defined in <span><a href="https://rfc-editor.org/rfc/rfc6585#section-4" class="relref">Section 4</a> of [<a href="#HTTP-MORE-STATUS-CODE" class="cite xref">HTTP-MORE-STATUS-CODE</a>]</span>.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">An Origin that detects a signature or nonce has been used more often than its
+policy permits <span class="bcp14">MAY</span> request a new signature and respond with 429 Too Many
+Requests as defined in <span><a href="https://rfc-editor.org/rfc/rfc6585#section-4" class="relref">Section 4</a> of [<a href="#HTTP-MORE-STATUS-CODE" class="cite xref">HTTP-MORE-STATUS-CODE</a>]</span>.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="validating-message-signature">
 <section id="section-5.4">
         <h3 id="name-validating-message-signatur">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-validating-message-signatur" class="section-name selfRef">Validating Message signature</a>
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-validating-message-signatur" class="section-name selfRef">Validating Message Signature</a>
         </h3>
 <p id="section-5.4-1">Upon receiving an HTTP request, the origin has to verify the signature. The algorithm is provided in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.2" class="relref">Section 3.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 Similar to a regular User-Agent check, this happens at the HTTP layer, once headers are received.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
@@ -2075,7 +2125,6 @@ verifier that indexes by <code>keyid</code> alone will verify a request as comin
 that provides a key it learned from another, and attribute that request to the URL the client
 asserted. The party whose URL is asserted cannot detect or stop this: its own
 directory is never fetched, so no rotation or removal has any effect.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
-<p id="section-5.4-5">Origin <span class="bcp14">MAY</span> require the <code>nonce</code> to satisfy certain constraints: be globally unique using a global nonce store, be unique to a specific location or time window using a local cache, or no constraint at all.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-distribution-and-discovery">
@@ -2112,40 +2161,43 @@ document then provides key material through <code>jwks</code> or <code>jwks_uri<
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-5.5-4">All three types produce an identifier: the URL the verifier resolved, with any
+<p id="section-5.5-4">Each resource fetched under this section <span class="bcp14">MUST</span> be served with a <code>200 (OK)</code> HTTP
+status code. A verifier <span class="bcp14">MUST</span> treat all other HTTP status codes as discovery
+failures and <span class="bcp14">MUST NOT</span> automatically follow HTTP redirects.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.5-5">All three types produce an identifier: the URL the verifier resolved, with any
 query and fragment discarded. For <code>directory</code> that is the well-known URI, one
 per origin. For <code>jwks_uri</code> and <code>cimd</code> it is the member value; the verifier
 fetches that value as sent, so the query is dropped from the identifier and not
 from the request. Otherwise one key set would yield an identifier per spelling,
-and an Agent could mint them at will.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
-<p id="section-5.5-5">Identifiers are compared after normalization as described in
+and an Agent could mint them at will.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.5-6">Identifiers are compared after normalization as described in
 <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.2" class="relref">Section 6.2.2</a> of [<a href="#URI" class="cite xref">URI</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc3986#section-6.2.3" class="relref">Section 6.2.3</a> of [<a href="#URI" class="cite xref">URI</a>]</span>. Two identifiers are the
-same when their normalized forms are equal octet for octet.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
-<p id="section-5.5-6">The types differ in what additional information the verifier learns from the URL.
+same when their normalized forms are equal octet for octet.<a href="#section-5.5-6" class="pilcrow">¶</a></p>
+<p id="section-5.5-7">The types differ in what additional information the verifier learns from the URL.
 TLS authenticates the host but not the path, and nothing reserves the <code>jwks_uri</code> or <code>cimd</code> path to the host's operator. The well-known URI is reserved, so <code>directory</code>
-additionally names a domain (<a href="#origin-binding" class="auto internal xref">Section 4.5</a>).<a href="#section-5.5-6" class="pilcrow">¶</a></p>
-<p id="section-5.5-7">For all types, the key is selected using the <code>keyid</code> parameter in
-<code>Signature-Input</code>.<a href="#section-5.5-7" class="pilcrow">¶</a></p>
-<p id="section-5.5-8">Note: when a JWK set is served at the well-known URI registered in
+additionally names a domain (<a href="#origin-binding" class="auto internal xref">Section 4.5</a>).<a href="#section-5.5-7" class="pilcrow">¶</a></p>
+<p id="section-5.5-8">For all types, the key is selected using the <code>keyid</code> parameter in
+<code>Signature-Input</code>.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
+<p id="section-5.5-9">Note: when a JWK set is served at the well-known URI registered in
 <a href="#wkuri-reg" class="auto internal xref">Section 8.1</a>, JWK <span class="bcp14">MAY</span> carry a <code>kid</code>. In this case, it <span class="bcp14">MUST</span> be set to the
 thumbprint defined in <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>, so a verifier
 selects a key by matching <code>keyid</code> against <code>kid</code>. Deriving <code>kid</code> from the key
 material keeps it globally unique and lets a verifier check the directory's own
-labelling rather than trusting it.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
-<p id="section-5.5-9"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
+labelling rather than trusting it.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
+<p id="section-5.5-10"><code>jwks_uri</code> and <code>cimd</code> resolve to key sets that may serve other consumers, where
 <code>kid</code> is an operator-chosen label. A verifier that cannot match <code>keyid</code> against
-<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5-10">
+<code>kid</code> there computes thumbprints instead.<a href="#section-5.5-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-11">
 <pre>
 Signature-Agent: sig1="https://signature-agent.test"
 Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
 Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
-</pre><a href="#section-5.5-10" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-11" class="pilcrow">¶</a>
 </div>
 <div id="configuration">
 <section id="section-5.5.1">
           <h4 id="name-directory-format">
-<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-directory-format" class="section-name selfRef">Directory format</a>
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-directory-format" class="section-name selfRef">Directory Format</a>
           </h4>
 <p id="section-5.5.1-1">All three types resolve to a JSON Web Key Set (JWKS) as defined in
 <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#JWK" class="cite xref">JWK</a>]</span>. The <code>alg</code> parameter is restricted to algorithms
@@ -2182,7 +2234,7 @@ Cache-Control: max-age=86400
 <div id="key-rotation">
 <section id="section-5.5.2">
           <h4 id="name-key-rotation">
-<a href="#section-5.5.2" class="section-number selfRef">5.5.2. </a><a href="#name-key-rotation" class="section-name selfRef">Key rotation</a>
+<a href="#section-5.5.2" class="section-number selfRef">5.5.2. </a><a href="#name-key-rotation" class="section-name selfRef">Key Rotation</a>
           </h4>
 <p id="section-5.5.2-1">Directory operators <span class="bcp14">SHOULD</span> rotate keys by publishing the old and the new key
 together, then removing the old one:<a href="#section-5.5.2-1" class="pilcrow">¶</a></p>
@@ -2207,7 +2259,7 @@ contents and refresh upon expiration, as described in <a href="#cache-behaviour"
 <div id="redistributed-key-material">
 <section id="section-5.5.3">
           <h4 id="name-redistributed-key-material">
-<a href="#section-5.5.3" class="section-number selfRef">5.5.3. </a><a href="#name-redistributed-key-material" class="section-name selfRef">Redistributed key material</a>
+<a href="#section-5.5.3" class="section-number selfRef">5.5.3. </a><a href="#name-redistributed-key-material" class="section-name selfRef">Redistributed Key Material</a>
           </h4>
 <p id="section-5.5.3-1">IP addresses and user-agent have been aggregated and distributed via lists.
 This section says what a verifier may conclude from key material it did not
@@ -2226,22 +2278,12 @@ constitute redistribution. Nor is a list that names directory URLs rather than e
 keys. For instance, <span>[<a href="#REGISTRY" class="cite xref">REGISTRY</a>]</span> works that way, and the verifier still resolves them.<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="signature-key-header">
-<section id="section-5.5.4">
-          <h4 id="name-signature-key-header">
-<a href="#section-5.5.4" class="section-number selfRef">5.5.4. </a><a href="#name-signature-key-header" class="section-name selfRef">Signature-Key header</a>
-          </h4>
-<p id="section-5.5.4-1"><span>[<a href="#SIGNATURE-KEY" class="cite xref">SIGNATURE-KEY</a>]</span> defines a separate key discovery header for HTTP Message
-Signatures. Deployments <span class="bcp14">MAY</span> use it when they need that model. This protocol
-uses <code>Signature-Agent</code> as its default discovery mechanism.<a href="#section-5.5.4-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 </section>
 </div>
 <div id="sessions">
 <section id="section-5.6">
         <h3 id="name-session-considerations">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-session-considerations" class="section-name selfRef">Session considerations</a>
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-session-considerations" class="section-name selfRef">Session Considerations</a>
         </h3>
 <p id="section-5.6-1">Per-request signing and verification costs CPU; uncached key discovery adds
 latency. For high request rates, an origin can verify a request-specific
@@ -2271,7 +2313,7 @@ Clients <span class="bcp14">SHOULD</span> use TLS <span>[<a href="#RFC8446" clas
 (https) or equivalent transport security when making requests with
 Message signatures. Failing to do so exposes the Message signature to numerous
 attacks that could give attackers unintended access.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">This include reverse proxy and their consideration presented in <a href="#reverse-proxy" class="auto internal xref">Section 6.7</a>.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">This include reverse proxy and their consideration presented in <a href="#reverse-proxy" class="auto internal xref">Section 6.6</a>.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">An origin <span class="bcp14">SHOULD</span> refuse Signature headers when communicated over an unsecured channel.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2285,203 +2327,186 @@ See <a href="#sessions" class="auto internal xref">Section 5.6</a>: a session am
 bearer credential. <a href="#field-compression" class="auto internal xref">Appendix C.7</a> covers the byte cost.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="nonce-validation">
-<section id="section-6.3">
-        <h3 id="name-nonce-validation">
-<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-nonce-validation" class="section-name selfRef">Nonce validation</a>
-        </h3>
-<p id="section-6.3-1">Clients control the nonce. While <a href="#anti-replay" class="auto internal xref">Section 5.2.3</a> mandates that clients <span class="bcp14">MUST</span> provide a globally unique nonce, it is the origin's responsibility to enforce it.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3-2">Different validation policies have different performance and operational considerations. Global uniqueness requires a global nonce store. Some origins may find that their use case can tolerate sharding on location, timing, or other properties.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="key-compromise-response">
-<section id="section-6.4">
+<section id="section-6.3">
         <h3 id="name-key-compromise-response">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-key-compromise-response" class="section-name selfRef">Key Compromise Response</a>
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-key-compromise-response" class="section-name selfRef">Key Compromise Response</a>
         </h3>
-<p id="section-6.4-1">This document defines no revocation. Removing a compromised key from the
+<p id="section-6.3-1">This document defines no revocation. Removing a compromised key from the
 directory is the only remedy, and it takes effect at each verifier on its next
 refresh, so the key can keep verifying for as long as <a href="#key-rotation" class="auto internal xref">Section 5.5.2</a> allows.
 The protocol carries no channel back to verifiers, so an
 Agent cannot reach them sooner. Signature lifetimes
-(<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>) are the only lever that acts faster.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.4-2">Agents <span class="bcp14">SHOULD</span> remove a compromised key and publish a replacement immediately.
+(<a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a>) are the only lever that acts faster.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">Agents <span class="bcp14">SHOULD</span> remove a compromised key and publish a replacement immediately.
 Origins should support rapid key rotation and monitor for suspicious signature
-patterns.<a href="#section-6.4-2" class="pilcrow">¶</a></p>
+patterns.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="shared-secrets-considered-harmful">
-<section id="section-6.5">
+<section id="section-6.4">
         <h3 id="name-shared-secrets-considered-h">
-<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-shared-secrets-considered-h" class="section-name selfRef">Shared Secrets Considered Harmful</a>
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-shared-secrets-considered-h" class="section-name selfRef">Shared Secrets Considered Harmful</a>
         </h3>
-<p id="section-6.5-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
+<p id="section-6.4-1">Implementations <span class="bcp14">MUST NOT</span> use shared HMAC defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#section-3.3.3" class="relref">Section 3.3.3</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 Shared secrets break non-repudiation and make auditing
 difficult. Each automated client <span class="bcp14">SHOULD</span> use a unique asymmetric keypair to
 ensure attribution, support key rotation, and enable effective rotation if
-needed.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+needed.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-reuse-considered-harmful">
-<section id="section-6.6">
+<section id="section-6.5">
         <h3 id="name-key-reuse-considered-harmfu">
-<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-key-reuse-considered-harmfu" class="section-name selfRef">Key Reuse Considered Harmful</a>
+<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-key-reuse-considered-harmfu" class="section-name selfRef">Key Reuse Considered Harmful</a>
         </h3>
-<p id="section-6.6-1">Implementations <span class="bcp14">SHOULD NOT</span> reuse a signing key for different purposes. For
-example, if an agent implementor has two agents they want to differentiate,
-these should use distinct signing keys and signing key directories.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+<p id="section-6.5-1">Implementations <span class="bcp14">SHOULD NOT</span> reuse a signing key for different purposes. For
+example, if an agent implementer has two agents they want to differentiate,
+these should use distinct signing keys and signing key directories.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="reverse-proxy">
-<section id="section-6.7">
+<section id="section-6.6">
         <h3 id="name-reverse-proxy-consideration">
-<a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-reverse-proxy-consideration" class="section-name selfRef">Reverse proxy consideration</a>
+<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-reverse-proxy-consideration" class="section-name selfRef">Reverse Proxy Consideration</a>
         </h3>
-<p id="section-6.7-1">An origin may be placed behind a reverse proxy, which means the proxy will see
+<p id="section-6.6-1">An origin may be placed behind a reverse proxy, which means the proxy will see
 the <code>Signature</code> and <code>Signature-Agent</code> headers before the origin does.
 A proxy <span class="bcp14">SHOULD NOT</span> strip the <code>Signature</code> or <code>Signature-Agent</code> headers from
-requests.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
-<p id="section-6.7-2">A proxy <span class="bcp14">SHOULD NOT</span> replay signatures against other reverse proxies used by the
-origin, as this allows impersonation of the principal signature agent.<a href="#section-6.7-2" class="pilcrow">¶</a></p>
-<p id="section-6.7-3">Origins <span class="bcp14">MAY</span> require a specific nonce policy to prevent such malicious behaviour
-and decide to validate the signature themselves. This has to be done in
-accordance with <a href="#nonce-validation" class="auto internal xref">Section 6.3</a>. For example, an origin could
-require a nonce derived from public information (such as the current date),
-mandate nonce chaining (where each nonce is the hash of the previous one),
-or provide its own nonce in an <code>Accept-Signature</code> response to challenge the agent.<a href="#section-6.7-3" class="pilcrow">¶</a></p>
-<p id="section-6.7-4">Such policies <span class="bcp14">MAY</span> incur additional round-trip between the client and the origin
-to convey <code>accept-signature</code> header, or deployment specific exchanges.<a href="#section-6.7-4" class="pilcrow">¶</a></p>
+requests.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+<p id="section-6.6-2">A proxy <span class="bcp14">SHOULD NOT</span> replay signatures against other reverse proxies used by the
+origin, as this allows impersonation of the principal signature agent.<a href="#section-6.6-2" class="pilcrow">¶</a></p>
 <div id="signature-agent-labeling">
-<section id="section-6.7.1">
+<section id="section-6.6.1">
           <h4 id="name-signature-agent-labeling">
-<a href="#section-6.7.1" class="section-number selfRef">6.7.1. </a><a href="#name-signature-agent-labeling" class="section-name selfRef">Signature-Agent labeling</a>
+<a href="#section-6.6.1" class="section-number selfRef">6.6.1. </a><a href="#name-signature-agent-labeling" class="section-name selfRef">Signature-Agent Labeling</a>
           </h4>
-<p id="section-6.7.1-1"><span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.5" class="relref">Section 7.2.5</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> allows an intermediary to relabel
+<p id="section-6.6.1-1"><span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.5" class="relref">Section 7.2.5</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span> allows an intermediary to relabel
 a signature, because the label of a <code>Signature</code> dictionary member is not part
 of the signature base. The key of a <code>Signature-Agent</code> member is different: when
 a signature covers <code>"signature-agent";key="agent2"</code>, that key appears in the
 signature base, so changing it invalidates the signature. Only the holder of
-the signing key can produce a signature over the new member key.<a href="#section-6.7.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.7.1-2">An intermediary <span class="bcp14">MUST NOT</span> alter the key of a <code>Signature-Agent</code> member that is
+the signing key can produce a signature over the new member key.<a href="#section-6.6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.6.1-2">An intermediary <span class="bcp14">MUST NOT</span> alter the key of a <code>Signature-Agent</code> member that is
 covered by a signature it is not able to recompute. Relabeling the <code>Signature</code>
-dictionary member remains permitted.<a href="#section-6.7.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.7.1-3">A signer acting as an intermediary on its own signature is not restricted by
-this, since it can sign the result.<a href="#section-6.7.1-3" class="pilcrow">¶</a></p>
+dictionary member remains permitted.<a href="#section-6.6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.6.1-3">A signer acting as an intermediary on its own signature is not restricted by
+this, since it can sign the result.<a href="#section-6.6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="ssrf">
-<section id="section-6.8">
+<section id="section-6.7">
         <h3 id="name-server-side-request-forgery">
-<a href="#section-6.8" class="section-number selfRef">6.8. </a><a href="#name-server-side-request-forgery" class="section-name selfRef">Server-Side Request Forgery (SSRF)</a>
+<a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-server-side-request-forgery" class="section-name selfRef">Server-Side Request Forgery (SSRF)</a>
         </h3>
-<p id="section-6.8-1">As described in <a href="#key-distribution-and-discovery" class="auto internal xref">Section 5.5</a>, verifiers may fetch key directories based on
+<p id="section-6.7-1">As described in <a href="#key-distribution-and-discovery" class="auto internal xref">Section 5.5</a>, verifiers may fetch key directories based on
 the value conveyed in <code>Signature-Agent</code> when included in a request. Since
 clients control the <code>Signature-Agent</code> header value, this introduces a risk of
-server-side request forgery (SSRF) attacks by malicious clients.<a href="#section-6.8-1" class="pilcrow">¶</a></p>
-<p id="section-6.8-2">Verifiers <span class="bcp14">SHOULD</span> take appropriate precautions as follows:<a href="#section-6.8-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.8-3">
-          <dt id="section-6.8-3.1"><code>Response size</code></dt>
-          <dd style="margin-left: 1.5em" id="section-6.8-3.2">
-            <p id="section-6.8-3.2.1">a directory can be arbitrarily large. Verifiers <span class="bcp14">SHOULD</span> reject responses
-exceeding a defined byte limit after content decoding.<a href="#section-6.8-3.2.1" class="pilcrow">¶</a></p>
+server-side request forgery (SSRF) attacks by malicious clients.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
+<p id="section-6.7-2">Verifiers <span class="bcp14">SHOULD</span> take appropriate precautions as follows:<a href="#section-6.7-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-6.7-3">
+          <dt id="section-6.7-3.1"><code>Response size</code></dt>
+          <dd style="margin-left: 1.5em" id="section-6.7-3.2">
+            <p id="section-6.7-3.2.1">a directory can be arbitrarily large. Verifiers <span class="bcp14">SHOULD</span> reject responses
+exceeding a defined byte limit after content decoding.<a href="#section-6.7-3.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.8-3.3"><code>Key count</code></dt>
-          <dd style="margin-left: 1.5em" id="section-6.8-3.4">
-            <p id="section-6.8-3.4.1">a JWKS with many keys forces O(n) key search. Verifiers <span class="bcp14">SHOULD</span> enforce
-a maximum key count.<a href="#section-6.8-3.4.1" class="pilcrow">¶</a></p>
+<dt id="section-6.7-3.3"><code>Key count</code></dt>
+          <dd style="margin-left: 1.5em" id="section-6.7-3.4">
+            <p id="section-6.7-3.4.1">a JWKS with many keys forces O(n) key search. Verifiers <span class="bcp14">SHOULD</span> enforce
+a maximum key count.<a href="#section-6.7-3.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.8-3.5"><code>Fetch latency</code></dt>
-          <dd style="margin-left: 1.5em" id="section-6.8-3.6">
-            <p id="section-6.8-3.6.1">no timeout allows slowloris-style exhaustion. Verifiers <span class="bcp14">SHOULD</span> apply
-a wall-clock timeout to directory fetches.<a href="#section-6.8-3.6.1" class="pilcrow">¶</a></p>
+<dt id="section-6.7-3.5"><code>Fetch latency</code></dt>
+          <dd style="margin-left: 1.5em" id="section-6.7-3.6">
+            <p id="section-6.7-3.6.1">no timeout allows slowloris-style exhaustion. Verifiers <span class="bcp14">SHOULD</span> apply
+a wall-clock timeout to directory fetches.<a href="#section-6.7-3.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.8-3.7"><code>Redirect chains</code></dt>
-          <dd style="margin-left: 1.5em" id="section-6.8-3.8">
-            <p id="section-6.8-3.8.1">unbounded HTTP redirects can be used to amplify requests. Verifiers
-<span class="bcp14">SHOULD</span> limit redirect depth.<a href="#section-6.8-3.8.1" class="pilcrow">¶</a></p>
+<dt id="section-6.7-3.7"><code>Redirect chains</code></dt>
+          <dd style="margin-left: 1.5em" id="section-6.7-3.8">
+            <p id="section-6.7-3.8.1">unbounded HTTP redirects can be used to amplify requests. Verifiers
+<span class="bcp14">SHOULD</span> limit redirect depth.<a href="#section-6.7-3.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.8-3.9"><code>Network address ranges</code></dt>
-          <dd style="margin-left: 1.5em" id="section-6.8-3.10">
-            <p id="section-6.8-3.10.1">no address filtering can target internal services. Verifiers <span class="bcp14">SHOULD</span>
+<dt id="section-6.7-3.9"><code>Network address ranges</code></dt>
+          <dd style="margin-left: 1.5em" id="section-6.7-3.10">
+            <p id="section-6.7-3.10.1">no address filtering can target internal services. Verifiers <span class="bcp14">SHOULD</span>
 prevent directory fetches to private, loopback, and link-local
-address ranges.<a href="#section-6.8-3.10.1" class="pilcrow">¶</a></p>
+address ranges.<a href="#section-6.7-3.10.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-6.8-4">Further recommendations can be found in the Open Worldwide Application
-Security Project (OWASP) SSRF Prevention Cheat Sheet <span>[<a href="#OWASP-SSRF" class="cite xref">OWASP-SSRF</a>]</span>.<a href="#section-6.8-4" class="pilcrow">¶</a></p>
+<p id="section-6.7-4">Further recommendations can be found in the Open Worldwide Application
+Security Project (OWASP) SSRF Prevention Cheat Sheet <span>[<a href="#OWASP-SSRF" class="cite xref">OWASP-SSRF</a>]</span>.<a href="#section-6.7-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="test-and-demonstration-keys">
-<section id="section-6.9">
+<section id="section-6.8">
         <h3 id="name-test-and-demonstration-keys">
-<a href="#section-6.9" class="section-number selfRef">6.9. </a><a href="#name-test-and-demonstration-keys" class="section-name selfRef">Test and Demonstration Keys</a>
+<a href="#section-6.8" class="section-number selfRef">6.8. </a><a href="#name-test-and-demonstration-keys" class="section-name selfRef">Test and Demonstration Keys</a>
         </h3>
-<p id="section-6.9-1">Test keys, including the example keys in <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>, <span class="bcp14">MUST NOT</span>
+<p id="section-6.8-1">Test keys, including the example keys in <span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>, <span class="bcp14">MUST NOT</span>
 be used in production. Verifiers <span class="bcp14">SHOULD</span> reject known test keys when they are
-detected in key directories or out-of-band configuration.<a href="#section-6.9-1" class="pilcrow">¶</a></p>
+detected in key directories or out-of-band configuration.<a href="#section-6.8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="static-signatures">
-<section id="section-6.10">
+<section id="section-6.9">
         <h3 id="name-static-signatures">
-<a href="#section-6.10" class="section-number selfRef">6.10. </a><a href="#name-static-signatures" class="section-name selfRef">Static Signatures</a>
+<a href="#section-6.9" class="section-number selfRef">6.9. </a><a href="#name-static-signatures" class="section-name selfRef">Static Signatures</a>
         </h3>
-<p id="section-6.10-1">Deployments <span class="bcp14">MUST NOT</span> treat a precomputed Web Bot Auth signature as a long-lived
+<p id="section-6.9-1">Deployments <span class="bcp14">MUST NOT</span> treat a precomputed Web Bot Auth signature as a long-lived
 access credential. A reusable static signature has bearer-token semantics and can
 be replayed until the covered signature parameters, key, or verifier policy make
-it unusable.<a href="#section-6.10-1" class="pilcrow">¶</a></p>
-<p id="section-6.10-2">Agents <span class="bcp14">SHOULD</span> generate signatures for the request being sent, with bounded
-<code>created</code> and <code>expires</code> values. Long expiration windows increase replay risk.<a href="#section-6.10-2" class="pilcrow">¶</a></p>
+it unusable.<a href="#section-6.9-1" class="pilcrow">¶</a></p>
+<p id="section-6.9-2">Agents <span class="bcp14">SHOULD</span> generate signatures for the request being sent, with bounded
+<code>created</code> and <code>expires</code> values. Long expiration windows increase replay risk.<a href="#section-6.9-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="discovery-failure">
-<section id="section-6.11">
+<section id="section-6.10">
         <h3 id="name-discovery-failure">
-<a href="#section-6.11" class="section-number selfRef">6.11. </a><a href="#name-discovery-failure" class="section-name selfRef">Discovery Failure</a>
+<a href="#section-6.10" class="section-number selfRef">6.10. </a><a href="#name-discovery-failure" class="section-name selfRef">Discovery Failure</a>
         </h3>
-<p id="section-6.11-1">Resolving a <code>Signature-Agent</code> URL can fail in several ways: the name does not
+<p id="section-6.10-1">Resolving a <code>Signature-Agent</code> URL can fail in several ways: the name does not
 resolve, the connection or TLS handshake fails, the response is not a directory
 or contains no key matching <code>keyid</code>, or the fetch is refused by the verifier's
-own limits (<a href="#ssrf" class="auto internal xref">Section 6.8</a>). All have the same outcome for the request in hand. The
+own limits (<a href="#ssrf" class="auto internal xref">Section 6.7</a>). All have the same outcome for the request in hand. The
 verifier holds no association between that URL and the signing key, so under
 <a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a> it <span class="bcp14">MUST NOT</span> attribute the request to that URL. It may
 still verify the signature if it holds the key by other means, in which case the
-identifier is the thumbprint (<a href="#no-url" class="auto internal xref">Section 4.3</a>); otherwise the request is unverified.<a href="#section-6.11-1" class="pilcrow">¶</a></p>
-<p id="section-6.11-2">They differ in what they say about cached state, and verifiers <span class="bcp14">MUST</span> keep them
+identifier is the thumbprint (<a href="#no-url" class="auto internal xref">Section 4.3</a>); otherwise the request is unverified.<a href="#section-6.10-1" class="pilcrow">¶</a></p>
+<p id="section-6.10-2">They differ in what they say about cached state, and verifiers <span class="bcp14">MUST</span> keep them
 apart. A directory that resolves and does not contain the key is evidence: it is
 newer than whatever the verifier holds, and under <a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a>
 replaces it. That is how a removed key stops verifying. A directory that fails
 to resolve is not evidence and <span class="bcp14">MUST NOT</span> evict a cached entry, or an
-operator's outage revokes its keys at every verifier at once.<a href="#section-6.11-2" class="pilcrow">¶</a></p>
-<p id="section-6.11-3">A failed fetch says nothing about the signer. It does not prove the signer is
+operator's outage revokes its keys at every verifier at once.<a href="#section-6.10-2" class="pilcrow">¶</a></p>
+<p id="section-6.10-3">A failed fetch says nothing about the signer. It does not prove the signer is
 malicious, and it does not make the request trusted. What an origin does with
 an unverified request is local policy, and treating it as a distinct outcome
 rather than as success or failure is discussed in <a href="#verifier-outcomes" class="auto internal xref">Appendix C.1</a>.
 Verifiers should also expect failures to be correlated: a single operator's
 directory going down takes out every request naming it at once, across every
-verifier whose cache expires in the same window.<a href="#section-6.11-3" class="pilcrow">¶</a></p>
+verifier whose cache expires in the same window.<a href="#section-6.10-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="unsigned-requests">
-<section id="section-6.12">
+<section id="section-6.11">
         <h3 id="name-unsigned-requests">
-<a href="#section-6.12" class="section-number selfRef">6.12. </a><a href="#name-unsigned-requests" class="section-name selfRef">Unsigned requests</a>
+<a href="#section-6.11" class="section-number selfRef">6.11. </a><a href="#name-unsigned-requests" class="section-name selfRef">Unsigned Requests</a>
         </h3>
-<p id="section-6.12-1">Most HTTP requests carry no signature. A verifier that sees none has learned
+<p id="section-6.11-1">Most HTTP requests carry no signature. A verifier that sees none has learned
 nothing about the sender: not that it is automated, not that it is human, not
 that it is evading anything. Absence of a signal is not evidence about the
 party that did not send it, in the same way that a failed fetch
-(<a href="#discovery-failure" class="auto internal xref">Section 6.11</a>) is not evidence about the signer.<a href="#section-6.12-1" class="pilcrow">¶</a></p>
-<p id="section-6.12-2">What an origin does with a request it cannot attribute is its own decision, as
+(<a href="#discovery-failure" class="auto internal xref">Section 6.10</a>) is not evidence about the signer.<a href="#section-6.11-1" class="pilcrow">¶</a></p>
+<p id="section-6.11-2">What an origin does with a request it cannot attribute is its own decision, as
 it was before this protocol existed. This document neither requires an origin
-to treat unsigned requests differently nor gives it grounds to.<a href="#section-6.12-2" class="pilcrow">¶</a></p>
+to treat unsigned requests differently nor gives it grounds to.<a href="#section-6.11-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2509,11 +2534,10 @@ choice of protocol for it.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
         <h3 id="name-no-human-correlation">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-no-human-correlation" class="section-name selfRef">No Human Correlation</a>
         </h3>
-<p id="section-7.2-1">The key used for signing <span class="bcp14">MUST NOT</span> be tied to a specific human individual.
-Keys <span class="bcp14">SHOULD</span> represent a role, company, or automation identity (e.g., "news-aggregator-
-bot", "example-crawler-v1"). This avoids accidental exposure of personally
-identifiable information and prevents the misuse of keys for user tracking or
-profiling.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">A key tied to a specific human individual exposes personally identifiable
+information and makes the key usable for user tracking or profiling. A key that
+represents a role, company, or automation identity (e.g., "news-aggregator-bot",
+"example-crawler-v1") avoids this.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="minimizing-tracking-risks">
@@ -2531,7 +2555,7 @@ sensitive user data is involved.<a href="#section-7.3-1" class="pilcrow">¶</a><
 <div id="directory-content-and-access-patterns">
 <section id="section-7.4">
         <h3 id="name-directory-content-and-acces">
-<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-directory-content-and-acces" class="section-name selfRef">Directory content and access patterns</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-directory-content-and-acces" class="section-name selfRef">Directory Content and Access Patterns</a>
         </h3>
 <p id="section-7.4-1">A key directory should only contain keys actively used for signing. Additional
 keys or metadata expose more about the signing service than verification
@@ -2600,7 +2624,7 @@ reference should be this RFC.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
 <div id="applicationhttp-message-signatures-directoryjson-media-type">
 <section id="section-8.2.1">
           <h4 id="name-application-http-message-si">
-<a href="#section-8.2.1" class="section-number selfRef">8.2.1. </a><a href="#name-application-http-message-si" class="section-name selfRef">"application/http-message-signatures-directory+json" media type</a>
+<a href="#section-8.2.1" class="section-number selfRef">8.2.1. </a><a href="#name-application-http-message-si" class="section-name selfRef">"application/http-message-signatures-directory+json" Media Type</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-8.2.1-1">
             <dt id="section-8.2.1-1.1">Type name:</dt>
@@ -2821,10 +2845,6 @@ the purpose of validating signatures.<a href="#section-8.2.1-1.18.1" class="pilc
         <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="SIGNATURE-KEY">[SIGNATURE-KEY]</dt>
-        <dd>
-<span class="refAuthor">Hardt, D.</span> and <span class="refAuthor">T. Meunier</span>, <span class="refTitle">"HTTP Signature Keys"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-hardt-httpbis-signature-key-07</span>, <time datetime="2026-07-04" class="refDate">4 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-hardt-httpbis-signature-key-07">https://datatracker.ietf.org/doc/html/draft-hardt-httpbis-signature-key-07</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="USE-CASES">[USE-CASES]</dt>
         <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"Use Cases for Authentication of Web Bots"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-nottingham-webbotauth-use-cases-02</span>, <time datetime="2026-04-01" class="refDate">1 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-nottingham-webbotauth-use-cases-02">https://datatracker.ietf.org/doc/html/draft-nottingham-webbotauth-use-cases-02</a>&gt;</span>. </dd>
@@ -2841,7 +2861,7 @@ the purpose of validating signatures.<a href="#section-8.2.1-1.18.1" class="pilc
 <div id="use-cases">
 <section id="appendix-A">
       <h2 id="name-use-cases-and-what-they-nee">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-use-cases-and-what-they-nee" class="section-name selfRef">Use cases and what they need</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-use-cases-and-what-they-nee" class="section-name selfRef">Use Cases and What They Need</a>
       </h2>
 <p id="appendix-A-1"><span>[<a href="#USE-CASES" class="cite xref">USE-CASES</a>]</span> collects the use cases this group has discussed. Most are served
 by the URL alone. The table below records which ones need the domain binding in
@@ -2910,7 +2930,7 @@ them. End-user authentication and anonymous authentication are out of scope.<a h
 <div id="origin-binding-appendix">
 <section id="appendix-B">
       <h2 id="name-validating-the-domain-bindi">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-validating-the-domain-bindi" class="section-name selfRef">Validating the domain binding</a>
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-validating-the-domain-bindi" class="section-name selfRef">Validating the Domain Binding</a>
       </h2>
 <p id="appendix-B-1">This appendix describes what a verifier checks when it wants the domain a key
 is published under, rather than the URL on its own. It applies to the
@@ -2922,7 +2942,7 @@ Nothing below adds to that.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <div id="possession-proof-on-the-directory-response">
 <section id="appendix-B.1">
         <h3 id="name-possession-proof-on-the-dir">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-possession-proof-on-the-dir" class="section-name selfRef">Possession proof on the directory response</a>
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-possession-proof-on-the-dir" class="section-name selfRef">Possession Proof on the Directory Response</a>
         </h3>
 <p id="appendix-B.1-1">It is <span class="bcp14">RECOMMENDED</span> that a directory server construct and include one HTTP
 Message Signature per key with the response, as defined in
@@ -2974,11 +2994,14 @@ consuming it through <a href="#redistributed-key-material" class="auto internal 
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="appendix-B.1-8">A verifier relying on the domain <span class="bcp14">MUST</span> validate these signatures using the keys
-provided by the directory, <span class="bcp14">MUST</span> validate the <code>Content-Digest</code> field against the
-response body, and <span class="bcp14">MUST</span> ignore keys that do not have a corresponding valid
-signature. A verifier <span class="bcp14">MUST</span> reject a directory response signature whose
-<code>created</code> is in the future, as it would a certificate that is not yet valid.
+<p id="appendix-B.1-8">A verifier using a corresponding directory response signature as proof <span class="bcp14">MUST</span>
+validate it using the key provided by the directory and <span class="bcp14">MUST</span> validate the
+<code>Content-Digest</code> field against the response body. If either validation fails,
+the proof is invalid. A verifier <span class="bcp14">MAY</span> use a key obtained by resolving the
+directory itself whether or not it has valid proof. Attribution from
+redistributed key material is governed by <a href="#redistributed-key-material" class="auto internal xref">Section 5.5.3</a>. A
+verifier <span class="bcp14">MUST</span> reject a directory response signature whose <code>created</code> is in the
+future, as it would a certificate that is not yet valid.
 <a href="#discovery-is-not-trust" class="auto internal xref">Section 4.4</a> orders competing evidence by <code>created</code>, so a
 future-dated signature would outrank every later fetch.<a href="#appendix-B.1-8" class="pilcrow">¶</a></p>
 </section>
@@ -2986,7 +3009,7 @@ future-dated signature would outrank every later fetch.<a href="#appendix-B.1-8"
 <div id="what-the-binding-attaches-to">
 <section id="appendix-B.2">
         <h3 id="name-what-the-binding-attaches-t">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-what-the-binding-attaches-t" class="section-name selfRef">What the binding attaches to</a>
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-what-the-binding-attaches-t" class="section-name selfRef">What the Binding Attaches To</a>
         </h3>
 <p id="appendix-B.2-1">The binding is not exclusive. Several domains may publish the same key, and the
 binding attaches to the pair the verifier validated, not to the key on its own.
@@ -3052,7 +3075,7 @@ load. Cache is specifically discussed in <a href="#cache-behaviour" class="auto 
 <a href="#appendix-C.3" class="section-number selfRef">C.3. </a><a href="#name-bounded-directory-fetches" class="section-name selfRef">Bounded Directory Fetches</a>
         </h3>
 <p id="appendix-C.3-1">Verifiers fetch directories named by untrusted requests, and should bound those
-fetches as described in <a href="#ssrf" class="auto internal xref">Section 6.8</a>.<a href="#appendix-C.3-1" class="pilcrow">¶</a></p>
+fetches as described in <a href="#ssrf" class="auto internal xref">Section 6.7</a>.<a href="#appendix-C.3-1" class="pilcrow">¶</a></p>
 <p id="appendix-C.3-2">Verifiers should also coalesce concurrent fetches for the same directory and
 apply per-directory or per-origin concurrency limits. This avoids a fetch storm
 when many requests reference the same uncached directory.<a href="#appendix-C.3-2" class="pilcrow">¶</a></p>
@@ -3093,17 +3116,21 @@ exponential backoff and jitter. When a directory response includes
 <a href="#appendix-C.6" class="section-number selfRef">C.6. </a><a href="#name-freshness-and-replay" class="section-name selfRef">Freshness and Replay</a>
         </h3>
 <p id="appendix-C.6-1">Shorter signature lifetimes reduce replay risk but increase sensitivity to clock
-skew and signing failures. Nonces provide stronger replay defense, but require
-state at the verifier. Some deployments can tolerate bounded replay for short
-windows; others need strict <a href="#nonce-validation" class="auto internal xref">Section 6.3</a>.<a href="#appendix-C.6-1" class="pilcrow">¶</a></p>
-<p id="appendix-C.6-2">These choices are deployment policy. Verifiers should avoid accepting signatures
-with freshness windows longer than their risk model permits.<a href="#appendix-C.6-2" class="pilcrow">¶</a></p>
+skew and signing failures. Whether a verifier requires and enforces nonces is
+deployment policy. Rejecting duplicate nonces requires an atomic check-and-record
+across the enforcement scope. Verifiers need to bound retention and admission of
+nonce state. If that state is unavailable, the verifier should not treat
+signature validation as evidence that replay was detected or prevented. Replay
+protection is described in
+<span><a href="https://rfc-editor.org/rfc/rfc9421#section-7.2.2" class="relref">Section 7.2.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#appendix-C.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-C.6-2">Verifiers should avoid accepting signatures with freshness windows longer than
+their risk model permits.<a href="#appendix-C.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="field-compression">
 <section id="appendix-C.7">
         <h3 id="name-field-compression">
-<a href="#appendix-C.7" class="section-number selfRef">C.7. </a><a href="#name-field-compression" class="section-name selfRef">Field compression</a>
+<a href="#appendix-C.7" class="section-number selfRef">C.7. </a><a href="#name-field-compression" class="section-name selfRef">Field Compression</a>
         </h3>
 <p id="appendix-C.7-1">Covering per-request components costs bytes when a connection is reused. HPACK
 <span>[<a href="#HPACK" class="cite xref">HPACK</a>]</span> and QPACK <span>[<a href="#QPACK" class="cite xref">QPACK</a>]</span> can index a repeated <code>Signature</code>,
@@ -3207,7 +3234,7 @@ authentication and does not replace signature validation.<a href="#appendix-C.11
 <div id="delegation-and-chaining">
 <section id="appendix-D.1">
         <h3 id="name-delegation-and-chaining">
-<a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-delegation-and-chaining" class="section-name selfRef">Delegation and chaining</a>
+<a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-delegation-and-chaining" class="section-name selfRef">Delegation and Chaining</a>
         </h3>
 <p id="appendix-D.1-1">Delegation and chaining are out of scope for this document and are expected
 to be specified separately. Input is welcome on the associated
@@ -3217,7 +3244,7 @@ to be specified separately. Input is welcome on the associated
 <div id="example-multiple-signatures">
 <section id="appendix-D.2">
         <h3 id="name-multiple-signatures-with-a-">
-<a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-multiple-signatures-with-a-" class="section-name selfRef">Multiple signatures with a remote browser</a>
+<a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-multiple-signatures-with-a-" class="section-name selfRef">Multiple Signatures with a Remote Browser</a>
         </h3>
 <p id="appendix-D.2-1">This example shows Alice's agent using a remote browser to fetch a resource. The
 agent signs selected request fields. The remote browser signs the request it
@@ -3261,9 +3288,10 @@ does not say that Alice's agent authorized the remote browser to act for it.<a h
       <h2 id="name-test-vectors">
 <a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<p id="appendix-E-1">These vectors exercise the minimum this document requires, so most of them
-cover <code>@authority</code> and nothing else, with an <code>expires</code> far enough out that they
-do not age. That combination is a parsing and verification exercise, not a
+<p id="appendix-E-1">Except where noted, these vectors exercise the minimum this document requires:
+<code>@authority</code> and a <code>Signature-Agent</code> member and nothing else, with an <code>expires</code>
+far enough out that they do not age. That combination is a parsing and
+verification exercise, not a
 configuration to copy: as <a href="#generating-http-message-signature" class="auto internal xref">Section 5.2</a> explains, a
 signature covering <code>@authority</code> alone is reusable against that authority for
 any method, path, and body until it expires. Deployments should cover more and
@@ -3275,54 +3303,15 @@ expire sooner.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="appendix-E.1-1">The test vectors in this section use the RSA-PSS key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.2" class="relref">Appendix B.1.2</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 This section includes non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-E.1-1" class="pilcrow">¶</a></p>
-<div id="signature-agent-absent-from-the-request">
+<div id="example-signature-agent-included">
 <section id="appendix-E.1.1">
-          <h4 id="name-signature-agent-absent-from">
-<a href="#appendix-E.1.1" class="section-number selfRef">E.1.1. </a><a href="#name-signature-agent-absent-from" class="section-name selfRef">Signature-Agent absent from the request</a>
+          <h4 id="name-signature-agent-included-pr">
+<a href="#appendix-E.1.1" class="section-number selfRef">E.1.1. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent Included Present on the Request</a>
           </h4>
-<p id="appendix-E.1.1-1">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request does not contain
+<p id="appendix-E.1.1-1">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
 a <code>Signature-Agent</code> header.<a href="#appendix-E.1.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-E.1.1-2">The corresponding signature base is:<a href="#appendix-E.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1.1-3">
-<pre>
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-</pre><a href="#appendix-E.1.1-3" class="pilcrow">¶</a>
-</div>
-<p id="appendix-E.1.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-E.1.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.1.1-5">
-<pre>
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="oD0HwocPBSfpNy5W3bpJeyFGY_IQ_YpqxSjQ3Yd-CLA"\
- ;alg="rsa-pss-sha512"\
- ;expires=4889289600\
- ;nonce="JojDFWJ90jf+gZhdKeTyJYsu1XvNPZSFAGhvYq5SuV3gneOEUAhq+xl792WGuD1W+Dr6NRmx+m+t06NsYnL4iA=="\
- ;tag="web-bot-auth"
-Signature: sig1=:hWPaj85MWQiRkzU4jnIKvdPQiDfMCPIoxOP8nZveNc3aFQ7r/UmXWCwGNImw588iRvTFey5TR3fVEgnXpcttlyK+u5pN831z9Wlr+IMNfub4uEM3SuO+SKFygJZyLG0pf7OAiRcU4C0gyx1BS/+z9ydQTRzDLr88wCkBBRqwGRrSi8HTwxkqg1jugobh93hcnU6gV8MK1n+VnhRprIgl2RQSO6q5cfbB4OS8C4t/8ndW0lYmP2SWzKZJXnpX5Wrj17PuLqnVW6MO8pJnLAMXNvxUdx32KHeq/cHFrzZazZsua3UOoP+k+niHwoQ8bBWj1Vi4mM1mYJK+fk366cCLsQ==:
-</pre><a href="#appendix-E.1.1-5" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="example-signature-agent-included">
-<section id="appendix-E.1.2">
-          <h4 id="name-signature-agent-included-pr">
-<a href="#appendix-E.1.2" class="section-number selfRef">E.1.2. </a><a href="#name-signature-agent-included-pr" class="section-name selfRef">Signature-Agent included present on the request</a>
-          </h4>
-<p id="appendix-E.1.2-1">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
-a <code>Signature-Agent</code> header.<a href="#appendix-E.1.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-E.1.2-2">The corresponding signature base is:<a href="#appendix-E.1.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.1.2-3">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3335,10 +3324,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=4889289600\
  ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-E.1.2-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.1.1-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E.1.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.1.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.1.2-5">
+<p id="appendix-E.1.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.1.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.1.1-5">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3351,20 +3340,20 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;nonce="wcfPQPh7SzkvrIVvhD00vNk9PkxJNY2NVbYl2PVBB4zmUoluSwE7W6bPtF60QA3k8g06FU7PPCD+J58YofY1zg=="\
  ;tag="web-bot-auth"
 Signature: sig2=:gHzpLNeHaHIO19NaJH9YMW5dcVSi2s0wOMBr6p18vcofS106sfC4KBIS0/szPlBBd1vIcyQ88B6CTEWIhRAiVrb9zfX0mx1aG12CSGWcYkSirHeyTxhbuJvXd27ed6skWoy4PjXItq38936ivUQjfdIwXh1aX6HxkAC3vRnEdSNfntkLWeEuIQ5BLIOBGE39fSwg27Qjq6OVWYas/9/aFUr3HA34MXWYdp+//cvlEKDp3kRoLOw9ro0AOr6srHrTeEtxon2afcws1aZVSlPdd2fZSEIGmw9HAHLDCEkFTERu1gH2k/zIEqgy7CAYXI9E5slog0cLg/Vc6+f8gih33g==:
-</pre><a href="#appendix-E.1.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.1.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="example-legacy">
-<section id="appendix-E.1.3">
+<section id="appendix-E.1.2">
           <h4 id="name-legacy-signature-agent-sf-s">
-<a href="#appendix-E.1.3" class="section-number selfRef">E.1.3. </a><a href="#name-legacy-signature-agent-sf-s" class="section-name selfRef">Legacy Signature-Agent, sf-string</a>
+<a href="#appendix-E.1.2" class="section-number selfRef">E.1.2. </a><a href="#name-legacy-signature-agent-sf-s" class="section-name selfRef">Legacy Signature-Agent, sf-string</a>
           </h4>
-<p id="appendix-E.1.3-1">Retained for implementers migrating to the dictionary form (<a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>). Do not copy it into new deployments.<a href="#appendix-E.1.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-E.1.3-2">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
-a <code>Signature-Agent</code> header.<a href="#appendix-E.1.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-E.1.3-3">The corresponding signature base is:<a href="#appendix-E.1.3-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.1.3-4">
+<p id="appendix-E.1.2-1">Retained for implementers migrating to the dictionary form (<a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>). Do not copy it into new deployments.<a href="#appendix-E.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-E.1.2-2">This example presents a minimal signature using the rsa-pss-sha512 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-E.1.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-E.1.2-3">The corresponding signature base is:<a href="#appendix-E.1.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.1.2-4">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3377,10 +3366,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=1735693200\
  ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-E.1.3-4" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.1.2-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E.1.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.1.3-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.1.3-6">
+<p id="appendix-E.1.2-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.1.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.1.2-6">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3393,7 +3382,7 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;nonce="XSHtZVCThSIAksXsH9WBs6AtxtXC0eQGiIcUGSoJstFs8lAWakjhrfwzLhyjtme5iXMZvmFWqDEs6cT3Jf+BbQ=="\
  ;tag="web-bot-auth"
 Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g4GWP7lmpM/jFAf9q8EFRDTPLjUXySwMv4YPgabv2LQihTJG2y8a2m6IGltyruwQNiqSJVUuRaG9+b17CGmAMFZh30X6GXLdQJrCARpeTqPwp2DC+a8haDE/VE5EruqzjA5/2mKwvrkzkSqeW5tOVtFwWRRHIOidquf/8Je6kM9mhgkg4arudLA5SL4wyyYE1jURIgcOl8agrfdJ5Def23DIRtiOLRa8jT9cpTLFAuFHN+mrZA/LH9h0gSIg1cPb+0cMASee5uku1KjWcFer7jWA==:
-</pre><a href="#appendix-E.1.3-6" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.1.2-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -3406,54 +3395,15 @@ Signature: sig2=:I1QWNzGXdP1a4dSvOHLCVOOanEYHDk+ZsVxM9MLX/p4ko69ghKwR5EOtAD96g7g
         </h3>
 <p id="appendix-E.2-1">The test vectors in this section use the Ed25519 key defined in <span><a href="https://rfc-editor.org/rfc/rfc9421#appendix-B.1.4" class="relref">Appendix B.1.4</a> of [<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.
 This section include non-normative test vectors that may be used as test cases to validate implementation correctness.<a href="#appendix-E.2-1" class="pilcrow">¶</a></p>
-<div id="signature-agent-absent-from-the-request-1">
+<div id="signature-agent-included-present-on-the-request">
 <section id="appendix-E.2.1">
-          <h4 id="name-signature-agent-absent-from-">
-<a href="#appendix-E.2.1" class="section-number selfRef">E.2.1. </a><a href="#name-signature-agent-absent-from-" class="section-name selfRef">Signature-Agent absent from the request</a>
+          <h4 id="name-signature-agent-included-pre">
+<a href="#appendix-E.2.1" class="section-number selfRef">E.2.1. </a><a href="#name-signature-agent-included-pre" class="section-name selfRef">Signature-Agent Included Present on the Request</a>
           </h4>
-<p id="appendix-E.2.1-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request does not contain
+<p id="appendix-E.2.1-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
 a <code>Signature-Agent</code> header.<a href="#appendix-E.2.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-E.2.1-2">The corresponding signature base is:<a href="#appendix-E.2.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.2.1-3">
-<pre>
-NOTE: '\' line wrapping per RFC 8792
-
-"@authority": example.com
-"@signature-params": ("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-</pre><a href="#appendix-E.2.1-3" class="pilcrow">¶</a>
-</div>
-<p id="appendix-E.2.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig1</code>:<a href="#appendix-E.2.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.2.1-5">
-<pre>
-NOTE: '\' line wrapping per RFC 8792
-
-Signature-Input: sig1=("@authority")\
- ;created=1735689600\
- ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
- ;alg="ed25519"\
- ;expires=4889289600\
- ;nonce="zIW8+cdmA3vdYagbxojpONwa/l0EKJ/O3/wD486VvsQjO/RxPaSt6ZxvQaMcQzNnqKN/mQ6hpGiFro2L2qkz5A=="\
- ;tag="web-bot-auth"
-Signature: sig1=:QKN4fTdIYfh82fvoZCQiQA1weuozfCS/Led2zTMbewMMqH8PI2Wsy/5c4ao6B6D09nraNQdBNOADg8aM1MqfCg==:
-</pre><a href="#appendix-E.2.1-5" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="signature-agent-included-present-on-the-request">
-<section id="appendix-E.2.2">
-          <h4 id="name-signature-agent-included-pre">
-<a href="#appendix-E.2.2" class="section-number selfRef">E.2.2. </a><a href="#name-signature-agent-included-pre" class="section-name selfRef">Signature-Agent included present on the request</a>
-          </h4>
-<p id="appendix-E.2.2-1">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
-a <code>Signature-Agent</code> header.<a href="#appendix-E.2.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-E.2.2-2">The corresponding signature base is:<a href="#appendix-E.2.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.2.2-3">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3466,10 +3416,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=4889289600\
  ;nonce="n9p433xm+NJ3ph3upfBIGmsuwHw387YV7Q/F+6BSpGCVjYCqQw6rznNA8PVVLySrAWsv0hQtFioQb6E1YsauiA=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-E.2.2-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.2.1-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E.2.2-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.2.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.2.2-5">
+<p id="appendix-E.2.1-4">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.2.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.1-5">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3482,20 +3432,20 @@ Signature-Input: sig2=("@authority" "signature-agent";key="agent2")\
  ;nonce="n9p433xm+NJ3ph3upfBIGmsuwHw387YV7Q/F+6BSpGCVjYCqQw6rznNA8PVVLySrAWsv0hQtFioQb6E1YsauiA=="\
  ;tag="web-bot-auth"
 Signature: sig2=:RdNFx5Bj6au3YgAMQL/RzmUlZE8QZLIaXGRpw985hWnwPfMxT228NMk6ehRS1PSl4e8PhbNZACSanGdhEwYCCg==:
-</pre><a href="#appendix-E.2.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.2.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="legacy-signature-agent-sf-string">
-<section id="appendix-E.2.3">
+<section id="appendix-E.2.2">
           <h4 id="name-legacy-signature-agent-sf-st">
-<a href="#appendix-E.2.3" class="section-number selfRef">E.2.3. </a><a href="#name-legacy-signature-agent-sf-st" class="section-name selfRef">Legacy Signature-Agent, sf-string</a>
+<a href="#appendix-E.2.2" class="section-number selfRef">E.2.2. </a><a href="#name-legacy-signature-agent-sf-st" class="section-name selfRef">Legacy Signature-Agent, sf-string</a>
           </h4>
-<p id="appendix-E.2.3-1">Retained for implementers migrating to the dictionary form (<a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>). Do not copy it into new deployments.<a href="#appendix-E.2.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-E.2.3-2">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
-a <code>Signature-Agent</code> header.<a href="#appendix-E.2.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-E.2.3-3">The corresponding signature base is:<a href="#appendix-E.2.3-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.2.3-4">
+<p id="appendix-E.2.2-1">Retained for implementers migrating to the dictionary form (<a href="#signature-agent" class="auto internal xref">Section 5.2.1</a>). Do not copy it into new deployments.<a href="#appendix-E.2.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-E.2.2-2">This example presents a minimal signature using the ed25519 algorithm over test-request. The request contains
+a <code>Signature-Agent</code> header.<a href="#appendix-E.2.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-E.2.2-3">The corresponding signature base is:<a href="#appendix-E.2.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.2-4">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3508,10 +3458,10 @@ NOTE: '\' line wrapping per RFC 8792
  ;expires=1735693200\
  ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
  ;tag="web-bot-auth"
-</pre><a href="#appendix-E.2.3-4" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.2.2-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E.2.3-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.2.3-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E.2.3-6">
+<p id="appendix-E.2.2-5">This results in the following Signature-Input and Signature header fields being added to the message under the label <code>sig2</code>:<a href="#appendix-E.2.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.2-6">
 <pre>
 NOTE: '\' line wrapping per RFC 8792
 
@@ -3524,7 +3474,74 @@ Signature-Input: sig2=("@authority" "signature-agent")\
  ;nonce="e8N7S2MFd/qrd6T2R3tdfAuuANngKI7LFtKYI/vowzk4lAZYadIX6wW25MwG7DCT9RUKAJ0qVkU0mEeLElW1qg=="\
  ;tag="web-bot-auth"
 Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZDsi6nJKuHxUi/5Syp3rLWBA==:
-</pre><a href="#appendix-E.2.3-6" class="pilcrow">¶</a>
+</pre><a href="#appendix-E.2.2-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="signed-directory-response">
+<section id="appendix-E.2.3">
+          <h4 id="name-signed-directory-response">
+<a href="#appendix-E.2.3" class="section-number selfRef">E.2.3. </a><a href="#name-signed-directory-response" class="section-name selfRef">Signed Directory Response</a>
+          </h4>
+<p id="appendix-E.2.3-1">This example presents the possession proof described in
+<a href="#origin-binding-appendix" class="auto internal xref">Appendix B</a>, using the ed25519 algorithm. The directory server
+signs its own response with the key it publishes. The signature covers
+<code>@authority</code> from the request that fetched the directory, so the key set cannot
+be re-served under another authority, and <code>content-digest</code> over the response
+body, so the key set cannot be swapped under a captured signature.<a href="#appendix-E.2.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-E.2.3-2">The proof is bound to the request that fetched the directory:<a href="#appendix-E.2.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-3">
+<pre>
+GET /.well-known/http-message-signatures-directory HTTP/1.1
+Host: signature-agent.test
+Accept: application/http-message-signatures-directory+json
+</pre><a href="#appendix-E.2.3-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-4">The response body is the following JSON Web Key Set, signed exactly as shown,
+with no trailing newline:<a href="#appendix-E.2.3-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-5">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+{"keys":[{"kty":"OKP","crv":"Ed25519","kid":"poqkLGiymh_W0uP6PZFw-\
+ dvez3QJT5SolqXBCW38r0U","x":"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw\
+ 3c5D0bs","use":"sig"}]}
+</pre><a href="#appendix-E.2.3-5" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-6">Those bytes give the following <code>Content-Digest</code> field value:<a href="#appendix-E.2.3-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-7">
+<pre>
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+</pre><a href="#appendix-E.2.3-7" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-8">The corresponding signature base is:<a href="#appendix-E.2.3-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-9">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+"@authority";req: signature-agent.test
+"content-digest": sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+"@signature-params": ("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+</pre><a href="#appendix-E.2.3-9" class="pilcrow">¶</a>
+</div>
+<p id="appendix-E.2.3-10">This results in the following Content-Digest, Signature-Input and Signature
+header fields being added to the response under the label <code>binding</code>:<a href="#appendix-E.2.3-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E.2.3-11">
+<pre>
+NOTE: '\' line wrapping per RFC 8792
+
+Content-Digest: sha-256=:CADMT2aBdV/rqQr/NIru64ERQkCobVvllA4V0fLFDu0=:
+Signature-Input: binding=("@authority";req "content-digest")\
+ ;created=1735689600\
+ ;expires=4889289600\
+ ;keyid="poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"\
+ ;tag="http-message-signatures-directory"
+Signature: binding=:l6P8R67tm3kujAxbHWio7ll01qrEZ0dKD/WWlGhNYEmTnFZM8Wt0VQ9zqGfvo7T/UMkBxsigzChM1Gpz7gOVBg==:
+</pre><a href="#appendix-E.2.3-11" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -3610,7 +3627,7 @@ Signature: sig2=:jdq0SqOwHdyHr9+r5jw3iYZH6aNGKijYp/EstF4RQTQdi5N5YYKrD+mCT1HA1nZ
 <div id="test-vectors-1">
 <section id="appendix-F.3">
         <h3 id="name-test-vectors-2">
-<a href="#appendix-F.3" class="section-number selfRef">F.3. </a><a href="#name-test-vectors-2" class="section-name selfRef">Test vectors</a>
+<a href="#appendix-F.3" class="section-number selfRef">F.3. </a><a href="#name-test-vectors-2" class="section-name selfRef">Test Vectors</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-F.3-1.1">
@@ -3646,215 +3663,254 @@ Tanya Verma.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
       <h2 id="name-changelog">
 <a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="appendix-H-1">draft-meunier-webbotauth-httpsig-protocol-01<a href="#appendix-H-1" class="pilcrow">¶</a></p>
+<p id="appendix-H-1">draft-meunier-webbotauth-httpsig-protocol-02<a href="#appendix-H-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-2.1">
-          <p id="appendix-H-2.1.1">Add an Identifiers and Trust Model section: opaque and domain binding modes.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.1.1">Require <code>Signature-Agent</code> on every signed request, and require each signature
+to cover the member keyed to its own label. Drop the test vectors that omitted
+the header. Recast the no-URL identifier as a verifier state, not an Agent
+mode.<a href="#appendix-H-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.2">
-          <p id="appendix-H-2.2.1">Describe the document as a protocol throughout (was: architecture).<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.2.1">Defer <code>Signature-Key</code> to draft-hardt-httpbis-signature-key.<a href="#appendix-H-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.3">
-          <p id="appendix-H-2.3.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document with its
-IANA registrations, and move to Standards Track.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.3.1">List the components an Agent may cover beyond the required set.<a href="#appendix-H-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.4">
-          <p id="appendix-H-2.4.1">Anchor identity on the resolved <code>Signature-Agent</code> URL rather than the key.
-Rotation is the same URL serving a new key; the thumbprint identifies only
-when no URL is sent. A <code>directory</code> value is an origin, identifiers are
-normalized before comparison, and <code>kid</code> equals the key thumbprint.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.4.1">Drop the 2119 keywords from the human binding guidance in Privacy
+Considerations.<a href="#appendix-H-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.5">
-          <p id="appendix-H-2.5.1">Define attribution: lookup on the (URL, key) pair, what redistributed key
-material must carry, which source wins when two disagree, what a failed
-resolution means, a bound on the resolution behind it, and rejection
-of directory response signatures dated in the future.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.5.1">Require discovery to return <code>200 (OK)</code> and prohibit redirects.<a href="#appendix-H-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.6">
-          <p id="appendix-H-2.6.1">When chaining, an outer signature covering an inner <code>signature</code> <span class="bcp14">MUST</span> also
-cover its <code>signature-input</code>, <code>signature-agent</code>, and every component the inner
-signature covered. Verifiers validate each signature independently.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.6.1">Make directory response signatures optional for directly resolved keys.<a href="#appendix-H-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.7">
-          <p id="appendix-H-2.7.1">Say what a signature does not reach: not the body without <code>Content-Digest</code>,
-and not the method or path when only <code>@authority</code> is covered. Correct the
-relabeling guidance, and note how to migrate from the sf-string form.<a href="#appendix-H-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.7.1">Defer replay protection, including nonce handling, to
+<span>[<a href="#HTTP-MESSAGE-SIGNATURES" class="cite xref">HTTP-MESSAGE-SIGNATURES</a>]</span>.<a href="#appendix-H-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.8">
-          <p id="appendix-H-2.8.1">Move the domain binding to an appendix. Add objectives, the relationship with
-anonymous bot authentication, a use case to identifier mapping, what an
-unsigned request tells a verifier, and the worst case for a compromised key.<a href="#appendix-H-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.8.1">Add a signed directory response test vector.<a href="#appendix-H-2.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-2.9">
-          <p id="appendix-H-2.9.1">Note how field compression treats reused and per-request signatures, and why
-that is not a reason to widen coverage.<a href="#appendix-H-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-2.9.1">Redraw the figures. The overview figure now shows the architecture, naming
+who publishes and who resolves, rather than a message order, and places the
+Agent inside the User. The sending figure shows key resolution following the
+first request, conditional on the keys not already being resolved, and the
+request example moves out of it.<a href="#appendix-H-2.9.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-3">draft-meunier-webbotauth-httpsig-protocol-00<a href="#appendix-H-3" class="pilcrow">¶</a></p>
+<p id="appendix-H-3">draft-meunier-webbotauth-httpsig-protocol-01<a href="#appendix-H-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-4.1">
-          <p id="appendix-H-4.1.1">Rename draft from <code>draft-meunier-web-bot-auth-architecture</code>.<a href="#appendix-H-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.1.1">Add an Identifiers and Trust Model section: opaque and domain binding modes.<a href="#appendix-H-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.2">
-          <p id="appendix-H-4.2.1">Add SSRF guidance for <code>Signature-Agent</code> directory fetches.<a href="#appendix-H-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.2.1">Describe the document as a protocol throughout (was: architecture).<a href="#appendix-H-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.3">
-          <p id="appendix-H-4.3.1">Add deployment guidance for verifier outcomes, directory fetches, caching,
-retry, rollout, proxies, CORS, and observability.<a href="#appendix-H-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.3.1">Fold <code>draft-meunier-webbotauth-httpsig-directory</code> into this document with its
+IANA registrations, and move to Standards Track.<a href="#appendix-H-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.4">
-          <p id="appendix-H-4.4.1">Add guidance for test keys, static signatures, and discovery failures.<a href="#appendix-H-4.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.4.1">Anchor identity on the resolved <code>Signature-Agent</code> URL rather than the key.
+Rotation is the same URL serving a new key; the thumbprint identifies only
+when no URL is sent. A <code>directory</code> value is an origin, identifiers are
+normalized before comparison, and <code>kid</code> equals the key thumbprint.<a href="#appendix-H-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.5">
-          <p id="appendix-H-4.5.1">Add multiple Web Bot Auth signatures and an example.<a href="#appendix-H-4.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.5.1">Define attribution: lookup on the (URL, key) pair, what redistributed key
+material must carry, which source wins when two disagree, what a failed
+resolution means, a bound on the resolution behind it, and rejection
+of directory response signatures dated in the future.<a href="#appendix-H-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.6">
-          <p id="appendix-H-4.6.1">Add typed <code>Signature-Agent</code> discovery examples for <code>directory</code>, <code>jwks_uri</code>,
-and <code>cimd</code>.<a href="#appendix-H-4.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.6.1">When chaining, an outer signature covering an inner <code>signature</code> <span class="bcp14">MUST</span> also
+cover its <code>signature-input</code>, <code>signature-agent</code>, and every component the inner
+signature covered. Verifiers validate each signature independently.<a href="#appendix-H-4.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.7">
-          <p id="appendix-H-4.7.1">Group implementations by the draft version that added them.<a href="#appendix-H-4.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.7.1">Say what a signature does not reach: not the body without <code>Content-Digest</code>,
+and not the method or path when only <code>@authority</code> is covered. Correct the
+relabeling guidance, and note how to migrate from the sf-string form.<a href="#appendix-H-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.8">
-          <p id="appendix-H-4.8.1">Clarify that <code>Signature-Input</code> <code>keyid</code> selects the key and <code>Signature-Agent</code>
-points to candidate key material.<a href="#appendix-H-4.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.8.1">Move the domain binding to an appendix. Add objectives, the relationship with
+anonymous bot authentication, a use case to identifier mapping, what an
+unsigned request tells a verifier, and the worst case for a compromised key.<a href="#appendix-H-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-4.9">
-          <p id="appendix-H-4.9.1">Note <code>Signature-Key</code> as an optional discovery header.<a href="#appendix-H-4.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-4.10">
-          <p id="appendix-H-4.10.1">Align examples with published test-vector fixtures.<a href="#appendix-H-4.10.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-4.11">
-          <p id="appendix-H-4.11.1">Fix typos.<a href="#appendix-H-4.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-4.9.1">Note how field compression treats reused and per-request signatures, and why
+that is not a reason to widen coverage.<a href="#appendix-H-4.9.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-5">draft-meunier-web-bot-auth-architecture-05<a href="#appendix-H-5" class="pilcrow">¶</a></p>
+<p id="appendix-H-5">draft-meunier-webbotauth-httpsig-protocol-00<a href="#appendix-H-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-6.1">
-          <p id="appendix-H-6.1.1">Add Sandor Major as an author.<a href="#appendix-H-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-6.1.1">Rename draft from <code>draft-meunier-web-bot-auth-architecture</code>.<a href="#appendix-H-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-6.2">
-          <p id="appendix-H-6.2.1">Add session protocol considerations.<a href="#appendix-H-6.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-6.2.1">Add SSRF guidance for <code>Signature-Agent</code> directory fetches.<a href="#appendix-H-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-6.3">
-          <p id="appendix-H-6.3.1">Update HTTP Message Signatures test vectors.<a href="#appendix-H-6.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-6.3.1">Add deployment guidance for verifier outcomes, directory fetches, caching,
+retry, rollout, proxies, CORS, and observability.<a href="#appendix-H-6.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-6.4">
-          <p id="appendix-H-6.4.1">Keep legacy <code>Signature-Agent</code> string examples for implementers migrating to
-dictionary members.<a href="#appendix-H-6.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-6.4.1">Add guidance for test keys, static signatures, and discovery failures.<a href="#appendix-H-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.5">
+          <p id="appendix-H-6.5.1">Add multiple Web Bot Auth signatures and an example.<a href="#appendix-H-6.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.6">
+          <p id="appendix-H-6.6.1">Add typed <code>Signature-Agent</code> discovery examples for <code>directory</code>, <code>jwks_uri</code>,
+and <code>cimd</code>.<a href="#appendix-H-6.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.7">
+          <p id="appendix-H-6.7.1">Group implementations by the draft version that added them.<a href="#appendix-H-6.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.8">
+          <p id="appendix-H-6.8.1">Clarify that <code>Signature-Input</code> <code>keyid</code> selects the key and <code>Signature-Agent</code>
+points to candidate key material.<a href="#appendix-H-6.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.9">
+          <p id="appendix-H-6.9.1">Note <code>Signature-Key</code> as an optional discovery header.<a href="#appendix-H-6.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.10">
+          <p id="appendix-H-6.10.1">Align examples with published test-vector fixtures.<a href="#appendix-H-6.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-6.11">
+          <p id="appendix-H-6.11.1">Fix typos.<a href="#appendix-H-6.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-7">draft-meunier-web-bot-auth-architecture-04<a href="#appendix-H-7" class="pilcrow">¶</a></p>
+<p id="appendix-H-7">draft-meunier-web-bot-auth-architecture-05<a href="#appendix-H-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-8.1">
-          <p id="appendix-H-8.1.1">Change <code>Signature-Agent</code> to a Structured Fields dictionary.<a href="#appendix-H-8.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-8.1.1">Add Sandor Major as an author.<a href="#appendix-H-8.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-8.2">
-          <p id="appendix-H-8.2.1">Add a security consideration for intermediaries that relabel
-<code>Signature-Agent</code> members.<a href="#appendix-H-8.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-8.2.1">Add session protocol considerations.<a href="#appendix-H-8.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-8.3">
-          <p id="appendix-H-8.3.1">Allow <code>@target-uri</code> as a replacement for <code>@authority</code>.<a href="#appendix-H-8.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-8.3.1">Update HTTP Message Signatures test vectors.<a href="#appendix-H-8.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-8.4">
-          <p id="appendix-H-8.4.1">Add contributors.<a href="#appendix-H-8.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-8.5">
-          <p id="appendix-H-8.5.1">Add implementations.<a href="#appendix-H-8.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-8.6">
-          <p id="appendix-H-8.6.1">Remove the <code>purpose</code> field from the Web Bot Auth example.<a href="#appendix-H-8.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-8.4.1">Keep legacy <code>Signature-Agent</code> string examples for implementers migrating to
+dictionary members.<a href="#appendix-H-8.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-9">draft-meunier-web-bot-auth-architecture-03<a href="#appendix-H-9" class="pilcrow">¶</a></p>
+<p id="appendix-H-9">draft-meunier-web-bot-auth-architecture-04<a href="#appendix-H-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-10.1">
-          <p id="appendix-H-10.1.1">Update the Linzer example URL.<a href="#appendix-H-10.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-10.1.1">Change <code>Signature-Agent</code> to a Structured Fields dictionary.<a href="#appendix-H-10.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-10.2">
-          <p id="appendix-H-10.2.1">Fix the section reference and name for status code 429.<a href="#appendix-H-10.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-10.2.1">Add a security consideration for intermediaries that relabel
+<code>Signature-Agent</code> members.<a href="#appendix-H-10.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-10.3">
-          <p id="appendix-H-10.3.1">Fix typos.<a href="#appendix-H-10.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-10.3.1">Allow <code>@target-uri</code> as a replacement for <code>@authority</code>.<a href="#appendix-H-10.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-10.4">
+          <p id="appendix-H-10.4.1">Add contributors.<a href="#appendix-H-10.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-10.5">
+          <p id="appendix-H-10.5.1">Add implementations.<a href="#appendix-H-10.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-10.6">
+          <p id="appendix-H-10.6.1">Remove the <code>purpose</code> field from the Web Bot Auth example.<a href="#appendix-H-10.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-11">draft-meunier-web-bot-auth-architecture-02<a href="#appendix-H-11" class="pilcrow">¶</a></p>
+<p id="appendix-H-11">draft-meunier-web-bot-auth-architecture-03<a href="#appendix-H-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-12.1">
-          <p id="appendix-H-12.1.1">Add response status codes.<a href="#appendix-H-12.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-12.1.1">Update the Linzer example URL.<a href="#appendix-H-12.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-12.2">
-          <p id="appendix-H-12.2.1">Add references for readability.<a href="#appendix-H-12.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-12.2.1">Fix the section reference and name for status code 429.<a href="#appendix-H-12.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-12.3">
-          <p id="appendix-H-12.3.1">Add text about signing extra headers.<a href="#appendix-H-12.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.4">
-          <p id="appendix-H-12.4.1">Add TLS guidance to Security Considerations.<a href="#appendix-H-12.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.5">
-          <p id="appendix-H-12.5.1">Add RSASSA-PSS examples.<a href="#appendix-H-12.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.6">
-          <p id="appendix-H-12.6.1">Update acknowledgments.<a href="#appendix-H-12.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.7">
-          <p id="appendix-H-12.7.1">Add PHP, Python, Ruby, and Rust implementations.<a href="#appendix-H-12.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.8">
-          <p id="appendix-H-12.8.1">Fix <code>Signature-Agent</code> in the architecture diagram to use Structured Fields.<a href="#appendix-H-12.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.9">
-          <p id="appendix-H-12.9.1">Fix test vectors to use Structured Fields for <code>Signature-Agent</code>.<a href="#appendix-H-12.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-H-12.10">
-          <p id="appendix-H-12.10.1">Fix typos.<a href="#appendix-H-12.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-12.3.1">Fix typos.<a href="#appendix-H-12.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-13">draft-meunier-web-bot-auth-architecture-01<a href="#appendix-H-13" class="pilcrow">¶</a></p>
+<p id="appendix-H-13">draft-meunier-web-bot-auth-architecture-02<a href="#appendix-H-13" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-14.1">
-          <p id="appendix-H-14.1.1">Require clients to sign <code>Signature-Agent</code> when it is present.<a href="#appendix-H-14.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.1.1">Add response status codes.<a href="#appendix-H-14.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.2">
-          <p id="appendix-H-14.2.1">Add test vectors for requests with and without <code>Signature-Agent</code>.<a href="#appendix-H-14.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.2.1">Add references for readability.<a href="#appendix-H-14.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.3">
-          <p id="appendix-H-14.3.1">Fix the example diagram.<a href="#appendix-H-14.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.3.1">Add text about signing extra headers.<a href="#appendix-H-14.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.4">
-          <p id="appendix-H-14.4.1">Add reverse proxy security considerations.<a href="#appendix-H-14.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.4.1">Add TLS guidance to Security Considerations.<a href="#appendix-H-14.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.5">
-          <p id="appendix-H-14.5.1">Update text about why an origin may request a new signature.<a href="#appendix-H-14.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.5.1">Add RSASSA-PSS examples.<a href="#appendix-H-14.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.6">
-          <p id="appendix-H-14.6.1">Update nonce validation wording and uniqueness requirements.<a href="#appendix-H-14.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.6.1">Update acknowledgments.<a href="#appendix-H-14.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-14.7">
-          <p id="appendix-H-14.7.1">Add acknowledgments.<a href="#appendix-H-14.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-14.7.1">Add PHP, Python, Ruby, and Rust implementations.<a href="#appendix-H-14.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-14.8">
+          <p id="appendix-H-14.8.1">Fix <code>Signature-Agent</code> in the architecture diagram to use Structured Fields.<a href="#appendix-H-14.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-14.9">
+          <p id="appendix-H-14.9.1">Fix test vectors to use Structured Fields for <code>Signature-Agent</code>.<a href="#appendix-H-14.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-14.10">
+          <p id="appendix-H-14.10.1">Fix typos.<a href="#appendix-H-14.10.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-H-15">draft-meunier-web-bot-auth-architecture-00<a href="#appendix-H-15" class="pilcrow">¶</a></p>
+<p id="appendix-H-15">draft-meunier-web-bot-auth-architecture-01<a href="#appendix-H-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-H-16.1">
-          <p id="appendix-H-16.1.1">Initial draft.<a href="#appendix-H-16.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.1.1">Require clients to sign <code>Signature-Agent</code> when it is present.<a href="#appendix-H-16.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-16.2">
-          <p id="appendix-H-16.2.1">Describe how to use HTTP Message Signatures to sign requests.<a href="#appendix-H-16.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.2.1">Add test vectors for requests with and without <code>Signature-Agent</code>.<a href="#appendix-H-16.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-16.3">
-          <p id="appendix-H-16.3.1">Describe signature verification.<a href="#appendix-H-16.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.3.1">Fix the example diagram.<a href="#appendix-H-16.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-16.4">
-          <p id="appendix-H-16.4.1">Define the <code>web-bot-auth</code> tag.<a href="#appendix-H-16.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.4.1">Add reverse proxy security considerations.<a href="#appendix-H-16.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-16.5">
-          <p id="appendix-H-16.5.1">Derive <code>keyid</code> from the JWK Thumbprint.<a href="#appendix-H-16.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.5.1">Update text about why an origin may request a new signature.<a href="#appendix-H-16.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-H-16.6">
-          <p id="appendix-H-16.6.1">Add initial Security and Privacy Considerations.<a href="#appendix-H-16.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-H-16.6.1">Update nonce validation wording and uniqueness requirements.<a href="#appendix-H-16.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-16.7">
+          <p id="appendix-H-16.7.1">Add acknowledgments.<a href="#appendix-H-16.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-H-17">draft-meunier-web-bot-auth-architecture-00<a href="#appendix-H-17" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-H-18.1">
+          <p id="appendix-H-18.1.1">Initial draft.<a href="#appendix-H-18.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-18.2">
+          <p id="appendix-H-18.2.1">Describe how to use HTTP Message Signatures to sign requests.<a href="#appendix-H-18.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-18.3">
+          <p id="appendix-H-18.3.1">Describe signature verification.<a href="#appendix-H-18.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-18.4">
+          <p id="appendix-H-18.4.1">Define the <code>web-bot-auth</code> tag.<a href="#appendix-H-18.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-18.5">
+          <p id="appendix-H-18.5.1">Derive <code>keyid</code> from the JWK Thumbprint.<a href="#appendix-H-18.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-H-18.6">
+          <p id="appendix-H-18.6.1">Add initial Security and Privacy Considerations.<a href="#appendix-H-18.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
