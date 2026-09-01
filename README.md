@@ -2,14 +2,14 @@
 
 # WEBBOTAUTH Drafts
 
-This is the working area for individual Internet-Drafts.
+This is the working area for IETF [WEBBOTAUTH Working Group](https://datatracker.ietf.org/group/webbotauth/documents/) Internet-Drafts.
 
 ## HTTP Message Signatures for automated traffic
 
-* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-httpsig-protocol.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol)
-* [Compare Editor's Copy to Individual Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-meunier-webbotauth-httpsig-protocol.diff)
+* [Editor's Copy](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-ietf-webbotauth-httpsig-protocol.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol)
+* [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-ietf-webbotauth-httpsig-protocol)
+* [Compare Editor's Copy to Working Group Draft](https://thibmeu.github.io/http-message-signatures-directory/#go.draft-ietf-webbotauth-httpsig-protocol.diff)
 
 ## Registry and Signature Agent card for Web bot auth
 
@@ -37,4 +37,3 @@ $ make
 
 Command line usage requires that you have the necessary software installed.  See
 [the instructions](https://github.com/martinthomson/i-d-template/blob/main/doc/SETUP.md).
-
