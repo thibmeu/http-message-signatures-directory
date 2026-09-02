@@ -32,7 +32,6 @@ author:
     email: ietf@sandormajor.com
 
 normative:
-  CIMD: I-D.draft-ietf-oauth-client-id-metadata-document
   DIGEST-FIELDS: RFC9530
   HTTP-MESSAGE-SIGNATURES: RFC9421
   HTTP-MESSAGE-SIGNATURES-IANA:
@@ -44,7 +43,6 @@ normative:
   JWK: RFC7517
   JWK-OKP: RFC8037
   JWK-THUMBPRINT: RFC7638
-  ORIGIN: RFC6454
   STRUCTURED-HEADERS: RFC9651
   URI: RFC3986
   WellKnownURIs:
@@ -181,10 +179,10 @@ verifier can conclude from a valid signature.
 
 An Agent identifies itself with the HTTPS URL it publishes its keys at, carried
 in `Signature-Agent` ({{signature-agent}}). A verifier resolves that member
-value ({{key-distribution-and-discovery}}) and checks the signature against the
-keys it returns. The identifier is the URL the verifier fetched, which for a
-`directory` member is the well-known URI rather than the value the client sent.
-What the verifier ends up with is a pair: that URL, and a key the URL provides.
+value directly as a JWK Set ({{key-distribution-and-discovery}}) and checks the
+signature against the keys it returns. The identifier is the URL the verifier
+fetched. What the verifier ends up with is a pair: that URL, and a key the URL
+provides.
 Origins can log, rate limit, allowlist, or block the URL the way they do IP
 addresses and User-Agent today.
 
@@ -256,10 +254,10 @@ verifier resolved itself.
 ## Binding a Key to a Web Origin {#origin-binding}
 
 A well-known URL is a special case of the above. When a
-`Signature-Agent` value resolves through the `directory` type
-({{key-distribution-and-discovery}}), the identifier is still the URL, but that
-URL now names a domain rather than an arbitrary path on one. {{WELLKNOWN-URI}}
-reserves the path, so the domain operator stands behind the key set.
+`Signature-Agent` value is the well-known URI registered in {{wkuri-reg}}, the
+identifier is still the URL, but that URL now names a domain rather than an
+arbitrary path on one. {{WELLKNOWN-URI}} reserves the path, so the domain
+operator stands behind the key set.
 
 In practice, this is meant to allow additional information to be carried against
 a name. That mechanism lives in {{origin-binding-appendix}}. A verifier that
@@ -379,15 +377,10 @@ buffer request bodies it would otherwise stream.
 
 `Signature-Agent` is a Dictionary Structured Header as defined in
 {{Section 3.2 of STRUCTURED-HEADERS}}. Its member values MUST be String Items
-that contain a {{URI}}, whose scheme MUST be `https`. If dictionary values are
-not valid URI-references, the entire header field MAY be ignored.
-
-Each member carries a `type` parameter, a Token Item as defined in
-{{Section 3.3.4 of STRUCTURED-HEADERS}}, naming the discovery mechanism that
-resolves the value to key material. {{key-distribution-and-discovery}} defines
-the types. When `type` is absent, its value is `directory`. A verifier that
-does not support a `type` value MUST ignore that member, and MUST NOT infer the
-mechanism from the URI path, media type, or response body.
+that contain an absolute {{URI}}, whose scheme MUST be `https`. Dictionary
+members MUST NOT carry parameters. A verifier MUST ignore a member that carries
+parameters. If dictionary values are not valid URIs, the entire header field
+MAY be ignored.
 
 Earlier versions of this protocol defined `Signature-Agent` as a bare String,
 and deployments still send it ({{example-legacy}}). A verifier MAY accept that
@@ -544,45 +537,27 @@ material. {{discovery-is-not-trust}} covers what the fetch does and does not
 establish.
 
 The reference for discovery is an HTTPS URL, carried in a `Signature-Agent`
-member as defined in {{signature-agent}}. The member's `type` parameter names
-how the URL resolves to key material. This protocol defines three types:
+member as defined in {{signature-agent}}. A verifier fetches that URL directly
+and interprets the response as a JWK Set.
 
-`directory`
-: The member value MUST be the ASCII serialization of an origin as defined in
-{{Section 6.2 of ORIGIN}}, and a verifier MUST ignore a member carrying
-anything else (an empty path `/` MAY be accepted though).
-Resolve the HTTP Message Signatures Directory at the well-known
-URI registered in {{wkuri-reg}}, at that origin. This is the default when no
-`type` parameter is present.
-
-`jwks_uri`
-: Resolve the member value as a direct JWK Set URI.
-
-`cimd`
-: Resolve the member value as a Client ID Metadata Document {{CIMD}} URI. The
-document then provides key material through `jwks` or `jwks_uri`.
-
-Each resource fetched under this section MUST be served with a `200 (OK)` HTTP
+The resource fetched under this section MUST be served with a `200 (OK)` HTTP
 status code. A verifier MUST treat all other HTTP status codes as discovery
 failures and MUST NOT automatically follow HTTP redirects.
 
-All three types produce an identifier: the URL the verifier resolved, with any
-query and fragment discarded. For `directory` that is the well-known URI, one
-per origin. For `jwks_uri` and `cimd` it is the member value; the verifier
-fetches that value as sent, so the query is dropped from the identifier and not
-from the request. Otherwise one key set would yield an identifier per spelling,
-and an Agent could mint them at will.
+The URL the verifier resolved is the identifier, with any query discarded. The
+verifier fetches the member value as sent, so the query is dropped from the
+identifier and not from the request. Otherwise one key set would yield an
+identifier per spelling, and an Agent could mint them at will.
 
 Identifiers are compared after normalization as described in
 {{Section 6.2.2 of URI}} and {{Section 6.2.3 of URI}}. Two identifiers are the
 same when their normalized forms are equal octet for octet.
 
-The types differ in what additional information the verifier learns from the URL.
-TLS authenticates the host but not the path, and nothing reserves the `jwks_uri` or `cimd` path to the host's operator. The well-known URI is reserved, so `directory`
-additionally names a domain ({{origin-binding}}).
+TLS authenticates the host but not the path. An arbitrary path does not name
+the host's operator. The well-known URI is reserved, so that URL additionally
+names a domain ({{origin-binding}}).
 
-For all types, the key is selected using the `keyid` parameter in
-`Signature-Input`.
+The key is selected using the `keyid` parameter in `Signature-Input`.
 
 Note: when a JWK set is served at the well-known URI registered in
 {{wkuri-reg}}, JWK MAY carry a `kid`. In this case, it MUST be set to the
@@ -591,22 +566,19 @@ selects a key by matching `keyid` against `kid`. Deriving `kid` from the key
 material keeps it globally unique and lets a verifier check the directory's own
 labelling rather than trusting it.
 
-`jwks_uri` and `cimd` resolve to key sets that may serve other consumers, where
-`kid` is an operator-chosen label. A verifier that cannot match `keyid` against
-`kid` there computes thumbprints instead.
+A JWK Set at another URL may serve other consumers, where `kid` is an
+operator-chosen label. A verifier that cannot match `keyid` against `kid` there
+computes thumbprints instead.
 
 ~~~
-Signature-Agent: sig1="https://signature-agent.test"
-Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
-Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
+Signature-Agent: sig1="https://signature-agent.test/jwks.json"
 ~~~
 
 ### Directory Format {#configuration}
 
-All three types resolve to a JSON Web Key Set (JWKS) as defined in
-{{Section 5 of JWK}}. The `alg` parameter is restricted to algorithms
-registered in the HTTP Signature Algorithms section of
-{{HTTP-MESSAGE-SIGNATURES-IANA}}.
+The resource MUST be a JSON Web Key Set (JWKS) as defined in {{Section 5 of
+JWK}}. The `alg` parameter is restricted to algorithms registered in the HTTP
+Signature Algorithms section of {{HTTP-MESSAGE-SIGNATURES-IANA}}.
 
 The directory MUST be served over HTTPS. A directory served at the well-known
 URI registered in {{wkuri-reg}} MUST be served with media type
@@ -1007,10 +979,10 @@ them. End-user authentication and anonymous authentication are out of scope.
 # Validating the Domain Binding {#origin-binding-appendix}
 
 This appendix describes what a verifier checks when it wants the domain a key
-is published under, rather than the URL on its own. It applies to the
-`directory` type in {{key-distribution-and-discovery}}. Verification,
-rotation, and continuity do not depend on any of it, and a verifier that only
-needs the URL as an identifier can skip the whole appendix.
+is published under, rather than the URL on its own. It applies when the
+`Signature-Agent` value is the well-known URI registered in {{wkuri-reg}}.
+Verification, rotation, and continuity do not depend on any of it, and a
+verifier that only needs the URL as an identifier can skip the whole appendix.
 
 Authority over the domain comes from the TLS connection to the directory.
 Nothing below adds to that.
@@ -1579,6 +1551,11 @@ Martin Thomson.
 
 # Changelog
 {:numbered="false"}
+
+draft-ietf-webbotauth-httpsig-protocol-01
+
+- Make every `Signature-Agent` value a direct JWK Set URI and prohibit member
+  parameters. Remove the `directory`, `jwks_uri`, and `cimd` discovery types.
 
 draft-meunier-webbotauth-httpsig-protocol-02
 
