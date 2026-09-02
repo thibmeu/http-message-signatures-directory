@@ -116,9 +116,9 @@ Because the card reuses the {{CIMD}} parameter namespace, an existing Client ID
 Metadata Document is a valid Signature Agent Card. A client that does not
 understand the `web_bot_auth` object ignores it.
 
-The Signature-Agent header is defined in {{Section 5.2.1 of PROTOCOL}}. A
-Signature Agent Card can be referenced from that header using `type=cimd`, as
-described in {{cimd-discovery}}.
+The `Signature-Agent` header is defined in {{Section 5.2.1 of PROTOCOL}}. A
+card's `jwks_uri` value can be used directly as a `Signature-Agent` member
+value. The header identifies the JWK Set, not the card.
 
 ~~~
 {
@@ -380,8 +380,7 @@ A Signature Agent advertises its identity through a resolvable `client_id` URL,
 as defined in {{CIMD}}. A consumer discovers the agent's metadata and keys as
 follows:
 
-1. Obtain a `client_id` URL, from a `Signature-Agent` header with `type=cimd`
-   ({{signature-agent-header}}), a registry entry, or out of band.
+1. Obtain a `client_id` URL from a registry entry or out of band.
 2. Dereference the `client_id` with a `GET` request. The response MUST be
    `200 (OK)`, redirects MUST NOT be followed, and the returned `client_id` MUST
    match the requested URL (see {{signature-agent-parameter-client-id}}). The
@@ -501,13 +500,6 @@ Registry servers SHOULD include a `Cache-Control` response header field as
 defined in {{HTTP-CACHE}} to communicate the intended freshness lifetime of the
 registry content. Clients SHOULD respect these cache directives and SHOULD NOT
 poll more frequently than indicated.
-
-## Signature-Agent Header {#signature-agent-header}
-
-When used for HTTP Message Signatures, a Signature Agent Card MAY be discovered
-via a `Signature-Agent` header member with `type=cimd`. The URI carried in that
-member is the `client_id` of a Signature Agent Card resolved as described in
-{{cimd-discovery}}.
 
 # Security Considerations
 
@@ -915,6 +907,8 @@ The editor would also like to thank the following individuals (listed in alphabe
 draft-meunier-webbotauth-registry-04
 
 - Defer `Signature-Key` to draft-hardt-httpbis-signature-key.
+- Use a card's `jwks_uri` directly as the `Signature-Agent` value and remove
+  `type=cimd` discovery.
 - Make `rfc9309-compliance` a boolean.
 - Keep `purpose` open for further discussion.
 - Clarify `ips_uri` discovery.
