@@ -5,10 +5,10 @@
 Web Bot Auth                                                M. Guerreiro
 Internet-Draft                                                Cloudflare
 Intended status: Informational                                U. Kirazci
-Expires: 6 March 2027                                             Amazon
+Expires: 7 March 2027                                             Amazon
                                                               T. Meunier
                                                               Cloudflare
-                                                        2 September 2026
+                                                        3 September 2026
 
 
            Registry and Signature Agent card for Web bot auth
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 March 2027.
+   This Internet-Draft will expire on 7 March 2027.
 
 Copyright Notice
 
@@ -479,8 +479,8 @@ Content-Type: application/json
    Example
 
    # An example list of bots
-   https://bot1.example.com/card
-   https://crawler2.example.com/card
+   https://bot1.example.com/.well-known/http-message-signatures-directory
+   https://crawler2.example.com/.well-known/http-message-signatures-directory
 
    # Now the list of platforms
    https://zerotrust-gateway.example.com/v1/signature-agent-card
