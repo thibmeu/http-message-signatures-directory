@@ -1250,6 +1250,9 @@ members.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-signature-agent-header" class="internal xref">Signature-Agent Header</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
@@ -1388,9 +1391,9 @@ defined in <a href="#web-bot-auth-extension" class="auto internal xref">Section 
 <p id="section-3-2">Because the card reuses the <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span> parameter namespace, an existing Client ID
 Metadata Document is a valid Signature Agent Card. A client that does not
 understand the <code>web_bot_auth</code> object ignores it.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">The <code>Signature-Agent</code> header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-02#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span>. A
-card's <code>jwks_uri</code> value can be used directly as a <code>Signature-Agent</code> member
-value. The header identifies the JWK Set, not the card.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">The Signature-Agent header is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-02#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span>. A
+Signature Agent Card can be referenced from that header using <code>type=cimd</code>, as
+described in <a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-4">
 <pre>
 {
@@ -1766,7 +1769,8 @@ as defined in <span>[<a href="#CIMD" class="cite xref">CIMD</a>]</span>. A consu
 follows:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-2">
 <li id="section-4.1-2.1">
-            <p id="section-4.1-2.1.1">Obtain a <code>client_id</code> URL from a registry entry or out of band.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.1.1">Obtain a <code>client_id</code> URL, from a <code>Signature-Agent</code> header with <code>type=cimd</code>
+(<a href="#signature-agent-header" class="auto internal xref">Section 4.5</a>), a registry entry, or out of band.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.1-2.2">
             <p id="section-4.1-2.2.1">Dereference the <code>client_id</code> with a <code>GET</code> request. The response <span class="bcp14">MUST</span> be
@@ -1912,6 +1916,17 @@ registry content. Clients <span class="bcp14">SHOULD</span> respect these cache 
 poll more frequently than indicated.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="signature-agent-header">
+<section id="section-4.5">
+        <h3 id="name-signature-agent-header">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-signature-agent-header" class="section-name selfRef">Signature-Agent Header</a>
+        </h3>
+<p id="section-4.5-1">When used for HTTP Message Signatures, a Signature Agent Card <span class="bcp14">MAY</span> be discovered
+via a <code>Signature-Agent</code> header member with <code>type=cimd</code>. The URI carried in that
+member is the <code>client_id</code> of a Signature Agent Card resolved as described in
+<a href="#cimd-discovery" class="auto internal xref">Section 4.1</a>.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2715,20 +2730,16 @@ Clients that miss notifications recover on their next conditional pull.<a href="
           <p id="appendix-E-2.1.1">Defer <code>Signature-Key</code> to draft-hardt-httpbis-signature-key.<a href="#appendix-E-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-2.2">
-          <p id="appendix-E-2.2.1">Use a card's <code>jwks_uri</code> directly as the <code>Signature-Agent</code> value and remove
-<code>type=cimd</code> discovery.<a href="#appendix-E-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.2.1">Make <code>rfc9309-compliance</code> a boolean.<a href="#appendix-E-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-2.3">
-          <p id="appendix-E-2.3.1">Make <code>rfc9309-compliance</code> a boolean.<a href="#appendix-E-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.3.1">Keep <code>purpose</code> open for further discussion.<a href="#appendix-E-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-2.4">
-          <p id="appendix-E-2.4.1">Keep <code>purpose</code> open for further discussion.<a href="#appendix-E-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.4.1">Clarify <code>ips_uri</code> discovery.<a href="#appendix-E-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-2.5">
-          <p id="appendix-E-2.5.1">Clarify <code>ips_uri</code> discovery.<a href="#appendix-E-2.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-E-2.6">
-          <p id="appendix-E-2.6.1">Move change notifications to a non-normative appendix.<a href="#appendix-E-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.5.1">Move change notifications to a non-normative appendix.<a href="#appendix-E-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-E-3">draft-meunier-webbotauth-registry-03<a href="#appendix-E-3" class="pilcrow">¶</a></p>

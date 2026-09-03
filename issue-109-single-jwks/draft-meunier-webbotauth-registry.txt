@@ -102,6 +102,7 @@ Table of Contents
        4.4.1.  Authentication
        4.4.2.  Efficient Polling with Conditional Requests
        4.4.3.  Caching
+     4.5.  Signature-Agent Header
    5.  Security Considerations
      5.1.  Registry Integrity
      5.2.  Binding Delegated Keys to the Directory Authority
@@ -173,8 +174,8 @@ Table of Contents
    client that does not understand the web_bot_auth object ignores it.
 
    The Signature-Agent header is defined in Section 5.2.1 of [PROTOCOL].
-   A card's jwks_uri value can be used directly as a Signature-Agent
-   member value.  The header identifies the JWK Set, not the card.
+   A Signature Agent Card can be referenced from that header using
+   type=cimd, as described in Section 4.1.
 
 {
   "client_id": "https://example.com/bot",
@@ -446,7 +447,8 @@ Table of Contents
    client_id URL, as defined in [CIMD].  A consumer discovers the
    agent's metadata and keys as follows:
 
-   1.  Obtain a client_id URL from a registry entry or out of band.
+   1.  Obtain a client_id URL, from a Signature-Agent header with
+       type=cimd (Section 4.5), a registry entry, or out of band.
 
    2.  Dereference the client_id with a GET request.  The response MUST
        be 200 (OK), redirects MUST NOT be followed, and the returned
@@ -565,6 +567,13 @@ Content-Type: application/json
    as defined in [HTTP-CACHE] to communicate the intended freshness
    lifetime of the registry content.  Clients SHOULD respect these cache
    directives and SHOULD NOT poll more frequently than indicated.
+
+4.5.  Signature-Agent Header
+
+   When used for HTTP Message Signatures, a Signature Agent Card MAY be
+   discovered via a Signature-Agent header member with type=cimd.  The
+   URI carried in that member is the client_id of a Signature Agent Card
+   resolved as described in Section 4.1.
 
 5.  Security Considerations
 
@@ -1059,9 +1068,6 @@ Changelog
    draft-meunier-webbotauth-registry-04
 
    *  Defer Signature-Key to draft-hardt-httpbis-signature-key.
-
-   *  Use a card's jwks_uri directly as the Signature-Agent value and
-      remove type=cimd discovery.
 
    *  Make rfc9309-compliance a boolean.
 
