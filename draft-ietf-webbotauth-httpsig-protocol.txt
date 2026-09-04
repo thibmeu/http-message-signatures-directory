@@ -5,8 +5,8 @@
 Web Bot Auth                                                  T. Meunier
 Internet-Draft                                                Cloudflare
 Intended status: Standards Track                                S. Major
-Expires: 5 March 2027                                             Google
-                                                        1 September 2026
+Expires: 8 March 2027                                             Google
+                                                        4 September 2026
 
 
              HTTP Message Signatures for automated traffic
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 March 2027.
+   This Internet-Draft will expire on 8 March 2027.
 
 Copyright Notice
 
@@ -288,11 +288,10 @@ Table of Contents
 
    An Agent identifies itself with the HTTPS URL it publishes its keys
    at, carried in Signature-Agent (Section 5.2.1).  A verifier resolves
-   that member value (Section 5.5) and checks the signature against the
-   keys it returns.  The identifier is the URL the verifier fetched,
-   which for a directory member is the well-known URI rather than the
-   value the client sent.  What the verifier ends up with is a pair:
-   that URL, and a key the URL provides.  Origins can log, rate limit,
+   that member value directly as a JWK Set (Section 5.5) and checks the
+   signature against the keys it returns.  The identifier is the URL the
+   verifier fetched.  What the verifier ends up with is a pair: that
+   URL, and a key the URL provides.  Origins can log, rate limit,
    allowlist, or block the URL the way they do IP addresses and User-
    Agent today.
 
@@ -365,7 +364,7 @@ Table of Contents
 4.5.  Binding a Key to a Web Origin
 
    A well-known URL is a special case of the above.  When a Signature-
-   Agent value resolves through the directory type (Section 5.5), the
+   Agent value is the well-known URI registered in Section 8.1, the
    identifier is still the URL, but that URL now names a domain rather
    than an arbitrary path on one.  [WELLKNOWN-URI] reserves the path, so
    the domain operator stands behind the key set.
@@ -489,16 +488,10 @@ Table of Contents
 
    Signature-Agent is a Dictionary Structured Header as defined in
    Section 3.2 of [STRUCTURED-HEADERS].  Its member values MUST be
-   String Items that contain a [URI], whose scheme MUST be https.  If
-   dictionary values are not valid URI-references, the entire header
-   field MAY be ignored.
-
-   Each member carries a type parameter, a Token Item as defined in
-   Section 3.3.4 of [STRUCTURED-HEADERS], naming the discovery mechanism
-   that resolves the value to key material.  Section 5.5 defines the
-   types.  When type is absent, its value is directory.  A verifier that
-   does not support a type value MUST ignore that member, and MUST NOT
-   infer the mechanism from the URI path, media type, or response body.
+   String Items that contain an absolute [URI], whose scheme MUST be
+   https.  Dictionary members MUST NOT carry parameters.  A verifier
+   MUST ignore a member that carries parameters.  If dictionary values
+   are not valid URIs, the entire header field MAY be ignored.
 
    Earlier versions of this protocol defined Signature-Agent as a bare
    String, and deployments still send it (Appendix E.1.2).  A verifier
@@ -681,48 +674,29 @@ Table of Contents
    establish.
 
    The reference for discovery is an HTTPS URL, carried in a Signature-
-   Agent member as defined in Section 5.2.1.  The member's type
-   parameter names how the URL resolves to key material.  This protocol
-   defines three types:
+   Agent member as defined in Section 5.2.1.  A verifier fetches that
+   URL directly and interprets the response as a JWK Set.
 
-   directory  The member value MUST be the ASCII serialization of an
-      origin as defined in Section 6.2 of [ORIGIN], and a verifier MUST
-      ignore a member carrying anything else (an empty path / MAY be
-      accepted though).  Resolve the HTTP Message Signatures Directory
-      at the well-known URI registered in Section 8.1, at that origin.
-      This is the default when no type parameter is present.
-
-   jwks_uri  Resolve the member value as a direct JWK Set URI.
-
-   cimd  Resolve the member value as a Client ID Metadata Document
-      [CIMD] URI.  The document then provides key material through jwks
-      or jwks_uri.
-
-   Each resource fetched under this section MUST be served with a 200
+   The resource fetched under this section MUST be served with a 200
    (OK) HTTP status code.  A verifier MUST treat all other HTTP status
    codes as discovery failures and MUST NOT automatically follow HTTP
    redirects.
 
-   All three types produce an identifier: the URL the verifier resolved,
-   with any query and fragment discarded.  For directory that is the
-   well-known URI, one per origin.  For jwks_uri and cimd it is the
-   member value; the verifier fetches that value as sent, so the query
-   is dropped from the identifier and not from the request.  Otherwise
-   one key set would yield an identifier per spelling, and an Agent
-   could mint them at will.
+   The URL the verifier resolved is the identifier, with any query
+   discarded.  The verifier fetches the member value as sent, so the
+   query is dropped from the identifier and not from the request.
+   Otherwise one key set would yield an identifier per spelling, and an
+   Agent could mint them at will.
 
    Identifiers are compared after normalization as described in
    Section 6.2.2 of [URI] and Section 6.2.3 of [URI].  Two identifiers
    are the same when their normalized forms are equal octet for octet.
 
-   The types differ in what additional information the verifier learns
-   from the URL.  TLS authenticates the host but not the path, and
-   nothing reserves the jwks_uri or cimd path to the host's operator.
-   The well-known URI is reserved, so directory additionally names a
-   domain (Section 4.5).
+   TLS authenticates the host but not the path.  An arbitrary path does
+   not name the host's operator.  The well-known URI is reserved, so
+   that URL additionally names a domain (Section 4.5).
 
-   For all types, the key is selected using the keyid parameter in
-   Signature-Input.
+   The key is selected using the keyid parameter in Signature-Input.
 
    Note: when a JWK set is served at the well-known URI registered in
    Section 8.1, JWK MAY carry a kid.  In this case, it MUST be set to
@@ -731,17 +705,15 @@ Table of Contents
    it globally unique and lets a verifier check the directory's own
    labelling rather than trusting it.
 
-   jwks_uri and cimd resolve to key sets that may serve other consumers,
-   where kid is an operator-chosen label.  A verifier that cannot match
-   keyid against kid there computes thumbprints instead.
+   A JWK Set at another URL may serve other consumers, where kid is an
+   operator-chosen label.  A verifier that cannot match keyid against
+   kid there computes thumbprints instead.
 
-Signature-Agent: sig1="https://signature-agent.test"
-Signature-Agent: sig1="https://signature-agent.test/jwks.json";type=jwks_uri
-Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
+   Signature-Agent: sig1="https://signature-agent.test/jwks.json"
 
 5.5.1.  Directory Format
 
-   All three types resolve to a JSON Web Key Set (JWKS) as defined in
+   The resource MUST be a JSON Web Key Set (JWKS) as defined in
    Section 5 of [JWK].  The alg parameter is restricted to algorithms
    registered in the HTTP Signature Algorithms section of
    [HTTP-MESSAGE-SIGNATURES-IANA].
@@ -1098,12 +1070,6 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
 
 9.1.  Normative References
 
-   [CIMD]     Parecki, A. and E. Smith, "OAuth Client ID Metadata
-              Document", Work in Progress, Internet-Draft, draft-ietf-
-              oauth-client-id-metadata-document-02, 6 July 2026,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              client-id-metadata-document-02>.
-
    [DIGEST-FIELDS]
               Polli, R. and L. Pardue, "Digest Fields", RFC 9530,
               DOI 10.17487/RFC9530, February 2024,
@@ -1148,10 +1114,6 @@ Signature-Agent: sig1="https://signature-agent.test/card";type=cimd
               Jones, M. and N. Sakimura, "JSON Web Key (JWK)
               Thumbprint", RFC 7638, DOI 10.17487/RFC7638, September
               2015, <https://www.rfc-editor.org/rfc/rfc7638>.
-
-   [ORIGIN]   Barth, A., "The Web Origin Concept", RFC 6454,
-              DOI 10.17487/RFC6454, December 2011,
-              <https://www.rfc-editor.org/rfc/rfc6454>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1270,9 +1232,10 @@ Appendix B.  Validating the Domain Binding
 
    This appendix describes what a verifier checks when it wants the
    domain a key is published under, rather than the URL on its own.  It
-   applies to the directory type in Section 5.5.  Verification,
-   rotation, and continuity do not depend on any of it, and a verifier
-   that only needs the URL as an identifier can skip the whole appendix.
+   applies when the Signature-Agent value is the well-known URI
+   registered in Section 8.1.  Verification, rotation, and continuity do
+   not depend on any of it, and a verifier that only needs the URL as an
+   identifier can skip the whole appendix.
 
    Authority over the domain comes from the TLS connection to the
    directory.  Nothing below adds to that.
@@ -1834,6 +1797,12 @@ Acknowledgments
    Verma.
 
 Changelog
+
+   draft-ietf-webbotauth-httpsig-protocol-01
+
+   *  Make every Signature-Agent value a direct JWK Set URI and prohibit
+      member parameters.  Remove the directory, jwks_uri, and cimd
+      discovery types.
 
    draft-meunier-webbotauth-httpsig-protocol-02
 
